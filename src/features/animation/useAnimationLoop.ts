@@ -161,20 +161,21 @@ export function useAnimationLoop(
 
     // 3. Trail (only for moving patterns)
     if (pat.trajectory !== 'fixation' && state.trail.length > 1) {
-      drawTrail(ctx, state.trail, color, vs)
+      drawTrail(ctx, state.trail, color, Math.min(w, h) / 700 * vs)
     }
 
-    // 4. Bindu or Flame
+    // 4. Bindu or Flame (scale relative to viewport)
+    const viewScale = Math.min(w, h) / 700 * vs
     const isEyesClosed = activePhase.type === 'eyes-closed'
     const dimFactor = isEyesClosed ? 0.15 : (pat.id === 'nimilita' ? 0.3 : 1)
 
     if (pat.visual === 'flame') {
       if (!isEyesClosed) {
-        drawFlame(ctx, dotPos.x, dotPos.y, now / 1000 * 0.06 * 60, vs)
+        drawFlame(ctx, dotPos.x, dotPos.y, now / 1000 * 0.06 * 60, viewScale)
       }
     } else {
       const pulsePhase = now / 1000 * 1.8
-      drawBindu(ctx, dotPos.x, dotPos.y, color, pulsePhase, 16 * vs, dimFactor)
+      drawBindu(ctx, dotPos.x, dotPos.y, color, pulsePhase, 16 * viewScale, dimFactor)
     }
 
     // Continue loop
