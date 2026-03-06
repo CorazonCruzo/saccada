@@ -2,15 +2,25 @@ import { useRef, useEffect, useCallback } from 'react'
 import type { PatternConfig } from '@/entities/pattern'
 import { setupCanvas } from '@/shared/lib/canvas'
 import { useAnimationLoop } from '@/features/animation'
+import { type AudioEngine } from '@/features/audio'
 
 interface SessionPlayerProps {
   pattern: PatternConfig
   isPlaying: boolean
   speed?: number
+  audioEngine?: AudioEngine | null
+  soundEnabled?: boolean
   className?: string
 }
 
-export function SessionPlayer({ pattern, isPlaying, speed = 1, className }: SessionPlayerProps) {
+export function SessionPlayer({
+  pattern,
+  isPlaying,
+  speed = 1,
+  audioEngine = null,
+  soundEnabled = false,
+  className,
+}: SessionPlayerProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
 
@@ -29,7 +39,30 @@ export function SessionPlayer({ pattern, isPlaying, speed = 1, className }: Sess
     return () => window.removeEventListener('resize', handleResize)
   }, [handleResize])
 
-  useAnimationLoop(canvasRef, pattern, isPlaying, speed)
+  // Audio pan sync: called every animation frame
+  const onFrame = useCallback((dotXNormalized: number) => {
+    if (audioEngine && soundEnabled) {
+      audioEngine.setPan(dotXNormalized)
+    }
+  }, [audioEngine, soundEnabled])
+
+  useAnimationLoop(canvasRef, pattern, isPlaying, speed, onFrame)
+
+  // Tab visibility: pause/resume audio when tab is hidden/shown
+  useEffect(() => {
+    if (!audioEngine || !soundEnabled) return
+
+    const handleVisibility = () => {
+      if (document.hidden) {
+        audioEngine.pause()
+      } else if (isPlaying) {
+        audioEngine.resume()
+      }
+    }
+
+    document.addEventListener('visibilitychange', handleVisibility)
+    return () => document.removeEventListener('visibilitychange', handleVisibility)
+  }, [audioEngine, soundEnabled, isPlaying])
 
   return (
     <div

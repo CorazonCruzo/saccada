@@ -1,12 +1,44 @@
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import { Button } from '@/shared/ui/button'
+import { Slider } from '@/shared/ui/slider'
 import { allPatterns, type PatternConfig } from '@/entities/pattern'
 import { SessionPlayer } from '@/widgets/session-player'
+import { useAudio } from '@/features/audio'
 
 export default function HomePage() {
   const [selectedPattern, setSelectedPattern] = useState<PatternConfig>(allPatterns[8]) // pralokita
   const [isPlaying, setIsPlaying] = useState(false)
   const [speed, setSpeed] = useState(1)
+  const [soundEnabled, setSoundEnabled] = useState(false)
+  const [volume, setVolume] = useState(50)
+
+  const audioEngine = useAudio()
+
+  // Start session — audio starts HERE, in user gesture context
+  const handleStart = useCallback(() => {
+    if (soundEnabled) {
+      audioEngine.init()
+      audioEngine.setVolume(volume / 100)
+      audioEngine.start(selectedPattern.audioConfig)
+    }
+    setIsPlaying(true)
+  }, [audioEngine, volume, soundEnabled, selectedPattern.audioConfig])
+
+  // Stop session — audio stops HERE
+  const handleStop = useCallback(() => {
+    setIsPlaying(false)
+    audioEngine.stop()
+  }, [audioEngine])
+
+  const handleVolumeChange = useCallback((values: number[]) => {
+    const v = values[0]
+    setVolume(v)
+    audioEngine.setVolume(v / 100)
+  }, [audioEngine])
+
+  const handleToggleSound = useCallback(() => {
+    setSoundEnabled((prev) => !prev)
+  }, [])
 
   if (isPlaying) {
     return (
@@ -15,6 +47,8 @@ export default function HomePage() {
           pattern={selectedPattern}
           isPlaying={isPlaying}
           speed={speed}
+          audioEngine={audioEngine}
+          soundEnabled={soundEnabled}
         />
 
         {/* HUD overlay */}
@@ -34,11 +68,19 @@ export default function HomePage() {
             variant="outline"
             size="icon"
             className="h-12 w-12 rounded-full border-border-ornament bg-bg-surface/80 text-text-muted hover:text-text-bright"
-            onClick={() => setIsPlaying(false)}
+            onClick={handleStop}
           >
             <span className="text-lg">✕</span>
           </Button>
         </div>
+
+        {/* Audio indicator */}
+        {soundEnabled && (
+          <div className="absolute right-4 top-4 font-heading text-xs text-teal">
+            {selectedPattern.audioConfig.mode.toUpperCase()}
+            {selectedPattern.requiresHeadphones && ' · headphones'}
+          </div>
+        )}
       </div>
     )
   }
@@ -52,23 +94,59 @@ export default function HomePage() {
           Saccada
         </h1>
         <p className="mt-2 font-body text-sm font-light text-text-muted">
-          Canvas Animation Engine — Phase 1 Test
+          Phase 2 Test — Animation + Audio
         </p>
       </div>
 
-      {/* Speed control */}
-      <div className="mx-auto mt-6 flex items-center gap-3">
-        <span className="font-heading text-xs tracking-wide text-text-dim">SPEED</span>
-        {[0.5, 1, 1.5, 2].map((s) => (
-          <Button
-            key={s}
-            variant={speed === s ? 'default' : 'ghost'}
-            size="sm"
-            onClick={() => setSpeed(s)}
-          >
-            {s}x
-          </Button>
-        ))}
+      {/* Controls row */}
+      <div className="mx-auto mt-6 flex flex-wrap items-center justify-center gap-6">
+        {/* Speed */}
+        <div className="flex items-center gap-2">
+          <span className="font-heading text-xs tracking-wide text-text-dim">SPEED</span>
+          {[0.5, 1, 1.5, 2].map((s) => (
+            <Button
+              key={s}
+              variant={speed === s ? 'default' : 'ghost'}
+              size="sm"
+              onClick={() => setSpeed(s)}
+            >
+              {s}x
+            </Button>
+          ))}
+        </div>
+
+        {/* Sound toggle */}
+        <button
+          onClick={handleToggleSound}
+          className={`flex cursor-pointer items-center gap-1.5 rounded-md px-3 py-1.5 font-heading text-sm font-semibold tracking-wide transition-all ${
+            soundEnabled
+              ? 'bg-saffron/15 text-saffron'
+              : 'text-text-dim hover:text-text-muted'
+          }`}
+        >
+          <span className="text-base">{soundEnabled ? '♪' : '♪'}</span>
+          <span>Sound</span>
+          <span
+            className={`ml-0.5 inline-block h-1.5 w-1.5 rounded-full ${
+              soundEnabled ? 'bg-saffron' : 'bg-text-dim'
+            }`}
+          />
+        </button>
+
+        {/* Volume — shown when sound is ON */}
+        {soundEnabled && (
+          <div className="flex items-center gap-2">
+            <span className="font-heading text-xs tracking-wide text-text-dim">VOL</span>
+            <Slider
+              value={[volume]}
+              onValueChange={handleVolumeChange}
+              max={100}
+              step={1}
+              className="w-24"
+            />
+            <span className="font-heading text-xs text-turmeric">{volume}%</span>
+          </div>
+        )}
       </div>
 
       {/* Pattern grid */}
@@ -96,6 +174,10 @@ export default function HomePage() {
               <div className="mt-1 font-body text-xs font-light leading-snug text-text-dim">
                 {p.trajectory}{p.trajectory !== 'fixation' ? ` · ${p.cycleDuration}ms` : ''}
               </div>
+              <div className="mt-1 font-heading text-[10px] tracking-wider text-text-dim">
+                {p.audioConfig.mode.toUpperCase()}
+                {p.requiresHeadphones ? ' · 🎧' : ''}
+              </div>
             </button>
           )
         })}
@@ -103,7 +185,7 @@ export default function HomePage() {
 
       {/* Start button */}
       <div className="mx-auto mt-8">
-        <Button size="lg" onClick={() => setIsPlaying(true)}>
+        <Button size="lg" onClick={handleStart}>
           Start {selectedPattern.name}
         </Button>
       </div>

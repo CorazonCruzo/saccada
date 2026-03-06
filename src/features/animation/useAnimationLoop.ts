@@ -18,11 +18,14 @@ interface AnimationState {
   currentPhaseIndex: number
   trail: Point[]
   mandalaAngle: number
+  /** Normalized dot X: -1 (left) to 1 (right). Used for audio pan. */
+  dotXNormalized: number
 }
 
 interface AnimationRefs {
   pattern: PatternConfig
   speed: number
+  onFrame: ((dotXNormalized: number) => void) | null
   state: AnimationState
 }
 
@@ -31,10 +34,12 @@ export function useAnimationLoop(
   pattern: PatternConfig,
   isPlaying: boolean,
   speed: number = 1,
+  onFrame?: (dotXNormalized: number) => void,
 ) {
   const refs = useRef<AnimationRefs>({
     pattern,
     speed,
+    onFrame: onFrame ?? null,
     state: {
       running: false,
       startTime: 0,
@@ -43,6 +48,7 @@ export function useAnimationLoop(
       currentPhaseIndex: 0,
       trail: [],
       mandalaAngle: 0,
+      dotXNormalized: 0,
     },
   })
   const rafId = useRef(0)
@@ -50,6 +56,7 @@ export function useAnimationLoop(
   // Update refs without re-render
   refs.current.pattern = pattern
   refs.current.speed = speed
+  refs.current.onFrame = onFrame ?? null
 
   const render = useCallback(() => {
     const canvas = canvasRef.current
@@ -112,6 +119,12 @@ export function useAnimationLoop(
     } else {
       // Fixation or eyes-closed: center
       dotPos = { x: w / 2, y: h / 2 }
+    }
+
+    // Expose normalized X for audio pan (-1..1)
+    state.dotXNormalized = w > 0 ? (dotPos.x / w) * 2 - 1 : 0
+    if (refs.current.onFrame) {
+      refs.current.onFrame(state.dotXNormalized)
     }
 
     // Update trail
