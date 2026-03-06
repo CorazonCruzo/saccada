@@ -14,6 +14,7 @@ beforeEach(() => {
     hapticEnabled: false,
     guidedMode: true,
     patternOverrides: {},
+    visualScale: 1,
     lastSession: null,
   })
 })
@@ -139,6 +140,33 @@ describe('useSessionStore', () => {
       }
       useSessionStore.getState().setLastSession(session)
       expect(useSessionStore.getState().lastSession).toEqual(session)
+    })
+  })
+
+  describe('visual scale', () => {
+    it('defaults to 1', () => {
+      expect(useSessionStore.getState().visualScale).toBe(1)
+    })
+
+    it('sets visual scale', () => {
+      useSessionStore.getState().setVisualScale(1.5)
+      expect(useSessionStore.getState().visualScale).toBe(1.5)
+    })
+
+    it('clamps to min 0.3', () => {
+      useSessionStore.getState().setVisualScale(0.1)
+      expect(useSessionStore.getState().visualScale).toBe(0.3)
+    })
+
+    it('clamps to max 3', () => {
+      useSessionStore.getState().setVisualScale(5)
+      expect(useSessionStore.getState().visualScale).toBe(3)
+    })
+
+    it('is not affected by pattern switch', () => {
+      useSessionStore.getState().setVisualScale(2)
+      useSessionStore.getState().selectPattern(sama)
+      expect(useSessionStore.getState().visualScale).toBe(2)
     })
   })
 

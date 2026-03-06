@@ -9,6 +9,7 @@ interface SessionPlayerProps {
   pattern: PatternConfig
   isPlaying: boolean
   speed?: number
+  visualScale?: number
   audioEngine?: AudioEngine | null
   soundEnabled?: boolean
   hapticEnabled?: boolean
@@ -19,6 +20,7 @@ export function SessionPlayer({
   pattern,
   isPlaying,
   speed = 1,
+  visualScale = 1,
   audioEngine = null,
   soundEnabled = false,
   hapticEnabled = false,
@@ -53,7 +55,7 @@ export function SessionPlayer({
     }
   }, [audioEngine, soundEnabled, hapticEnabled])
 
-  useAnimationLoop(canvasRef, pattern, isPlaying, speed, onFrame)
+  useAnimationLoop(canvasRef, pattern, isPlaying, speed, visualScale, onFrame)
 
   // Tab visibility: pause/resume audio when tab is hidden/shown
   useEffect(() => {

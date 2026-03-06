@@ -24,6 +24,7 @@ export function SettingsPanel({ open, onOpenChange, onStart }: SettingsPanelProp
     soundEnabled, toggleSound,
     hapticEnabled, toggleHaptic,
     guidedMode, toggleGuided,
+    visualScale, setVisualScale,
   } = useSessionStore()
 
   return (
@@ -73,6 +74,25 @@ export function SettingsPanel({ open, onOpenChange, onStart }: SettingsPanelProp
                 </Button>
               ))}
             </div>
+          </div>
+
+          {/* Visual Scale */}
+          <div>
+            <div className="flex items-center justify-between">
+              <span className="font-heading text-xs tracking-widest text-text-dim uppercase">Visual Scale</span>
+              <span className="font-heading text-sm text-turmeric">{visualScale.toFixed(1)}x</span>
+            </div>
+            <Slider
+              value={[visualScale]}
+              onValueChange={([v]) => setVisualScale(v)}
+              min={0.3}
+              max={3}
+              step={0.1}
+              className="mt-2"
+            />
+            <p className="mt-1 font-body text-[10px] font-light text-text-dim">
+              Mandala, bindu and flame size. Also +/- during session.
+            </p>
           </div>
 
           {/* Toggles */}

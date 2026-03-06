@@ -8,13 +8,14 @@ export function drawTrail(
   ctx: CanvasRenderingContext2D,
   trail: Point[],
   color: string,
+  scale: number = 1,
 ) {
   for (let i = 0; i < trail.length; i++) {
     const alpha = i / trail.length
     const hex = Math.round(alpha * 40).toString(16).padStart(2, '0')
     ctx.fillStyle = color + hex
     ctx.beginPath()
-    ctx.arc(trail[i].x, trail[i].y, 2 + alpha * 3, 0, Math.PI * 2)
+    ctx.arc(trail[i].x, trail[i].y, (2 + alpha * 3) * scale, 0, Math.PI * 2)
     ctx.fill()
   }
 }

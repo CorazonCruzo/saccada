@@ -55,6 +55,10 @@ interface SessionStore {
   // Per-pattern settings storage
   patternOverrides: Record<string, Partial<PatternSettings>>
 
+  // Global visual scale (singleton, not per-pattern)
+  visualScale: number
+  setVisualScale: (s: number) => void
+
   // Results
   lastSession: LastSession | null
   setLastSession: (s: LastSession) => void
@@ -95,6 +99,7 @@ function loadSettings(
 interface PersistedState {
   patternOverrides?: Record<string, Partial<PatternSettings>>
   _selectedPatternId?: string
+  visualScale?: number
 }
 
 export const useSessionStore = create<SessionStore>()(
@@ -160,6 +165,9 @@ export const useSessionStore = create<SessionStore>()(
 
       patternOverrides: {},
 
+      visualScale: 1,
+      setVisualScale: (visualScale) => set({ visualScale: Math.max(0.3, Math.min(3, visualScale)) }),
+
       lastSession: null,
       setLastSession: (lastSession) => set({ lastSession }),
     }),
@@ -168,6 +176,7 @@ export const useSessionStore = create<SessionStore>()(
       partialize: (state) => ({
         patternOverrides: state.patternOverrides,
         _selectedPatternId: state.selectedPattern.id,
+        visualScale: state.visualScale,
       }),
       merge: (persisted, current) => {
         const saved = persisted as PersistedState
@@ -180,6 +189,7 @@ export const useSessionStore = create<SessionStore>()(
           patternOverrides: overrides,
           selectedPattern: pattern,
           ...loadSettings(overrides, pattern),
+          visualScale: saved.visualScale ?? 1,
         }
       },
     }

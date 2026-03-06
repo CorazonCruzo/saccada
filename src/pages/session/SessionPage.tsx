@@ -18,6 +18,8 @@ export default function SessionPage() {
     hapticEnabled,
     guidedMode,
     sessionDuration,
+    visualScale,
+    setVisualScale,
     setSessionState,
     setLastSession,
   } = useSessionStore()
@@ -206,6 +208,14 @@ export default function SessionPage() {
             setInfoOpen(true)
           }
           break
+        case '+':
+        case '=':
+          useSessionStore.getState().setVisualScale(useSessionStore.getState().visualScale + 0.1)
+          break
+        case '-':
+        case '_':
+          useSessionStore.getState().setVisualScale(useSessionStore.getState().visualScale - 0.1)
+          break
       }
     }
 
@@ -288,6 +298,7 @@ export default function SessionPage() {
           pattern={selectedPattern}
           isPlaying={false}
           speed={speed}
+          visualScale={visualScale}
         />
         <div className="absolute inset-0 flex items-center justify-center bg-bg-deep/80 transition-opacity duration-[3000ms]">
           <p className="font-body text-lg font-light text-text-muted animate-pulse">
@@ -305,6 +316,7 @@ export default function SessionPage() {
         pattern={selectedPattern}
         isPlaying={phase === 'active'}
         speed={speed}
+        visualScale={visualScale}
         audioEngine={audioEngine}
         soundEnabled={soundEnabled}
         hapticEnabled={hapticEnabled}
@@ -404,8 +416,8 @@ export default function SessionPage() {
 
       {/* Keyboard hints */}
       {hudVisible && (
-        <div className="absolute bottom-6 right-4 hidden rounded-md bg-bg-deep/50 px-3 py-1.5 font-heading text-xs tracking-wide text-text-dim/80 backdrop-blur-sm sm:block">
-          SPACE pause &middot; ESC quit &middot; F fullscreen &middot; I info
+        <div className="absolute bottom-6 right-4 hidden rounded-md bg-bg-surface/60 px-3 py-1.5 font-heading text-xs tracking-wide text-text-muted backdrop-blur-sm sm:block">
+          SPACE pause &middot; ESC quit &middot; F fullscreen &middot; I info &middot; +/- scale
         </div>
       )}
 

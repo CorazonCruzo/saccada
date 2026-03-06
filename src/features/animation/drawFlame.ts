@@ -12,9 +12,10 @@ export function drawFlame(
   x: number,
   y: number,
   time: number,
+  scale: number = 1,
 ) {
-  const flameHeight = 90
-  const baseY = y + 20
+  const flameHeight = 90 * scale
+  const baseY = y + 20 * scale
 
   ctx.save()
 
@@ -22,10 +23,10 @@ export function drawFlame(
   for (let i = 40; i >= 0; i--) {
     const frac = i / 40
     const flicker = noise(time, frac * 5, 2) * 6
-    const w = (1 - frac * frac) * 22 + flicker
+    const w = ((1 - frac * frac) * 22 + flicker) * scale
     const h = frac * flameHeight
     const ly = baseY - h
-    const sway = Math.sin(time * 1.3 + frac * 2) * 3 * frac
+    const sway = Math.sin(time * 1.3 + frac * 2) * 3 * frac * scale
 
     let r: number, g: number, b: number, a: number
     if (frac < 0.15) {
@@ -40,21 +41,21 @@ export function drawFlame(
 
     ctx.fillStyle = `rgba(${r},${g},${b},${a})`
     ctx.beginPath()
-    ctx.ellipse(x + sway, ly, w, 8, 0, 0, Math.PI * 2)
+    ctx.ellipse(x + sway, ly, w, 8 * scale, 0, 0, Math.PI * 2)
     ctx.fill()
   }
 
   // Wick
   ctx.fillStyle = '#2a1a0a'
-  ctx.fillRect(x - 1.5, baseY, 3, 12)
+  ctx.fillRect(x - 1.5 * scale, baseY, 3 * scale, 12 * scale)
 
   // Base glow
-  const glow = ctx.createRadialGradient(x, baseY, 0, x, baseY, 60)
+  const glow = ctx.createRadialGradient(x, baseY, 0, x, baseY, 60 * scale)
   glow.addColorStop(0, 'rgba(255,160,50,0.15)')
   glow.addColorStop(1, 'rgba(255,160,50,0)')
   ctx.fillStyle = glow
   ctx.beginPath()
-  ctx.arc(x, baseY, 60, 0, Math.PI * 2)
+  ctx.arc(x, baseY, 60 * scale, 0, Math.PI * 2)
   ctx.fill()
 
   ctx.restore()

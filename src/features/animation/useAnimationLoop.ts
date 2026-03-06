@@ -25,6 +25,7 @@ interface AnimationState {
 interface AnimationRefs {
   pattern: PatternConfig
   speed: number
+  visualScale: number
   onFrame: ((dotXNormalized: number) => void) | null
   state: AnimationState
 }
@@ -34,11 +35,13 @@ export function useAnimationLoop(
   pattern: PatternConfig,
   isPlaying: boolean,
   speed: number = 1,
+  visualScale: number = 1,
   onFrame?: (dotXNormalized: number) => void,
 ) {
   const refs = useRef<AnimationRefs>({
     pattern,
     speed,
+    visualScale,
     onFrame: onFrame ?? null,
     state: {
       running: false,
@@ -56,6 +59,7 @@ export function useAnimationLoop(
   // Update refs without re-render
   refs.current.pattern = pattern
   refs.current.speed = speed
+  refs.current.visualScale = visualScale
   refs.current.onFrame = onFrame ?? null
 
   const render = useCallback(() => {
@@ -65,7 +69,7 @@ export function useAnimationLoop(
     const ctx = canvas.getContext('2d')
     if (!ctx) return
 
-    const { pattern: pat, speed: spd, state } = refs.current
+    const { pattern: pat, speed: spd, visualScale: vs, state } = refs.current
     const dpr = window.devicePixelRatio || 1
     const w = canvas.width / dpr
     const h = canvas.height / dpr
@@ -109,12 +113,14 @@ export function useAnimationLoop(
       }
     }
 
-    // Compute dot position
+    // Compute dot position (trajectory scales with visualScale)
     let dotPos: Point
     if (activePhase.type === 'movement' && pat.cycleDuration) {
       const cycleMs = pat.cycleDuration / spd
       const cycleT = (phaseElapsed % cycleMs) / cycleMs
       const normPos = getTrajectoryPosition(cycleT, pat.trajectory, pat.trajectoryParams)
+      normPos.x *= vs
+      normPos.y *= vs
       dotPos = toCanvasCoords(normPos, w, h)
     } else {
       // Fixation or eyes-closed: center
@@ -149,12 +155,13 @@ export function useAnimationLoop(
     // 1. Clear
     ctx.clearRect(0, 0, w, h)
 
-    // 2. Mandala background
-    drawMandala(ctx, w / 2, h / 2, state.mandalaAngle, 0.08)
+    // 2. Mandala background (scale relative to viewport, then user scale)
+    const mandalaScale = Math.min(w, h) / 350 * vs
+    drawMandala(ctx, w / 2, h / 2, state.mandalaAngle, 0.08, mandalaScale)
 
     // 3. Trail (only for moving patterns)
     if (pat.trajectory !== 'fixation' && state.trail.length > 1) {
-      drawTrail(ctx, state.trail, color)
+      drawTrail(ctx, state.trail, color, vs)
     }
 
     // 4. Bindu or Flame
@@ -163,11 +170,11 @@ export function useAnimationLoop(
 
     if (pat.visual === 'flame') {
       if (!isEyesClosed) {
-        drawFlame(ctx, dotPos.x, dotPos.y, now / 1000 * 0.06 * 60)
+        drawFlame(ctx, dotPos.x, dotPos.y, now / 1000 * 0.06 * 60, vs)
       }
     } else {
       const pulsePhase = now / 1000 * 1.8
-      drawBindu(ctx, dotPos.x, dotPos.y, color, pulsePhase, 16, dimFactor)
+      drawBindu(ctx, dotPos.x, dotPos.y, color, pulsePhase, 16 * vs, dimFactor)
     }
 
     // Continue loop
