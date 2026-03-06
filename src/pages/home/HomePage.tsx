@@ -3,12 +3,13 @@ import { useNavigate, Navigate } from 'react-router-dom'
 import { useSessionStore } from '@/entities/session'
 import { PatternPicker } from '@/widgets/pattern-picker'
 import { SettingsPanel } from '@/widgets/settings-panel'
+import { SessionPlayer } from '@/widgets/session-player'
 import { useAudio } from '@/features/audio'
 import { Button } from '@/shared/ui/button'
 
 export default function HomePage() {
   const navigate = useNavigate()
-  const { selectedPattern, selectPattern, soundEnabled } = useSessionStore()
+  const { selectedPattern, selectPattern, soundEnabled, speed, visualScale } = useSessionStore()
   const [settingsOpen, setSettingsOpen] = useState(false)
   const audioEngine = useAudio()
 
@@ -70,6 +71,16 @@ export default function HomePage() {
           {selectedPattern.audioConfig.mode}
           {selectedPattern.requiresHeadphones ? ' \u00B7 🎧' : ''}
         </p>
+      </div>
+
+      {/* Canvas preview */}
+      <div className="mx-auto mt-6 h-56 w-full max-w-2xl overflow-hidden rounded-xl border border-border-ornament">
+        <SessionPlayer
+          pattern={selectedPattern}
+          isPlaying={true}
+          speed={speed}
+          visualScale={visualScale}
+        />
       </div>
 
       {/* Onboarding replay link */}
