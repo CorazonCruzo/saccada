@@ -3,16 +3,18 @@
  * Graceful no-op on iOS and desktop.
  */
 
-const canVibrate = typeof navigator !== 'undefined' && 'vibrate' in navigator
+function canVibrate(): boolean {
+  return typeof navigator !== 'undefined' && 'vibrate' in navigator
+}
 
 /** Short pulse when dot reaches edge (L/R or top/bottom) */
 export function pulseEdge(): void {
-  if (canVibrate) navigator.vibrate(15)
+  if (canVibrate()) navigator.vibrate(15)
 }
 
 /** Longer pulse on phase transition */
 export function pulseTransition(): void {
-  if (canVibrate) navigator.vibrate(40)
+  if (canVibrate()) navigator.vibrate(40)
 }
 
 /**
