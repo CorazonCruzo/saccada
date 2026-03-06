@@ -11,6 +11,7 @@ export default function HomePage() {
   const [speed, setSpeed] = useState(1)
   const [soundEnabled, setSoundEnabled] = useState(false)
   const [volume, setVolume] = useState(50)
+  const [hapticEnabled, setHapticEnabled] = useState(false)
 
   const audioEngine = useAudio()
 
@@ -49,6 +50,7 @@ export default function HomePage() {
           speed={speed}
           audioEngine={audioEngine}
           soundEnabled={soundEnabled}
+          hapticEnabled={hapticEnabled}
         />
 
         {/* HUD overlay */}
@@ -129,6 +131,24 @@ export default function HomePage() {
           <span
             className={`ml-0.5 inline-block h-1.5 w-1.5 rounded-full ${
               soundEnabled ? 'bg-saffron' : 'bg-text-dim'
+            }`}
+          />
+        </button>
+
+        {/* Haptic toggle */}
+        <button
+          onClick={() => setHapticEnabled((p) => !p)}
+          className={`flex cursor-pointer items-center gap-1.5 rounded-md px-3 py-1.5 font-heading text-sm font-semibold tracking-wide transition-all ${
+            hapticEnabled
+              ? 'bg-teal/15 text-teal'
+              : 'text-text-dim hover:text-text-muted'
+          }`}
+        >
+          <span className="text-base">〰</span>
+          <span>Haptic</span>
+          <span
+            className={`ml-0.5 inline-block h-1.5 w-1.5 rounded-full ${
+              hapticEnabled ? 'bg-teal' : 'bg-text-dim'
             }`}
           />
         </button>
