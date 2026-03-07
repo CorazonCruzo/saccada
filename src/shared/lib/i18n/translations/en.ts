@@ -25,7 +25,7 @@ export const en: Translation = {
       },
       {
         title: 'Best with Headphones',
-        body: 'Bilateral audio pans left and right with the dot. Binaural beats create theta waves for deep processing. Drone modes provide meditative ambiance. All sound is synthesized in real time.',
+        body: 'Bilateral audio pans left and right with the dot. Binaural beats create theta waves for deep processing. Tone modes provide meditative ambiance. All sound is synthesized in real time.',
       },
       {
         title: 'Your Data Stays Here',
@@ -152,7 +152,7 @@ export const en: Translation = {
   audioMode: {
     bilateral: 'Bilateral',
     binaural: 'Binaural',
-    drone: 'Drone',
+    drone: 'Tone',
     rhythmic: 'Rhythmic',
   },
 

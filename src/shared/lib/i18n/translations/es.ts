@@ -25,7 +25,7 @@ export const es: Translation = {
       },
       {
         title: 'Mejor con auriculares',
-        body: 'El audio bilateral se desplaza de izquierda a derecha con el punto. Los ritmos binaurales crean ondas theta para un procesamiento profundo. Los modos drone proporcionan un ambiente meditativo. Todo el sonido se sintetiza en tiempo real.',
+        body: 'El audio bilateral se desplaza de izquierda a derecha con el punto. Los ritmos binaurales crean ondas theta para un procesamiento profundo. Los modos de tono proporcionan un ambiente meditativo. Todo el sonido se sintetiza en tiempo real.',
       },
       {
         title: 'Tus datos se quedan aqu\u00ED',
@@ -152,7 +152,7 @@ export const es: Translation = {
   audioMode: {
     bilateral: 'Bilateral',
     binaural: 'Binaural',
-    drone: 'Drone',
+    drone: 'Tono',
     rhythmic: 'R\u00EDtmico',
   },
 
