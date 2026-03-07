@@ -9,7 +9,7 @@ import { Button } from '@/shared/ui/button'
 
 export default function HomePage() {
   const navigate = useNavigate()
-  const { selectedPattern, selectPattern, soundEnabled, speed, visualScale } = useSessionStore()
+  const { selectedPattern, selectPattern, soundEnabled, eyeTrackingEnabled, calibratedAt, speed, visualScale } = useSessionStore()
   const [settingsOpen, setSettingsOpen] = useState(false)
   const audioEngine = useAudio()
 
@@ -24,7 +24,12 @@ export default function HomePage() {
       audioEngine.init()
     }
     setSettingsOpen(false)
-    navigate('/session')
+
+    if (eyeTrackingEnabled && !calibratedAt) {
+      navigate('/calibration')
+    } else {
+      navigate('/session')
+    }
   }
 
   return (

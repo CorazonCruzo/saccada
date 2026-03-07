@@ -18,6 +18,7 @@ export interface PatternSettings {
   soundEnabled: boolean
   hapticEnabled: boolean
   guidedMode: boolean
+  eyeTrackingEnabled: boolean
 }
 
 const DEFAULT_SETTINGS: Omit<PatternSettings, 'sessionDuration'> = {
@@ -26,6 +27,7 @@ const DEFAULT_SETTINGS: Omit<PatternSettings, 'sessionDuration'> = {
   soundEnabled: false,
   hapticEnabled: false,
   guidedMode: true,
+  eyeTrackingEnabled: false,
 }
 
 interface SessionStore {
@@ -51,13 +53,17 @@ interface SessionStore {
   toggleHaptic: () => void
   guidedMode: boolean
   toggleGuided: () => void
+  eyeTrackingEnabled: boolean
+  setEyeTracking: (v: boolean) => void
 
   // Per-pattern settings storage
   patternOverrides: Record<string, Partial<PatternSettings>>
 
-  // Global visual scale (singleton, not per-pattern)
+  // Global settings (singleton, not per-pattern)
   visualScale: number
   setVisualScale: (s: number) => void
+  calibratedAt: number | null
+  setCalibratedAt: (t: number | null) => void
 
   // Results
   lastSession: LastSession | null
@@ -93,6 +99,7 @@ function loadSettings(
     soundEnabled: po.soundEnabled ?? DEFAULT_SETTINGS.soundEnabled,
     hapticEnabled: po.hapticEnabled ?? DEFAULT_SETTINGS.hapticEnabled,
     guidedMode: po.guidedMode ?? DEFAULT_SETTINGS.guidedMode,
+    eyeTrackingEnabled: po.eyeTrackingEnabled ?? DEFAULT_SETTINGS.eyeTrackingEnabled,
   }
 }
 
@@ -100,6 +107,7 @@ interface PersistedState {
   patternOverrides?: Record<string, Partial<PatternSettings>>
   _selectedPatternId?: string
   visualScale?: number
+  calibratedAt?: number | null
 }
 
 export const useSessionStore = create<SessionStore>()(
@@ -163,10 +171,19 @@ export const useSessionStore = create<SessionStore>()(
         })
       },
 
+      eyeTrackingEnabled: DEFAULT_SETTINGS.eyeTrackingEnabled,
+      setEyeTracking: (eyeTrackingEnabled) => set({
+        eyeTrackingEnabled,
+        ...saveOverride(get, 'eyeTrackingEnabled', eyeTrackingEnabled),
+      }),
+
       patternOverrides: {},
 
       visualScale: 1,
       setVisualScale: (visualScale) => set({ visualScale: Math.max(0.3, Math.min(3, visualScale)) }),
+
+      calibratedAt: null,
+      setCalibratedAt: (calibratedAt) => set({ calibratedAt }),
 
       lastSession: null,
       setLastSession: (lastSession) => set({ lastSession }),
@@ -177,6 +194,7 @@ export const useSessionStore = create<SessionStore>()(
         patternOverrides: state.patternOverrides,
         _selectedPatternId: state.selectedPattern.id,
         visualScale: state.visualScale,
+        calibratedAt: state.calibratedAt,
       }),
       merge: (persisted, current) => {
         const saved = persisted as PersistedState
@@ -190,6 +208,7 @@ export const useSessionStore = create<SessionStore>()(
           selectedPattern: pattern,
           ...loadSettings(overrides, pattern),
           visualScale: saved.visualScale ?? 1,
+          calibratedAt: saved.calibratedAt ?? null,
         }
       },
     }

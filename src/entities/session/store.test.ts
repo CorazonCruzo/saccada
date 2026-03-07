@@ -13,8 +13,10 @@ beforeEach(() => {
     soundEnabled: false,
     hapticEnabled: false,
     guidedMode: true,
+    eyeTrackingEnabled: false,
     patternOverrides: {},
     visualScale: 1,
+    calibratedAt: null,
     lastSession: null,
   })
 })
@@ -140,6 +142,33 @@ describe('useSessionStore', () => {
       }
       useSessionStore.getState().setLastSession(session)
       expect(useSessionStore.getState().lastSession).toEqual(session)
+    })
+  })
+
+  describe('eye tracking per pattern', () => {
+    it('defaults to false', () => {
+      expect(useSessionStore.getState().eyeTrackingEnabled).toBe(false)
+    })
+
+    it('saves eye tracking per pattern', () => {
+      useSessionStore.getState().setEyeTracking(true)
+      expect(useSessionStore.getState().eyeTrackingEnabled).toBe(true)
+      expect(useSessionStore.getState().patternOverrides['pralokita']?.eyeTrackingEnabled).toBe(true)
+    })
+
+    it('restores eye tracking on pattern switch', () => {
+      useSessionStore.getState().setEyeTracking(true)
+      useSessionStore.getState().selectPattern(sama)
+      expect(useSessionStore.getState().eyeTrackingEnabled).toBe(false) // default
+
+      useSessionStore.getState().selectPattern(pralokita)
+      expect(useSessionStore.getState().eyeTrackingEnabled).toBe(true) // restored
+    })
+
+    it('does not leak between patterns', () => {
+      useSessionStore.getState().setEyeTracking(true)
+      useSessionStore.getState().selectPattern(anuvritta)
+      expect(useSessionStore.getState().eyeTrackingEnabled).toBe(false)
     })
   })
 

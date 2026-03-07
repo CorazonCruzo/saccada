@@ -3,6 +3,7 @@ import HomePage from '@/pages/home/HomePage'
 import SessionPage from '@/pages/session/SessionPage'
 import ResultsPage from '@/pages/results/ResultsPage'
 import OnboardingPage from '@/pages/onboarding/OnboardingPage'
+import CalibrationPage from '@/pages/calibration/CalibrationPage'
 
 export function AppRouter() {
   return (
@@ -12,6 +13,7 @@ export function AppRouter() {
         <Route path="/session" element={<SessionPage />} />
         <Route path="/results" element={<ResultsPage />} />
         <Route path="/onboarding" element={<OnboardingPage />} />
+        <Route path="/calibration" element={<CalibrationPage />} />
       </Routes>
     </BrowserRouter>
   )

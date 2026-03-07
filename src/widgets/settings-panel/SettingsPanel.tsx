@@ -1,4 +1,6 @@
+import { useState } from 'react'
 import { useSessionStore } from '@/entities/session'
+import { checkCameraPermission, requestCameraAccess } from '@/features/eye-tracking'
 import { Button } from '@/shared/ui/button'
 import { Slider } from '@/shared/ui/slider'
 import {
@@ -24,12 +26,47 @@ export function SettingsPanel({ open, onOpenChange, onStart }: SettingsPanelProp
     soundEnabled, toggleSound,
     hapticEnabled, toggleHaptic,
     guidedMode, toggleGuided,
+    eyeTrackingEnabled, setEyeTracking,
+    calibratedAt, setCalibratedAt,
     visualScale, setVisualScale,
   } = useSessionStore()
 
+  const [cameraStatus, setCameraStatus] = useState<string | null>(null)
+  const [cameraLoading, setCameraLoading] = useState(false)
+
+  async function handleToggleEyeTracking() {
+    if (cameraLoading) return
+
+    if (eyeTrackingEnabled) {
+      setEyeTracking(false)
+      setCameraStatus(null)
+      return
+    }
+
+    setCameraStatus(null)
+    setCameraLoading(true)
+    try {
+      const permission = await checkCameraPermission()
+
+      if (permission === 'unavailable') {
+        setCameraStatus('Camera not available on this device')
+        return
+      }
+
+      const granted = await requestCameraAccess()
+      if (granted) {
+        setEyeTracking(true)
+      } else {
+        setCameraStatus('Camera access denied. Check camera permissions in browser settings (lock icon in address bar).')
+      }
+    } finally {
+      setCameraLoading(false)
+    }
+  }
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="border-border-ornament bg-bg-mid sm:max-w-md">
+      <DialogContent className="top-[5vh] translate-y-0 border-border-ornament bg-bg-mid sm:max-w-md max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="font-heading text-lg text-text-bright">
             Session Settings
@@ -147,16 +184,37 @@ export function SettingsPanel({ open, onOpenChange, onStart }: SettingsPanelProp
               onToggle={toggleGuided}
             />
 
-            {/* Eye tracking — disabled */}
-            <div className="flex items-center gap-2 opacity-40">
-              <span className="text-base text-text-dim">{'\u25CE'}</span>
-              <span className="font-heading text-sm font-semibold tracking-wide text-text-dim">
-                Eye Tracking
-              </span>
-              <span className="ml-auto font-body text-[10px] font-light text-text-dim">
-                Coming soon
-              </span>
-            </div>
+            {/* Eye Tracking */}
+            <ToggleRow
+              label="Eye Tracking"
+              icon={'\u25CE'}
+              active={eyeTrackingEnabled}
+              activeColor="indigo"
+              onToggle={handleToggleEyeTracking}
+            />
+            {eyeTrackingEnabled && !calibratedAt && (
+              <p className="ml-6 font-body text-[10px] font-light text-indigo">
+                Calibration will run before session starts
+              </p>
+            )}
+            {eyeTrackingEnabled && calibratedAt && (
+              <div className="ml-6 flex items-center gap-2">
+                <p className="font-body text-[10px] font-light text-teal">
+                  Calibrated
+                </p>
+                <button
+                  onClick={() => setCalibratedAt(null)}
+                  className="cursor-pointer font-body text-[10px] font-light text-text-dim underline transition-colors hover:text-text-muted"
+                >
+                  Recalibrate
+                </button>
+              </div>
+            )}
+            {cameraStatus && (
+              <p className="ml-6 font-body text-[10px] font-light text-lotus">
+                {cameraStatus}
+              </p>
+            )}
           </div>
 
           {/* Start button */}
@@ -174,6 +232,7 @@ const activeStyles: Record<string, { bg: string; text: string; dot: string }> = 
   teal: { bg: 'bg-teal/15', text: 'text-teal', dot: 'bg-teal' },
   turmeric: { bg: 'bg-turmeric/15', text: 'text-turmeric', dot: 'bg-turmeric' },
   gold: { bg: 'bg-gold/15', text: 'text-gold', dot: 'bg-gold' },
+  indigo: { bg: 'bg-indigo/15', text: 'text-indigo', dot: 'bg-indigo' },
 }
 
 function ToggleRow({

@@ -26,3 +26,6 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
+
+# MediaPipe WASM binaries (copied from node_modules by postinstall script)
+public/mediapipe/

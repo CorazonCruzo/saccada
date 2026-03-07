@@ -4,6 +4,7 @@ import { useSessionStore } from '@/entities/session'
 import { SessionPlayer } from '@/widgets/session-player'
 import { PatternInfoDialog } from '@/widgets/pattern-picker'
 import { useAudio } from '@/features/audio'
+import { useEyeTracking } from '@/features/eye-tracking'
 import { Button } from '@/shared/ui/button'
 import { formatTimer } from '@/shared/lib/format'
 
@@ -19,13 +20,14 @@ export default function SessionPage() {
     guidedMode,
     sessionDuration,
     visualScale,
-    setVisualScale,
     setSessionState,
     setLastSession,
   } = useSessionStore()
 
   const navigate = useNavigate()
   const audioEngine = useAudio()
+  const { getTracker, sleep: sleepTracker } = useEyeTracking()
+  const eyeTrackingEnabled = useSessionStore((s) => s.eyeTrackingEnabled)
 
   // Local session lifecycle
   const [phase, setPhase] = useState<SessionPhase>('countdown')
@@ -42,6 +44,12 @@ export default function SessionPage() {
   const audioStartedRef = useRef(false)
   const phaseRef = useRef(phase)
   phaseRef.current = phase
+
+  // Eye tracking: ensure camera is live for the session
+  useEffect(() => {
+    if (!eyeTrackingEnabled) return
+    void getTracker().start(() => {})
+  }, [eyeTrackingEnabled, getTracker])
 
   // ── Countdown ──────────────────────────────────────────
   useEffect(() => {
@@ -115,6 +123,7 @@ export default function SessionPage() {
     if (phase !== 'cooldown') return
     setSessionState('cooldown')
     audioEngine.stop()
+    if (eyeTrackingEnabled) sleepTracker()
 
     const finalElapsed = accumulatedRef.current
     const completed = finalElapsed >= sessionDuration
@@ -132,7 +141,7 @@ export default function SessionPage() {
     }, 3000)
 
     return () => clearTimeout(timer)
-  }, [phase, audioEngine, sessionDuration, selectedPattern, setLastSession, setSessionState, navigate])
+  }, [phase, audioEngine, sessionDuration, selectedPattern, setLastSession, setSessionState, navigate, eyeTrackingEnabled, sleepTracker])
 
   // ── HUD auto-hide ──────────────────────────────────────
   const resetHud = useCallback(() => {
@@ -236,8 +245,8 @@ export default function SessionPage() {
 
   function handleQuit() {
     audioEngine.stop()
+    if (eyeTrackingEnabled) sleepTracker()
     setSessionState('idle')
-    // Exit fullscreen if active
     if (document.fullscreenElement) {
       void document.exitFullscreen()
     }
