@@ -135,6 +135,11 @@
   --chart-5: #e84393;
 }
 
+/* Russian locale: Jura instead of Rajdhani for better Cyrillic */
+:root[lang="ru"] {
+  --font-heading: "Jura", sans-serif;
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
