@@ -1,19 +1,21 @@
 import { useNavigate } from 'react-router-dom'
 import { useSessionStore } from '@/entities/session'
 import { patternsById } from '@/entities/pattern'
+import { useTranslation } from '@/shared/lib/i18n'
 import { Button } from '@/shared/ui/button'
 import { formatTimer } from '@/shared/lib/format'
 
 export default function ResultsPage() {
   const navigate = useNavigate()
   const { lastSession, setSessionState } = useSessionStore()
+  const { t } = useTranslation()
 
   if (!lastSession) {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center bg-bg-deep px-6">
-        <p className="font-body text-base text-text-muted">No session data.</p>
+        <p className="font-body text-base text-text-muted">{t.results.noData}</p>
         <Button className="mt-4" onClick={() => navigate('/')}>
-          Go Home
+          {t.common.goHome}
         </Button>
       </div>
     )
@@ -36,7 +38,7 @@ export default function ResultsPage() {
         {/* Header */}
         <div className="text-center">
           <p className="font-heading text-xs tracking-widest text-text-dim uppercase">
-            Session Complete
+            {t.results.title}
           </p>
           {pattern?.nameDevanagari && (
             <p className="mt-2 font-devanagari text-xl text-gold">{pattern.nameDevanagari}</p>
@@ -48,16 +50,16 @@ export default function ResultsPage() {
 
         {/* Stats */}
         <div className="mt-8 space-y-4">
-          <StatRow label="Duration" value={formatTimer(lastSession.elapsed)} />
+          <StatRow label={t.results.duration} value={formatTimer(lastSession.elapsed)} />
           <StatRow
-            label="Status"
-            value={lastSession.completed ? 'Completed' : 'Ended early'}
+            label={t.results.status}
+            value={lastSession.completed ? t.results.completed : t.results.endedEarly}
             valueColor={lastSession.completed ? 'text-teal' : 'text-turmeric'}
           />
           {pattern && (
             <>
-              <StatRow label="Pattern" value={pattern.trajectory} />
-              <StatRow label="Audio" value={pattern.audioConfig.mode} />
+              <StatRow label={t.results.pattern} value={t.trajectory[pattern.trajectory]} />
+              <StatRow label={t.results.audio} value={t.audioMode[pattern.audioConfig.mode]} />
             </>
           )}
         </div>
@@ -65,17 +67,17 @@ export default function ResultsPage() {
         {/* Heatmap placeholder (Phase 6) */}
         <div className="mt-6 flex h-32 items-center justify-center rounded-xl border border-border-ornament bg-bg-mid">
           <p className="font-body text-xs font-light text-text-dim">
-            Gaze heatmap will appear here
+            {t.results.heatmapPlaceholder}
           </p>
         </div>
 
         {/* Actions */}
         <div className="mt-8 flex flex-col gap-3">
           <Button size="lg" className="w-full" onClick={handleRepeat}>
-            Repeat Session
+            {t.results.repeatSession}
           </Button>
           <Button variant="outline" className="w-full" onClick={handleNewSession}>
-            New Session
+            {t.results.newSession}
           </Button>
         </div>
       </div>

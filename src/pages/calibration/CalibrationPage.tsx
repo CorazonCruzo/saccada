@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useSessionStore } from '@/entities/session'
 import { useEyeTracking } from '@/features/eye-tracking'
 import { getCalibrationPoints, getValidationPoints, computeAccuracy, type CalibrationPoint } from '@/features/calibration'
+import { useTranslation } from '@/shared/lib/i18n'
 import { Button } from '@/shared/ui/button'
 
 type Phase = 'instructions' | 'calibrating' | 'validating' | 'validating-wait' | 'results'
@@ -14,6 +15,7 @@ export default function CalibrationPage() {
   const navigate = useNavigate()
   const { setSessionState, setCalibratedAt } = useSessionStore()
   const { getTracker, sleep } = useEyeTracking()
+  const { t } = useTranslation()
 
   const [phase, setPhase] = useState<Phase>('instructions')
   const [pointIndex, setPointIndex] = useState(0)
@@ -34,7 +36,6 @@ export default function CalibrationPage() {
   // Start WebGazer when entering calibration
   const startTracker = useCallback(async () => {
     try {
-      // Clear old calibration data from localStorage to prevent pollution
       try {
         localStorage.removeItem('webgazerGlobalData')
         localStorage.removeItem('webgazerGlobalSettings')
@@ -48,20 +49,18 @@ export default function CalibrationPage() {
           console.log(`[Gaze] #${gazeCount}: (${Math.round(point.x)}, ${Math.round(point.y)})`)
         }
       })
-      // Clear any data loaded from previous sessions
       tracker.clearData()
-      // Show webcam preview with face mesh overlay during calibration
       tracker.showVideo(true)
       setPhase('calibrating')
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err)
       if (msg.includes('Permission') || msg.includes('NotAllowed') || msg.includes('denied')) {
-        setError('Camera access denied. Please allow camera in browser settings and try again.')
+        setError(t.calibration.cameraAccessDenied)
       } else {
-        setError(`Eye tracking initialization failed: ${msg}`)
+        setError(`${t.calibration.initFailed}: ${msg}`)
       }
     }
-  }, [getTracker])
+  }, [getTracker, t.calibration])
 
   // Handle click on calibration point
   function handlePointClick() {
@@ -74,7 +73,6 @@ export default function CalibrationPage() {
     if (nextClick >= CLICKS_PER_POINT) {
       const nextIndex = pointIndex + 1
       if (nextIndex >= points.length) {
-        // All calibration done, start validation (keep video for predictions)
         setPhase('validating')
         setPointIndex(0)
         setClickCount(0)
@@ -88,17 +86,15 @@ export default function CalibrationPage() {
     }
   }
 
-  // Validation: auto-read prediction after a delay (no click needed)
+  // Validation: auto-read prediction after a delay
   useEffect(() => {
     if (phase !== 'validating') return
 
-    // Show the point, wait for the user to look at it, then read prediction
     const timer = setTimeout(async () => {
       setPhase('validating-wait')
       const tracker = getTracker()
       const actual = validationPoints[pointIndex]
 
-      // Take multiple samples and average them for better accuracy
       const samples: CalibrationPoint[] = []
       for (let i = 0; i < 5; i++) {
         const predicted = await tracker.predict()
@@ -129,7 +125,6 @@ export default function CalibrationPage() {
 
       const nextIndex = pointIndex + 1
       if (nextIndex >= validationPoints.length) {
-        // Validation done: hide video preview
         getTracker().showVideo(false)
         const acc = computeAccuracy(validationResults.current)
         console.log('[Calibration results]', {
@@ -149,7 +144,6 @@ export default function CalibrationPage() {
   }, [phase, pointIndex, validationPoints, getTracker])
 
   function handleContinue() {
-    // Keep camera running for session, just hide preview
     getTracker().showVideo(false)
     setCalibratedAt(Date.now())
     setSessionState('countdown')
@@ -182,7 +176,7 @@ export default function CalibrationPage() {
     return (
       <div className="fixed inset-0 flex flex-col items-center justify-center bg-bg-deep px-6">
         <p className="max-w-sm text-center font-body text-base font-light text-lotus">{error}</p>
-        <Button className="mt-6" onClick={handleCancel}>Back to Home</Button>
+        <Button className="mt-6" onClick={handleCancel}>{t.calibration.backToHome}</Button>
       </div>
     )
   }
@@ -191,33 +185,30 @@ export default function CalibrationPage() {
   if (phase === 'instructions') {
     return (
       <div className="fixed inset-0 flex flex-col items-center justify-center bg-bg-deep px-6">
-        <h1 className="font-heading text-2xl font-bold text-text-bright">Eye Tracking Calibration</h1>
+        <h1 className="font-heading text-2xl font-bold text-text-bright">{t.calibration.title}</h1>
         <div className="mt-6 max-w-md space-y-4 text-center font-body text-sm font-light leading-relaxed text-text-muted">
-          <p>
-            The camera will track your eye position during the session.
-            First, we need to calibrate it to your setup.
-          </p>
+          <p>{t.calibration.intro}</p>
           <div className="rounded-lg bg-bg-surface/50 px-4 py-3 text-left">
-            <p className="font-heading text-xs tracking-widest text-turmeric uppercase">How it works</p>
+            <p className="font-heading text-xs tracking-widest text-turmeric uppercase">{t.calibration.howItWorks}</p>
             <ol className="mt-2 list-inside list-decimal space-y-1 text-text-muted">
-              <li><strong className="text-text-bright">Look at the dot</strong> with your eyes</li>
-              <li>While looking, <strong className="text-text-bright">click it</strong> ({CLICKS_PER_POINT} times per dot)</li>
-              <li>9 dots total, then a quick accuracy check</li>
+              <li><strong className="text-text-bright">{t.calibration.step1}</strong></li>
+              <li>{t.calibration.step2}</li>
+              <li>{t.calibration.step3}</li>
             </ol>
           </div>
           <div className="rounded-lg bg-bg-surface/50 px-4 py-3 text-left">
-            <p className="font-heading text-xs tracking-widest text-turmeric uppercase">For best results</p>
+            <p className="font-heading text-xs tracking-widest text-turmeric uppercase">{t.calibration.forBestResults}</p>
             <ul className="mt-2 list-inside list-disc space-y-1 text-text-muted">
-              <li>Bright, even lighting on your face</li>
-              <li>Camera at eye level</li>
-              <li>Keep your head still throughout</li>
-              <li>Sit ~50-70cm from the screen</li>
+              <li>{t.calibration.tip1}</li>
+              <li>{t.calibration.tip2}</li>
+              <li>{t.calibration.tip3}</li>
+              <li>{t.calibration.tip4}</li>
             </ul>
           </div>
         </div>
         <div className="mt-8 flex gap-3">
-          <Button variant="outline" onClick={handleCancel}>Cancel</Button>
-          <Button size="lg" onClick={startTracker}>Begin Calibration</Button>
+          <Button variant="outline" onClick={handleCancel}>{t.common.cancel}</Button>
+          <Button size="lg" onClick={startTracker}>{t.calibration.begin}</Button>
         </div>
       </div>
     )
@@ -233,25 +224,23 @@ export default function CalibrationPage() {
     const colorClass = level === 'excellent' ? 'text-teal'
       : level === 'sufficient' ? 'text-turmeric'
       : 'text-lotus'
-    const labelMap = { excellent: 'Excellent', sufficient: 'Good', low: 'Low' }
+    const labelMap = { excellent: t.calibration.excellent, sufficient: t.calibration.good, low: t.calibration.low }
 
     return (
       <div className="fixed inset-0 flex flex-col items-center justify-center bg-bg-deep px-6">
-        <h1 className="font-heading text-2xl font-bold text-text-bright">Calibration Complete</h1>
+        <h1 className="font-heading text-2xl font-bold text-text-bright">{t.calibration.complete}</h1>
         <div className="mt-6 space-y-2 text-center">
           {noData ? (
-            <p className="font-body text-sm text-lotus">
-              No gaze data collected. Make sure your face is visible to the camera.
-            </p>
+            <p className="font-body text-sm text-lotus">{t.calibration.noGazeData}</p>
           ) : (
             <>
               <p className="font-body text-sm text-text-muted">
-                Average error: <span className={`font-heading ${colorClass}`}>
+                {t.calibration.avgError}: <span className={`font-heading ${colorClass}`}>
                   {Math.round(accuracy.avgError)}px
                 </span>
               </p>
               <p className="font-body text-sm text-text-muted">
-                Accuracy: <span className={`font-heading font-bold ${colorClass}`}>
+                {t.calibration.accuracy}: <span className={`font-heading font-bold ${colorClass}`}>
                   {labelMap[level]}
                 </span>
               </p>
@@ -259,24 +248,23 @@ export default function CalibrationPage() {
           )}
           {level === 'excellent' && !noData && (
             <p className="mt-2 font-body text-xs font-light text-teal/70">
-              Eye tracking will adapt dot speed to your gaze during the session.
+              {t.calibration.adaptiveNote}
             </p>
           )}
           {level === 'sufficient' && !noData && (
             <p className="mt-2 max-w-sm font-body text-xs font-light text-text-dim">
-              Good enough for adaptive speed. Recalibrate for better precision if needed.
+              {t.calibration.goodNote}
             </p>
           )}
           {(level === 'low' || noData) && (
             <p className="mt-2 max-w-sm font-body text-xs font-light text-text-dim">
-              Try recalibrating with brighter lighting, keeping your head still,
-              and looking directly at each dot before clicking.
+              {t.calibration.lowNote}
             </p>
           )}
         </div>
         <div className="mt-8 flex gap-3">
-          <Button variant="outline" onClick={handleRecalibrate}>Recalibrate</Button>
-          {!noData && <Button size="lg" onClick={handleContinue}>Continue to Session</Button>}
+          <Button variant="outline" onClick={handleRecalibrate}>{t.sessionSettings.recalibrate}</Button>
+          {!noData && <Button size="lg" onClick={handleContinue}>{t.calibration.continueToSession}</Button>}
         </div>
       </div>
     )
@@ -292,12 +280,12 @@ export default function CalibrationPage() {
       {/* Progress */}
       <div className="absolute inset-x-0 top-4 flex items-center justify-center gap-4">
         <span className="font-heading text-xs tracking-widest text-text-dim uppercase">
-          {isValidation ? 'Validation' : 'Calibration'}
+          {isValidation ? t.calibration.validationLabel : t.calibration.calibrationLabel}
         </span>
         <span className="font-heading text-sm text-turmeric">{progress}</span>
         {!isValidation && (
           <span className="font-body text-xs text-text-dim">
-            ({clickCount}/{CLICKS_PER_POINT} clicks)
+            ({clickCount}/{CLICKS_PER_POINT} {t.calibration.clicks})
           </span>
         )}
       </div>
@@ -306,14 +294,14 @@ export default function CalibrationPage() {
       {isValidation && (
         <div className="absolute inset-x-0 bottom-16 flex justify-center">
           <p className="font-body text-xs font-light text-text-dim">
-            {phase === 'validating-wait' ? 'Reading gaze...' : 'Look at the dot (no click needed)'}
+            {phase === 'validating-wait' ? t.calibration.readingGaze : t.calibration.lookAtDot}
           </p>
         </div>
       )}
 
       {/* Cancel */}
       <div className="absolute bottom-4 inset-x-0 flex justify-center">
-        <Button variant="outline" size="sm" onClick={handleCancel}>Cancel</Button>
+        <Button variant="outline" size="sm" onClick={handleCancel}>{t.common.cancel}</Button>
       </div>
 
       {/* The target point */}
@@ -327,7 +315,7 @@ export default function CalibrationPage() {
             width: 40,
             height: 40,
           }}
-          aria-label={`${isValidation ? 'Validation' : 'Calibration'} point ${pointIndex + 1}`}
+          aria-label={`${isValidation ? t.calibration.validationLabel : t.calibration.calibrationLabel} point ${pointIndex + 1}`}
         >
           <span
             className={`block rounded-full shadow-[0_0_16px_rgba(255,107,53,0.5)] transition-transform ${

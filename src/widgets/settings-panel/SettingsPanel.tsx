@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useSessionStore } from '@/entities/session'
 import { checkCameraPermission, requestCameraAccess } from '@/features/eye-tracking'
+import { useTranslation } from '@/shared/lib/i18n'
 import { Button } from '@/shared/ui/button'
 import { Slider } from '@/shared/ui/slider'
 import {
@@ -31,6 +32,8 @@ export function SettingsPanel({ open, onOpenChange, onStart }: SettingsPanelProp
     visualScale, setVisualScale,
   } = useSessionStore()
 
+  const { t, tp } = useTranslation()
+  const patternT = tp(selectedPattern.id)
   const [cameraStatus, setCameraStatus] = useState<string | null>(null)
   const [cameraLoading, setCameraLoading] = useState(false)
 
@@ -49,7 +52,7 @@ export function SettingsPanel({ open, onOpenChange, onStart }: SettingsPanelProp
       const permission = await checkCameraPermission()
 
       if (permission === 'unavailable') {
-        setCameraStatus('Camera not available on this device')
+        setCameraStatus(t.sessionSettings.cameraNotAvailable)
         return
       }
 
@@ -57,7 +60,7 @@ export function SettingsPanel({ open, onOpenChange, onStart }: SettingsPanelProp
       if (granted) {
         setEyeTracking(true)
       } else {
-        setCameraStatus('Camera access denied. Check camera permissions in browser settings (lock icon in address bar).')
+        setCameraStatus(t.sessionSettings.cameraDenied)
       }
     } finally {
       setCameraLoading(false)
@@ -69,13 +72,13 @@ export function SettingsPanel({ open, onOpenChange, onStart }: SettingsPanelProp
       <DialogContent className="top-[5vh] translate-y-0 border-border-ornament bg-bg-mid sm:max-w-md max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="font-heading text-lg text-text-bright">
-            Session Settings
+            {t.sessionSettings.title}
           </DialogTitle>
           {selectedPattern.nameDevanagari && (
             <p className="font-devanagari text-sm text-gold">{selectedPattern.nameDevanagari}</p>
           )}
           <p className="font-body text-sm font-light text-text-muted">
-            {selectedPattern.name} &middot; {selectedPattern.trajectory}
+            {patternT.name} &middot; {t.trajectory[selectedPattern.trajectory]}
           </p>
         </DialogHeader>
 
@@ -83,7 +86,7 @@ export function SettingsPanel({ open, onOpenChange, onStart }: SettingsPanelProp
           {/* Duration */}
           <div>
             <div className="flex items-center justify-between">
-              <span className="font-heading text-xs tracking-widest text-text-dim uppercase">Duration</span>
+              <span className="font-heading text-xs tracking-widest text-text-dim uppercase">{t.sessionSettings.duration}</span>
               <span className="font-heading text-sm text-turmeric">{formatDurationLabel(sessionDuration)}</span>
             </div>
             <Slider
@@ -98,7 +101,7 @@ export function SettingsPanel({ open, onOpenChange, onStart }: SettingsPanelProp
 
           {/* Speed */}
           <div>
-            <span className="font-heading text-xs tracking-widest text-text-dim uppercase">Speed</span>
+            <span className="font-heading text-xs tracking-widest text-text-dim uppercase">{t.sessionSettings.speed}</span>
             <div className="mt-2 flex gap-2">
               {[0.5, 1, 1.5, 2].map((s) => (
                 <Button
@@ -116,7 +119,7 @@ export function SettingsPanel({ open, onOpenChange, onStart }: SettingsPanelProp
           {/* Visual Scale */}
           <div>
             <div className="flex items-center justify-between">
-              <span className="font-heading text-xs tracking-widest text-text-dim uppercase">Visual Scale</span>
+              <span className="font-heading text-xs tracking-widest text-text-dim uppercase">{t.sessionSettings.visualScale}</span>
               <span className="font-heading text-sm text-turmeric">{visualScale.toFixed(1)}x</span>
             </div>
             <Slider
@@ -128,7 +131,7 @@ export function SettingsPanel({ open, onOpenChange, onStart }: SettingsPanelProp
               className="mt-2"
             />
             <p className="mt-1 font-body text-[10px] font-light text-text-dim">
-              Mandala, bindu and flame size. Also +/- during session.
+              {t.sessionSettings.visualScaleHint}
             </p>
           </div>
 
@@ -136,17 +139,17 @@ export function SettingsPanel({ open, onOpenChange, onStart }: SettingsPanelProp
           <div className="space-y-3">
             {/* Sound */}
             <ToggleRow
-              label="Sound"
+              label={t.sessionSettings.sound}
               icon={'\u266A'}
               active={soundEnabled}
               activeColor="saffron"
               onToggle={toggleSound}
             />
 
-            {/* Volume — shown when sound on */}
+            {/* Volume */}
             {soundEnabled && (
               <div className="flex items-center gap-2 pl-6">
-                <span className="font-heading text-xs tracking-wide text-text-dim">VOL</span>
+                <span className="font-heading text-xs tracking-wide text-text-dim">{t.sessionSettings.volume}</span>
                 <Slider
                   value={[volume]}
                   onValueChange={([v]) => setVolume(v)}
@@ -161,14 +164,14 @@ export function SettingsPanel({ open, onOpenChange, onStart }: SettingsPanelProp
             {/* Headphones warning */}
             {soundEnabled && selectedPattern.requiresHeadphones && (
               <div className="ml-6 flex items-center gap-1.5 text-xs">
-                <span>🎧</span>
-                <span className="font-body font-light text-indigo">Headphones recommended</span>
+                <span>{'\uD83C\uDFA7'}</span>
+                <span className="font-body font-light text-indigo">{t.sessionSettings.headphonesRecommended}</span>
               </div>
             )}
 
             {/* Haptic */}
             <ToggleRow
-              label="Haptic"
+              label={t.sessionSettings.haptic}
               icon={'\u3030'}
               active={hapticEnabled}
               activeColor="teal"
@@ -177,7 +180,7 @@ export function SettingsPanel({ open, onOpenChange, onStart }: SettingsPanelProp
 
             {/* Guided */}
             <ToggleRow
-              label="Guided"
+              label={t.sessionSettings.guided}
               icon={'\u2630'}
               active={guidedMode}
               activeColor="turmeric"
@@ -186,7 +189,7 @@ export function SettingsPanel({ open, onOpenChange, onStart }: SettingsPanelProp
 
             {/* Eye Tracking */}
             <ToggleRow
-              label="Eye Tracking"
+              label={t.sessionSettings.eyeTracking}
               icon={'\u25CE'}
               active={eyeTrackingEnabled}
               activeColor="indigo"
@@ -194,19 +197,19 @@ export function SettingsPanel({ open, onOpenChange, onStart }: SettingsPanelProp
             />
             {eyeTrackingEnabled && !calibratedAt && (
               <p className="ml-6 font-body text-[10px] font-light text-indigo">
-                Calibration will run before session starts
+                {t.sessionSettings.calibrationNeeded}
               </p>
             )}
             {eyeTrackingEnabled && calibratedAt && (
               <div className="ml-6 flex items-center gap-2">
                 <p className="font-body text-[10px] font-light text-teal">
-                  Calibrated
+                  {t.sessionSettings.calibrated}
                 </p>
                 <button
                   onClick={() => setCalibratedAt(null)}
                   className="cursor-pointer font-body text-[10px] font-light text-text-dim underline transition-colors hover:text-text-muted"
                 >
-                  Recalibrate
+                  {t.sessionSettings.recalibrate}
                 </button>
               </div>
             )}
@@ -219,7 +222,7 @@ export function SettingsPanel({ open, onOpenChange, onStart }: SettingsPanelProp
 
           {/* Start button */}
           <Button size="lg" className="w-full" onClick={onStart}>
-            Begin Session
+            {t.sessionSettings.beginSession}
           </Button>
         </div>
       </DialogContent>

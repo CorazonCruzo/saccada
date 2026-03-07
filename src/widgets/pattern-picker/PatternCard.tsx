@@ -1,16 +1,5 @@
 import type { PatternConfig, TrajectoryType } from '@/entities/pattern'
-
-const categoryLabels: Record<string, string> = {
-  drishti: 'Drishti Bheda',
-  emdr: 'EMDR',
-  sleep: 'Sleep',
-}
-
-const categoryColors: Record<string, string> = {
-  drishti: 'text-gold',
-  emdr: 'text-saffron',
-  sleep: 'text-indigo',
-}
+import { useTranslation } from '@/shared/lib/i18n'
 
 const trajectoryIcons: Record<TrajectoryType, string> = {
   horizontal: '\u2194',
@@ -29,6 +18,16 @@ interface PatternCardProps {
 }
 
 export function PatternCard({ pattern, isSelected, onSelect, onInfo }: PatternCardProps) {
+  const { t, tp } = useTranslation()
+  const patternT = tp(pattern.id)
+  const categoryLabel = t.categories[pattern.category as keyof typeof t.categories] ?? pattern.category
+
+  const categoryColors: Record<string, string> = {
+    drishti: 'text-gold',
+    emdr: 'text-saffron',
+    sleep: 'text-indigo',
+  }
+
   return (
     <button
       onClick={onSelect}
@@ -53,7 +52,7 @@ export function PatternCard({ pattern, isSelected, onSelect, onInfo }: PatternCa
       {/* Category + Devanagari */}
       <div className="flex items-baseline gap-2">
         <span className={`font-heading text-[10px] tracking-widest uppercase ${categoryColors[pattern.category]}`}>
-          {categoryLabels[pattern.category]}
+          {categoryLabel}
         </span>
         {pattern.nameDevanagari && (
           <span className="font-devanagari text-xs text-gold">
@@ -64,24 +63,24 @@ export function PatternCard({ pattern, isSelected, onSelect, onInfo }: PatternCa
 
       {/* Name */}
       <div className="mt-1.5 font-heading text-base font-semibold text-text-bright">
-        {pattern.name}
+        {patternT.name}
       </div>
 
       {/* Description */}
       <div className="mt-1.5 line-clamp-2 font-body text-xs font-light leading-snug text-text-muted">
-        {pattern.description}
+        {patternT.description}
       </div>
 
       {/* Bottom row */}
       <div className="mt-3 flex items-center gap-2 text-text-muted">
-        <span className="text-sm" title={pattern.trajectory}>
+        <span className="text-sm" title={t.trajectory[pattern.trajectory]}>
           {trajectoryIcons[pattern.trajectory]}
         </span>
         <span className="font-heading text-[10px] tracking-wider">
-          {pattern.audioConfig.mode.toUpperCase()}
+          {t.audioMode[pattern.audioConfig.mode].toUpperCase()}
         </span>
         {pattern.requiresHeadphones && (
-          <span className="text-[10px]" title="Headphones recommended">🎧</span>
+          <span className="text-[10px]" title={t.sessionSettings.headphonesRecommended}>{'\uD83C\uDFA7'}</span>
         )}
       </div>
     </button>

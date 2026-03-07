@@ -5,6 +5,7 @@ import { SessionPlayer } from '@/widgets/session-player'
 import { PatternInfoDialog } from '@/widgets/pattern-picker'
 import { useAudio } from '@/features/audio'
 import { useEyeTracking } from '@/features/eye-tracking'
+import { useTranslation } from '@/shared/lib/i18n'
 import { Button } from '@/shared/ui/button'
 import { formatTimer } from '@/shared/lib/format'
 
@@ -28,6 +29,7 @@ export default function SessionPage() {
   const audioEngine = useAudio()
   const { getTracker, sleep: sleepTracker } = useEyeTracking()
   const eyeTrackingEnabled = useSessionStore((s) => s.eyeTrackingEnabled)
+  const { t, tp } = useTranslation()
 
   // Local session lifecycle
   const [phase, setPhase] = useState<SessionPhase>('countdown')
@@ -51,7 +53,7 @@ export default function SessionPage() {
     void getTracker().start(() => {})
   }, [eyeTrackingEnabled, getTracker])
 
-  // ── Countdown ──────────────────────────────────────────
+  // -- Countdown --
   useEffect(() => {
     if (phase !== 'countdown') return
     setSessionState('countdown')
@@ -65,13 +67,12 @@ export default function SessionPage() {
     return () => clearTimeout(timer)
   }, [phase, countdown, setSessionState])
 
-  // ── Audio start when entering active ───────────────────
+  // -- Audio start when entering active --
   useEffect(() => {
     if (phase !== 'active') return
     setSessionState('active')
 
     if (!audioStartedRef.current) {
-      // First time entering active — start audio
       if (soundEnabled) {
         audioEngine.init()
         audioEngine.setVolume(volume / 100)
@@ -80,7 +81,6 @@ export default function SessionPage() {
       audioStartedRef.current = true
       activeStartRef.current = performance.now()
     } else {
-      // Resuming from pause
       activeStartRef.current = performance.now()
       if (soundEnabled) {
         audioEngine.resume()
@@ -88,19 +88,18 @@ export default function SessionPage() {
     }
   }, [phase, soundEnabled, audioEngine, volume, selectedPattern.audioConfig, setSessionState])
 
-  // ── Audio pause ────────────────────────────────────────
+  // -- Audio pause --
   useEffect(() => {
     if (phase !== 'paused') return
     setSessionState('paused')
 
-    // Save accumulated time
     accumulatedRef.current += performance.now() - activeStartRef.current
     if (soundEnabled) {
       audioEngine.pause()
     }
   }, [phase, soundEnabled, audioEngine, setSessionState])
 
-  // ── Elapsed timer ──────────────────────────────────────
+  // -- Elapsed timer --
   useEffect(() => {
     if (phase !== 'active') return
 
@@ -108,7 +107,6 @@ export default function SessionPage() {
       const currentElapsed = accumulatedRef.current + (performance.now() - activeStartRef.current)
       setElapsed(currentElapsed)
 
-      // Check if session should end
       if (currentElapsed >= sessionDuration) {
         accumulatedRef.current = currentElapsed
         setPhase('cooldown')
@@ -118,7 +116,7 @@ export default function SessionPage() {
     return () => clearInterval(interval)
   }, [phase, sessionDuration])
 
-  // ── Cooldown → Results ─────────────────────────────────
+  // -- Cooldown -> Results --
   useEffect(() => {
     if (phase !== 'cooldown') return
     setSessionState('cooldown')
@@ -131,7 +129,7 @@ export default function SessionPage() {
     const timer = setTimeout(() => {
       setLastSession({
         patternId: selectedPattern.id,
-        patternName: selectedPattern.name,
+        patternName: patternTrans.name,
         elapsed: Math.round(finalElapsed),
         completed,
         timestamp: Date.now(),
@@ -143,7 +141,7 @@ export default function SessionPage() {
     return () => clearTimeout(timer)
   }, [phase, audioEngine, sessionDuration, selectedPattern, setLastSession, setSessionState, navigate, eyeTrackingEnabled, sleepTracker])
 
-  // ── HUD auto-hide ──────────────────────────────────────
+  // -- HUD auto-hide --
   const resetHud = useCallback(() => {
     setHudVisible(true)
     clearTimeout(hudTimerRef.current)
@@ -167,7 +165,9 @@ export default function SessionPage() {
     }
   }, [phase, resetHud])
 
-  // ── Guided mode instructions ───────────────────────────
+  // -- Guided mode instructions --
+  const patternTrans = tp(selectedPattern.id)
+
   useEffect(() => {
     if (!guidedMode || phase !== 'active') {
       setCurrentInstruction(null)
@@ -180,10 +180,10 @@ export default function SessionPage() {
       const loopedTime = totalDur > 0 ? e % totalDur : 0
 
       let acc = 0
-      for (const p of selectedPattern.phases) {
-        const dur = p.duration / speed
+      for (let i = 0; i < selectedPattern.phases.length; i++) {
+        const dur = selectedPattern.phases[i].duration / speed
         if (loopedTime < acc + dur) {
-          setCurrentInstruction(p.instruction ?? null)
+          setCurrentInstruction(patternTrans.phases[i] ?? null)
           break
         }
         acc += dur
@@ -191,9 +191,9 @@ export default function SessionPage() {
     }, 500)
 
     return () => clearInterval(interval)
-  }, [guidedMode, phase, selectedPattern, speed])
+  }, [guidedMode, phase, selectedPattern, speed, patternTrans])
 
-  // ── Keyboard shortcuts ─────────────────────────────────
+  // -- Keyboard shortcuts --
   useEffect(() => {
     function handleKey(e: KeyboardEvent) {
       const p = phaseRef.current
@@ -233,7 +233,7 @@ export default function SessionPage() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  // ── Cleanup on unmount ─────────────────────────────────
+  // -- Cleanup on unmount --
   useEffect(() => {
     return () => {
       audioEngine.stop()
@@ -241,7 +241,7 @@ export default function SessionPage() {
     }
   }, [audioEngine])
 
-  // ── Handlers ───────────────────────────────────────────
+  // -- Handlers --
 
   function handleQuit() {
     audioEngine.stop()
@@ -263,7 +263,6 @@ export default function SessionPage() {
   }
 
   function handleStop() {
-    // Save final elapsed before transitioning
     if (phase === 'active') {
       accumulatedRef.current += performance.now() - activeStartRef.current
     }
@@ -280,13 +279,13 @@ export default function SessionPage() {
 
   const remaining = Math.max(0, sessionDuration - elapsed)
 
-  // ── Countdown screen ───────────────────────────────────
+  // -- Countdown screen --
   if (phase === 'countdown') {
     return (
       <div className="fixed inset-0 z-50 flex items-center justify-center bg-bg-deep">
         <div className="text-center">
           <p className="font-heading text-sm tracking-widest text-text-dim uppercase">
-            {selectedPattern.name}
+            {patternTrans.name}
           </p>
           <div
             key={countdown}
@@ -299,7 +298,7 @@ export default function SessionPage() {
     )
   }
 
-  // ── Cooldown screen ────────────────────────────────────
+  // -- Cooldown screen --
   if (phase === 'cooldown') {
     return (
       <div className="fixed inset-0 z-50 bg-bg-deep">
@@ -311,14 +310,14 @@ export default function SessionPage() {
         />
         <div className="absolute inset-0 flex items-center justify-center bg-bg-deep/80 transition-opacity duration-[3000ms]">
           <p className="font-body text-lg font-light text-text-muted animate-pulse">
-            Session complete
+            {t.session.sessionComplete}
           </p>
         </div>
       </div>
     )
   }
 
-  // ── Active / Paused session ────────────────────────────
+  // -- Active / Paused session --
   return (
     <div className="fixed inset-0 z-50">
       <SessionPlayer
@@ -337,10 +336,10 @@ export default function SessionPage() {
           hudVisible || phase === 'paused' ? 'opacity-100' : 'opacity-0'
         }`}
       >
-        {/* Top — pattern name + timer */}
+        {/* Top: pattern name + timer */}
         <div className="pointer-events-auto absolute inset-x-0 top-4 flex items-center justify-center gap-6">
           <span className="font-heading text-sm tracking-widest text-text-dim">
-            {selectedPattern.name.toUpperCase()}
+            {patternTrans.name.toUpperCase()}
           </span>
           {selectedPattern.nameDevanagari && (
             <span className="font-devanagari text-sm text-gold">
@@ -355,8 +354,8 @@ export default function SessionPage() {
         {/* Audio indicator */}
         {soundEnabled && (
           <div className="absolute right-4 top-4 font-heading text-xs text-teal">
-            {selectedPattern.audioConfig.mode.toUpperCase()}
-            {selectedPattern.requiresHeadphones ? ' \u00B7 headphones' : ''}
+            {t.audioMode[selectedPattern.audioConfig.mode].toUpperCase()}
+            {selectedPattern.requiresHeadphones ? ` \u00B7 ${t.session.headphones}` : ''}
           </div>
         )}
 
@@ -389,7 +388,7 @@ export default function SessionPage() {
               className="rounded-full px-8"
               onClick={handleResume}
             >
-              Resume
+              {t.session.resume}
             </Button>
           ) : (
             <Button
@@ -418,7 +417,7 @@ export default function SessionPage() {
         {/* Paused overlay */}
         {phase === 'paused' && !infoOpen && (
           <div className="absolute inset-0 flex items-center justify-center bg-bg-deep/40">
-            <p className="font-heading text-2xl tracking-widest text-text-dim">PAUSED</p>
+            <p className="font-heading text-2xl tracking-widest text-text-dim">{t.session.paused}</p>
           </div>
         )}
       </div>
@@ -426,7 +425,7 @@ export default function SessionPage() {
       {/* Keyboard hints */}
       {hudVisible && (
         <div className="absolute bottom-6 right-4 hidden rounded-md bg-bg-surface/60 px-3 py-1.5 font-heading text-xs tracking-wide text-text-muted backdrop-blur-sm sm:block">
-          SPACE pause &middot; ESC quit &middot; F fullscreen &middot; I info &middot; +/- scale
+          {t.session.keyHints}
         </div>
       )}
 

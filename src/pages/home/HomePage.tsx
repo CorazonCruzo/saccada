@@ -5,6 +5,7 @@ import { PatternPicker } from '@/widgets/pattern-picker'
 import { SettingsPanel } from '@/widgets/settings-panel'
 import { SessionPlayer } from '@/widgets/session-player'
 import { useAudio } from '@/features/audio'
+import { useTranslation } from '@/shared/lib/i18n'
 import { Button } from '@/shared/ui/button'
 
 export default function HomePage() {
@@ -12,6 +13,8 @@ export default function HomePage() {
   const { selectedPattern, selectPattern, soundEnabled, eyeTrackingEnabled, calibratedAt, speed, visualScale } = useSessionStore()
   const [settingsOpen, setSettingsOpen] = useState(false)
   const audioEngine = useAudio()
+  const { t, tp } = useTranslation()
+  const patternT = tp(selectedPattern.id)
 
   // Check onboarding
   if (!localStorage.getItem('saccada-onboarded')) {
@@ -43,7 +46,7 @@ export default function HomePage() {
           Saccada
         </h1>
         <p className="mt-2 font-body text-sm font-light text-text-muted">
-          Eye movement therapy &middot; Drishti Bheda &times; EMDR &times; Neuroscience
+          {t.home.tagline}
         </p>
       </div>
 
@@ -58,7 +61,7 @@ export default function HomePage() {
       {/* Start area */}
       <div className="mx-auto mt-8 flex items-center gap-3">
         <Button size="lg" onClick={() => setSettingsOpen(true)}>
-          Start {selectedPattern.name}
+          {t.home.startButton} {patternT.name}
         </Button>
       </div>
 
@@ -70,11 +73,11 @@ export default function HomePage() {
           </span>
         )}
         <p className="mt-0.5 font-body text-xs font-light text-text-dim">
-          {selectedPattern.trajectory}
+          {t.trajectory[selectedPattern.trajectory]}
           {selectedPattern.cycleDuration ? ` \u00B7 ${selectedPattern.cycleDuration}ms/cycle` : ''}
           {' \u00B7 '}
-          {selectedPattern.audioConfig.mode}
-          {selectedPattern.requiresHeadphones ? ' \u00B7 🎧' : ''}
+          {t.audioMode[selectedPattern.audioConfig.mode]}
+          {selectedPattern.requiresHeadphones ? ' \u00B7 \uD83C\uDFA7' : ''}
         </p>
       </div>
 
@@ -88,13 +91,19 @@ export default function HomePage() {
         />
       </div>
 
-      {/* Onboarding replay link */}
-      <div className="mx-auto mt-12">
+      {/* Footer links */}
+      <div className="mx-auto mt-12 flex items-center gap-6">
         <button
           onClick={() => navigate('/onboarding')}
           className="cursor-pointer font-body text-xs font-light text-text-dim transition-colors hover:text-text-muted"
         >
-          About Saccada
+          {t.home.aboutLink}
+        </button>
+        <button
+          onClick={() => navigate('/settings')}
+          className="cursor-pointer font-body text-xs font-light text-text-dim transition-colors hover:text-text-muted"
+        >
+          {t.settingsPage.title}
         </button>
       </div>
 

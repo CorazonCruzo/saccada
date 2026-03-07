@@ -1,33 +1,21 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useTranslation } from '@/shared/lib/i18n'
 import { Button } from '@/shared/ui/button'
 
-const slides = [
-  {
-    devanagari: '\u0926\u0943\u0937\u094D\u091F\u093F \u092D\u0947\u0926',
-    title: 'Saccada',
-    body: 'Eye movement therapy combining ancient Drishti Bheda traditions from Indian classical dance, EMDR bilateral stimulation, and REM sleep neuroscience.',
-  },
-  {
-    devanagari: '\u092C\u093F\u0928\u094D\u0926\u0941',
-    title: 'Follow the Bindu',
-    body: 'A glowing dot guides your eyes through therapeutic movement patterns. Each pattern activates different aspects of visual and cognitive processing. Phases of movement and fixation alternate naturally.',
-  },
-  {
-    devanagari: '\u0928\u093E\u0926',
-    title: 'Best with Headphones',
-    body: 'Bilateral audio pans left and right with the dot. Binaural beats create theta waves for deep processing. Drone modes provide meditative ambiance. All sound is synthesized in real time.',
-  },
-  {
-    devanagari: '\u0917\u094B\u092A\u0928\u0940\u092F',
-    title: 'Your Data Stays Here',
-    body: 'No accounts, no servers, no telemetry. Everything runs in your browser. Your sessions and data never leave your device.',
-  },
+const devanagariTitles = [
+  '\u0926\u0943\u0937\u094D\u091F\u093F \u092D\u0947\u0926',
+  '\u092C\u093F\u0928\u094D\u0926\u0941',
+  '\u0928\u093E\u0926',
+  '\u0917\u094B\u092A\u0928\u0940\u092F',
 ]
 
 export default function OnboardingPage() {
   const [current, setCurrent] = useState(0)
   const navigate = useNavigate()
+  const { t } = useTranslation()
+
+  const slides = t.onboarding.slides
   const isLast = current === slides.length - 1
   const isFirst = current === 0
 
@@ -62,7 +50,7 @@ export default function OnboardingPage() {
 
       {/* Slide content */}
       <div className="max-w-md text-center">
-        <p className="font-devanagari text-2xl text-gold">{slide.devanagari}</p>
+        <p className="font-devanagari text-2xl text-gold">{devanagariTitles[current]}</p>
         <h1 className="mt-2 font-heading text-4xl font-bold tracking-tight text-text-bright">
           {slide.title}
         </h1>
@@ -71,26 +59,25 @@ export default function OnboardingPage() {
         </p>
       </div>
 
-      {/* Navigation: Prev / Next same row, same size */}
+      {/* Navigation */}
       <div className="mt-12 flex flex-col items-center gap-3">
         <div className="flex items-center gap-3">
           {!isFirst && (
             <Button size="lg" variant="outline" onClick={() => setCurrent((c) => c - 1)}>
-              Prev
+              {t.onboarding.prev}
             </Button>
           )}
           <Button size="lg" onClick={next}>
-            {isLast ? 'Get Started' : 'Next'}
+            {isLast ? t.onboarding.getStarted : t.onboarding.next}
           </Button>
         </div>
 
-        {/* Skip — small text link below */}
         {!isLast && (
           <button
             onClick={complete}
             className="cursor-pointer font-body text-sm font-light text-text-dim transition-colors hover:text-text-muted"
           >
-            Skip
+            {t.onboarding.skip}
           </button>
         )}
       </div>
