@@ -32,7 +32,7 @@ export function PatternCard({ pattern, isSelected, onSelect, onInfo }: PatternCa
   return (
     <button
       onClick={onSelect}
-      className={`group relative cursor-pointer rounded-xl border p-4 text-left transition-all ${
+      className={`group relative cursor-pointer rounded-xl border p-5 text-left transition-all ${
         isSelected
           ? 'border-saffron/50 bg-bg-surface shadow-[0_0_20px_rgba(255,107,53,0.1)]'
           : 'border-border-ornament bg-bg-mid hover:border-gold/30 hover:bg-bg-surface/60'
@@ -63,17 +63,17 @@ export function PatternCard({ pattern, isSelected, onSelect, onInfo }: PatternCa
       </div>
 
       {/* Name */}
-      <div className="mt-1 font-heading text-sm font-semibold text-text-bright">
+      <div className="mt-1.5 font-heading text-base font-semibold text-text-bright">
         {pattern.name}
       </div>
 
       {/* Description */}
-      <div className="mt-1 line-clamp-2 font-body text-xs font-light leading-snug text-text-dim">
+      <div className="mt-1.5 line-clamp-2 font-body text-xs font-light leading-snug text-text-muted">
         {pattern.description}
       </div>
 
       {/* Bottom row */}
-      <div className="mt-2 flex items-center gap-2 text-text-dim">
+      <div className="mt-3 flex items-center gap-2 text-text-muted">
         <span className="text-sm" title={pattern.trajectory}>
           {trajectoryIcons[pattern.trajectory]}
         </span>

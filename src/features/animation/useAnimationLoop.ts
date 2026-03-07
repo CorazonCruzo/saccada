@@ -156,8 +156,10 @@ export function useAnimationLoop(
     ctx.clearRect(0, 0, w, h)
 
     // 2. Mandala background (scale relative to viewport, then user scale)
+    // Brighter in small previews, subtler in fullscreen sessions
     const mandalaScale = Math.min(w, h) / 350 * vs
-    drawMandala(ctx, w / 2, h / 2, state.mandalaAngle, 0.08, mandalaScale)
+    const mandalaOpacity = h < 400 ? 0.25 : 0.15
+    drawMandala(ctx, w / 2, h / 2, state.mandalaAngle, mandalaOpacity, mandalaScale)
 
     // 3. Trail (only for moving patterns)
     if (pat.trajectory !== 'fixation' && state.trail.length > 1) {
