@@ -62,7 +62,10 @@ export const ru: Translation = {
 
   sessionSettings: {
     title: 'Настройки сессии',
+    timerMode: 'Таймер',
+    stopwatchMode: 'Секундомер',
     duration: 'Длительность',
+    unlimited: 'Без ограничений',
     speed: 'Скорость',
     visualScale: 'Визуальный масштаб',
     visualScaleHint: 'Размер мандалы, бинду и пламени. Также +/- во время сессии.',

@@ -62,7 +62,10 @@ export const es: Translation = {
 
   sessionSettings: {
     title: 'Ajustes de sesi\u00F3n',
+    timerMode: 'Temporizador',
+    stopwatchMode: 'Cron\u00F3metro',
     duration: 'Duraci\u00F3n',
+    unlimited: 'Sin l\u00EDmite',
     speed: 'Velocidad',
     visualScale: 'Escala visual',
     visualScaleHint: 'Tama\u00F1o de mandala, bindu y llama. Tambi\u00E9n +/- durante la sesi\u00F3n.',

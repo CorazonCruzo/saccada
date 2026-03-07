@@ -83,20 +83,44 @@ export function SettingsPanel({ open, onOpenChange, onStart }: SettingsPanelProp
         </DialogHeader>
 
         <div className="space-y-5">
-          {/* Duration */}
+          {/* Duration mode + slider */}
           <div>
-            <div className="flex items-center justify-between">
-              <span className="font-heading text-xs tracking-widest text-text-dim uppercase">{t.sessionSettings.duration}</span>
-              <span className="font-heading text-sm text-turmeric">{formatDurationLabel(sessionDuration)}</span>
+            <div className="flex items-center gap-2">
+              <Button
+                variant={sessionDuration > 0 ? 'default' : 'ghost'}
+                size="sm"
+                onClick={() => { if (sessionDuration === 0) setSessionDuration(120_000) }}
+              >
+                {t.sessionSettings.timerMode}
+              </Button>
+              <Button
+                variant={sessionDuration === 0 ? 'default' : 'ghost'}
+                size="sm"
+                onClick={() => setSessionDuration(0)}
+              >
+                {t.sessionSettings.stopwatchMode}
+              </Button>
             </div>
-            <Slider
-              value={[sessionDuration]}
-              onValueChange={([v]) => setSessionDuration(v)}
-              min={30_000}
-              max={600_000}
-              step={30_000}
-              className="mt-2"
-            />
+            {sessionDuration > 0 ? (
+              <div className="mt-3">
+                <div className="flex items-center justify-between">
+                  <span className="font-heading text-xs tracking-widest text-text-dim uppercase">{t.sessionSettings.duration}</span>
+                  <span className="font-heading text-sm text-turmeric">{formatDurationLabel(sessionDuration)}</span>
+                </div>
+                <Slider
+                  value={[sessionDuration]}
+                  onValueChange={([v]) => setSessionDuration(v)}
+                  min={30_000}
+                  max={1_800_000}
+                  step={30_000}
+                  className="mt-2"
+                />
+              </div>
+            ) : (
+              <p className="mt-3 font-body text-xs font-light text-text-muted">
+                {t.sessionSettings.unlimited}
+              </p>
+            )}
           </div>
 
           {/* Speed */}

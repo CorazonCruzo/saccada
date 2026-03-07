@@ -58,7 +58,10 @@ export interface Translation {
   }
   sessionSettings: {
     title: string
+    timerMode: string
+    stopwatchMode: string
     duration: string
+    unlimited: string
     speed: string
     visualScale: string
     visualScaleHint: string

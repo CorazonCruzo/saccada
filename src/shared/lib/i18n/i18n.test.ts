@@ -398,7 +398,8 @@ describe('calibration translations', () => {
 describe('sessionSettings translations', () => {
   it('should have all session settings keys in every locale', () => {
     const keys: Array<keyof Translation['sessionSettings']> = [
-      'title', 'duration', 'speed', 'visualScale', 'visualScaleHint',
+      'title', 'timerMode', 'stopwatchMode', 'duration', 'unlimited',
+      'speed', 'visualScale', 'visualScaleHint',
       'sound', 'volume', 'headphonesRecommended', 'haptic', 'guided',
       'eyeTracking', 'calibrationNeeded', 'calibrated', 'recalibrate',
       'cameraNotAvailable', 'cameraDenied', 'beginSession',

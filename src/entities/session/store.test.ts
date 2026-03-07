@@ -121,6 +121,35 @@ describe('useSessionStore', () => {
     })
   })
 
+  describe('stopwatch mode (sessionDuration = 0)', () => {
+    it('allows setting sessionDuration to 0', () => {
+      useSessionStore.getState().setSessionDuration(0)
+      expect(useSessionStore.getState().sessionDuration).toBe(0)
+    })
+
+    it('saves sessionDuration 0 as per-pattern override', () => {
+      useSessionStore.getState().setSessionDuration(0)
+      expect(useSessionStore.getState().patternOverrides['pralokita']?.sessionDuration).toBe(0)
+    })
+
+    it('restores stopwatch mode on pattern switch', () => {
+      useSessionStore.getState().setSessionDuration(0)
+      useSessionStore.getState().selectPattern(sama)
+      expect(useSessionStore.getState().sessionDuration).toBe(sama.defaultSessionDuration)
+
+      useSessionStore.getState().selectPattern(pralokita)
+      expect(useSessionStore.getState().sessionDuration).toBe(0)
+    })
+
+    it('switches back from stopwatch to timer', () => {
+      useSessionStore.getState().setSessionDuration(0)
+      expect(useSessionStore.getState().sessionDuration).toBe(0)
+
+      useSessionStore.getState().setSessionDuration(120_000)
+      expect(useSessionStore.getState().sessionDuration).toBe(120_000)
+    })
+  })
+
   describe('session state', () => {
     it('transitions state', () => {
       useSessionStore.getState().setSessionState('countdown')

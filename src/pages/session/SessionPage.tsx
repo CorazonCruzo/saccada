@@ -107,7 +107,7 @@ export default function SessionPage() {
       const currentElapsed = accumulatedRef.current + (performance.now() - activeStartRef.current)
       setElapsed(currentElapsed)
 
-      if (currentElapsed >= sessionDuration) {
+      if (sessionDuration > 0 && currentElapsed >= sessionDuration) {
         accumulatedRef.current = currentElapsed
         setPhase('cooldown')
       }
@@ -124,7 +124,7 @@ export default function SessionPage() {
     if (eyeTrackingEnabled) sleepTracker()
 
     const finalElapsed = accumulatedRef.current
-    const completed = finalElapsed >= sessionDuration
+    const completed = sessionDuration === 0 || finalElapsed >= sessionDuration
 
     const timer = setTimeout(() => {
       setLastSession({
@@ -277,6 +277,7 @@ export default function SessionPage() {
     }
   }
 
+  const isStopwatch = sessionDuration === 0
   const remaining = Math.max(0, sessionDuration - elapsed)
 
   // -- Countdown screen --
@@ -347,7 +348,7 @@ export default function SessionPage() {
             </span>
           )}
           <span className="font-heading text-sm tabular-nums text-turmeric">
-            {formatTimer(remaining)}
+            {formatTimer(isStopwatch ? elapsed : remaining)}
           </span>
         </div>
 
