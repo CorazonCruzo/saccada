@@ -1,1 +1,1 @@
-export { pulseEdge, pulseTransition, createEdgeDetector } from './haptics'
+export { canVibrate, pulseEdge, pulseTransition, createEdgeDetector } from './haptics'

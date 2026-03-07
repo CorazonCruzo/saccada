@@ -1,13 +1,81 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { createEdgeDetector, pulseEdge, pulseTransition } from './haptics'
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
+import { canVibrate, createEdgeDetector, pulseEdge, pulseTransition } from './haptics'
 
 describe('haptics', () => {
+  let savedMaxTouchPoints: PropertyDescriptor | undefined
+  let savedOntouchstart: PropertyDescriptor | undefined
+
   beforeEach(() => {
     // Mock navigator.vibrate
     Object.defineProperty(navigator, 'vibrate', {
       value: vi.fn(),
       writable: true,
       configurable: true,
+    })
+    // Mock touch support (mobile device)
+    savedMaxTouchPoints = Object.getOwnPropertyDescriptor(navigator, 'maxTouchPoints')
+    Object.defineProperty(navigator, 'maxTouchPoints', {
+      value: 1,
+      writable: true,
+      configurable: true,
+    })
+    savedOntouchstart = Object.getOwnPropertyDescriptor(globalThis, 'ontouchstart')
+  })
+
+  afterEach(() => {
+    // Restore maxTouchPoints
+    if (savedMaxTouchPoints) {
+      Object.defineProperty(navigator, 'maxTouchPoints', savedMaxTouchPoints)
+    } else {
+      Object.defineProperty(navigator, 'maxTouchPoints', { value: 0, configurable: true })
+    }
+    // Restore ontouchstart
+    if (savedOntouchstart) {
+      Object.defineProperty(globalThis, 'ontouchstart', savedOntouchstart)
+    } else {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      delete (globalThis as any).ontouchstart
+    }
+  })
+
+  describe('canVibrate', () => {
+    it('returns true when vibrate and touch are available', () => {
+      expect(canVibrate()).toBe(true)
+    })
+
+    it('returns false when navigator.vibrate is absent', () => {
+      const descriptor = Object.getOwnPropertyDescriptor(navigator, 'vibrate')
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      delete (navigator as any).vibrate
+      expect(canVibrate()).toBe(false)
+      if (descriptor) {
+        Object.defineProperty(navigator, 'vibrate', descriptor)
+      }
+    })
+
+    it('returns false on desktop (no touch, even with vibrate API)', () => {
+      Object.defineProperty(navigator, 'maxTouchPoints', {
+        value: 0,
+        writable: true,
+        configurable: true,
+      })
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      delete (globalThis as any).ontouchstart
+      expect(canVibrate()).toBe(false)
+    })
+
+    it('returns true when ontouchstart exists even if maxTouchPoints is 0', () => {
+      Object.defineProperty(navigator, 'maxTouchPoints', {
+        value: 0,
+        writable: true,
+        configurable: true,
+      })
+      Object.defineProperty(globalThis, 'ontouchstart', {
+        value: null,
+        writable: true,
+        configurable: true,
+      })
+      expect(canVibrate()).toBe(true)
     })
   })
 

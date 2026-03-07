@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useSessionStore } from '@/entities/session'
+import { canVibrate } from '@/features/haptics'
 import { checkCameraPermission, requestCameraAccess } from '@/features/eye-tracking'
 import { useTranslation } from '@/shared/lib/i18n'
 import { Button } from '@/shared/ui/button'
@@ -193,14 +194,16 @@ export function SettingsPanel({ open, onOpenChange, onStart }: SettingsPanelProp
               </div>
             )}
 
-            {/* Haptic */}
-            <ToggleRow
-              label={t.sessionSettings.haptic}
-              icon={'\u3030'}
-              active={hapticEnabled}
-              activeColor="teal"
-              onToggle={toggleHaptic}
-            />
+            {/* Haptic (only on devices with Vibration API) */}
+            {canVibrate() && (
+              <ToggleRow
+                label={t.sessionSettings.haptic}
+                icon={'\u3030'}
+                active={hapticEnabled}
+                activeColor="teal"
+                onToggle={toggleHaptic}
+              />
+            )}
 
             {/* Guided */}
             <ToggleRow

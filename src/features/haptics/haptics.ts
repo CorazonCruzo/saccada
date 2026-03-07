@@ -3,8 +3,12 @@
  * Graceful no-op on iOS and desktop.
  */
 
-function canVibrate(): boolean {
-  return typeof navigator !== 'undefined' && 'vibrate' in navigator
+export function canVibrate(): boolean {
+  return (
+    typeof navigator !== 'undefined' &&
+    'vibrate' in navigator &&
+    (navigator.maxTouchPoints > 0 || 'ontouchstart' in globalThis)
+  )
 }
 
 /** Short pulse when dot reaches edge (L/R or top/bottom) */
