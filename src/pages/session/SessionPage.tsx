@@ -38,6 +38,7 @@ export default function SessionPage() {
   const [hudVisible, setHudVisible] = useState(true)
   const [currentInstruction, setCurrentInstruction] = useState<string | null>(null)
   const [infoOpen, setInfoOpen] = useState(false)
+  const [guideVisible, setGuideVisible] = useState(true)
 
   // Refs for accurate timing
   const activeStartRef = useRef(0)
@@ -217,6 +218,10 @@ export default function SessionPage() {
             setInfoOpen(true)
           }
           break
+        case 'g':
+        case 'G':
+          setGuideVisible((v) => !v)
+          break
         case '+':
         case '=':
           useSessionStore.getState().setVisualScale(useSessionStore.getState().visualScale + 0.1)
@@ -283,7 +288,7 @@ export default function SessionPage() {
   // -- Countdown screen --
   if (phase === 'countdown') {
     return (
-      <div className="fixed inset-0 z-50 flex items-center justify-center bg-bg-deep">
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-bg-deep session-cursor session-cursor-hidden">
         <div className="text-center">
           <p className="font-heading text-sm tracking-widest text-text-dim uppercase">
             {patternTrans.name}
@@ -302,7 +307,7 @@ export default function SessionPage() {
   // -- Cooldown screen --
   if (phase === 'cooldown') {
     return (
-      <div className="fixed inset-0 z-50 bg-bg-deep">
+      <div className="fixed inset-0 z-50 bg-bg-deep session-cursor session-cursor-hidden">
         <SessionPlayer
           pattern={selectedPattern}
           isPlaying={false}
@@ -320,7 +325,7 @@ export default function SessionPage() {
 
   // -- Active / Paused session --
   return (
-    <div className="fixed inset-0 z-50">
+    <div className={`fixed inset-0 z-50 session-cursor ${!hudVisible && phase === 'active' ? 'session-cursor-hidden' : ''}`}>
       <SessionPlayer
         pattern={selectedPattern}
         isPlaying={phase === 'active'}
@@ -330,6 +335,15 @@ export default function SessionPage() {
         soundEnabled={soundEnabled}
         hapticEnabled={hapticEnabled}
       />
+
+      {/* Guided instruction: always visible (independent of HUD) */}
+      {guidedMode && guideVisible && currentInstruction && (
+        <div className="pointer-events-none absolute inset-x-0 bottom-20 z-10 flex justify-center px-8">
+          <p className="max-w-md rounded-lg bg-bg-deep/60 px-4 py-2 text-center font-body text-sm font-light leading-relaxed text-text-bright/80 backdrop-blur-sm">
+            {currentInstruction}
+          </p>
+        </div>
+      )}
 
       {/* HUD overlay */}
       <div
@@ -360,15 +374,6 @@ export default function SessionPage() {
           </div>
         )}
 
-        {/* Guided instruction */}
-        {guidedMode && currentInstruction && (
-          <div className="absolute inset-x-0 bottom-24 flex justify-center px-8">
-            <p className="max-w-md rounded-lg bg-bg-deep/60 px-4 py-2 text-center font-body text-sm font-light leading-relaxed text-text-bright/80 backdrop-blur-sm">
-              {currentInstruction}
-            </p>
-          </div>
-        )}
-
         {/* Bottom controls */}
         <div className="pointer-events-auto absolute inset-x-0 bottom-6 flex items-center justify-center gap-4">
           {/* Info button */}
@@ -381,6 +386,22 @@ export default function SessionPage() {
           >
             <span className="text-sm">i</span>
           </Button>
+
+          {/* Guide visibility toggle */}
+          {guidedMode && (
+            <Button
+              variant="outline"
+              size="icon"
+              className={`h-10 w-10 rounded-full border-border-ornament bg-bg-surface/80 hover:text-text-bright ${
+                guideVisible ? 'text-turmeric' : 'text-text-dim'
+              }`}
+              onClick={() => setGuideVisible((v) => !v)}
+              aria-label={guideVisible ? t.session.hideGuide : t.session.showGuide}
+              title={guideVisible ? t.session.hideGuide : t.session.showGuide}
+            >
+              <span className="font-heading text-xs font-semibold">Aa</span>
+            </Button>
+          )}
 
           {/* Pause / Resume */}
           {phase === 'paused' ? (

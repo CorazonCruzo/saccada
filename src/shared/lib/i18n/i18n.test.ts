@@ -437,6 +437,7 @@ describe('session translations', () => {
   it('should have all session keys in every locale', () => {
     const keys: Array<keyof Translation['session']> = [
       'paused', 'sessionComplete', 'resume', 'headphones', 'keyHints',
+      'hideGuide', 'showGuide',
     ]
     for (const locale of locales) {
       for (const key of keys) {

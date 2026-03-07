@@ -42,6 +42,8 @@ export interface Translation {
     resume: string
     headphones: string
     keyHints: string
+    hideGuide: string
+    showGuide: string
   }
   results: {
     title: string

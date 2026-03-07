@@ -43,7 +43,9 @@ export const en: Translation = {
     sessionComplete: 'Session complete',
     resume: 'Resume',
     headphones: 'headphones',
-    keyHints: 'SPACE pause \u00B7 ESC quit \u00B7 F fullscreen \u00B7 I info \u00B7 +/- scale',
+    keyHints: 'SPACE pause \u00B7 ESC quit \u00B7 F fullscreen \u00B7 I info \u00B7 G guide \u00B7 +/- scale',
+    hideGuide: 'Hide guide',
+    showGuide: 'Show guide',
   },
 
   results: {

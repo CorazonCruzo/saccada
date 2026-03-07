@@ -43,7 +43,9 @@ export const ru: Translation = {
     sessionComplete: 'Сессия завершена',
     resume: 'Продолжить',
     headphones: 'наушники',
-    keyHints: 'ПРОБЕЛ пауза \u00B7 ESC выход \u00B7 F полный экран \u00B7 I инфо \u00B7 +/- масштаб',
+    keyHints: 'ПРОБЕЛ пауза \u00B7 ESC выход \u00B7 F полный экран \u00B7 I инфо \u00B7 G текст \u00B7 +/- масштаб',
+    hideGuide: 'Скрыть текст',
+    showGuide: 'Показать текст',
   },
 
   results: {
