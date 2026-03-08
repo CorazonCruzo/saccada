@@ -101,6 +101,12 @@ export default function HomePage() {
           {t.home.aboutLink}
         </button>
         <button
+          onClick={() => navigate('/history')}
+          className="cursor-pointer font-body text-xs font-light text-text-dim transition-colors hover:text-text-muted"
+        >
+          {t.history.title}
+        </button>
+        <button
           onClick={() => navigate('/settings')}
           className="cursor-pointer font-body text-xs font-light text-text-dim transition-colors hover:text-text-muted"
         >

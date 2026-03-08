@@ -6,6 +6,7 @@ import ResultsPage from '@/pages/results/ResultsPage'
 import OnboardingPage from '@/pages/onboarding/OnboardingPage'
 import CalibrationPage from '@/pages/calibration/CalibrationPage'
 import SettingsPage from '@/pages/settings/SettingsPage'
+import HistoryPage from '@/pages/history/HistoryPage'
 import NotFoundPage from '@/pages/not-found/NotFoundPage'
 
 export function AppRouter() {
@@ -19,6 +20,7 @@ export function AppRouter() {
         <Route path="/onboarding" element={<OnboardingPage />} />
         <Route path="/calibration" element={<CalibrationPage />} />
         <Route path="/settings" element={<SettingsPage />} />
+        <Route path="/history" element={<HistoryPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </BrowserRouter>

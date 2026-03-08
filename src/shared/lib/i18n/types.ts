@@ -151,6 +151,20 @@ export interface Translation {
     continue: string
     levels: string[]
   }
+  history: {
+    title: string
+    empty: string
+    totalSessions: string
+    totalTime: string
+    mostUsed: string
+    streak: string
+    streakDays: string
+    deleteSession: string
+    deleteConfirm: string
+    completed: string
+    endedEarly: string
+    noMood: string
+  }
   settingsPage: {
     title: string
     language: string

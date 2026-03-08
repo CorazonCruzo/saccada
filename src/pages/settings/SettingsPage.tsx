@@ -9,11 +9,19 @@ export default function SettingsPage() {
   const { locale, setLocale } = useLocaleStore()
 
   return (
-    <div className="flex min-h-screen flex-col items-center bg-bg-deep px-6 py-12">
-      <div className="w-full max-w-md">
-        <h1 className="font-heading text-2xl font-bold text-text-bright">
-          {t.settingsPage.title}
-        </h1>
+    <div className="flex min-h-screen flex-col bg-bg-deep px-4 py-8 sm:px-6">
+      <div className="mx-auto w-full max-w-lg">
+        <div className="flex items-center justify-between">
+          <h1 className="font-heading text-2xl font-bold text-text-bright">
+            {t.settingsPage.title}
+          </h1>
+          <button
+            onClick={() => navigate('/')}
+            className="cursor-pointer font-body text-sm font-light text-text-dim transition-colors hover:text-text-muted"
+          >
+            {t.common.back}
+          </button>
+        </div>
 
         <div className="mt-8 space-y-6">
           {/* Language */}
@@ -35,14 +43,6 @@ export default function SettingsPage() {
             </div>
           </section>
         </div>
-
-        <Button
-          variant="outline"
-          className="mt-12"
-          onClick={() => navigate('/')}
-        >
-          {t.common.back}
-        </Button>
       </div>
     </div>
   )
