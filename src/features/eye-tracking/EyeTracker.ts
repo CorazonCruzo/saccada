@@ -147,10 +147,12 @@ export class EyeTracker {
       container.style.borderRadius = '8px'
 
       if (visible) {
-        container.style.top = '10px'
-        container.style.right = '10px'
-        container.style.left = 'auto'
-        container.style.transform = 'none'
+        // Center on screen, shifted up ~5% so the nose bridge on the face
+        // mesh aligns with the center calibration dot.
+        container.style.top = '50%'
+        container.style.left = '50%'
+        container.style.right = 'auto'
+        container.style.transform = 'translate(-50%, -55%)'
         container.style.bottom = 'auto'
         container.style.zIndex = '50'
         container.style.opacity = '1'
@@ -158,6 +160,7 @@ export class EyeTracker {
         container.style.top = '0'
         container.style.left = '0'
         container.style.right = 'auto'
+        container.style.transform = 'none'
         container.style.zIndex = '-1'
         container.style.opacity = '0'
       }

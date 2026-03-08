@@ -129,7 +129,7 @@ describe('EyeTracker', () => {
       tracker.showVideo(true)
     })
 
-    it('sets container visible with proper positioning', async () => {
+    it('sets container visible centered on screen', async () => {
       const container = document.createElement('div')
       container.id = 'webgazerVideoContainer'
       document.body.appendChild(container)
@@ -140,7 +140,9 @@ describe('EyeTracker', () => {
 
       expect(container.style.display).toBe('block')
       expect(container.style.opacity).toBe('1')
-      expect(container.style.right).toBe('10px')
+      expect(container.style.top).toBe('50%')
+      expect(container.style.left).toBe('50%')
+      expect(container.style.transform).toBe('translate(-50%, -55%)')
       expect(container.style.zIndex).toBe('50')
     })
 
