@@ -182,6 +182,20 @@ export interface Translation {
     timeAfternoon: string
     timeEvening: string
     timeNight: string
+    calendarTitle: string
+    calendarToday: string
+    calendarSession: string
+    calendarSessions: string
+    weekdayMo: string
+    weekdayTu: string
+    weekdayWe: string
+    weekdayTh: string
+    weekdayFr: string
+    weekdaySa: string
+    weekdaySu: string
+    legendLess: string
+    legendMore: string
+    longestStreak: string
   }
   settingsPage: {
     title: string
