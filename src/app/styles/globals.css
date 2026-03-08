@@ -72,7 +72,11 @@
   /* Saccada palette — border */
   --color-border-ornament: #2d2255;
 
-  /* Font families */
+}
+
+/* Font families — separate @theme (not inline) so utilities use var()
+   and locale overrides like :root[lang="ru"] take effect */
+@theme {
   --font-heading: "Rajdhani", sans-serif;
   --font-body: "Nunito Sans", sans-serif;
   --font-devanagari: "Noto Sans Devanagari", sans-serif;
