@@ -73,8 +73,17 @@ export class EyeTracker {
       this.callback?.({ x: data.x, y: data.y, t: elapsedTime })
     })
 
+    // Prevent flash: WebGazer's init() creates the container at (0,0)
+    // and it would be visible for 1-2 frames before showVideo(false) runs.
+    // Temporary CSS rule hides it instantly. Uses opacity (not display:none)
+    // to keep non-zero dimensions for MediaPipe WASM.
+    const antiFlashStyle = document.createElement('style')
+    antiFlashStyle.textContent = '#webgazerVideoContainer{opacity:0!important}'
+    document.head.appendChild(antiFlashStyle)
+
     await wg.begin()
     this.showVideo(false)
+    antiFlashStyle.remove()
     this.ready = true
     this.running = true
     this.cameraLive = true
