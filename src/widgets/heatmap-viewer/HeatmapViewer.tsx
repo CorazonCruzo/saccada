@@ -1,6 +1,5 @@
 import { useRef, useEffect, useCallback, useMemo } from 'react'
 import type { GazePoint } from '@/features/eye-tracking'
-import { setupCanvas } from '@/shared/lib/canvas'
 import { drawHeatmap } from './drawHeatmap'
 
 interface HeatmapViewerProps {
@@ -34,10 +33,17 @@ export function HeatmapViewer({ gazePoints, sourceWidth, sourceHeight, className
     if (!canvas || !container) return
 
     const rect = container.getBoundingClientRect()
-    const w = rect.width
-    const h = rect.height
+    const w = Math.round(rect.width)
+    const h = Math.round(rect.height)
     if (w === 0 || h === 0) return
-    setupCanvas(canvas, w, h)
+
+    // No DPR scaling: putImageData writes directly to the pixel buffer
+    // and ignores canvas transforms. With 16px cells + blur, Retina
+    // resolution adds no visible difference.
+    canvas.width = w
+    canvas.height = h
+    canvas.style.width = `${w}px`
+    canvas.style.height = `${h}px`
 
     const ctx = canvas.getContext('2d')
     if (!ctx) return
