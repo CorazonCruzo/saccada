@@ -40,8 +40,8 @@ describe('drawMoodFlame', () => {
 
   it('draws multiple elliptical layers (flame body)', () => {
     drawMoodFlame(ctx, 50, 80, 1.0, 3)
-    // 36 flame layers (0..35) + 1 glow arc = 37 beginPath calls
-    expect((ctx.ellipse as ReturnType<typeof vi.fn>).mock.calls.length).toBe(36)
+    // 45 flame layers (i = 0..44, layerCount = 44)
+    expect((ctx.ellipse as ReturnType<typeof vi.fn>).mock.calls.length).toBe(45)
   })
 
   it('draws the wick', () => {
@@ -49,10 +49,11 @@ describe('drawMoodFlame', () => {
     expect(ctx.fillRect).toHaveBeenCalled()
   })
 
-  it('draws the base glow', () => {
+  it('draws ambient glow and base glow', () => {
     drawMoodFlame(ctx, 50, 80, 1.0, 3)
-    expect(ctx.createRadialGradient).toHaveBeenCalled()
-    expect(ctx.arc).toHaveBeenCalled()
+    // Two radial gradients: ambient glow + base glow
+    expect((ctx.createRadialGradient as ReturnType<typeof vi.fn>).mock.calls.length).toBe(2)
+    expect((ctx.arc as ReturnType<typeof vi.fn>).mock.calls.length).toBe(2)
   })
 
   it('clamps out-of-range levels', () => {
@@ -71,9 +72,9 @@ describe('drawMoodFlame', () => {
     // With scale=2, the wick fillRect should use larger dimensions
     const wick1 = (ctx1.fillRect as ReturnType<typeof vi.fn>).mock.calls[0]
     const wick2 = (ctx2.fillRect as ReturnType<typeof vi.fn>).mock.calls[0]
-    // wick width = 2 * scale, wick height = 8 * scale
-    expect(wick2[2]).toBe(wick1[2] * 2) // width scaled
-    expect(wick2[3]).toBe(wick1[3] * 2) // height scaled
+    // wick width = 3 * scale, wick height = 10 * scale
+    expect(wick2[2]).toBeCloseTo(wick1[2] * 2, 5) // width scaled
+    expect(wick2[3]).toBeCloseTo(wick1[3] * 2, 5) // height scaled
   })
 
   it('flame layers have positive width for all levels', () => {
@@ -92,16 +93,16 @@ describe('drawMoodFlame', () => {
     const ctx1 = createMockCtx()
     const ctx2 = createMockCtx()
 
-    drawMoodFlame(ctx1, 50, 80, 0, 1)
-    drawMoodFlame(ctx2, 50, 80, 1.5, 1)
+    // Use level 5 (restless) which has high sway
+    drawMoodFlame(ctx1, 50, 80, 0, 5)
+    drawMoodFlame(ctx2, 50, 80, 1.5, 5)
 
-    // Level 1 has high sway, so positions should differ at different times
     const calls1 = (ctx1.ellipse as ReturnType<typeof vi.fn>).mock.calls
     const calls2 = (ctx2.ellipse as ReturnType<typeof vi.fn>).mock.calls
 
-    // Check a middle layer (index 18 = layer ~17 from bottom)
-    const x1 = calls1[18][0]
-    const x2 = calls2[18][0]
+    // Check a middle layer
+    const x1 = calls1[28][0]
+    const x2 = calls2[28][0]
     expect(x1).not.toBe(x2)
   })
 
