@@ -42,11 +42,6 @@ export default function CalibrationPage() {
   // Start WebGazer when entering calibration
   const startTracker = useCallback(async () => {
     try {
-      try {
-        localStorage.removeItem('webgazerGlobalData')
-        localStorage.removeItem('webgazerGlobalSettings')
-      } catch { /* localStorage may be unavailable */ }
-
       const tracker = getTracker()
       await tracker.start(() => {
         // Gaze callback active during calibration — predictions are
@@ -152,8 +147,11 @@ export default function CalibrationPage() {
     return () => clearTimeout(timer)
   }, [phase, pointIndex, validationPoints, getTracker])
 
-  function handleContinue() {
-    getTracker().showVideo(false)
+  async function handleContinue() {
+    const tracker = getTracker()
+    tracker.showVideo(false)
+    // Save regression data to IndexedDB so calibration survives page refresh
+    await tracker.saveCalibration()
     setCalibratedAt(Date.now())
     setSessionState('countdown')
     navigate('/session', { replace: true })

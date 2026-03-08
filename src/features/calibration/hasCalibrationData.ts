@@ -1,24 +1,20 @@
 /**
- * WebGazer stores regression/calibration data in localStorage
- * under the key "webgazerGlobalData" when saveDataAcrossSessions(true).
+ * WebGazer stores regression/calibration data in IndexedDB via localforage
+ * under the key "webgazerGlobalData".
  *
- * Our Zustand store persists `calibratedAt` separately.
- * These can get out of sync: calibratedAt is set but WebGazer's
- * data was cleared (user cleared storage, quota exceeded, etc.).
- *
- * This function checks whether WebGazer's actual calibration data
- * exists in localStorage. Use it alongside `calibratedAt` to decide
- * if re-calibration is needed.
+ * This async function checks whether that data exists.
+ * Used alongside `calibratedAt` and `trackerReady` to decide
+ * if re-calibration is needed after a page refresh.
  */
 
 const WEBGAZER_DATA_KEY = 'webgazerGlobalData'
 
-export function hasWebGazerCalibrationData(): boolean {
+export async function hasWebGazerCalibrationData(): Promise<boolean> {
   try {
-    const data = localStorage.getItem(WEBGAZER_DATA_KEY)
-    return data !== null && data.length > 0
+    const localforage = (await import('localforage')).default
+    const data = await localforage.getItem(WEBGAZER_DATA_KEY)
+    return data !== null && data !== undefined
   } catch {
-    // localStorage not available (e.g. private browsing in some browsers)
     return false
   }
 }

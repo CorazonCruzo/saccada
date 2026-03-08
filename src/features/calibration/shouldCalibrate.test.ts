@@ -1,36 +1,47 @@
-import { describe, it, expect, beforeEach } from 'vitest'
+import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { shouldCalibrate } from './shouldCalibrate'
 
+// Mock localforage (used by hasWebGazerCalibrationData)
+const mockStore: Record<string, unknown> = {}
+vi.mock('localforage', () => ({
+  default: {
+    getItem: vi.fn(async (key: string) => mockStore[key] ?? null),
+    setItem: vi.fn(async (key: string, value: unknown) => { mockStore[key] = value }),
+  },
+}))
+
 beforeEach(() => {
-  localStorage.clear()
+  for (const key of Object.keys(mockStore)) delete mockStore[key]
 })
 
 describe('shouldCalibrate()', () => {
-  it('returns false when eye tracking is disabled', () => {
-    expect(shouldCalibrate(false, null)).toBe(false)
+  it('returns false when eye tracking is disabled', async () => {
+    expect(await shouldCalibrate(false, null, false)).toBe(false)
   })
 
-  it('returns false when eye tracking is disabled even with calibratedAt', () => {
-    expect(shouldCalibrate(false, Date.now())).toBe(false)
+  it('returns false when eye tracking is disabled even with calibratedAt', async () => {
+    expect(await shouldCalibrate(false, Date.now(), true)).toBe(false)
   })
 
-  it('returns true when eye tracking is enabled but never calibrated', () => {
-    expect(shouldCalibrate(true, null)).toBe(true)
+  it('returns true when eye tracking is enabled but never calibrated', async () => {
+    expect(await shouldCalibrate(true, null, false)).toBe(true)
   })
 
-  it('returns true when calibratedAt is set but webgazer data is missing', () => {
-    // This is the core corner case:
-    // Our store says calibration happened, but WebGazer's data is gone.
-    expect(shouldCalibrate(true, Date.now())).toBe(true)
+  it('returns true when never calibrated even if tracker is ready', async () => {
+    expect(await shouldCalibrate(true, null, true)).toBe(true)
   })
 
-  it('returns false when calibratedAt is set AND webgazer data exists', () => {
-    localStorage.setItem('webgazerGlobalData', '{"ridge":{"data":"..."}}')
-    expect(shouldCalibrate(true, Date.now())).toBe(false)
+  it('returns false when calibratedAt is set AND tracker is ready (same session)', async () => {
+    // Tracker singleton is alive with calibration in memory — no IndexedDB needed
+    expect(await shouldCalibrate(true, Date.now(), true)).toBe(false)
   })
 
-  it('returns true when calibratedAt is set but webgazer data is empty string', () => {
-    localStorage.setItem('webgazerGlobalData', '')
-    expect(shouldCalibrate(true, Date.now())).toBe(true)
+  it('returns true when calibratedAt set, tracker not ready, no IndexedDB data (page refresh, data lost)', async () => {
+    expect(await shouldCalibrate(true, Date.now(), false)).toBe(true)
+  })
+
+  it('returns false when calibratedAt set, tracker not ready, but IndexedDB has data (page refresh, data survived)', async () => {
+    mockStore['webgazerGlobalData'] = [{ some: 'regression data' }]
+    expect(await shouldCalibrate(true, Date.now(), false)).toBe(false)
   })
 })

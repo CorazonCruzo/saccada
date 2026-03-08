@@ -52,6 +52,10 @@ export class EyeTracker {
     }
 
     // First-time initialization
+    // Larger preview for better face visibility during calibration.
+    // Must be set BEFORE begin() — init() reads these to size all elements.
+    wg.params.videoViewerWidth = 480
+    wg.params.videoViewerHeight = 360
     try { wg.showVideoPreview(true) } catch { /* noop */ }
     try { wg.showPredictionPoints(false) } catch { /* noop */ }
     try { wg.showFaceOverlay(true) } catch { /* noop */ }
@@ -82,49 +86,56 @@ export class EyeTracker {
   }
 
   /**
-   * Show or hide the webcam video preview with face mesh overlay.
+   * Show or hide the webcam face mesh overlay.
    *
-   * IMPORTANT: Never use `display: none` on the container — MediaPipe's
-   * WebGL canvas would get zero-size framebuffer attachments, crashing WASM.
-   * Instead, hide with `opacity: 0` and keep the container in layout.
+   * The raw camera feed is NEVER shown to the user. Only the face mesh
+   * overlay and feedback box are visible. The <video> element stays in
+   * layout (display:block, visibility:hidden) so MediaPipe WASM always
+   * has non-zero dimensions and doesn't crash.
+   *
+   * We never call WebGazer's showVideoPreview(false) or showVideo(false)
+   * because on Chrome they use `display: none`, which zeros the video
+   * dimensions and causes GL_INVALID_FRAMEBUFFER_OPERATION.
    */
   showVideo(visible: boolean): void {
     if (!this.webgazer) return
-    try { this.webgazer.showVideoPreview(visible) } catch { /* noop */ }
+
+    // Show/hide overlay canvases via WebGazer API.
+    // Face overlay and feedback box use display:none which is fine for canvases.
     try { this.webgazer.showFaceOverlay(visible) } catch { /* noop */ }
     try { this.webgazer.showFaceFeedbackBox(visible) } catch { /* noop */ }
+
     const container = document.getElementById('webgazerVideoContainer')
     if (container) {
-      // Always keep container in the DOM with non-zero dimensions
-      // so MediaPipe's WebGL framebuffer stays valid.
       container.style.display = 'block'
       container.style.position = 'fixed'
-      container.style.width = '400px'
-      container.style.height = '300px'
       container.style.pointerEvents = 'none'
       container.style.overflow = 'hidden'
-      container.style.borderRadius = '12px'
+      container.style.borderRadius = '8px'
 
       if (visible) {
-        container.style.top = '20%'
-        container.style.right = '20px'
+        container.style.top = '10px'
+        container.style.right = '10px'
         container.style.left = 'auto'
         container.style.transform = 'none'
         container.style.bottom = 'auto'
-        container.style.zIndex = '0'
-        container.style.opacity = '0.85'
-        for (const el of container.querySelectorAll('video, canvas')) {
-          const h = el as HTMLElement
-          h.style.width = '100%'
-          h.style.height = '100%'
-          h.style.objectFit = 'cover'
-        }
+        container.style.zIndex = '50'
+        container.style.opacity = '1'
       } else {
         container.style.top = '0'
         container.style.left = '0'
         container.style.right = 'auto'
         container.style.zIndex = '-1'
         container.style.opacity = '0'
+      }
+
+      // Video element: always display:block (WASM crash prevention)
+      // but visibility:hidden so the raw camera feed is never shown.
+      // The face overlay canvas is drawn on top independently.
+      const video = container.querySelector('video') as HTMLElement | null
+      if (video) {
+        video.style.display = 'block'
+        video.style.visibility = 'hidden'
       }
     }
   }
@@ -137,6 +148,29 @@ export class EyeTracker {
   clearData(): void {
     if (!this.webgazer) return
     try { this.webgazer.clearData() } catch { /* noop */ }
+  }
+
+  /**
+   * Persist calibration data to localforage so it survives page refresh.
+   *
+   * WebGazer normally saves via its clickListener, but we call
+   * removeMouseEventListeners() to prevent unwanted calibration from
+   * mouse clicks. So we trigger the save manually after calibration.
+   *
+   * On the next begin(), WebGazer's loadGlobalData() picks this up.
+   */
+  async saveCalibration(): Promise<void> {
+    if (!this.webgazer) return
+    try {
+      const regs = this.webgazer.getRegression()
+      if (!regs || !regs[0]) return
+      const data = regs[0].getData()
+      if (!data) return
+      const localforage = (await import('localforage')).default
+      await localforage.setItem('webgazerGlobalData', data)
+    } catch {
+      // localforage or regression API unavailable — non-fatal
+    }
   }
 
   async predict(): Promise<{ x: number; y: number } | null> {

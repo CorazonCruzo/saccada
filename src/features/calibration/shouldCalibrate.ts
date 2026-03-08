@@ -3,17 +3,24 @@ import { hasWebGazerCalibrationData } from './hasCalibrationData'
 /**
  * Determine if the user should go through calibration before a session.
  *
- * Calibration is needed when eye tracking is enabled AND either:
- *   - The user never calibrated (calibratedAt is null), OR
- *   - WebGazer's internal calibration data is missing from localStorage
- *     (e.g. storage was cleared, quota exceeded, different browser profile).
+ * Three sources of truth:
+ *   1. calibratedAt (our Zustand store) — was calibration ever done?
+ *   2. trackerReady — is the WebGazer singleton alive in memory (same page session)?
+ *   3. localforage (IndexedDB) — did WebGazer's regression data survive a page refresh?
+ *
+ * We manually save regression data to localforage after calibration
+ * (via EyeTracker.saveCalibration), because WebGazer's built-in save
+ * only triggers from its mouse clickListener, which we disable.
  */
-export function shouldCalibrate(
+export async function shouldCalibrate(
   eyeTrackingEnabled: boolean,
   calibratedAt: number | null,
-): boolean {
+  trackerReady: boolean,
+): Promise<boolean> {
   if (!eyeTrackingEnabled) return false
   if (!calibratedAt) return true
-  // calibratedAt exists, but WebGazer data might be gone
-  return !hasWebGazerCalibrationData()
+  // Same page session: tracker is alive with calibration data in memory
+  if (trackerReady) return false
+  // Page was refreshed: check if regression data survived in IndexedDB
+  return !(await hasWebGazerCalibrationData())
 }

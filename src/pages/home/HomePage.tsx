@@ -6,6 +6,7 @@ import { SettingsPanel } from '@/widgets/settings-panel'
 import { SessionPlayer } from '@/widgets/session-player'
 import { useAudio } from '@/features/audio'
 import { shouldCalibrate } from '@/features/calibration'
+import { useEyeTracking } from '@/features/eye-tracking'
 import { useTranslation } from '@/shared/lib/i18n'
 import { Button } from '@/shared/ui/button'
 
@@ -14,6 +15,7 @@ export default function HomePage() {
   const { selectedPattern, selectPattern, soundEnabled, eyeTrackingEnabled, calibratedAt, speed, visualScale } = useSessionStore()
   const [settingsOpen, setSettingsOpen] = useState(false)
   const audioEngine = useAudio()
+  const { getTracker } = useEyeTracking()
   const { t, tp } = useTranslation()
   const patternT = tp(selectedPattern.id)
 
@@ -22,14 +24,14 @@ export default function HomePage() {
     return <Navigate to="/onboarding" replace />
   }
 
-  function handleStart() {
+  async function handleStart() {
     // Init AudioContext in user gesture context (click handler)
     if (soundEnabled) {
       audioEngine.init()
     }
     setSettingsOpen(false)
 
-    if (shouldCalibrate(eyeTrackingEnabled, calibratedAt)) {
+    if (await shouldCalibrate(eyeTrackingEnabled, calibratedAt, getTracker().isReady())) {
       navigate('/calibration')
     } else {
       navigate('/session')

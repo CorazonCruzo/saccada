@@ -2,6 +2,7 @@
   "name": "saccada",
   "private": true,
   "version": "0.1.0",
+  "license": "GPL-3.0-or-later",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -15,6 +16,7 @@
     "clsx": "^2.1.1",
     "dexie": "^4.0.0",
     "dexie-react-hooks": "^1.1.0",
+    "localforage": "^1.10.0",
     "lucide-react": "^0.577.0",
     "radix-ui": "^1.4.3",
     "react": "^19.2.0",
