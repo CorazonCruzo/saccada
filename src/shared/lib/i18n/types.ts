@@ -164,6 +164,13 @@ export interface Translation {
     completed: string
     endedEarly: string
     noMood: string
+    periodWeek: string
+    periodMonth: string
+    periodAll: string
+    periodCustom: string
+    customFrom: string
+    customTo: string
+    noResults: string
   }
   settingsPage: {
     title: string

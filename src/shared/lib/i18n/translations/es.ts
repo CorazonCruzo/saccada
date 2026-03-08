@@ -173,6 +173,13 @@ export const es: Translation = {
     completed: 'Completada',
     endedEarly: 'Terminada antes',
     noMood: '-',
+    periodWeek: 'Semana',
+    periodMonth: 'Mes',
+    periodAll: 'Todo',
+    periodCustom: 'Personalizado',
+    customFrom: 'Desde',
+    customTo: 'Hasta',
+    noResults: 'No hay sesiones que coincidan con los filtros.',
   },
   settingsPage: {
     title: 'Ajustes',

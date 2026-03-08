@@ -173,6 +173,13 @@ export const ru: Translation = {
     completed: 'Завершена',
     endedEarly: 'Досрочно',
     noMood: '-',
+    periodWeek: 'Неделя',
+    periodMonth: 'Месяц',
+    periodAll: 'Все',
+    periodCustom: 'Период',
+    customFrom: 'С',
+    customTo: 'По',
+    noResults: 'Нет сессий, подходящих под фильтры.',
   },
   settingsPage: {
     title: 'Настройки',

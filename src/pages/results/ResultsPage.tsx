@@ -11,7 +11,7 @@ import { db } from '@/shared/lib/db'
 export default function ResultsPage() {
   const navigate = useNavigate()
   const { lastSession, setLastSession, setSessionState } = useSessionStore()
-  const { t } = useTranslation()
+  const { t, tp } = useTranslation()
   const heatmapContainerRef = useRef<HTMLDivElement>(null)
   const [noteOpen, setNoteOpen] = useState(false)
   const [noteText, setNoteText] = useState('')
@@ -85,7 +85,7 @@ export default function ResultsPage() {
             <p className="mt-2 font-devanagari text-xl text-gold">{pattern.nameDevanagari}</p>
           )}
           <h1 className="mt-1 font-heading text-3xl font-bold text-text-bright">
-            {lastSession.patternName}
+            {tp(lastSession.patternId)?.name ?? lastSession.patternName}
           </h1>
         </div>
 
