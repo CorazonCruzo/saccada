@@ -171,6 +171,17 @@ export interface Translation {
     customFrom: string
     customTo: string
     noResults: string
+    avgMoodChange: string
+    showMore: string
+    showLess: string
+    bestPattern: string
+    completionRate: string
+    avgDuration: string
+    preferredTime: string
+    timeMorning: string
+    timeAfternoon: string
+    timeEvening: string
+    timeNight: string
   }
   settingsPage: {
     title: string

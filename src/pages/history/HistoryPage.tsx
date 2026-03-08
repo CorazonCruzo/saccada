@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useLiveQuery } from 'dexie-react-hooks'
 import { db } from '@/shared/lib/db'
 import { patternsById } from '@/entities/pattern'
-import { computeStats, useSessionFilters, type PeriodFilter } from '@/features/session-history'
+import { computeStats, computeStreak, useSessionFilters, type PeriodFilter } from '@/features/session-history'
 import { computeMoodChange } from '@/pages/results/ResultsPage'
 import { useTranslation } from '@/shared/lib/i18n'
 import { formatTimer } from '@/shared/lib/format'
@@ -14,6 +14,7 @@ export default function HistoryPage() {
   const navigate = useNavigate()
   const { t, tp, locale } = useTranslation()
   const [deleteId, setDeleteId] = useState<number | null>(null)
+  const [showMore, setShowMore] = useState(false)
 
   const sessions = useLiveQuery(
     () => db.sessions.orderBy('timestamp').reverse().toArray(),
@@ -31,6 +32,7 @@ export default function HistoryPage() {
   if (!sessions) return null // loading
 
   const stats = computeStats(filteredSessions)
+  const globalStreak = computeStreak(sessions)
 
   async function handleDelete(id: number) {
     await db.sessions.delete(id)
@@ -128,17 +130,45 @@ export default function HistoryPage() {
 
         {/* Stats */}
         {filteredSessions.length > 0 && (
-          <div className="mt-5 grid grid-cols-4 gap-3">
-            <StatBlock label={t.history.totalSessions} value={String(stats.totalSessions)} />
-            <StatBlock label={t.history.totalTime} value={formatTimer(stats.totalTimeMs)} />
-            <StatBlock
-              label={t.history.mostUsed}
-              value={stats.mostUsedPatternId ? (tp(stats.mostUsedPatternId)?.name ?? stats.mostUsedPatternName ?? '-') : '-'}
-            />
-            <StatBlock
-              label={t.history.streak}
-              value={`${stats.streak}${t.history.streakDays}`}
-            />
+          <div className="mt-5">
+            <div className="grid grid-cols-4 gap-3">
+              <StatBlock label={t.history.totalSessions} value={String(stats.totalSessions)} />
+              <StatBlock label={t.history.totalTime} value={formatTimer(stats.totalTimeMs)} />
+              <StatBlock
+                label={t.history.avgMoodChange}
+                value={stats.avgMoodChange != null ? formatMoodChange(stats.avgMoodChange) : '-'}
+              />
+              <StatBlock
+                label={t.history.streak}
+                value={`${globalStreak}${t.history.streakDays}`}
+              />
+            </div>
+            {showMore && (
+              <div className="mt-3 grid grid-cols-4 gap-3">
+                <StatBlock
+                  label={t.history.bestPattern}
+                  value={stats.bestPatternId ? (tp(stats.bestPatternId)?.name ?? '-') : '-'}
+                />
+                <StatBlock
+                  label={t.history.completionRate}
+                  value={`${stats.completionRate}%`}
+                />
+                <StatBlock
+                  label={t.history.avgDuration}
+                  value={formatTimer(stats.avgDurationMs)}
+                />
+                <StatBlock
+                  label={t.history.preferredTime}
+                  value={stats.preferredTimeOfDay ? timeOfDayLabel(stats.preferredTimeOfDay, t) : '-'}
+                />
+              </div>
+            )}
+            <button
+              onClick={() => setShowMore((v) => !v)}
+              className="mt-2 w-full cursor-pointer text-center font-heading text-[10px] tracking-widest text-text-dim uppercase transition-colors hover:text-text-muted"
+            >
+              {showMore ? t.history.showLess : t.history.showMore}
+            </button>
           </div>
         )}
 
@@ -259,4 +289,22 @@ function StatBlock({ label, value }: { label: string; value: string }) {
       <p className="mt-0.5 font-heading text-[10px] tracking-widest text-text-dim uppercase">{label}</p>
     </div>
   )
+}
+
+function formatMoodChange(avg: number): string {
+  if (avg > 0) return `+${avg}`
+  if (avg < 0) return String(avg)
+  return '0'
+}
+
+type TranslationWithTime = { history: { timeMorning: string; timeAfternoon: string; timeEvening: string; timeNight: string } }
+
+function timeOfDayLabel(key: string, t: TranslationWithTime): string {
+  const map: Record<string, string> = {
+    morning: t.history.timeMorning,
+    afternoon: t.history.timeAfternoon,
+    evening: t.history.timeEvening,
+    night: t.history.timeNight,
+  }
+  return map[key] ?? key
 }
