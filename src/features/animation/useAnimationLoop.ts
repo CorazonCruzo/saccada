@@ -10,15 +10,28 @@ import { drawTrail } from './drawTrail'
 const TRAIL_MAX_LENGTH = 40
 const MANDALA_SPEED = 0.0003
 
+export interface FrameInfo {
+  /** Normalized dot X: -1 (left) to 1 (right). Used for audio pan. */
+  dotXNormalized: number
+  /** Dot X in canvas pixels */
+  dotX: number
+  /** Dot Y in canvas pixels */
+  dotY: number
+  /** Canvas width in CSS pixels */
+  canvasW: number
+  /** Canvas height in CSS pixels */
+  canvasH: number
+}
+
 interface AnimationState {
   running: boolean
-  startTime: number
-  elapsed: number
-  pausedAt: number
+  /** Accumulated animation time (advances at speed * multiplier rate) */
+  animTime: number
+  /** Wall-clock timestamp of last rendered frame */
+  lastFrameTime: number
   currentPhaseIndex: number
   trail: Point[]
   mandalaAngle: number
-  /** Normalized dot X: -1 (left) to 1 (right). Used for audio pan. */
   dotXNormalized: number
 }
 
@@ -26,7 +39,7 @@ interface AnimationRefs {
   pattern: PatternConfig
   speed: number
   visualScale: number
-  onFrame: ((dotXNormalized: number) => void) | null
+  onFrame: ((info: FrameInfo) => void) | null
   state: AnimationState
 }
 
@@ -36,7 +49,7 @@ export function useAnimationLoop(
   isPlaying: boolean,
   speed: number = 1,
   visualScale: number = 1,
-  onFrame?: (dotXNormalized: number) => void,
+  onFrame?: (info: FrameInfo) => void,
 ) {
   const refs = useRef<AnimationRefs>({
     pattern,
@@ -45,9 +58,8 @@ export function useAnimationLoop(
     onFrame: onFrame ?? null,
     state: {
       running: false,
-      startTime: 0,
-      elapsed: 0,
-      pausedAt: 0,
+      animTime: 0,
+      lastFrameTime: 0,
       currentPhaseIndex: 0,
       trail: [],
       mandalaAngle: 0,
@@ -77,16 +89,20 @@ export function useAnimationLoop(
     const now = performance.now()
     if (!state.running) return
 
-    const dt = now - state.startTime - state.pausedAt
-    state.elapsed = dt
+    // Frame-delta accumulation: speed changes don't cause position jumps
+    const frameDelta = now - state.lastFrameTime
+    state.lastFrameTime = now
+    state.animTime += frameDelta * spd
+    const dt = state.animTime
 
-    // Determine current phase
+    // Determine current phase (durations are NOT divided by speed —
+    // speed is already baked into animTime via frame-delta accumulation)
     let phaseTimeAccum = 0
     let activePhase: Phase = pat.phases[0]
     let phaseElapsed = dt
 
     for (let i = 0; i < pat.phases.length; i++) {
-      const phaseDur = pat.phases[i].duration / spd
+      const phaseDur = pat.phases[i].duration
       if (dt < phaseTimeAccum + phaseDur) {
         activePhase = pat.phases[i]
         state.currentPhaseIndex = i
@@ -96,12 +112,12 @@ export function useAnimationLoop(
       phaseTimeAccum += phaseDur
       // If we've gone past all phases, loop back
       if (i === pat.phases.length - 1) {
-        const totalDur = pat.phases.reduce((sum, p) => sum + p.duration / spd, 0)
+        const totalDur = pat.phases.reduce((sum, p) => sum + p.duration, 0)
         const loopedDt = dt % totalDur
         // Recalculate with looped time
         let acc2 = 0
         for (let j = 0; j < pat.phases.length; j++) {
-          const pd = pat.phases[j].duration / spd
+          const pd = pat.phases[j].duration
           if (loopedDt < acc2 + pd) {
             activePhase = pat.phases[j]
             state.currentPhaseIndex = j
@@ -116,7 +132,7 @@ export function useAnimationLoop(
     // Compute dot position (trajectory scales with visualScale)
     let dotPos: Point
     if (activePhase.type === 'movement' && pat.cycleDuration) {
-      const cycleMs = pat.cycleDuration / spd
+      const cycleMs = pat.cycleDuration
       const cycleT = (phaseElapsed % cycleMs) / cycleMs
       const normPos = getTrajectoryPosition(cycleT, pat.trajectory, pat.trajectoryParams)
       normPos.x *= vs
@@ -130,7 +146,13 @@ export function useAnimationLoop(
     // Expose normalized X for audio pan (-1..1)
     state.dotXNormalized = w > 0 ? (dotPos.x / w) * 2 - 1 : 0
     if (refs.current.onFrame) {
-      refs.current.onFrame(state.dotXNormalized)
+      refs.current.onFrame({
+        dotXNormalized: state.dotXNormalized,
+        dotX: dotPos.x,
+        dotY: dotPos.y,
+        canvasW: w,
+        canvasH: h,
+      })
     }
 
     // Update trail
@@ -191,7 +213,7 @@ export function useAnimationLoop(
     if (isPlaying) {
       if (!state.running) {
         state.running = true
-        state.startTime = performance.now() - state.elapsed
+        state.lastFrameTime = performance.now()
         state.trail = []
       }
       rafId.current = requestAnimationFrame(render)
@@ -208,14 +230,14 @@ export function useAnimationLoop(
   // Reset when pattern changes
   useEffect(() => {
     const state = refs.current.state
-    state.elapsed = 0
-    state.startTime = performance.now()
+    state.animTime = 0
+    state.lastFrameTime = performance.now()
     state.currentPhaseIndex = 0
     state.trail = []
   }, [pattern.id])
 
   return {
     getCurrentPhaseIndex: () => refs.current.state.currentPhaseIndex,
-    getElapsed: () => refs.current.state.elapsed,
+    getElapsed: () => refs.current.state.animTime,
   }
 }

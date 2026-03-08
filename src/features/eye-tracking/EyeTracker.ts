@@ -58,7 +58,7 @@ export class EyeTracker {
     try { wg.showFaceFeedbackBox(true) } catch { /* noop */ }
     try { wg.applyKalmanFilter(false) } catch { /* noop */ }
     try { wg.setRegression('ridge') } catch { /* noop */ }
-    try { wg.saveDataAcrossSessions(false) } catch { /* noop */ }
+    try { wg.saveDataAcrossSessions(true) } catch { /* noop */ }
     try { wg.removeMouseEventListeners() } catch { /* noop */ }
 
     wg.setGazeListener((data, elapsedTime) => {

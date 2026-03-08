@@ -1,6 +1,8 @@
+import { useRef, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSessionStore } from '@/entities/session'
 import { patternsById } from '@/entities/pattern'
+import { HeatmapViewer } from '@/widgets/heatmap-viewer'
 import { useTranslation } from '@/shared/lib/i18n'
 import { Button } from '@/shared/ui/button'
 import { formatTimer } from '@/shared/lib/format'
@@ -9,6 +11,21 @@ export default function ResultsPage() {
   const navigate = useNavigate()
   const { lastSession, setSessionState } = useSessionStore()
   const { t } = useTranslation()
+  const heatmapContainerRef = useRef<HTMLDivElement>(null)
+
+  const handleExportPng = useCallback(() => {
+    const canvas = heatmapContainerRef.current?.querySelector('canvas')
+    if (!canvas) return
+    canvas.toBlob((blob) => {
+      if (!blob) return
+      const url = URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = `saccada-heatmap-${Date.now()}.png`
+      a.click()
+      URL.revokeObjectURL(url)
+    })
+  }, [])
 
   if (!lastSession) {
     return (
@@ -22,6 +39,7 @@ export default function ResultsPage() {
   }
 
   const pattern = patternsById[lastSession.patternId]
+  const hasGaze = lastSession.gazePoints && lastSession.gazePoints.length > 0
 
   function handleNewSession() {
     setSessionState('idle')
@@ -62,14 +80,57 @@ export default function ResultsPage() {
               <StatRow label={t.results.audio} value={t.audioMode[pattern.audioConfig.mode]} />
             </>
           )}
+          {hasGaze && (
+            <StatRow label={t.results.gazePoints} value={String(lastSession.gazePoints!.length)} />
+          )}
         </div>
 
-        {/* Heatmap placeholder (Phase 6) */}
-        <div className="mt-6 flex h-32 items-center justify-center rounded-xl border border-border-ornament bg-bg-mid">
-          <p className="font-body text-xs font-light text-text-dim">
-            {t.results.heatmapPlaceholder}
-          </p>
-        </div>
+        {/* Heatmap */}
+        {hasGaze ? (
+          <div className="mt-6">
+            <p className="mb-2 font-heading text-xs tracking-widest text-text-dim uppercase">
+              {t.results.heatmapTitle}
+            </p>
+            <div
+              ref={heatmapContainerRef}
+              className="overflow-hidden rounded-xl border border-border-ornament bg-bg-mid"
+              style={{ height: 200 }}
+            >
+              <HeatmapViewer
+                gazePoints={lastSession.gazePoints!}
+                sourceWidth={lastSession.viewportWidth}
+                sourceHeight={lastSession.viewportHeight}
+                className="h-full w-full"
+              />
+            </div>
+            <Button
+              variant="outline"
+              size="sm"
+              className="mt-2 w-full text-xs"
+              onClick={handleExportPng}
+            >
+              {t.results.exportPng}
+            </Button>
+          </div>
+        ) : (
+          <div className="mt-6">
+            <p className="mb-2 font-heading text-xs tracking-widest text-text-dim uppercase">
+              {t.results.heatmapTitle}
+            </p>
+            <div className="relative flex h-40 items-center justify-center overflow-hidden rounded-xl border border-border-ornament bg-bg-mid">
+              {/* Decorative disabled heatmap */}
+              <div className="absolute inset-0 opacity-15">
+                <div className="absolute left-[20%] top-[30%] h-16 w-20 rounded-full bg-indigo blur-xl" />
+                <div className="absolute left-[45%] top-[40%] h-12 w-16 rounded-full bg-teal blur-lg" />
+                <div className="absolute left-[65%] top-[25%] h-10 w-14 rounded-full bg-turmeric blur-xl" />
+                <div className="absolute left-[35%] top-[55%] h-8 w-12 rounded-full bg-indigo blur-lg" />
+              </div>
+              <p className="relative z-10 max-w-[200px] text-center font-body text-xs font-light leading-relaxed text-text-muted">
+                {t.results.enableCameraHint}
+              </p>
+            </div>
+          </div>
+        )}
 
         {/* Actions */}
         <div className="mt-8 flex flex-col gap-3">

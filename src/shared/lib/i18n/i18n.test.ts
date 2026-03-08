@@ -420,6 +420,7 @@ describe('results translations', () => {
     const keys: Array<keyof Translation['results']> = [
       'title', 'noData', 'duration', 'status', 'completed',
       'endedEarly', 'pattern', 'audio', 'heatmapPlaceholder',
+      'enableCameraHint', 'heatmapTitle', 'exportPng', 'gazePoints',
       'repeatSession', 'newSession',
     ]
     for (const locale of locales) {

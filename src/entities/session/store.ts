@@ -9,6 +9,9 @@ interface LastSession {
   elapsed: number
   completed: boolean
   timestamp: number
+  gazePoints?: Array<{ x: number; y: number; t: number }>
+  viewportWidth?: number
+  viewportHeight?: number
 }
 
 export interface PatternSettings {

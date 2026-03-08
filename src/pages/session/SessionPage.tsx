@@ -4,7 +4,12 @@ import { useSessionStore } from '@/entities/session'
 import { SessionPlayer } from '@/widgets/session-player'
 import { PatternInfoDialog } from '@/widgets/pattern-picker'
 import { useAudio } from '@/features/audio'
-import { useEyeTracking } from '@/features/eye-tracking'
+import {
+  useEyeTracking,
+  GazeLog,
+  createAdaptiveSpeedState,
+  updateAdaptiveSpeed,
+} from '@/features/eye-tracking'
 import { useTranslation } from '@/shared/lib/i18n'
 import { Button } from '@/shared/ui/button'
 import { formatTimer } from '@/shared/lib/format'
@@ -48,10 +53,41 @@ export default function SessionPage() {
   const phaseRef = useRef(phase)
   phaseRef.current = phase
 
+  // Adaptive speed + gaze logging
+  const gazeLogRef = useRef(new GazeLog())
+  const adaptiveStateRef = useRef(createAdaptiveSpeedState())
+  const [adaptiveMultiplier, setAdaptiveMultiplier] = useState(1.0)
+  const dotPosRef = useRef({ x: 0, y: 0, w: 0, h: 0 })
+  const gazeRef = useRef<{ x: number; y: number } | null>(null)
+  const gazeCountRef = useRef(0)
+
   // Eye tracking: ensure camera is live for the session
   useEffect(() => {
     if (!eyeTrackingEnabled) return
-    void getTracker().start(() => {})
+
+    const tracker = getTracker()
+    gazeCountRef.current = 0
+
+    tracker.start((point) => {
+      gazeCountRef.current++
+      gazeRef.current = { x: point.x, y: point.y }
+      gazeLogRef.current.record(point)
+
+      const { w, h, x: dotX, y: dotY } = dotPosRef.current
+      const m = updateAdaptiveSpeed(
+        adaptiveStateRef.current,
+        point.t,
+        { x: point.x, y: point.y, t: point.t },
+        dotX,
+        dotY,
+        w,
+        h,
+      )
+      setAdaptiveMultiplier(m)
+
+    }).catch((err) => {
+      console.error('[Saccada] Eye tracking start failed:', err)
+    })
   }, [eyeTrackingEnabled, getTracker])
 
   // -- Countdown --
@@ -127,6 +163,8 @@ export default function SessionPage() {
     const finalElapsed = accumulatedRef.current
     const completed = sessionDuration === 0 || finalElapsed >= sessionDuration
 
+    const gazePoints = gazeLogRef.current.getPoints()
+
     const timer = setTimeout(() => {
       setLastSession({
         patternId: selectedPattern.id,
@@ -134,6 +172,9 @@ export default function SessionPage() {
         elapsed: Math.round(finalElapsed),
         completed,
         timestamp: Date.now(),
+        gazePoints: gazePoints.length > 0 ? gazePoints : undefined,
+        viewportWidth: window.innerWidth,
+        viewportHeight: window.innerHeight,
       })
       setSessionState('results')
       navigate('/results', { replace: true })
@@ -282,6 +323,13 @@ export default function SessionPage() {
     }
   }
 
+  // Track dot position for adaptive speed
+  const handleDotMove = useCallback((dotX: number, dotY: number, canvasW: number, canvasH: number) => {
+    dotPosRef.current = { x: dotX, y: dotY, w: canvasW, h: canvasH }
+  }, [])
+
+  const effectiveSpeed = speed * adaptiveMultiplier
+
   const isStopwatch = sessionDuration === 0
   const remaining = Math.max(0, sessionDuration - elapsed)
 
@@ -311,7 +359,7 @@ export default function SessionPage() {
         <SessionPlayer
           pattern={selectedPattern}
           isPlaying={false}
-          speed={speed}
+          speed={effectiveSpeed}
           visualScale={visualScale}
         />
         <div className="absolute inset-0 flex items-center justify-center bg-bg-deep/80 transition-opacity duration-[3000ms]">
@@ -329,11 +377,12 @@ export default function SessionPage() {
       <SessionPlayer
         pattern={selectedPattern}
         isPlaying={phase === 'active'}
-        speed={speed}
+        speed={effectiveSpeed}
         visualScale={visualScale}
         audioEngine={audioEngine}
         soundEnabled={soundEnabled}
         hapticEnabled={hapticEnabled}
+        onDotMove={handleDotMove}
       />
 
       {/* Guided instruction: always visible (independent of HUD) */}

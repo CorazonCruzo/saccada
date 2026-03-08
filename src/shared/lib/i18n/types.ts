@@ -55,6 +55,10 @@ export interface Translation {
     pattern: string
     audio: string
     heatmapPlaceholder: string
+    enableCameraHint: string
+    heatmapTitle: string
+    exportPng: string
+    gazePoints: string
     repeatSession: string
     newSession: string
   }

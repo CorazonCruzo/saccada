@@ -1,7 +1,7 @@
 import { useRef, useEffect, useCallback } from 'react'
 import type { PatternConfig } from '@/entities/pattern'
 import { setupCanvas } from '@/shared/lib/canvas'
-import { useAnimationLoop } from '@/features/animation'
+import { useAnimationLoop, type FrameInfo } from '@/features/animation'
 import { type AudioEngine } from '@/features/audio'
 import { createEdgeDetector } from '@/features/haptics'
 
@@ -13,6 +13,7 @@ interface SessionPlayerProps {
   audioEngine?: AudioEngine | null
   soundEnabled?: boolean
   hapticEnabled?: boolean
+  onDotMove?: (dotX: number, dotY: number, canvasW: number, canvasH: number) => void
   className?: string
 }
 
@@ -24,11 +25,14 @@ export function SessionPlayer({
   audioEngine = null,
   soundEnabled = false,
   hapticEnabled = false,
+  onDotMove,
   className,
 }: SessionPlayerProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
   const edgeDetectorRef = useRef(createEdgeDetector())
+  const onDotMoveRef = useRef(onDotMove)
+  onDotMoveRef.current = onDotMove
 
   const handleResize = useCallback(() => {
     const canvas = canvasRef.current
@@ -45,14 +49,15 @@ export function SessionPlayer({
     return () => window.removeEventListener('resize', handleResize)
   }, [handleResize])
 
-  // Per-frame callback: audio pan sync + haptic edge detection
-  const onFrame = useCallback((dotXNormalized: number) => {
+  // Per-frame callback: audio pan sync + haptic edge detection + dot position forwarding
+  const onFrame = useCallback((info: FrameInfo) => {
     if (audioEngine && soundEnabled) {
-      audioEngine.setPan(dotXNormalized)
+      audioEngine.setPan(info.dotXNormalized)
     }
     if (hapticEnabled) {
-      edgeDetectorRef.current(dotXNormalized)
+      edgeDetectorRef.current(info.dotXNormalized)
     }
+    onDotMoveRef.current?.(info.dotX, info.dotY, info.canvasW, info.canvasH)
   }, [audioEngine, soundEnabled, hapticEnabled])
 
   useAnimationLoop(canvasRef, pattern, isPlaying, speed, visualScale, onFrame)

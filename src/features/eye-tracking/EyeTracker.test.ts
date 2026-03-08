@@ -36,7 +36,7 @@ describe('EyeTracker', () => {
 
       expect(mockWebgazer.setRegression).toHaveBeenCalledWith('ridge')
       expect(mockWebgazer.applyKalmanFilter).toHaveBeenCalledWith(false)
-      expect(mockWebgazer.saveDataAcrossSessions).toHaveBeenCalledWith(false)
+      expect(mockWebgazer.saveDataAcrossSessions).toHaveBeenCalledWith(true)
       expect(mockWebgazer.removeMouseEventListeners).toHaveBeenCalled()
       expect(mockWebgazer.setGazeListener).toHaveBeenCalled()
       expect(mockWebgazer.begin).toHaveBeenCalledTimes(1)

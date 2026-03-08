@@ -5,6 +5,7 @@ import { PatternPicker } from '@/widgets/pattern-picker'
 import { SettingsPanel } from '@/widgets/settings-panel'
 import { SessionPlayer } from '@/widgets/session-player'
 import { useAudio } from '@/features/audio'
+import { shouldCalibrate } from '@/features/calibration'
 import { useTranslation } from '@/shared/lib/i18n'
 import { Button } from '@/shared/ui/button'
 
@@ -28,7 +29,7 @@ export default function HomePage() {
     }
     setSettingsOpen(false)
 
-    if (eyeTrackingEnabled && !calibratedAt) {
+    if (shouldCalibrate(eyeTrackingEnabled, calibratedAt)) {
       navigate('/calibration')
     } else {
       navigate('/session')
