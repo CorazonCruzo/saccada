@@ -249,7 +249,11 @@ export default function SessionPage() {
           else if (p === 'paused') setPhase('active')
           break
         case 'Escape':
-          handleQuit()
+          if (p === 'cooldown') break
+          if (p === 'active') {
+            accumulatedRef.current += performance.now() - activeStartRef.current
+          }
+          setPhase('cooldown')
           break
         case 'f':
         case 'F':
@@ -291,16 +295,6 @@ export default function SessionPage() {
   }, [audioEngine])
 
   // -- Handlers --
-
-  function handleQuit() {
-    audioEngine.stop()
-    if (eyeTrackingEnabled) sleepTracker()
-    setSessionState('idle')
-    if (document.fullscreenElement) {
-      void document.exitFullscreen()
-    }
-    navigate('/', { replace: true })
-  }
 
   function handlePause() {
     if (phase === 'active') setPhase('paused')

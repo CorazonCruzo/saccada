@@ -187,7 +187,7 @@ export default function ResultsPage() {
           ) : (
             <button
               onClick={() => setNoteOpen(true)}
-              className="w-full cursor-pointer rounded-lg border border-dashed border-border-ornament px-3 py-2 text-center font-body text-xs text-text-muted transition-colors hover:border-turmeric/60 hover:text-text-bright"
+              className="w-full cursor-pointer rounded-lg border border-dashed border-input px-3 py-2 text-center font-body text-xs text-text-muted transition-colors hover:border-turmeric/60 hover:text-text-bright"
             >
               {t.results.addNote}
             </button>
