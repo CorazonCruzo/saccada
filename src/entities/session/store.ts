@@ -3,12 +3,15 @@ import { persist } from 'zustand/middleware'
 import { type PatternConfig, pralokita, patternsById } from '@/entities/pattern'
 import type { SessionState } from './types'
 
-interface LastSession {
+export interface LastSession {
   patternId: string
   patternName: string
   elapsed: number
   completed: boolean
   timestamp: number
+  moodBefore?: number
+  moodAfter?: number
+  note?: string
   gazePoints?: Array<{ x: number; y: number; t: number }>
   viewportWidth?: number
   viewportHeight?: number
@@ -67,6 +70,10 @@ interface SessionStore {
   setVisualScale: (s: number) => void
   calibratedAt: number | null
   setCalibratedAt: (t: number | null) => void
+
+  // Mood check (SUDs)
+  moodBefore: number | null
+  setMoodBefore: (v: number | null) => void
 
   // Results
   lastSession: LastSession | null
@@ -187,6 +194,9 @@ export const useSessionStore = create<SessionStore>()(
 
       calibratedAt: null,
       setCalibratedAt: (calibratedAt) => set({ calibratedAt }),
+
+      moodBefore: null,
+      setMoodBefore: (moodBefore) => set({ moodBefore }),
 
       lastSession: null,
       setLastSession: (lastSession) => set({ lastSession }),

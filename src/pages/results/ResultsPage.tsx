@@ -1,4 +1,4 @@
-import { useRef, useCallback } from 'react'
+import { useRef, useCallback, useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSessionStore } from '@/entities/session'
 import { patternsById } from '@/entities/pattern'
@@ -6,12 +6,34 @@ import { HeatmapViewer } from '@/widgets/heatmap-viewer'
 import { useTranslation } from '@/shared/lib/i18n'
 import { Button } from '@/shared/ui/button'
 import { formatTimer } from '@/shared/lib/format'
+import { db } from '@/shared/lib/db'
 
 export default function ResultsPage() {
   const navigate = useNavigate()
-  const { lastSession, setSessionState } = useSessionStore()
+  const { lastSession, setLastSession, setSessionState } = useSessionStore()
   const { t } = useTranslation()
   const heatmapContainerRef = useRef<HTMLDivElement>(null)
+  const [noteOpen, setNoteOpen] = useState(false)
+  const [noteText, setNoteText] = useState('')
+  const savedRef = useRef(false)
+
+  // Save session to Dexie once on mount
+  useEffect(() => {
+    if (!lastSession || savedRef.current) return
+    savedRef.current = true
+    db.sessions.add({
+      patternId: lastSession.patternId,
+      patternName: lastSession.patternName,
+      elapsed: lastSession.elapsed,
+      completed: lastSession.completed,
+      timestamp: lastSession.timestamp,
+      moodBefore: lastSession.moodBefore,
+      moodAfter: lastSession.moodAfter,
+      gazePoints: lastSession.gazePoints,
+      viewportWidth: lastSession.viewportWidth,
+      viewportHeight: lastSession.viewportHeight,
+    }).catch((err) => console.error('[Saccada] Failed to save session:', err))
+  }, [lastSession])
 
   const handleExportPng = useCallback(() => {
     const canvas = heatmapContainerRef.current?.querySelector('canvas')
@@ -47,7 +69,8 @@ export default function ResultsPage() {
   }
 
   function handleRepeat() {
-    navigate('/session')
+    setSessionState('mood-check-before')
+    navigate('/mood-check?phase=before')
   }
 
   return (
@@ -82,6 +105,13 @@ export default function ResultsPage() {
           )}
           {hasGaze && (
             <StatRow label={t.results.gazePoints} value={String(lastSession.gazePoints!.length)} />
+          )}
+          {(lastSession.moodBefore != null || lastSession.moodAfter != null) && (
+            <MoodChangeRow
+              before={lastSession.moodBefore}
+              after={lastSession.moodAfter}
+              t={t}
+            />
           )}
         </div>
 
@@ -132,6 +162,38 @@ export default function ResultsPage() {
           </div>
         )}
 
+        {/* Note */}
+        <div className="mt-6">
+          {noteOpen ? (
+            <textarea
+              value={noteText}
+              onChange={(e) => setNoteText(e.target.value)}
+              onBlur={() => {
+                if (noteText.trim() && lastSession) {
+                  const updated = { ...lastSession, note: noteText.trim() }
+                  setLastSession(updated)
+                  // Update the Dexie record too
+                  db.sessions
+                    .where('timestamp').equals(lastSession.timestamp)
+                    .modify({ note: noteText.trim() })
+                    .catch(() => {})
+                }
+              }}
+              placeholder={t.results.notePlaceholder}
+              className="w-full resize-none rounded-lg border border-border-ornament bg-bg-mid px-3 py-2 font-body text-sm font-light text-text-bright placeholder:text-text-dim focus:border-teal focus:outline-none"
+              rows={3}
+              autoFocus
+            />
+          ) : (
+            <button
+              onClick={() => setNoteOpen(true)}
+              className="w-full cursor-pointer rounded-lg border border-dashed border-border-ornament px-3 py-2 text-center font-body text-xs text-text-muted transition-colors hover:border-turmeric/60 hover:text-text-bright"
+            >
+              {t.results.addNote}
+            </button>
+          )}
+        </div>
+
         {/* Actions */}
         <div className="mt-8 flex flex-col gap-3">
           <Button size="lg" className="w-full" onClick={handleRepeat}>
@@ -159,6 +221,61 @@ function StatRow({
     <div className="flex items-center justify-between border-b border-border-ornament/50 pb-2">
       <span className="font-heading text-xs tracking-widest text-text-dim uppercase">{label}</span>
       <span className={`font-heading text-sm ${valueColor}`}>{value}</span>
+    </div>
+  )
+}
+
+/**
+ * Compute mood change display values.
+ * Scale: 1 = calm (good) .. 5 = restless (bad). Decrease = improvement.
+ */
+export function computeMoodChange(before?: number, after?: number) {
+  const hasBoth = before != null && after != null
+  const diff = hasBoth ? after! - before! : 0
+  const direction: 'improved' | 'worsened' | 'same' =
+    diff < 0 ? 'improved' : diff > 0 ? 'worsened' : 'same'
+  const color = diff < 0 ? 'text-teal' : diff > 0 ? 'text-lotus' : 'text-text-muted'
+  const arrow = diff < 0 ? '\u2191' : diff > 0 ? '\u2193' : ''
+  return { hasBoth, diff, direction, color, arrow }
+}
+
+function MoodChangeRow({
+  before,
+  after,
+  t,
+}: {
+  before?: number
+  after?: number
+  t: { results: { moodChange: string; moodImproved: string; moodSame: string; moodWorse: string } }
+}) {
+  const { hasBoth, direction, color, arrow } = computeMoodChange(before, after)
+  const label =
+    direction === 'improved' ? t.results.moodImproved
+    : direction === 'worsened' ? t.results.moodWorse
+    : t.results.moodSame
+
+  return (
+    <div className="flex items-center justify-between border-b border-border-ornament/50 pb-2">
+      <span className="font-heading text-xs tracking-widest text-text-dim uppercase">
+        {t.results.moodChange}
+      </span>
+      <span className="flex items-center gap-2">
+        {before != null && (
+          <span className="font-heading text-sm text-text-muted">{before}</span>
+        )}
+        {hasBoth && (
+          <>
+            <span className="text-text-dim">{'\u2192'}</span>
+            <span className={`font-heading text-sm font-bold ${color}`}>{after}</span>
+            <span className={`font-heading text-xs ${color}`}>
+              {arrow} {label}
+            </span>
+          </>
+        )}
+        {!hasBoth && after != null && (
+          <span className={`font-heading text-sm ${color}`}>{after}</span>
+        )}
+      </span>
     </div>
   )
 }

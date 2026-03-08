@@ -1,5 +1,6 @@
 export { drawBindu } from './drawBindu'
 export { drawFlame } from './drawFlame'
+export { drawMoodFlame } from './drawMoodFlame'
 export { drawMandala } from './drawMandala'
 export { drawTrail } from './drawTrail'
 export { useAnimationLoop, type FrameInfo } from './useAnimationLoop'

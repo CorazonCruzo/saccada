@@ -59,6 +59,12 @@ export interface Translation {
     heatmapTitle: string
     exportPng: string
     gazePoints: string
+    moodChange: string
+    moodImproved: string
+    moodSame: string
+    moodWorse: string
+    notePlaceholder: string
+    addNote: string
     repeatSession: string
     newSession: string
   }
@@ -134,6 +140,16 @@ export interface Translation {
     origins: string
     benefits: string
     headphonesNote: string
+  }
+  mood: {
+    howAreYouNow: string
+    howAreYouAfter: string
+    flamePrompt: string
+    restless: string
+    calm: string
+    skip: string
+    continue: string
+    levels: string[]
   }
   settingsPage: {
     title: string

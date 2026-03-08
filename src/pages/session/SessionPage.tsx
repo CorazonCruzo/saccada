@@ -165,6 +165,8 @@ export default function SessionPage() {
 
     const gazePoints = gazeLogRef.current.getPoints()
 
+    const moodBefore = useSessionStore.getState().moodBefore
+
     const timer = setTimeout(() => {
       setLastSession({
         patternId: selectedPattern.id,
@@ -172,12 +174,13 @@ export default function SessionPage() {
         elapsed: Math.round(finalElapsed),
         completed,
         timestamp: Date.now(),
+        moodBefore: moodBefore ?? undefined,
         gazePoints: gazePoints.length > 0 ? gazePoints : undefined,
         viewportWidth: window.innerWidth,
         viewportHeight: window.innerHeight,
       })
-      setSessionState('results')
-      navigate('/results', { replace: true })
+      setSessionState('mood-check-after')
+      navigate('/mood-check?phase=after', { replace: true })
     }, 3000)
 
     return () => clearTimeout(timer)

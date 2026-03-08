@@ -126,7 +126,7 @@ describe('translation structure', () => {
     const sections: Array<keyof Translation> = [
       'common', 'home', 'onboarding', 'session', 'results',
       'sessionSettings', 'calibration', 'notFound', 'categories',
-      'patternInfo', 'settingsPage', 'trajectory', 'audioMode', 'pattern',
+      'patternInfo', 'mood', 'settingsPage', 'trajectory', 'audioMode', 'pattern',
     ]
 
     for (const locale of locales) {
@@ -421,6 +421,8 @@ describe('results translations', () => {
       'title', 'noData', 'duration', 'status', 'completed',
       'endedEarly', 'pattern', 'audio', 'heatmapPlaceholder',
       'enableCameraHint', 'heatmapTitle', 'exportPng', 'gazePoints',
+      'moodChange', 'moodImproved', 'moodSame', 'moodWorse',
+      'notePlaceholder', 'addNote',
       'repeatSession', 'newSession',
     ]
     for (const locale of locales) {
@@ -534,6 +536,61 @@ describe('useTranslation — tp() function', () => {
     const tp = (id: string): PatternTranslation => dict.pattern[id]
     expect(tp('sama')).not.toBe(tp('trataka'))
     expect(tp('sama').name).not.toBe(tp('trataka').name)
+  })
+})
+
+// ────────────────────────────────────────────────────────
+// translations — mood section
+// ────────────────────────────────────────────────────────
+describe('mood translations', () => {
+  it('should have all mood keys in every locale', () => {
+    const keys: Array<keyof Translation['mood']> = [
+      'howAreYouNow', 'howAreYouAfter', 'skip', 'continue', 'levels',
+    ]
+    for (const locale of locales) {
+      for (const key of keys) {
+        expect(translations[locale].mood[key], `${locale}.mood.${key}`).toBeTruthy()
+      }
+    }
+  })
+
+  it('should have exactly 5 mood levels in every locale', () => {
+    for (const locale of locales) {
+      expect(translations[locale].mood.levels).toHaveLength(5)
+    }
+  })
+
+  it('each mood level should be a non-empty string', () => {
+    for (const locale of locales) {
+      for (let i = 0; i < 5; i++) {
+        expect(
+          translations[locale].mood.levels[i],
+          `${locale}.mood.levels[${i}]`,
+        ).toBeTruthy()
+      }
+    }
+  })
+
+  it('mood.howAreYouNow should differ between locales', () => {
+    const values = new Set(locales.map((l) => translations[l].mood.howAreYouNow))
+    expect(values.size).toBe(3)
+  })
+
+  it('mood.howAreYouAfter should differ between locales', () => {
+    const values = new Set(locales.map((l) => translations[l].mood.howAreYouAfter))
+    expect(values.size).toBe(3)
+  })
+
+  it('results mood keys should be non-empty in every locale', () => {
+    const moodKeys: Array<keyof Translation['results']> = [
+      'moodChange', 'moodImproved', 'moodSame', 'moodWorse',
+      'notePlaceholder', 'addNote',
+    ]
+    for (const locale of locales) {
+      for (const key of moodKeys) {
+        expect(translations[locale].results[key], `${locale}.results.${key}`).toBeTruthy()
+      }
+    }
   })
 })
 

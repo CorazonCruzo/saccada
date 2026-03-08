@@ -31,11 +31,9 @@ export default function HomePage() {
     }
     setSettingsOpen(false)
 
-    if (await shouldCalibrate(eyeTrackingEnabled, calibratedAt, getTracker().isReady())) {
-      navigate('/calibration')
-    } else {
-      navigate('/session')
-    }
+    // Always go to mood check first (user can skip it)
+    useSessionStore.getState().setSessionState('mood-check-before')
+    navigate('/mood-check?phase=before')
   }
 
   return (

@@ -172,6 +172,105 @@ describe('useSessionStore', () => {
       useSessionStore.getState().setLastSession(session)
       expect(useSessionStore.getState().lastSession).toEqual(session)
     })
+
+    it('saves session with moodBefore and moodAfter', () => {
+      const session = {
+        patternId: 'pralokita',
+        patternName: 'Pralokita',
+        elapsed: 60000,
+        completed: true,
+        timestamp: Date.now(),
+        moodBefore: 2,
+        moodAfter: 4,
+      }
+      useSessionStore.getState().setLastSession(session)
+      const saved = useSessionStore.getState().lastSession
+      expect(saved?.moodBefore).toBe(2)
+      expect(saved?.moodAfter).toBe(4)
+    })
+
+    it('saves session with note', () => {
+      const session = {
+        patternId: 'sama',
+        patternName: 'Sama',
+        elapsed: 30000,
+        completed: false,
+        timestamp: Date.now(),
+        note: 'felt calmer after',
+      }
+      useSessionStore.getState().setLastSession(session)
+      expect(useSessionStore.getState().lastSession?.note).toBe('felt calmer after')
+    })
+
+    it('allows updating lastSession (e.g. adding moodAfter)', () => {
+      const session = {
+        patternId: 'pralokita',
+        patternName: 'Pralokita',
+        elapsed: 60000,
+        completed: true,
+        timestamp: 1000,
+        moodBefore: 3,
+      }
+      useSessionStore.getState().setLastSession(session)
+
+      // Simulate adding moodAfter (as MoodCheckPage does)
+      const current = useSessionStore.getState().lastSession!
+      useSessionStore.getState().setLastSession({ ...current, moodAfter: 5 })
+
+      const updated = useSessionStore.getState().lastSession
+      expect(updated?.moodBefore).toBe(3)
+      expect(updated?.moodAfter).toBe(5)
+      expect(updated?.timestamp).toBe(1000)
+    })
+
+    it('allows updating lastSession with note', () => {
+      const session = {
+        patternId: 'pralokita',
+        patternName: 'Pralokita',
+        elapsed: 60000,
+        completed: true,
+        timestamp: 2000,
+      }
+      useSessionStore.getState().setLastSession(session)
+      const current = useSessionStore.getState().lastSession!
+      useSessionStore.getState().setLastSession({ ...current, note: 'test note' })
+
+      expect(useSessionStore.getState().lastSession?.note).toBe('test note')
+      expect(useSessionStore.getState().lastSession?.elapsed).toBe(60000)
+    })
+  })
+
+  describe('mood before (SUDs)', () => {
+    it('defaults to null', () => {
+      expect(useSessionStore.getState().moodBefore).toBeNull()
+    })
+
+    it('sets moodBefore value', () => {
+      useSessionStore.getState().setMoodBefore(3)
+      expect(useSessionStore.getState().moodBefore).toBe(3)
+    })
+
+    it('resets moodBefore to null (skip)', () => {
+      useSessionStore.getState().setMoodBefore(4)
+      useSessionStore.getState().setMoodBefore(null)
+      expect(useSessionStore.getState().moodBefore).toBeNull()
+    })
+
+    it('moodBefore is not persisted to localStorage', () => {
+      useSessionStore.getState().setMoodBefore(5)
+      // partialize does not include moodBefore, so it should not appear in persisted state
+      const persistedRaw = localStorage.getItem('saccada-settings')
+      if (persistedRaw) {
+        const persisted = JSON.parse(persistedRaw)
+        expect(persisted.state.moodBefore).toBeUndefined()
+      }
+    })
+
+    it('moodBefore is independent of pattern selection', () => {
+      useSessionStore.getState().setMoodBefore(2)
+      useSessionStore.getState().selectPattern(sama)
+      expect(useSessionStore.getState().moodBefore).toBe(2)
+    })
   })
 
   describe('eye tracking per pattern', () => {
