@@ -81,7 +81,13 @@ export class EyeTracker {
     this.running = value
   }
 
-  /** Show or hide the webcam video preview with face mesh overlay */
+  /**
+   * Show or hide the webcam video preview with face mesh overlay.
+   *
+   * IMPORTANT: Never use `display: none` on the container — MediaPipe's
+   * WebGL canvas would get zero-size framebuffer attachments, crashing WASM.
+   * Instead, hide with `opacity: 0` and keep the container in layout.
+   */
   showVideo(visible: boolean): void {
     if (!this.webgazer) return
     try { this.webgazer.showVideoPreview(visible) } catch { /* noop */ }
@@ -89,27 +95,36 @@ export class EyeTracker {
     try { this.webgazer.showFaceFeedbackBox(visible) } catch { /* noop */ }
     const container = document.getElementById('webgazerVideoContainer')
     if (container) {
-      container.style.display = visible ? 'block' : 'none'
+      // Always keep container in the DOM with non-zero dimensions
+      // so MediaPipe's WebGL framebuffer stays valid.
+      container.style.display = 'block'
+      container.style.position = 'fixed'
+      container.style.width = '400px'
+      container.style.height = '300px'
+      container.style.pointerEvents = 'none'
+      container.style.overflow = 'hidden'
+      container.style.borderRadius = '12px'
+
       if (visible) {
-        container.style.position = 'fixed'
         container.style.top = '20%'
         container.style.right = '20px'
         container.style.left = 'auto'
         container.style.transform = 'none'
         container.style.bottom = 'auto'
-        container.style.width = '400px'
-        container.style.height = '300px'
         container.style.zIndex = '0'
-        container.style.pointerEvents = 'none'
         container.style.opacity = '0.85'
-        container.style.borderRadius = '12px'
-        container.style.overflow = 'hidden'
         for (const el of container.querySelectorAll('video, canvas')) {
           const h = el as HTMLElement
           h.style.width = '100%'
           h.style.height = '100%'
           h.style.objectFit = 'cover'
         }
+      } else {
+        container.style.top = '0'
+        container.style.left = '0'
+        container.style.right = 'auto'
+        container.style.zIndex = '-1'
+        container.style.opacity = '0'
       }
     }
   }

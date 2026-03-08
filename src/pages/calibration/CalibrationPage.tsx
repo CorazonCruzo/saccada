@@ -27,6 +27,12 @@ export default function CalibrationPage() {
 
   const validationResults = useRef<Array<{ predicted: CalibrationPoint; actual: CalibrationPoint }>>([])
 
+  // On mount: hide any leftover video container from a previous
+  // tracker lifecycle (e.g. prior calibration or session).
+  useEffect(() => {
+    getTracker().showVideo(false)
+  }, [getTracker])
+
   // Generate points on mount
   useEffect(() => {
     setPoints(getCalibrationPoints(window.innerWidth, window.innerHeight))
@@ -42,12 +48,9 @@ export default function CalibrationPage() {
       } catch { /* localStorage may be unavailable */ }
 
       const tracker = getTracker()
-      let gazeCount = 0
-      await tracker.start((point) => {
-        gazeCount++
-        if (gazeCount % 15 === 1) {
-          console.log(`[Gaze] #${gazeCount}: (${Math.round(point.x)}, ${Math.round(point.y)})`)
-        }
+      await tracker.start(() => {
+        // Gaze callback active during calibration — predictions are
+        // collected via recordCalibrationPoint clicks, not here.
       })
       tracker.clearData()
       tracker.showVideo(true)
@@ -66,7 +69,6 @@ export default function CalibrationPage() {
   function handlePointClick() {
     const tracker = getTracker()
     const pt = points[pointIndex]
-    console.log(`[Calibration click] point ${pointIndex + 1}/${points.length}, click ${clickCount + 1}/${CLICKS_PER_POINT}, pos: (${Math.round(pt.x)}, ${Math.round(pt.y)})`)
     tracker.recordCalibrationPoint(pt.x, pt.y)
 
     const nextClick = clickCount + 1
@@ -86,52 +88,59 @@ export default function CalibrationPage() {
     }
   }
 
-  // Validation: auto-read prediction after a delay
+  // Validation: auto-read prediction after a delay.
+  // Wrapped in try-catch because MediaPipe WASM can crash mid-validation.
+  // Uses a ref to track the active validation run — setPhase('validating-wait')
+  // triggers a re-render that cleans up this effect, but the async work must
+  // continue to completion. Only abort if a NEW validation run starts or
+  // the component truly unmounts.
+  const validationRunId = useRef(0)
+
   useEffect(() => {
     if (phase !== 'validating') return
 
+    const runId = ++validationRunId.current
+
     const timer = setTimeout(async () => {
+      // If a newer run started, bail
+      if (runId !== validationRunId.current) return
+
       setPhase('validating-wait')
       const tracker = getTracker()
       const actual = validationPoints[pointIndex]
 
       const samples: CalibrationPoint[] = []
       for (let i = 0; i < 5; i++) {
-        const predicted = await tracker.predict()
-        if (predicted) {
-          samples.push({ x: predicted.x, y: predicted.y })
+        try {
+          const predicted = await Promise.race([
+            tracker.predict(),
+            new Promise<null>(r => setTimeout(() => r(null), 2000)),
+          ])
+          if (predicted) {
+            samples.push({ x: predicted.x, y: predicted.y })
+          }
+        } catch {
+          break
         }
         await new Promise(r => setTimeout(r, 150))
       }
 
-      console.log(`[Validation ${pointIndex + 1}/${validationPoints.length}]`, {
-        actual: { x: Math.round(actual.x), y: Math.round(actual.y) },
-        samples: samples.map(s => ({ x: Math.round(s.x), y: Math.round(s.y) })),
-        samplesCount: samples.length,
-      })
+      // Check again — component may have unmounted or recalibrate clicked
+      if (runId !== validationRunId.current) return
 
       if (samples.length > 0) {
         const avgX = samples.reduce((s, p) => s + p.x, 0) / samples.length
         const avgY = samples.reduce((s, p) => s + p.y, 0) / samples.length
-        const dist = Math.sqrt((avgX - actual.x) ** 2 + (avgY - actual.y) ** 2)
-        console.log(`  Predicted avg: (${Math.round(avgX)}, ${Math.round(avgY)}), error: ${Math.round(dist)}px`)
         validationResults.current.push({
           predicted: { x: avgX, y: avgY },
           actual,
         })
-      } else {
-        console.warn('  No predictions returned!')
       }
 
       const nextIndex = pointIndex + 1
       if (nextIndex >= validationPoints.length) {
         getTracker().showVideo(false)
         const acc = computeAccuracy(validationResults.current)
-        console.log('[Calibration results]', {
-          avgError: Math.round(acc.avgError),
-          maxError: Math.round(acc.maxError),
-          totalPoints: validationResults.current.length,
-        })
         setAccuracy(acc)
         setPhase('results')
       } else {

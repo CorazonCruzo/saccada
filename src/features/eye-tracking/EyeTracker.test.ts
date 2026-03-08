@@ -124,7 +124,7 @@ describe('EyeTracker', () => {
       tracker.showVideo(true)
     })
 
-    it('sets container display to block when visible', async () => {
+    it('sets container visible with proper positioning', async () => {
       const container = document.createElement('div')
       container.id = 'webgazerVideoContainer'
       document.body.appendChild(container)
@@ -134,12 +134,13 @@ describe('EyeTracker', () => {
       tracker.showVideo(true)
 
       expect(container.style.display).toBe('block')
+      expect(container.style.opacity).toBe('0.85')
       expect(container.style.right).toBe('20px')
       expect(container.style.width).toBe('400px')
       expect(container.style.height).toBe('300px')
     })
 
-    it('sets container display to none when hidden', async () => {
+    it('hides container with opacity 0 but keeps display block (prevents WASM crash)', async () => {
       const container = document.createElement('div')
       container.id = 'webgazerVideoContainer'
       document.body.appendChild(container)
@@ -148,7 +149,13 @@ describe('EyeTracker', () => {
       await tracker.start(vi.fn())
       tracker.showVideo(false)
 
-      expect(container.style.display).toBe('none')
+      // Must be display:block, not display:none!
+      // display:none causes zero-size WebGL framebuffer → MediaPipe WASM abort.
+      expect(container.style.display).toBe('block')
+      expect(container.style.opacity).toBe('0')
+      expect(container.style.zIndex).toBe('-1')
+      expect(container.style.width).toBe('400px')
+      expect(container.style.height).toBe('300px')
     })
   })
 
@@ -223,7 +230,7 @@ describe('EyeTracker', () => {
       expect(stopFn).toHaveBeenCalledTimes(2)
     })
 
-    it('hides video container', async () => {
+    it('hides video container (opacity 0, not display none)', async () => {
       const container = document.createElement('div')
       container.id = 'webgazerVideoContainer'
       container.style.display = 'block'
@@ -233,7 +240,8 @@ describe('EyeTracker', () => {
       await tracker.start(vi.fn())
       tracker.sleep()
 
-      expect(container.style.display).toBe('none')
+      expect(container.style.display).toBe('block')
+      expect(container.style.opacity).toBe('0')
     })
   })
 
@@ -265,6 +273,49 @@ describe('EyeTracker', () => {
         video: { facingMode: 'user' },
       })
       expect(tracker.isRunning()).toBe(true)
+    })
+  })
+
+  describe('showVideo(false) keeps container in layout', () => {
+    it('never uses display:none — sets opacity 0 to prevent WASM framebuffer crash', async () => {
+      const container = document.createElement('div')
+      container.id = 'webgazerVideoContainer'
+      document.body.appendChild(container)
+
+      const tracker = new EyeTracker()
+      await tracker.start(vi.fn())
+
+      // Show then hide — simulates calibration → instructions transition
+      tracker.showVideo(true)
+      expect(container.style.opacity).toBe('0.85')
+
+      tracker.showVideo(false)
+      expect(container.style.display).toBe('block')
+      expect(container.style.opacity).toBe('0')
+      expect(container.style.width).toBe('400px')
+      expect(container.style.height).toBe('300px')
+    })
+
+    it('hides leftover container when called before calibration begins', async () => {
+      // Simulates: previous session left the container visible,
+      // CalibrationPage mounts and calls showVideo(false) on init.
+      const container = document.createElement('div')
+      container.id = 'webgazerVideoContainer'
+      container.style.display = 'block'
+      container.style.opacity = '0.85'
+      container.style.width = '400px'
+      container.style.height = '300px'
+      document.body.appendChild(container)
+
+      const tracker = new EyeTracker()
+      await tracker.start(vi.fn())
+      tracker.showVideo(false)
+
+      expect(container.style.opacity).toBe('0')
+      expect(container.style.zIndex).toBe('-1')
+      // Container stays in layout with non-zero dimensions
+      expect(container.style.display).toBe('block')
+      expect(container.style.width).toBe('400px')
     })
   })
 
