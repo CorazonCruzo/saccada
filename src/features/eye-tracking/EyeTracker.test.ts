@@ -14,6 +14,8 @@ const mockWebgazer = {
   removeMouseEventListeners: vi.fn().mockReturnThis(),
   setGazeListener: vi.fn().mockReturnThis(),
   begin: vi.fn().mockResolvedValue(undefined),
+  pause: vi.fn().mockReturnThis(),
+  resume: vi.fn().mockResolvedValue(undefined),
   end: vi.fn(),
   removeGazeListener: vi.fn(),
   recordScreenPosition: vi.fn(),
@@ -225,6 +227,17 @@ describe('EyeTracker', () => {
       expect(tracker.isReady()).toBe(true) // still ready for reuse
     })
 
+    it('pauses WebGazer prediction loop before stopping camera', async () => {
+      const tracker = new EyeTracker()
+      await tracker.start(vi.fn())
+
+      tracker.sleep()
+
+      // pause() must be called to stop estimateFaces() from processing
+      // dead frames after camera tracks are stopped
+      expect(mockWebgazer.pause).toHaveBeenCalled()
+    })
+
     it('stops camera tracks', async () => {
       const stopFn = vi.fn()
       const videoEl = document.createElement('video')
@@ -258,7 +271,7 @@ describe('EyeTracker', () => {
   })
 
   describe('start() after sleep()', () => {
-    it('re-acquires camera via getUserMedia', async () => {
+    it('re-acquires camera, waits for loadeddata, then resumes', async () => {
       const mockStream = { id: 'new-stream' }
       Object.defineProperty(navigator, 'mediaDevices', {
         value: { getUserMedia: vi.fn().mockResolvedValue(mockStream) },
@@ -269,21 +282,34 @@ describe('EyeTracker', () => {
       const videoEl = document.createElement('video')
       videoEl.id = 'webgazerVideoFeed'
       const stopFn = vi.fn()
+      // Simulate browser behavior: setting srcObject fires loadeddata
+      // asynchronously once the stream's first frame is decoded.
+      let _srcObject: unknown = { getTracks: () => [{ stop: stopFn }] }
       Object.defineProperty(videoEl, 'srcObject', {
-        value: { getTracks: () => [{ stop: stopFn }] },
-        writable: true,
+        get() { return _srcObject },
+        set(v) {
+          _srcObject = v
+          // Fire loadeddata on next microtask (like a real browser)
+          Promise.resolve().then(() =>
+            videoEl.dispatchEvent(new Event('loadeddata'))
+          )
+        },
+        configurable: true,
       })
       document.body.appendChild(videoEl)
 
       const tracker = new EyeTracker()
       await tracker.start(vi.fn())
       tracker.sleep()
+      mockWebgazer.resume.mockClear()
 
       await tracker.start(vi.fn())
 
       expect(navigator.mediaDevices.getUserMedia).toHaveBeenCalledWith({
         video: { facingMode: 'user' },
       })
+      // resume() must be called AFTER camera stream has decoded its first frame
+      expect(mockWebgazer.resume).toHaveBeenCalled()
       expect(tracker.isRunning()).toBe(true)
     })
   })

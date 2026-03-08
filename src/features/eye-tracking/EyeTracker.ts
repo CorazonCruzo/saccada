@@ -10,12 +10,16 @@ type GazeCallback = (point: GazePoint) => void
  * WebGazer wrapper. Plain TypeScript class (not a hook).
  * Lazy-loads the webgazer module (~5MB) only when needed.
  *
- * MediaPipe WASM cannot survive end()/pause()/srcObject=null.
+ * MediaPipe WASM cannot survive end() or srcObject=null.
  * So camera lifecycle works like this:
- *   start()       — first call: full init + begin(). Later calls: re-acquire camera if needed.
- *   sleep()       — stop camera tracks (LED off), hide video. Prediction loop runs on frozen frame.
- *   start() again — re-acquire camera via getUserMedia, feed new stream to video element.
+ *   start()       — first call: full init + begin(). Later calls: re-acquire camera + resume loop.
+ *   sleep()       — pause prediction loop, stop camera tracks (LED off), hide video.
+ *   start() again — re-acquire camera via getUserMedia, resume prediction loop.
  *   destroy()     — page unload only.
+ *
+ * Critical: sleep() must pause WebGazer's prediction loop BEFORE stopping
+ * camera tracks. Otherwise estimateFaces() processes frozen/dead frames,
+ * causing GL_INVALID_FRAMEBUFFER_OPERATION and killing the loop permanently.
  */
 export class EyeTracker {
   private webgazer: typeof import('webgazer').default | null = null
@@ -44,10 +48,13 @@ export class EyeTracker {
     this.callback = onGaze
 
     if (this.ready) {
-      // Already initialized: re-acquire camera if it was stopped
+      // Already initialized: re-acquire camera and resume prediction loop
       if (!this.cameraLive) {
         await this.reacquireCamera()
       }
+      // Resume WebGazer's prediction loop (stopped by sleep → pause).
+      // Must happen AFTER camera is live so estimateFaces() gets valid frames.
+      try { await wg.resume() } catch { /* noop — loop may already be running */ }
       this.running = true
       return
     }
@@ -204,12 +211,19 @@ export class EyeTracker {
 
   /**
    * Stop camera (LED off), hide video, stop gaze processing.
-   * WebGazer's prediction loop keeps running on a frozen frame (no WASM crash).
-   * Call start() to re-acquire camera for the next session.
+   * Pauses WebGazer's prediction loop to prevent estimateFaces() from
+   * processing frozen/dead frames (which causes WASM crash).
+   * Call start() to re-acquire camera and resume for the next session.
    */
   sleep(): void {
     this.running = false
     this.callback = null
+    // Pause prediction loop BEFORE stopping camera tracks.
+    // If we stop tracks first, loop() calls estimateFaces() on a dead
+    // video frame → GL_INVALID_FRAMEBUFFER_OPERATION → WASM abort.
+    if (this.webgazer) {
+      try { this.webgazer.pause() } catch { /* noop */ }
+    }
     this.showVideo(false)
     this.stopCameraTracks()
   }
@@ -240,7 +254,8 @@ export class EyeTracker {
 
   /**
    * Stop camera tracks directly. The video element keeps its srcObject
-   * (frozen last frame), so the prediction loop doesn't crash.
+   * (frozen last frame). Prediction loop must be paused BEFORE calling
+   * this to prevent estimateFaces() from crashing on dead frames.
    */
   private stopCameraTracks(): void {
     const video = document.getElementById('webgazerVideoFeed') as HTMLVideoElement | null
@@ -253,7 +268,8 @@ export class EyeTracker {
 
   /**
    * Re-acquire camera and plug the new stream into WebGazer's existing
-   * video element. No begin() call needed: prediction loop is still alive.
+   * video element. No begin() call needed. Caller must resume the
+   * prediction loop after this returns.
    */
   private async reacquireCamera(): Promise<void> {
     const video = document.getElementById('webgazerVideoFeed') as HTMLVideoElement | null
@@ -262,6 +278,16 @@ export class EyeTracker {
       video: { facingMode: 'user' },
     })
     video.srcObject = stream
+    // Wait for the new stream to decode its first frame.
+    // Without this, resume() → loop() → estimateFaces(video) runs while
+    // videoWidth/videoHeight are still 0 → zero-size WebGL texture →
+    // GL_INVALID_FRAMEBUFFER_OPERATION → WASM abort.
+    // This mirrors what WebGazer's own init() does before starting loop().
+    if (!video.videoWidth) {
+      await new Promise<void>((resolve) => {
+        video.addEventListener('loadeddata', () => resolve(), { once: true })
+      })
+    }
     this.cameraLive = true
   }
 }
