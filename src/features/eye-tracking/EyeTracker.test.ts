@@ -26,6 +26,8 @@ vi.mock('webgazer', () => ({ default: mockWebgazer }))
 beforeEach(() => {
   vi.clearAllMocks()
   document.body.innerHTML = ''
+  // Clean up guard styles injected into <head> by previous tests
+  document.head.querySelectorAll('style').forEach(s => s.remove())
 })
 
 describe('EyeTracker', () => {
@@ -140,22 +142,16 @@ describe('EyeTracker', () => {
       expect(container.style.zIndex).toBe('50')
     })
 
-    it('hides raw camera feed via visibility:hidden on video element', async () => {
-      const container = document.createElement('div')
-      container.id = 'webgazerVideoContainer'
-      const video = document.createElement('video')
-      video.id = 'webgazerVideoFeed'
-      container.appendChild(video)
-      document.body.appendChild(container)
-
+    it('injects CSS guard that keeps video display:block and opacity:0', async () => {
       const tracker = new EyeTracker()
       await tracker.start(vi.fn())
-      tracker.showVideo(true)
 
-      // Video stays in layout (display:block) for WASM, but is invisible
-      // so only the face mesh overlay is shown, not the raw camera feed.
-      expect(video.style.display).toBe('block')
-      expect(video.style.visibility).toBe('hidden')
+      // CSS guard prevents WebGazer from setting display:none on video.
+      // Video stays display:block with opacity:0 — invisible to user but
+      // non-zero dimensions for MediaPipe GPU pipeline.
+      const styles = document.head.querySelectorAll('style')
+      const guardContent = Array.from(styles).map(s => s.textContent).join('')
+      expect(guardContent).toContain('#webgazerVideoFeed{display:block!important;opacity:0!important}')
     })
 
     it('hides container with opacity 0 but keeps display block (prevents WASM crash)', async () => {
@@ -346,7 +342,7 @@ describe('EyeTracker', () => {
       expect(mockWebgazer.showVideoPreview).not.toHaveBeenCalled()
     })
 
-    it('toggles face overlay and feedback box via WebGazer API', async () => {
+    it('toggles face overlay via WebGazer API but never shows feedback box', async () => {
       const container = document.createElement('div')
       container.id = 'webgazerVideoContainer'
       document.body.appendChild(container)
@@ -358,14 +354,14 @@ describe('EyeTracker', () => {
 
       tracker.showVideo(true)
       expect(mockWebgazer.showFaceOverlay).toHaveBeenCalledWith(true)
-      expect(mockWebgazer.showFaceFeedbackBox).toHaveBeenCalledWith(true)
+      // Feedback box is never toggled in showVideo — always off (no border artifact)
+      expect(mockWebgazer.showFaceFeedbackBox).not.toHaveBeenCalled()
 
       tracker.showVideo(false)
       expect(mockWebgazer.showFaceOverlay).toHaveBeenCalledWith(false)
-      expect(mockWebgazer.showFaceFeedbackBox).toHaveBeenCalledWith(false)
     })
 
-    it('keeps video element display:block but does not override canvas elements', async () => {
+    it('does not set inline styles on video or canvas elements', async () => {
       const container = document.createElement('div')
       container.id = 'webgazerVideoContainer'
       const video = document.createElement('video')
@@ -381,10 +377,34 @@ describe('EyeTracker', () => {
       await tracker.start(vi.fn())
 
       tracker.showVideo(false)
-      // Video must stay display:block to prevent WASM crash
-      expect(video.style.display).toBe('block')
+      // showVideo() must not touch video inline styles — CSS guard handles it
+      expect(video.style.display).toBe('')
       // Canvas elements must NOT be overridden — WebGazer manages them
       expect(canvas.style.display).toBe('none')
+    })
+  })
+
+  describe('CSS guard (WASM crash prevention)', () => {
+    it('injects guard stylesheet into <head> during start()', async () => {
+      expect(document.head.querySelectorAll('style').length).toBe(0)
+
+      const tracker = new EyeTracker()
+      await tracker.start(vi.fn())
+
+      const styles = document.head.querySelectorAll('style')
+      expect(styles.length).toBe(1)
+      expect(styles[0].textContent).toContain('#webgazerVideoFeed{display:block!important;opacity:0!important}')
+      expect(styles[0].textContent).toContain('#webgazerVideoContainer{display:block!important')
+    })
+
+    it('guard keeps container display:block!important to prevent WASM crash', async () => {
+      const tracker = new EyeTracker()
+      await tracker.start(vi.fn())
+
+      const guardContent = document.head.querySelector('style')!.textContent!
+      // Container must also be display:block!important — WebGazer's hideVideoElement
+      // can cascade display:none to the container via showVideoPreview(false)
+      expect(guardContent).toContain('#webgazerVideoContainer{display:block!important')
     })
   })
 
@@ -414,6 +434,15 @@ describe('EyeTracker', () => {
       ]) {
         expect(document.getElementById(id)).toBeNull()
       }
+    })
+
+    it('removes guard stylesheet from <head>', async () => {
+      const tracker = new EyeTracker()
+      await tracker.start(vi.fn())
+      expect(document.head.querySelectorAll('style').length).toBe(1)
+
+      tracker.destroy()
+      expect(document.head.querySelectorAll('style').length).toBe(0)
     })
 
     it('does nothing if webgazer not loaded', () => {

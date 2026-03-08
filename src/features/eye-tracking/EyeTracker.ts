@@ -25,6 +25,7 @@ export class EyeTracker {
   private cameraLive = false
   private lastEmit = 0
   private throttleMs = 66 // ~15fps
+  private guardStyle: HTMLStyleElement | null = null
 
   async load(): Promise<void> {
     if (this.webgazer) return
@@ -59,7 +60,7 @@ export class EyeTracker {
     try { wg.showVideoPreview(true) } catch { /* noop */ }
     try { wg.showPredictionPoints(false) } catch { /* noop */ }
     try { wg.showFaceOverlay(true) } catch { /* noop */ }
-    try { wg.showFaceFeedbackBox(true) } catch { /* noop */ }
+    try { wg.showFaceFeedbackBox(false) } catch { /* noop */ }
     try { wg.applyKalmanFilter(false) } catch { /* noop */ }
     try { wg.setRegression('ridge') } catch { /* noop */ }
     try { wg.saveDataAcrossSessions(true) } catch { /* noop */ }
@@ -73,17 +74,31 @@ export class EyeTracker {
       this.callback?.({ x: data.x, y: data.y, t: elapsedTime })
     })
 
-    // Prevent flash: WebGazer's init() creates the container at (0,0)
-    // and it would be visible for 1-2 frames before showVideo(false) runs.
-    // Temporary CSS rule hides it instantly. Uses opacity (not display:none)
-    // to keep non-zero dimensions for MediaPipe WASM.
-    const antiFlashStyle = document.createElement('style')
-    antiFlashStyle.textContent = '#webgazerVideoContainer{opacity:0!important}'
-    document.head.appendChild(antiFlashStyle)
+    // --- WASM crash prevention (permanent CSS guard) ---
+    //
+    // WebGazer's init() calls hideVideoElement() which on Chrome sets
+    // display:none on the <video>. Then loop() processes the FIRST frame
+    // while the video has zero rendered dimensions. MediaPipe's
+    // estimateFaces(video) passes this zero-size element to the GPU
+    // pipeline, causing GL_INVALID_FRAMEBUFFER_OPERATION.
+    //
+    // Fix: inject !important rules BEFORE begin() that override any
+    // inline display:none WebGazer sets. The video stays display:block
+    // with opacity:0 at all times — invisible to the user but with
+    // non-zero dimensions for the GPU pipeline.
+    //
+    // The container rule hides the flash at (0,0) during init.
+    // showVideo() overrides container opacity via inline styles
+    // (no !important on container opacity, so inline wins).
+    this.guardStyle = document.createElement('style')
+    this.guardStyle.textContent = [
+      '#webgazerVideoFeed{display:block!important;opacity:0!important}',
+      '#webgazerVideoContainer{display:block!important;opacity:0;position:fixed!important}',
+    ].join('')
+    document.head.appendChild(this.guardStyle)
 
     await wg.begin()
     this.showVideo(false)
-    antiFlashStyle.remove()
     this.ready = true
     this.running = true
     this.cameraLive = true
@@ -98,21 +113,23 @@ export class EyeTracker {
    * Show or hide the webcam face mesh overlay.
    *
    * The raw camera feed is NEVER shown to the user. Only the face mesh
-   * overlay and feedback box are visible. The <video> element stays in
-   * layout (display:block, visibility:hidden) so MediaPipe WASM always
-   * has non-zero dimensions and doesn't crash.
+   * overlay canvas is visible. The <video> element stays in layout
+   * (display:block, opacity:0) so MediaPipe WASM always has non-zero
+   * dimensions and can read video frames without crashing.
    *
    * We never call WebGazer's showVideoPreview(false) or showVideo(false)
    * because on Chrome they use `display: none`, which zeros the video
    * dimensions and causes GL_INVALID_FRAMEBUFFER_OPERATION.
+   *
+   * We use opacity:0 (not visibility:hidden) on the video because
+   * Safari/Firefox WebGazer does the same and MediaPipe's GPU pipeline
+   * is known to work with it.
    */
   showVideo(visible: boolean): void {
     if (!this.webgazer) return
 
-    // Show/hide overlay canvases via WebGazer API.
-    // Face overlay and feedback box use display:none which is fine for canvases.
+    // Toggle face mesh overlay. Feedback box is always off (no border artifact).
     try { this.webgazer.showFaceOverlay(visible) } catch { /* noop */ }
-    try { this.webgazer.showFaceFeedbackBox(visible) } catch { /* noop */ }
 
     const container = document.getElementById('webgazerVideoContainer')
     if (container) {
@@ -138,14 +155,9 @@ export class EyeTracker {
         container.style.opacity = '0'
       }
 
-      // Video element: always display:block (WASM crash prevention)
-      // but visibility:hidden so the raw camera feed is never shown.
-      // The face overlay canvas is drawn on top independently.
-      const video = container.querySelector('video') as HTMLElement | null
-      if (video) {
-        video.style.display = 'block'
-        video.style.visibility = 'hidden'
-      }
+      // Video element is permanently guarded by CSS !important rules:
+      // display:block!important; opacity:0!important
+      // No manual style overrides needed here.
     }
   }
 
@@ -214,6 +226,8 @@ export class EyeTracker {
     this.cameraLive = false
     try { this.webgazer.removeGazeListener() } catch { /* noop */ }
     try { this.webgazer.end() } catch { /* noop */ }
+    this.guardStyle?.remove()
+    this.guardStyle = null
     for (const id of [
       'webgazerVideoFeed', 'webgazerVideoCanvas',
       'webgazerFaceOverlay', 'webgazerFaceFeedbackBox',
