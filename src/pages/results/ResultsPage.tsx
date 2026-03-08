@@ -94,7 +94,7 @@ export default function ResultsPage() {
             <div
               ref={heatmapContainerRef}
               className="overflow-hidden rounded-xl border border-border-ornament bg-bg-mid"
-              style={{ height: 200 }}
+              style={{ aspectRatio: `${lastSession.viewportWidth ?? 16} / ${lastSession.viewportHeight ?? 9}` }}
             >
               <HeatmapViewer
                 gazePoints={lastSession.gazePoints!}
