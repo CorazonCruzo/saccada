@@ -222,5 +222,18 @@ export interface Translation {
     drone: string
     rhythmic: string
   }
+  weeklyGoal: {
+    title: string
+    description: string
+    noGoal: string
+    save: string
+    thisWeek: string
+    reached: string
+    weeksInRow: string
+    goalStreak: string
+    milestone: string
+    days: string
+    daysPerWeek: string
+  }
   pattern: Record<string, PatternTranslation>
 }

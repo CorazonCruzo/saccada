@@ -4,6 +4,8 @@ import { useLiveQuery } from 'dexie-react-hooks'
 import { db, type SessionRecord } from '@/shared/lib/db'
 import { patternsById } from '@/entities/pattern'
 import { computeStats, computeStreak, useSessionFilters, filterSessions, buildMonthGrid, prevMonth, nextMonth, isMonthInFuture, computeLongestStreak, colorLevel, toDateKey, type PeriodFilter, type CalendarDay, type MonthGrid } from '@/features/session-history'
+import { useWeeklyGoalStore, getWeeklyProgress, getISOWeekStart, getWeeklyGoalStreak } from '@/features/weekly-goal'
+import { GoalProgressBar, GoalSettingDialog } from '@/widgets/weekly-goal-widget'
 import { groupSessionsByDay, getSessionFocusScore, computeAvgFocusScore } from '@/features/session-history/sessionList'
 import { computeMoodChange } from '@/pages/results/ResultsPage'
 import { reconstructDotPositions } from '@/shared/lib/math'
@@ -18,6 +20,7 @@ export default function HistoryPage() {
   const [deleteId, setDeleteId] = useState<number | null>(null)
   const [expandedIds, setExpandedIds] = useState<Set<number>>(new Set())
   const [showMore, setShowMore] = useState(false)
+  const [goalDialogOpen, setGoalDialogOpen] = useState(false)
 
   const toggleExpand = useCallback((id: number) => {
     setExpandedIds((prev) => {
@@ -46,6 +49,8 @@ export default function HistoryPage() {
   const [calYear, setCalYear] = useState(nowDate.getFullYear())
   const [calMonth, setCalMonth] = useState(nowDate.getMonth())
 
+  const { weeklyGoal } = useWeeklyGoalStore()
+
   if (!sessions) return null // loading
 
   const stats = computeStats(filteredSessions)
@@ -54,6 +59,8 @@ export default function HistoryPage() {
   const longestStreak = computeLongestStreak(sessions)
   const streakActive = globalStreak > 0
   const hasSessionToday = sessions.some((s) => toDateKey(s.timestamp) === toDateKey(Date.now()))
+  const weeklyGoalProgress = weeklyGoal ? getWeeklyProgress(sessions, getISOWeekStart()) : 0
+  const weeklyGoalStreakVal = weeklyGoal ? getWeeklyGoalStreak(sessions, weeklyGoal) : 0
   const monthGrid = buildMonthGrid(sessions, calYear, calMonth, locale)
 
   // If a calendar day is selected, bypass period filter — show that day from all sessions
@@ -158,9 +165,44 @@ export default function HistoryPage() {
           </div>
         )}
 
+        {/* Weekly goal */}
+        {filteredSessions.length > 0 && (
+          <div className="mt-5 flex items-center gap-3 rounded-lg border border-border-ornament bg-bg-mid px-3 py-2">
+            {weeklyGoal != null ? (
+              <>
+                <button
+                  onClick={() => setGoalDialogOpen(true)}
+                  className="shrink-0 cursor-pointer font-heading text-[10px] tracking-widest text-text-dim uppercase transition-colors hover:text-text-muted"
+                >
+                  {t.weeklyGoal.thisWeek}
+                </button>
+                <div className="flex-1">
+                  <GoalProgressBar progress={weeklyGoalProgress} goal={weeklyGoal} />
+                </div>
+                <span className="shrink-0 font-heading text-xs tabular-nums text-text-bright">
+                  {weeklyGoalProgress}/{weeklyGoal}
+                </span>
+                {weeklyGoalStreakVal > 0 && (
+                  <span className="shrink-0 font-heading text-[10px] tabular-nums text-teal">
+                    {weeklyGoalStreakVal} {t.weeklyGoal.weeksInRow}
+                  </span>
+                )}
+              </>
+            ) : (
+              <button
+                onClick={() => setGoalDialogOpen(true)}
+                className="w-full cursor-pointer text-center font-heading text-xs tracking-wide text-text-dim transition-colors hover:text-text-muted"
+              >
+                + {t.weeklyGoal.title}
+              </button>
+            )}
+          </div>
+        )}
+        <GoalSettingDialog open={goalDialogOpen} onOpenChange={setGoalDialogOpen} />
+
         {/* Stats */}
         {filteredSessions.length > 0 && (
-          <div className="mt-5">
+          <div className="mt-3">
             <div className="grid grid-cols-4 gap-3">
               <StatBlock label={t.history.totalSessions} value={String(stats.totalSessions)} />
               <StatBlock label={t.history.totalTime} value={formatTimer(stats.totalTimeMs)} />
@@ -173,6 +215,7 @@ export default function HistoryPage() {
                 value={`${globalStreak}${t.history.streakDays}`}
               />
             </div>
+
             {showMore && (
               <div className="mt-3 grid grid-cols-4 gap-3">
                 <StatBlock

@@ -233,6 +233,19 @@ export const ru: Translation = {
     drone: 'Тон',
     rhythmic: 'Ритмический',
   },
+  weeklyGoal: {
+    title: 'Цель на неделю',
+    description: 'Сколько дней в неделю вы хотите практиковать?',
+    noGoal: 'Без цели',
+    save: 'Сохранить',
+    thisWeek: 'Эта неделя',
+    reached: 'Цель на неделю достигнута',
+    weeksInRow: 'нед. подряд',
+    goalStreak: 'Серия недель',
+    milestone: 'нед. регулярной практики',
+    days: 'д',
+    daysPerWeek: 'дней в неделю',
+  },
 
   pattern: {
     sama: {

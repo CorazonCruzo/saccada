@@ -233,6 +233,19 @@ export const es: Translation = {
     drone: 'Tono',
     rhythmic: 'R\u00EDtmico',
   },
+  weeklyGoal: {
+    title: 'Meta semanal',
+    description: '\u00BFCu\u00E1ntos d\u00EDas por semana quieres practicar?',
+    noGoal: 'Sin meta',
+    save: 'Guardar',
+    thisWeek: 'Esta semana',
+    reached: 'Meta semanal alcanzada',
+    weeksInRow: 'semanas seguidas',
+    goalStreak: 'Racha semanal',
+    milestone: 'semanas de pr\u00E1ctica constante',
+    days: 'd',
+    daysPerWeek: 'd\u00EDas por semana',
+  },
 
   pattern: {
     sama: {
