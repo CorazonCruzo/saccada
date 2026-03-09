@@ -18,9 +18,7 @@ const GAZE_SAMPLE_INTERVAL_MS = 50
 const GAZE_SETTLE_DELAY_MS = 800 // let eye fixate on new point before collecting
 const GAZE_FIRST_POINT_DELAY_MS = 1500 // extra time for first point
 
-// Face mesh canvas size
-const MESH_W = 480
-const MESH_H = 360
+// Face mesh: CSS size set via dvw/dvh, canvas pixel size resolved dynamically
 
 // Iris landmark indices (MediaPipe Face Landmarker)
 const IRIS_INDICES = new Set([468, 469, 470, 471, 472, 473, 474, 475, 476, 477])
@@ -176,20 +174,32 @@ export default function CalibrationPage() {
     const canvas = meshCanvasRef.current
     if (!canvas) return
 
-    const dpr = window.devicePixelRatio || 1
-    canvas.width = MESH_W * dpr
-    canvas.height = MESH_H * dpr
     const ctx = canvas.getContext('2d')!
+    let prevW = 0
+    let prevH = 0
 
     function render() {
       meshRafRef.current = requestAnimationFrame(render)
+
+      // Resolve CSS size each frame (dvw/dvh may change on resize/rotate)
+      const rect = canvas!.getBoundingClientRect()
+      const dpr = window.devicePixelRatio || 1
+      const w = Math.round(rect.width)
+      const h = Math.round(rect.height)
+      if (w !== prevW || h !== prevH) {
+        canvas!.width = w * dpr
+        canvas!.height = h * dpr
+        prevW = w
+        prevH = h
+      }
+
       const lms = landmarksRef.current
       if (!lms || !meshVisibleRef.current) {
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
-        ctx.clearRect(0, 0, MESH_W, MESH_H)
+        ctx.clearRect(0, 0, w, h)
         return
       }
-      drawFaceMesh(ctx, lms, MESH_W, MESH_H, dpr, performance.now() / 1000)
+      drawFaceMesh(ctx, lms, w, h, dpr, performance.now() / 1000)
     }
 
     meshRafRef.current = requestAnimationFrame(render)
@@ -450,11 +460,10 @@ export default function CalibrationPage() {
         ref={meshCanvasRef}
         style={{
           position: 'fixed',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -55%)',
-          width: MESH_W,
-          height: MESH_H,
+          top: '2dvh',
+          right: '2dvw',
+          width: '45dvw',
+          aspectRatio: '4 / 3',
           zIndex: 5,
           pointerEvents: 'none',
           borderRadius: 8,
