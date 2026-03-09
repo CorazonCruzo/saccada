@@ -1,8 +1,6 @@
-import { useState, useRef, useEffect, useCallback } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useSessionStore } from '@/entities/session'
-import { shouldCalibrate } from '@/features/calibration'
-import { useEyeTracking } from '@/features/eye-tracking'
 import { drawMoodFlame } from '@/features/animation'
 import { useTranslation } from '@/shared/lib/i18n'
 import { Button } from '@/shared/ui/button'
@@ -100,26 +98,18 @@ export default function MoodCheckPage() {
   const {
     setMoodBefore,
     setSessionState,
-    eyeTrackingEnabled,
-    calibratedAt,
     lastSession,
     setLastSession,
   } = useSessionStore()
-  const { getTracker } = useEyeTracking()
 
   const [selected, setSelected] = useState<number | null>(null)
 
   const title = phase === 'before' ? t.mood.howAreYouNow : t.mood.howAreYouAfter
 
-  const navigateToSession = useCallback(async () => {
-    if (await shouldCalibrate(eyeTrackingEnabled, calibratedAt, getTracker().isReady())) {
-      setSessionState('calibrating')
-      navigate('/calibration', { replace: true })
-    } else {
-      setSessionState('countdown')
-      navigate('/session', { replace: true })
-    }
-  }, [eyeTrackingEnabled, calibratedAt, getTracker, setSessionState, navigate])
+  function navigateToSession() {
+    setSessionState('countdown')
+    navigate('/session', { replace: true })
+  }
 
   function handleContinue() {
     if (phase === 'before') {

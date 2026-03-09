@@ -3,7 +3,7 @@ import { getTrajectoryPosition, toCanvasCoords } from './trajectories'
 
 /**
  * Focus threshold as fraction of viewport diagonal.
- * WebGazer typical accuracy is 100-200px; on a 1920x1080 display
+ * Typical webcam eye-tracking accuracy is 100-200px; on a 1920x1080 display
  * the diagonal is ~2203px, so 25% = ~550px — generous enough to
  * tolerate webcam eye-tracking noise while still penalizing clear
  * off-target gaze.
@@ -42,7 +42,7 @@ export function reconstructDotPositions(
   const totalPhaseDur = pattern.phases.reduce((s, p) => s + p.duration, 0)
   if (totalPhaseDur === 0) return timestamps.map((t) => ({ x: viewportW / 2, y: viewportH / 2, t }))
 
-  // Normalize timestamps: gaze t is relative to WebGazer.begin() (calibration start),
+  // Normalize timestamps: gaze t is relative to pipeline start (calibration start),
   // but animation animTime starts at 0 when the session begins. The first recorded
   // gaze point approximately coincides with animation start.
   const t0 = timestamps.length > 0 ? timestamps[0] : 0

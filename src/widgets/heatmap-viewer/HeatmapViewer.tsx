@@ -1,6 +1,6 @@
 import { useRef, useEffect, useCallback, useMemo } from 'react'
 import type { GazePoint } from '@/features/eye-tracking'
-import { drawHeatmap } from './drawHeatmap'
+import { drawHeatmap, computeFocusSegments } from './drawHeatmap'
 
 interface HeatmapViewerProps {
   gazePoints: GazePoint[]
@@ -15,7 +15,6 @@ export function HeatmapViewer({ gazePoints, sourceWidth, sourceHeight, className
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
 
-  // Infer source dimensions from point bounds if not provided
   const source = useMemo(() => {
     if (sourceWidth && sourceHeight) return { w: sourceWidth, h: sourceHeight }
     let maxX = 0
@@ -37,27 +36,51 @@ export function HeatmapViewer({ gazePoints, sourceWidth, sourceHeight, className
     const h = Math.round(rect.height)
     if (w === 0 || h === 0) return
 
-    // No DPR scaling: putImageData writes directly to the pixel buffer
-    // and ignores canvas transforms. With 16px cells + blur, Retina
-    // resolution adds no visible difference.
-    canvas.width = w
-    canvas.height = h
+    const dpr = window.devicePixelRatio || 1
+    canvas.width = w * dpr
+    canvas.height = h * dpr
     canvas.style.width = `${w}px`
     canvas.style.height = `${h}px`
 
     const ctx = canvas.getContext('2d')
     if (!ctx) return
 
+    ctx.scale(dpr, dpr)
+
     // Scale gaze points from source viewport to canvas dimensions
     const scaleX = w / source.w
     const scaleY = h / source.h
-    const scaled = gazePoints.map((p) => ({
+    const scaled: GazePoint[] = gazePoints.map((p) => ({
       x: p.x * scaleX,
       y: p.y * scaleY,
       t: p.t,
+      dotX: p.dotX != null ? p.dotX * scaleX : undefined,
+      dotY: p.dotY != null ? p.dotY * scaleY : undefined,
     }))
 
-    drawHeatmap(ctx, scaled, w, h)
+    // Extract & scale dot trajectory (sample to avoid too many line segments)
+    let dotPositions: Array<{ x: number; y: number }> | undefined
+    if (scaled.length > 0 && scaled[0].dotX != null) {
+      const step = Math.max(1, Math.floor(scaled.length / 500))
+      const positions: Array<{ x: number; y: number }> = []
+      for (let i = 0; i < scaled.length; i += step) {
+        const p = scaled[i]
+        if (p.dotX != null && p.dotY != null) {
+          positions.push({ x: p.dotX, y: p.dotY })
+        }
+      }
+      if (positions.length > 1) dotPositions = positions
+    }
+
+    // Focus timeline
+    const diagonal = Math.sqrt(w ** 2 + h ** 2)
+    const focusSegs = computeFocusSegments(scaled, diagonal)
+    const hasTimeline = focusSegs.some((s) => s !== null)
+
+    drawHeatmap(ctx, scaled, w, h, {
+      dotPositions,
+      focusSegments: hasTimeline ? focusSegs : undefined,
+    })
   }, [gazePoints, source])
 
   useEffect(() => {

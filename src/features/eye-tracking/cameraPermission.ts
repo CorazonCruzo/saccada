@@ -31,7 +31,7 @@ export async function requestCameraAccess(): Promise<boolean> {
   try {
     const stream = await navigator.mediaDevices.getUserMedia({ video: true })
     // Stop the tracks immediately; we just needed the permission grant.
-    // WebGazer will open its own stream.
+    // The pipeline will open its own stream.
     for (const track of stream.getTracks()) {
       track.stop()
     }

@@ -1,30 +1,29 @@
 import type { GazePoint } from '@/features/eye-tracking'
 
 /**
- * Heatmap renderer. Pure function, no React dependency.
+ * Heatmap renderer. Pure functions, no React dependency.
  *
- * Algorithm:
- * 1. Divide canvas into grid cells
- * 2. Count gaze points per cell
- * 3. Apply gaussian blur
- * 4. Map density to color gradient (indigo -> teal -> turmeric -> saffron)
+ * Layers (bottom to top):
+ * 1. Background (bg-deep)
+ * 2. Gaze density heatmap (teal -> turmeric -> saffron gradient)
+ * 3. Dot trajectory (thin gold line)
+ * 4. Focus Timeline bar (8px, teal / lotus / dim)
  */
 
-const CELL_SIZE = 16
-const BLUR_RADIUS = 2 // cells
+const CELL_SIZE = 20
+const BLUR_RADIUS = 3
 
-// Heatmap palette: from bg-deep through cool to warm
-const HEATMAP_COLORS = [
-  [14, 10, 26, 0],      // bg-deep, transparent
-  [108, 92, 231, 80],   // indigo
-  [46, 196, 182, 140],  // teal
-  [232, 168, 56, 200],  // turmeric
-  [255, 107, 53, 255],  // saffron
-] as const
+// Palette (RGB)
+const TEAL = { r: 46, g: 196, b: 182 }
+const TURMERIC = { r: 232, g: 168, b: 56 }
+const SAFFRON = { r: 255, g: 107, b: 53 }
 
-/**
- * Build a density grid from gaze points.
- */
+const BG_DEEP = '#0e0a1a'
+const TIMELINE_HEIGHT = 8
+const FOCUS_THRESHOLD_FRACTION = 0.25
+
+// ---- Density grid ----
+
 export function buildDensityGrid(
   points: GazePoint[],
   width: number,
@@ -51,9 +50,8 @@ export function buildDensityGrid(
   return { grid, cols, rows, max }
 }
 
-/**
- * Apply a simple box blur (approximation of gaussian) to the density grid.
- */
+// ---- Box blur ----
+
 export function blurGrid(
   grid: Float32Array,
   cols: number,
@@ -83,34 +81,50 @@ export function blurGrid(
   return result
 }
 
-/**
- * Interpolate between heatmap color stops based on normalized value (0..1).
- */
-export function getHeatmapColor(t: number): [number, number, number, number] {
-  const stops = HEATMAP_COLORS
-  const clampedT = Math.max(0, Math.min(1, t))
-  const segment = clampedT * (stops.length - 1)
-  const i = Math.floor(segment)
-  const f = segment - i
+// ---- Color interpolation ----
 
-  if (i >= stops.length - 1) {
-    return [...stops[stops.length - 1]] as [number, number, number, number]
-  }
-
-  const a = stops[i]
-  const b = stops[i + 1]
-  return [
-    Math.round(a[0] + (b[0] - a[0]) * f),
-    Math.round(a[1] + (b[1] - a[1]) * f),
-    Math.round(a[2] + (b[2] - a[2]) * f),
-    Math.round(a[3] + (b[3] - a[3]) * f),
-  ]
+function lerp(a: number, b: number, t: number): number {
+  return Math.round(a + (b - a) * t)
 }
 
 /**
- * Draw the heatmap onto a canvas context.
+ * Map normalized intensity (0..1) to RGBA.
+ *
+ * 0..0.5:   teal with increasing opacity (0 -> 180)
+ * 0.5..0.75: teal -> turmeric, opacity 180 -> 230
+ * 0.75..1.0: turmeric -> saffron, opacity 230 -> 255
  */
-export function drawHeatmap(
+export function getHeatmapColor(intensity: number): [number, number, number, number] {
+  const t = Math.max(0, Math.min(1, intensity))
+  if (t < 0.01) return [0, 0, 0, 0]
+
+  if (t < 0.5) {
+    const f = t / 0.5
+    return [TEAL.r, TEAL.g, TEAL.b, Math.round(f * 180)]
+  }
+
+  if (t < 0.75) {
+    const f = (t - 0.5) / 0.25
+    return [
+      lerp(TEAL.r, TURMERIC.r, f),
+      lerp(TEAL.g, TURMERIC.g, f),
+      lerp(TEAL.b, TURMERIC.b, f),
+      lerp(180, 230, f),
+    ]
+  }
+
+  const f = (t - 0.75) / 0.25
+  return [
+    lerp(TURMERIC.r, SAFFRON.r, f),
+    lerp(TURMERIC.g, SAFFRON.g, f),
+    lerp(TURMERIC.b, SAFFRON.b, f),
+    lerp(230, 255, f),
+  ]
+}
+
+// ---- Gaze heatmap layer ----
+
+export function drawGazeHeatmap(
   ctx: CanvasRenderingContext2D,
   points: GazePoint[],
   width: number,
@@ -121,49 +135,47 @@ export function drawHeatmap(
   const { grid, cols, rows, max } = buildDensityGrid(points, width, height)
   if (max === 0) return
 
-  const blurred = blurGrid(grid, cols, rows)
+  // Two-pass blur for smoother result
+  let blurred = blurGrid(grid, cols, rows)
+  blurred = blurGrid(blurred, cols, rows)
 
-  // Find blurred max
   let blurredMax = 0
   for (let i = 0; i < blurred.length; i++) {
     if (blurred[i] > blurredMax) blurredMax = blurred[i]
   }
   if (blurredMax === 0) return
 
-  const imageData = ctx.createImageData(width, height)
+  // Render at grid resolution, then scale up for smooth interpolation
+  const offCanvas = document.createElement('canvas')
+  offCanvas.width = cols
+  offCanvas.height = rows
+  const offCtx = offCanvas.getContext('2d')
+  if (!offCtx) return
+
+  const imageData = offCtx.createImageData(cols, rows)
   const data = imageData.data
 
-  for (let r = 0; r < rows; r++) {
-    for (let c = 0; c < cols; c++) {
-      const density = blurred[r * cols + c] / blurredMax
-      if (density < 0.01) continue
-
-      const color = getHeatmapColor(density)
-
-      // Fill the cell's pixels
-      const startX = c * CELL_SIZE
-      const startY = r * CELL_SIZE
-      const endX = Math.min(startX + CELL_SIZE, width)
-      const endY = Math.min(startY + CELL_SIZE, height)
-
-      for (let py = startY; py < endY; py++) {
-        for (let px = startX; px < endX; px++) {
-          const idx = (py * width + px) * 4
-          data[idx] = color[0]
-          data[idx + 1] = color[1]
-          data[idx + 2] = color[2]
-          data[idx + 3] = color[3]
-        }
-      }
-    }
+  for (let i = 0; i < blurred.length; i++) {
+    const intensity = blurred[i] / blurredMax
+    if (intensity < 0.01) continue
+    const [r, g, b, a] = getHeatmapColor(intensity)
+    const idx = i * 4
+    data[idx] = r
+    data[idx + 1] = g
+    data[idx + 2] = b
+    data[idx + 3] = a
   }
 
-  ctx.putImageData(imageData, 0, 0)
+  offCtx.putImageData(imageData, 0, 0)
+
+  // Bilinear interpolation when scaling up gives a smooth gradient
+  ctx.imageSmoothingEnabled = true
+  ctx.imageSmoothingQuality = 'high'
+  ctx.drawImage(offCanvas, 0, 0, width, height)
 }
 
-/**
- * Draw the dot trajectory path as a thin gold line.
- */
+// ---- Trajectory overlay ----
+
 export function drawTrajectoryOverlay(
   ctx: CanvasRenderingContext2D,
   dotPositions: Array<{ x: number; y: number }>,
@@ -177,8 +189,107 @@ export function drawTrajectoryOverlay(
     ctx.lineTo(dotPositions[i].x, dotPositions[i].y)
   }
   ctx.strokeStyle = color
-  ctx.lineWidth = 1
-  ctx.globalAlpha = 0.4
+  ctx.lineWidth = 1.5
+  ctx.globalAlpha = 0.5
   ctx.stroke()
   ctx.globalAlpha = 1
+}
+
+// ---- Focus timeline ----
+
+/**
+ * Compute per-segment focus ratio from gaze points with recorded dot positions.
+ * Returns null for segments with no data.
+ */
+export function computeFocusSegments(
+  gazePoints: GazePoint[],
+  viewportDiagonal: number,
+  segments: number = 40,
+): Array<number | null> {
+  if (gazePoints.length === 0) return new Array(segments).fill(null)
+
+  const hasDotPos = gazePoints[0]?.dotX != null
+  if (!hasDotPos) return new Array(segments).fill(null)
+
+  const threshold = viewportDiagonal * FOCUS_THRESHOLD_FRACTION
+  const minT = gazePoints[0].t
+  const maxT = gazePoints[gazePoints.length - 1].t
+  const duration = maxT - minT
+  if (duration <= 0) return new Array(segments).fill(null)
+
+  const segDuration = duration / segments
+  const onTarget: number[] = new Array(segments).fill(0)
+  const counts: number[] = new Array(segments).fill(0)
+
+  for (const gaze of gazePoints) {
+    if (gaze.dotX == null || gaze.dotY == null) continue
+    const segIdx = Math.min(Math.floor((gaze.t - minT) / segDuration), segments - 1)
+    const dist = Math.sqrt((gaze.x - gaze.dotX) ** 2 + (gaze.y - gaze.dotY) ** 2)
+    counts[segIdx]++
+    if (dist < threshold) onTarget[segIdx]++
+  }
+
+  return onTarget.map((on, i) => (counts[i] > 0 ? on / counts[i] : null))
+}
+
+export function drawFocusTimeline(
+  ctx: CanvasRenderingContext2D,
+  segments: Array<number | null>,
+  width: number,
+  height: number,
+): void {
+  if (segments.length === 0) return
+
+  const y = height - TIMELINE_HEIGHT
+  const segWidth = width / segments.length
+
+  // Background strip
+  ctx.fillStyle = '#1a1035'
+  ctx.fillRect(0, y, width, TIMELINE_HEIGHT)
+
+  for (let i = 0; i < segments.length; i++) {
+    const ratio = segments[i]
+    if (ratio === null) continue
+    ctx.fillStyle = ratio >= 0.5 ? '#2ec4b6' : '#e84393'
+    ctx.fillRect(
+      Math.floor(i * segWidth),
+      y,
+      Math.ceil(segWidth) + 1,
+      TIMELINE_HEIGHT,
+    )
+  }
+}
+
+// ---- Composite ----
+
+export interface HeatmapOptions {
+  dotPositions?: Array<{ x: number; y: number }>
+  focusSegments?: Array<number | null>
+}
+
+/**
+ * Draw the complete heatmap visualization.
+ * Layer order: background -> gaze heatmap -> dot trajectory -> focus timeline.
+ */
+export function drawHeatmap(
+  ctx: CanvasRenderingContext2D,
+  gazePoints: GazePoint[],
+  width: number,
+  height: number,
+  options?: HeatmapOptions,
+): void {
+  ctx.fillStyle = BG_DEEP
+  ctx.fillRect(0, 0, width, height)
+
+  if (gazePoints.length === 0) return
+
+  drawGazeHeatmap(ctx, gazePoints, width, height)
+
+  if (options?.dotPositions && options.dotPositions.length > 1) {
+    drawTrajectoryOverlay(ctx, options.dotPositions)
+  }
+
+  if (options?.focusSegments) {
+    drawFocusTimeline(ctx, options.focusSegments, width, height)
+  }
 }

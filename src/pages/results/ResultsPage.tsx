@@ -14,6 +14,7 @@ export default function ResultsPage() {
   const { lastSession, setLastSession, setSessionState } = useSessionStore()
   const { t, tp } = useTranslation()
   const heatmapContainerRef = useRef<HTMLDivElement>(null)
+  const [gazeMapOpen, setGazeMapOpen] = useState(false)
   const [noteOpen, setNoteOpen] = useState(false)
   const [noteText, setNoteText] = useState('')
   const savedRef = useRef(false)
@@ -135,29 +136,49 @@ export default function ResultsPage() {
         {/* Heatmap */}
         {hasGaze ? (
           <div className="mt-6">
-            <p className="mb-2 font-heading text-xs tracking-widest text-text-dim uppercase">
-              {t.results.heatmapTitle}
-            </p>
-            <div
-              ref={heatmapContainerRef}
-              className="overflow-hidden rounded-xl border border-border-ornament bg-bg-mid"
-              style={{ aspectRatio: `${lastSession.viewportWidth ?? 16} / ${lastSession.viewportHeight ?? 9}` }}
-            >
-              <HeatmapViewer
-                gazePoints={lastSession.gazePoints!}
-                sourceWidth={lastSession.viewportWidth}
-                sourceHeight={lastSession.viewportHeight}
-                className="h-full w-full"
-              />
-            </div>
-            <Button
-              variant="outline"
-              size="sm"
-              className="mt-2 w-full text-xs"
-              onClick={handleExportPng}
-            >
-              {t.results.exportPng}
-            </Button>
+            {gazeMapOpen ? (
+              <>
+                <button
+                  onClick={() => setGazeMapOpen(false)}
+                  className="mb-2 flex w-full cursor-pointer items-center justify-between"
+                >
+                  <span className="font-heading text-xs tracking-widest text-text-dim uppercase">
+                    {t.results.heatmapTitle}
+                  </span>
+                  <span className="font-body text-xs text-text-muted hover:text-text-bright">
+                    {t.results.hideGazeMap}
+                  </span>
+                </button>
+                <div
+                  ref={heatmapContainerRef}
+                  className="overflow-hidden rounded-xl border border-border-ornament bg-bg-mid"
+                  style={{ aspectRatio: '16 / 9' }}
+                >
+                  <HeatmapViewer
+                    gazePoints={lastSession.gazePoints!}
+                    sourceWidth={lastSession.viewportWidth}
+                    sourceHeight={lastSession.viewportHeight}
+                    className="h-full w-full"
+                  />
+                </div>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="mt-2 w-full text-xs"
+                  onClick={handleExportPng}
+                >
+                  {t.results.exportPng}
+                </Button>
+              </>
+            ) : (
+              <Button
+                variant="outline"
+                className="w-full"
+                onClick={() => setGazeMapOpen(true)}
+              >
+                {t.results.showGazeMap}
+              </Button>
+            )}
           </div>
         ) : (
           <div className="mt-4 flex items-center gap-1.5 text-text-dim">

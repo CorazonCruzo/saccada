@@ -1,17 +1,10 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest'
+import { describe, it, expect, beforeEach } from 'vitest'
 import { shouldCalibrate } from './shouldCalibrate'
 
-// Mock localforage (used by hasWebGazerCalibrationData)
-const mockStore: Record<string, unknown> = {}
-vi.mock('localforage', () => ({
-  default: {
-    getItem: vi.fn(async (key: string) => mockStore[key] ?? null),
-    setItem: vi.fn(async (key: string, value: unknown) => { mockStore[key] = value }),
-  },
-}))
+const CALIBRATION_KEY = 'saccada-calibration-data'
 
 beforeEach(() => {
-  for (const key of Object.keys(mockStore)) delete mockStore[key]
+  localStorage.clear()
 })
 
 describe('shouldCalibrate()', () => {
@@ -32,16 +25,15 @@ describe('shouldCalibrate()', () => {
   })
 
   it('returns false when calibratedAt is set AND tracker is ready (same session)', async () => {
-    // Tracker singleton is alive with calibration in memory — no IndexedDB needed
     expect(await shouldCalibrate(true, Date.now(), true)).toBe(false)
   })
 
-  it('returns true when calibratedAt set, tracker not ready, no IndexedDB data (page refresh, data lost)', async () => {
+  it('returns true when calibratedAt set, tracker not ready, no localStorage data (page refresh, data lost)', async () => {
     expect(await shouldCalibrate(true, Date.now(), false)).toBe(true)
   })
 
-  it('returns false when calibratedAt set, tracker not ready, but IndexedDB has data (page refresh, data survived)', async () => {
-    mockStore['webgazerGlobalData'] = [{ some: 'regression data' }]
+  it('returns false when calibratedAt set, tracker not ready, but localStorage has data (page refresh, data survived)', async () => {
+    localStorage.setItem(CALIBRATION_KEY, JSON.stringify({ weightsX: [1], weightsY: [2] }))
     expect(await shouldCalibrate(true, Date.now(), false)).toBe(false)
   })
 })

@@ -70,6 +70,8 @@ export const es: Translation = {
     addNote: 'Agregar nota',
     repeatSession: 'Repetir sesi\u00F3n',
     newSession: 'Nueva sesi\u00F3n',
+    showGazeMap: 'Mostrar mapa de mirada',
+    hideGazeMap: 'Ocultar mapa de mirada',
   },
 
   sessionSettings: {
@@ -101,7 +103,8 @@ export const es: Translation = {
     howItWorks: 'C\u00F3mo funciona',
     step1: 'Mira el punto con tus ojos',
     step2: 'Mientras miras, haz clic (5 veces por punto)',
-    step3: '9 puntos en total, luego una verificaci\u00F3n r\u00E1pida de precisi\u00F3n',
+    step2Gaze: 'Mantén la mirada en cada punto durante 1.5 segundos',
+    step3: '9 puntos en total, luego una verificación rápida de precisión',
     forBestResults: 'Para mejores resultados',
     tip1: 'Iluminaci\u00F3n brillante y uniforme en tu rostro',
     tip2: 'C\u00E1mara a la altura de los ojos',
@@ -125,8 +128,11 @@ export const es: Translation = {
     lowNote: 'Intenta recalibrar con mejor iluminaci\u00F3n, manteniendo la cabeza quieta y mirando directamente a cada punto antes de hacer clic.',
     continueToSession: 'Continuar a la sesi\u00F3n',
     backToHome: 'Volver al inicio',
-    cameraAccessDenied: 'Acceso a la c\u00E1mara denegado. Permite la c\u00E1mara en la configuraci\u00F3n del navegador e int\u00E9ntalo de nuevo.',
+    cameraAccessDenied: 'Acceso a la cámara denegado. Permite la cámara en la configuración del navegador e inténtalo de nuevo.',
     initFailed: 'Error al inicializar el seguimiento ocular',
+    modeGaze: 'Solo mirada',
+    modeClick: 'Clic para confirmar',
+    faceNotDetected: 'Rostro no detectado',
   },
 
   notFound: {

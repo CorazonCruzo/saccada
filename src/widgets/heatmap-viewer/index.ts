@@ -1,2 +1,12 @@
 export { HeatmapViewer } from './HeatmapViewer'
-export { drawHeatmap, drawTrajectoryOverlay, buildDensityGrid, blurGrid, getHeatmapColor } from './drawHeatmap'
+export {
+  drawHeatmap,
+  drawGazeHeatmap,
+  drawTrajectoryOverlay,
+  drawFocusTimeline,
+  computeFocusSegments,
+  buildDensityGrid,
+  blurGrid,
+  getHeatmapColor,
+  type HeatmapOptions,
+} from './drawHeatmap'

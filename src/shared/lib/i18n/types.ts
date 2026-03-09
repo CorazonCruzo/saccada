@@ -67,6 +67,8 @@ export interface Translation {
     addNote: string
     repeatSession: string
     newSession: string
+    showGazeMap: string
+    hideGazeMap: string
   }
   sessionSettings: {
     title: string
@@ -96,6 +98,7 @@ export interface Translation {
     howItWorks: string
     step1: string
     step2: string
+    step2Gaze: string
     step3: string
     forBestResults: string
     tip1: string
@@ -122,6 +125,9 @@ export interface Translation {
     backToHome: string
     cameraAccessDenied: string
     initFailed: string
+    modeGaze: string
+    modeClick: string
+    faceNotDetected: string
   }
   notFound: {
     title: string

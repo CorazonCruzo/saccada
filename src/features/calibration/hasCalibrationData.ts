@@ -1,19 +1,14 @@
 /**
- * WebGazer stores regression/calibration data in IndexedDB via localforage
- * under the key "webgazerGlobalData".
- *
- * This async function checks whether that data exists.
- * Used alongside `calibratedAt` and `trackerReady` to decide
- * if re-calibration is needed after a page refresh.
+ * Check if calibration data exists in localStorage.
+ * The pipeline stores ridge regression weights under 'saccada-calibration-data'.
  */
 
-const WEBGAZER_DATA_KEY = 'webgazerGlobalData'
+const CALIBRATION_KEY = 'saccada-calibration-data'
 
-export async function hasWebGazerCalibrationData(): Promise<boolean> {
+export async function hasCalibrationData(): Promise<boolean> {
   try {
-    const localforage = (await import('localforage')).default
-    const data = await localforage.getItem(WEBGAZER_DATA_KEY)
-    return data !== null && data !== undefined
+    const data = localStorage.getItem(CALIBRATION_KEY)
+    return data !== null
   } catch {
     return false
   }

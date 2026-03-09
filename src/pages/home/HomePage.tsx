@@ -31,9 +31,14 @@ export default function HomePage() {
     }
     setSettingsOpen(false)
 
-    // Always go to mood check first (user can skip it)
-    useSessionStore.getState().setSessionState('mood-check-before')
-    navigate('/mood-check?phase=before')
+    // Calibration before mood check (if needed)
+    if (await shouldCalibrate(eyeTrackingEnabled, calibratedAt, getTracker().isReady())) {
+      useSessionStore.getState().setSessionState('calibrating')
+      navigate('/calibration')
+    } else {
+      useSessionStore.getState().setSessionState('mood-check-before')
+      navigate('/mood-check?phase=before')
+    }
   }
 
   return (

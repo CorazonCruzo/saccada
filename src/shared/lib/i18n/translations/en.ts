@@ -70,6 +70,8 @@ export const en: Translation = {
     addNote: 'Add note',
     repeatSession: 'Repeat Session',
     newSession: 'New Session',
+    showGazeMap: 'Show gaze map',
+    hideGazeMap: 'Hide gaze map',
   },
 
   sessionSettings: {
@@ -101,6 +103,7 @@ export const en: Translation = {
     howItWorks: 'How it works',
     step1: 'Look at the dot with your eyes',
     step2: 'While looking, click it (5 times per dot)',
+    step2Gaze: 'Hold your gaze on each dot for 1.5 seconds',
     step3: '9 dots total, then a quick accuracy check',
     forBestResults: 'For best results',
     tip1: 'Bright, even lighting on your face',
@@ -127,6 +130,9 @@ export const en: Translation = {
     backToHome: 'Back to Home',
     cameraAccessDenied: 'Camera access denied. Please allow camera in browser settings and try again.',
     initFailed: 'Eye tracking initialization failed',
+    modeGaze: 'Gaze only',
+    modeClick: 'Click to confirm',
+    faceNotDetected: 'Face not detected',
   },
 
   notFound: {

@@ -70,6 +70,8 @@ export const ru: Translation = {
     addNote: 'Добавить заметку',
     repeatSession: 'Повторить сессию',
     newSession: 'Новая сессия',
+    showGazeMap: 'Показать карту взгляда',
+    hideGazeMap: 'Скрыть карту взгляда',
   },
 
   sessionSettings: {
@@ -101,6 +103,7 @@ export const ru: Translation = {
     howItWorks: 'Как это работает',
     step1: 'Смотрите на точку глазами',
     step2: 'Глядя на неё, нажмите (5 раз на каждую точку)',
+    step2Gaze: 'Удерживайте взгляд на каждой точке 1.5 секунды',
     step3: '9 точек, затем быстрая проверка точности',
     forBestResults: 'Для лучших результатов',
     tip1: 'Яркое, равномерное освещение лица',
@@ -127,6 +130,9 @@ export const ru: Translation = {
     backToHome: 'На главную',
     cameraAccessDenied: 'Доступ к камере запрещен. Разрешите камеру в настройках браузера и попробуйте снова.',
     initFailed: 'Не удалось инициализировать отслеживание глаз',
+    modeGaze: 'Только взгляд',
+    modeClick: 'С нажатием',
+    faceNotDetected: 'Лицо не обнаружено',
   },
 
   notFound: {

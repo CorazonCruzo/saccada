@@ -1,216 +1,245 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { EyeTracker } from './EyeTracker'
+import type { EyeFeatures } from './mediapipe/types'
 
-// Mock webgazer module
-const mockWebgazer = {
-  params: { videoViewerWidth: 320, videoViewerHeight: 240 },
-  showVideoPreview: vi.fn().mockReturnThis(),
-  showPredictionPoints: vi.fn().mockReturnThis(),
-  showFaceOverlay: vi.fn().mockReturnThis(),
-  showFaceFeedbackBox: vi.fn().mockReturnThis(),
-  applyKalmanFilter: vi.fn().mockReturnThis(),
-  setRegression: vi.fn().mockReturnThis(),
-  saveDataAcrossSessions: vi.fn().mockReturnThis(),
-  removeMouseEventListeners: vi.fn().mockReturnThis(),
-  setGazeListener: vi.fn().mockReturnThis(),
-  begin: vi.fn().mockResolvedValue(undefined),
-  pause: vi.fn().mockReturnThis(),
-  resume: vi.fn().mockResolvedValue(undefined),
-  end: vi.fn(),
-  removeGazeListener: vi.fn(),
-  recordScreenPosition: vi.fn(),
-  clearData: vi.fn(),
-  getCurrentPrediction: vi.fn().mockResolvedValue({ x: 100, y: 200 }),
+// Mock the GazePipeline
+const mockPipeline = {
+  isReady: vi.fn().mockReturnValue(false),
+  isRunning: vi.fn().mockReturnValue(false),
+  isCalibrated: vi.fn().mockReturnValue(false),
+  start: vi.fn().mockResolvedValue(undefined),
+  setRunning: vi.fn(),
+  showVideo: vi.fn(),
+  captureCalibrationSample: vi.fn().mockReturnValue(null),
+  addCalibrationPoint: vi.fn(),
+  trainCalibration: vi.fn().mockReturnValue({ accuracyPx: 50 }),
+  clearCalibration: vi.fn(),
+  saveCalibration: vi.fn().mockResolvedValue(undefined),
+  loadCalibration: vi.fn(),
+  predict: vi.fn().mockResolvedValue({ x: 100, y: 200 }),
+  isFaceDetected: vi.fn().mockReturnValue(false),
+  setLandmarkCallback: vi.fn(),
+  sleep: vi.fn(),
+  destroy: vi.fn(),
 }
 
-vi.mock('webgazer', () => ({ default: mockWebgazer }))
+vi.mock('./mediapipe/pipeline', () => ({
+  GazePipeline: class { constructor() { return mockPipeline as unknown } },
+}))
 
 beforeEach(() => {
   vi.clearAllMocks()
-  document.body.innerHTML = ''
-  // Clean up guard styles injected into <head> by previous tests
-  document.head.querySelectorAll('style').forEach(s => s.remove())
+  mockPipeline.isReady.mockReturnValue(false)
+  mockPipeline.isRunning.mockReturnValue(false)
+  mockPipeline.isCalibrated.mockReturnValue(false)
+  mockPipeline.captureCalibrationSample.mockReturnValue(null)
+  mockPipeline.predict.mockResolvedValue({ x: 100, y: 200 })
 })
+
+function makeSample(overrides?: Partial<EyeFeatures>): EyeFeatures {
+  return {
+    leftIris: { x: 0.4, y: 0.5 },
+    rightIris: { x: 0.6, y: 0.5 },
+    leftIrisRel: { x: 0, y: 0 },
+    rightIrisRel: { x: 0, y: 0 },
+    leftEyeOpenness: 0.3,
+    rightEyeOpenness: 0.3,
+    headPose: { yaw: 0, pitch: 0 },
+    timestamp: Date.now(),
+    ...overrides,
+  }
+}
 
 describe('EyeTracker', () => {
   describe('start()', () => {
-    it('initializes webgazer on first call', async () => {
+    it('loads saved calibration on first start if not ready and not calibrated', async () => {
       const tracker = new EyeTracker()
+      await tracker.start(vi.fn())
+
+      expect(mockPipeline.loadCalibration).toHaveBeenCalled()
+      expect(mockPipeline.start).toHaveBeenCalled()
+    })
+
+    it('does not load calibration if pipeline is already ready', async () => {
+      mockPipeline.isReady.mockReturnValue(true)
+
+      const tracker = new EyeTracker()
+      await tracker.start(vi.fn())
+
+      expect(mockPipeline.loadCalibration).not.toHaveBeenCalled()
+    })
+
+    it('does not load calibration if pipeline is already calibrated', async () => {
+      mockPipeline.isCalibrated.mockReturnValue(true)
+
+      const tracker = new EyeTracker()
+      await tracker.start(vi.fn())
+
+      expect(mockPipeline.loadCalibration).not.toHaveBeenCalled()
+    })
+
+    it('passes gaze callback to pipeline.start()', async () => {
       const cb = vi.fn()
+      const tracker = new EyeTracker()
       await tracker.start(cb)
 
-      expect(mockWebgazer.setRegression).toHaveBeenCalledWith('ridge')
-      expect(mockWebgazer.applyKalmanFilter).toHaveBeenCalledWith(false)
-      expect(mockWebgazer.saveDataAcrossSessions).toHaveBeenCalledWith(true)
-      expect(mockWebgazer.removeMouseEventListeners).toHaveBeenCalled()
-      expect(mockWebgazer.setGazeListener).toHaveBeenCalled()
-      expect(mockWebgazer.begin).toHaveBeenCalledTimes(1)
-      expect(tracker.isReady()).toBe(true)
-      expect(tracker.isRunning()).toBe(true)
-    })
-
-    it('does not call begin() on subsequent calls', async () => {
-      const tracker = new EyeTracker()
-      await tracker.start(vi.fn())
-      mockWebgazer.begin.mockClear()
-
-      await tracker.start(vi.fn())
-      expect(mockWebgazer.begin).not.toHaveBeenCalled()
-    })
-
-    it('sets running to true on subsequent calls', async () => {
-      const tracker = new EyeTracker()
-      await tracker.start(vi.fn())
-      tracker.setRunning(false)
-      expect(tracker.isRunning()).toBe(false)
-
-      await tracker.start(vi.fn())
-      expect(tracker.isRunning()).toBe(true)
+      expect(mockPipeline.start).toHaveBeenCalledWith(cb)
     })
   })
 
   describe('setRunning()', () => {
-    it('toggles running state', async () => {
+    it('delegates to pipeline', () => {
       const tracker = new EyeTracker()
-      await tracker.start(vi.fn())
-
       tracker.setRunning(false)
-      expect(tracker.isRunning()).toBe(false)
+      expect(mockPipeline.setRunning).toHaveBeenCalledWith(false)
 
       tracker.setRunning(true)
-      expect(tracker.isRunning()).toBe(true)
-    })
-  })
-
-  describe('gaze listener throttling', () => {
-    it('throttles callbacks to ~15fps', async () => {
-      const tracker = new EyeTracker()
-      const cb = vi.fn()
-      await tracker.start(cb)
-
-      // Get the listener that was registered with WebGazer
-      const gazeListener = mockWebgazer.setGazeListener.mock.calls[0][0]
-
-      // First call should go through
-      gazeListener({ x: 10, y: 20 }, 100)
-      expect(cb).toHaveBeenCalledTimes(1)
-
-      // Immediate second call should be throttled
-      gazeListener({ x: 30, y: 40 }, 110)
-      expect(cb).toHaveBeenCalledTimes(1)
-    })
-
-    it('skips callback when data is null', async () => {
-      const tracker = new EyeTracker()
-      const cb = vi.fn()
-      await tracker.start(cb)
-
-      const gazeListener = mockWebgazer.setGazeListener.mock.calls[0][0]
-      gazeListener(null, 100)
-      expect(cb).not.toHaveBeenCalled()
-    })
-
-    it('skips callback when not running', async () => {
-      const tracker = new EyeTracker()
-      const cb = vi.fn()
-      await tracker.start(cb)
-      tracker.setRunning(false)
-
-      const gazeListener = mockWebgazer.setGazeListener.mock.calls[0][0]
-      gazeListener({ x: 10, y: 20 }, 100)
-      expect(cb).not.toHaveBeenCalled()
+      expect(mockPipeline.setRunning).toHaveBeenCalledWith(true)
     })
   })
 
   describe('showVideo()', () => {
-    it('does nothing if webgazer not loaded', () => {
+    it('delegates to pipeline', () => {
       const tracker = new EyeTracker()
-      // Should not throw
       tracker.showVideo(true)
-    })
+      expect(mockPipeline.showVideo).toHaveBeenCalledWith(true)
 
-    it('sets container visible centered on screen', async () => {
-      const container = document.createElement('div')
-      container.id = 'webgazerVideoContainer'
-      document.body.appendChild(container)
-
-      const tracker = new EyeTracker()
-      await tracker.start(vi.fn())
-      tracker.showVideo(true)
-
-      expect(container.style.display).toBe('block')
-      expect(container.style.opacity).toBe('1')
-      expect(container.style.top).toBe('50%')
-      expect(container.style.left).toBe('50%')
-      expect(container.style.transform).toBe('translate(-50%, -55%)')
-      expect(container.style.zIndex).toBe('50')
-    })
-
-    it('injects CSS guard that keeps video display:block and opacity:0', async () => {
-      const tracker = new EyeTracker()
-      await tracker.start(vi.fn())
-
-      // CSS guard prevents WebGazer from setting display:none on video.
-      // Video stays display:block with opacity:0 — invisible to user but
-      // non-zero dimensions for MediaPipe GPU pipeline.
-      const styles = document.head.querySelectorAll('style')
-      const guardContent = Array.from(styles).map(s => s.textContent).join('')
-      expect(guardContent).toContain('#webgazerVideoFeed{display:block!important;opacity:0!important}')
-    })
-
-    it('hides container with opacity 0 but keeps display block (prevents WASM crash)', async () => {
-      const container = document.createElement('div')
-      container.id = 'webgazerVideoContainer'
-      document.body.appendChild(container)
-
-      const tracker = new EyeTracker()
-      await tracker.start(vi.fn())
       tracker.showVideo(false)
-
-      // Must be display:block, not display:none!
-      // display:none causes zero-size WebGL framebuffer → MediaPipe WASM abort.
-      expect(container.style.display).toBe('block')
-      expect(container.style.opacity).toBe('0')
-      expect(container.style.zIndex).toBe('-1')
+      expect(mockPipeline.showVideo).toHaveBeenCalledWith(false)
     })
   })
 
   describe('recordCalibrationPoint()', () => {
-    it('calls webgazer.recordScreenPosition', async () => {
-      const tracker = new EyeTracker()
-      await tracker.start(vi.fn())
-      tracker.recordCalibrationPoint(100, 200)
+    it('returns true when sample is captured', () => {
+      const sample = makeSample()
+      mockPipeline.captureCalibrationSample.mockReturnValue(sample)
 
-      expect(mockWebgazer.recordScreenPosition).toHaveBeenCalledWith(100, 200, 'click')
+      const tracker = new EyeTracker()
+      const result = tracker.recordCalibrationPoint(100, 200)
+
+      expect(result).toBe(true)
+      expect(mockPipeline.captureCalibrationSample).toHaveBeenCalled()
     })
 
-    it('does nothing if webgazer not loaded', () => {
+    it('returns false when captureCalibrationSample returns null', () => {
+      mockPipeline.captureCalibrationSample.mockReturnValue(null)
+
+      const tracker = new EyeTracker()
+      const result = tracker.recordCalibrationPoint(100, 200)
+
+      expect(result).toBe(false)
+    })
+
+    it('filters out blink samples (low eye openness)', () => {
+      const blink = makeSample({ leftEyeOpenness: 0.05, rightEyeOpenness: 0.1 })
+      mockPipeline.captureCalibrationSample.mockReturnValue(blink)
+
+      const tracker = new EyeTracker()
+      const result = tracker.recordCalibrationPoint(100, 200)
+
+      expect(result).toBe(false)
+    })
+
+    it('accepts samples with normal eye openness', () => {
+      const open = makeSample({ leftEyeOpenness: 0.3, rightEyeOpenness: 0.35 })
+      mockPipeline.captureCalibrationSample.mockReturnValue(open)
+
+      const tracker = new EyeTracker()
+      const result = tracker.recordCalibrationPoint(100, 200)
+
+      expect(result).toBe(true)
+    })
+  })
+
+  describe('finalizeCalibrationPoint()', () => {
+    it('sends accumulated samples to pipeline.addCalibrationPoint', () => {
+      const sample1 = makeSample()
+      const sample2 = makeSample({ timestamp: Date.now() + 100 })
+      mockPipeline.captureCalibrationSample
+        .mockReturnValueOnce(sample1)
+        .mockReturnValueOnce(sample2)
+
       const tracker = new EyeTracker()
       tracker.recordCalibrationPoint(100, 200)
-      expect(mockWebgazer.recordScreenPosition).not.toHaveBeenCalled()
+      tracker.recordCalibrationPoint(100, 200)
+      tracker.finalizeCalibrationPoint(100, 200)
+
+      expect(mockPipeline.addCalibrationPoint).toHaveBeenCalledWith(
+        100, 200, [sample1, sample2]
+      )
+    })
+
+    it('does nothing if no samples were accumulated', () => {
+      const tracker = new EyeTracker()
+      tracker.finalizeCalibrationPoint(100, 200)
+
+      expect(mockPipeline.addCalibrationPoint).not.toHaveBeenCalled()
+    })
+
+    it('clears accumulated samples after finalization', () => {
+      const sample = makeSample()
+      mockPipeline.captureCalibrationSample.mockReturnValue(sample)
+
+      const tracker = new EyeTracker()
+      tracker.recordCalibrationPoint(100, 200)
+      tracker.finalizeCalibrationPoint(100, 200)
+      mockPipeline.addCalibrationPoint.mockClear()
+
+      // Second finalize without new samples should not call addCalibrationPoint
+      tracker.finalizeCalibrationPoint(200, 300)
+      expect(mockPipeline.addCalibrationPoint).not.toHaveBeenCalled()
+    })
+  })
+
+  describe('trainCalibration()', () => {
+    it('delegates to pipeline and returns result', () => {
+      mockPipeline.trainCalibration.mockReturnValue({ accuracyPx: 42 })
+
+      const tracker = new EyeTracker()
+      const result = tracker.trainCalibration()
+
+      expect(result).toEqual({ accuracyPx: 42 })
+      expect(mockPipeline.trainCalibration).toHaveBeenCalled()
     })
   })
 
   describe('clearData()', () => {
-    it('calls webgazer.clearData', async () => {
+    it('clears pipeline calibration and internal samples', () => {
+      const sample = makeSample()
+      mockPipeline.captureCalibrationSample.mockReturnValue(sample)
+
       const tracker = new EyeTracker()
-      await tracker.start(vi.fn())
+      tracker.recordCalibrationPoint(100, 200)
       tracker.clearData()
 
-      expect(mockWebgazer.clearData).toHaveBeenCalled()
+      expect(mockPipeline.clearCalibration).toHaveBeenCalled()
+
+      // After clearData, finalizeCalibrationPoint should have no samples
+      tracker.finalizeCalibrationPoint(100, 200)
+      expect(mockPipeline.addCalibrationPoint).not.toHaveBeenCalled()
+    })
+  })
+
+  describe('saveCalibration()', () => {
+    it('delegates to pipeline', async () => {
+      const tracker = new EyeTracker()
+      await tracker.saveCalibration()
+
+      expect(mockPipeline.saveCalibration).toHaveBeenCalled()
     })
   })
 
   describe('predict()', () => {
-    it('returns prediction when ready', async () => {
+    it('returns prediction from pipeline', async () => {
       const tracker = new EyeTracker()
-      await tracker.start(vi.fn())
       const result = await tracker.predict()
 
       expect(result).toEqual({ x: 100, y: 200 })
     })
 
-    it('returns null when not ready', async () => {
+    it('returns null when pipeline returns null', async () => {
+      mockPipeline.predict.mockResolvedValue(null)
+
       const tracker = new EyeTracker()
       const result = await tracker.predict()
 
@@ -218,266 +247,77 @@ describe('EyeTracker', () => {
     })
   })
 
-  describe('sleep()', () => {
-    it('stops running and clears callback', async () => {
+  describe('isReady()', () => {
+    it('delegates to pipeline', () => {
+      mockPipeline.isReady.mockReturnValue(true)
       const tracker = new EyeTracker()
-      await tracker.start(vi.fn())
+      expect(tracker.isReady()).toBe(true)
 
-      tracker.sleep()
-
-      expect(tracker.isRunning()).toBe(false)
-      expect(tracker.isReady()).toBe(true) // still ready for reuse
-    })
-
-    it('pauses WebGazer prediction loop before stopping camera', async () => {
-      const tracker = new EyeTracker()
-      await tracker.start(vi.fn())
-
-      tracker.sleep()
-
-      // pause() must be called to stop estimateFaces() from processing
-      // dead frames after camera tracks are stopped
-      expect(mockWebgazer.pause).toHaveBeenCalled()
-    })
-
-    it('stops camera tracks', async () => {
-      const stopFn = vi.fn()
-      const videoEl = document.createElement('video')
-      videoEl.id = 'webgazerVideoFeed'
-      Object.defineProperty(videoEl, 'srcObject', {
-        value: { getTracks: () => [{ stop: stopFn }, { stop: stopFn }] },
-        writable: true,
-      })
-      document.body.appendChild(videoEl)
-
-      const tracker = new EyeTracker()
-      await tracker.start(vi.fn())
-      tracker.sleep()
-
-      expect(stopFn).toHaveBeenCalledTimes(2)
-    })
-
-    it('hides video container (opacity 0, not display none)', async () => {
-      const container = document.createElement('div')
-      container.id = 'webgazerVideoContainer'
-      container.style.display = 'block'
-      document.body.appendChild(container)
-
-      const tracker = new EyeTracker()
-      await tracker.start(vi.fn())
-      tracker.sleep()
-
-      expect(container.style.display).toBe('block')
-      expect(container.style.opacity).toBe('0')
+      mockPipeline.isReady.mockReturnValue(false)
+      expect(tracker.isReady()).toBe(false)
     })
   })
 
-  describe('start() after sleep()', () => {
-    it('re-acquires camera, waits for loadeddata, then resumes', async () => {
-      const mockStream = { id: 'new-stream' }
-      Object.defineProperty(navigator, 'mediaDevices', {
-        value: { getUserMedia: vi.fn().mockResolvedValue(mockStream) },
-        writable: true,
-        configurable: true,
-      })
-
-      const videoEl = document.createElement('video')
-      videoEl.id = 'webgazerVideoFeed'
-      const stopFn = vi.fn()
-      // Simulate browser behavior: setting srcObject fires loadeddata
-      // asynchronously once the stream's first frame is decoded.
-      let _srcObject: unknown = { getTracks: () => [{ stop: stopFn }] }
-      Object.defineProperty(videoEl, 'srcObject', {
-        get() { return _srcObject },
-        set(v) {
-          _srcObject = v
-          // Fire loadeddata on next microtask (like a real browser)
-          Promise.resolve().then(() =>
-            videoEl.dispatchEvent(new Event('loadeddata'))
-          )
-        },
-        configurable: true,
-      })
-      document.body.appendChild(videoEl)
-
+  describe('isRunning()', () => {
+    it('delegates to pipeline', () => {
+      mockPipeline.isRunning.mockReturnValue(true)
       const tracker = new EyeTracker()
-      await tracker.start(vi.fn())
-      tracker.sleep()
-      mockWebgazer.resume.mockClear()
-
-      await tracker.start(vi.fn())
-
-      expect(navigator.mediaDevices.getUserMedia).toHaveBeenCalledWith({
-        video: { facingMode: 'user' },
-      })
-      // resume() must be called AFTER camera stream has decoded its first frame
-      expect(mockWebgazer.resume).toHaveBeenCalled()
       expect(tracker.isRunning()).toBe(true)
     })
   })
 
-  describe('showVideo(false) keeps container in layout', () => {
-    it('never uses display:none — sets opacity 0 to prevent WASM framebuffer crash', async () => {
-      const container = document.createElement('div')
-      container.id = 'webgazerVideoContainer'
-      document.body.appendChild(container)
-
+  describe('isCalibrated()', () => {
+    it('delegates to pipeline', () => {
+      mockPipeline.isCalibrated.mockReturnValue(true)
       const tracker = new EyeTracker()
-      await tracker.start(vi.fn())
+      expect(tracker.isCalibrated()).toBe(true)
 
-      // Show then hide — simulates calibration → instructions transition
-      tracker.showVideo(true)
-      expect(container.style.opacity).toBe('1')
-
-      tracker.showVideo(false)
-      expect(container.style.display).toBe('block')
-      expect(container.style.opacity).toBe('0')
-    })
-
-    it('hides leftover container when called before calibration begins', async () => {
-      // Simulates: previous session left the container visible,
-      // CalibrationPage mounts and calls showVideo(false) on init.
-      const container = document.createElement('div')
-      container.id = 'webgazerVideoContainer'
-      container.style.display = 'block'
-      container.style.opacity = '0.85'
-      document.body.appendChild(container)
-
-      const tracker = new EyeTracker()
-      await tracker.start(vi.fn())
-      tracker.showVideo(false)
-
-      expect(container.style.opacity).toBe('0')
-      expect(container.style.zIndex).toBe('-1')
-      expect(container.style.display).toBe('block')
-    })
-
-    it('never calls showVideoPreview — prevents Chrome display:none WASM crash', async () => {
-      const container = document.createElement('div')
-      container.id = 'webgazerVideoContainer'
-      document.body.appendChild(container)
-
-      const tracker = new EyeTracker()
-      await tracker.start(vi.fn())
-      mockWebgazer.showVideoPreview.mockClear()
-
-      // showVideoPreview triggers hideVideoElement() which sets
-      // display:none on Chrome → MediaPipe WASM crash. Must never be called.
-      tracker.showVideo(false)
-      expect(mockWebgazer.showVideoPreview).not.toHaveBeenCalled()
-
-      tracker.showVideo(true)
-      expect(mockWebgazer.showVideoPreview).not.toHaveBeenCalled()
-    })
-
-    it('toggles face overlay via WebGazer API but never shows feedback box', async () => {
-      const container = document.createElement('div')
-      container.id = 'webgazerVideoContainer'
-      document.body.appendChild(container)
-
-      const tracker = new EyeTracker()
-      await tracker.start(vi.fn())
-      mockWebgazer.showFaceOverlay.mockClear()
-      mockWebgazer.showFaceFeedbackBox.mockClear()
-
-      tracker.showVideo(true)
-      expect(mockWebgazer.showFaceOverlay).toHaveBeenCalledWith(true)
-      // Feedback box is never toggled in showVideo — always off (no border artifact)
-      expect(mockWebgazer.showFaceFeedbackBox).not.toHaveBeenCalled()
-
-      tracker.showVideo(false)
-      expect(mockWebgazer.showFaceOverlay).toHaveBeenCalledWith(false)
-    })
-
-    it('does not set inline styles on video or canvas elements', async () => {
-      const container = document.createElement('div')
-      container.id = 'webgazerVideoContainer'
-      const video = document.createElement('video')
-      video.id = 'webgazerVideoFeed'
-      const canvas = document.createElement('canvas')
-      canvas.id = 'webgazerVideoCanvas'
-      canvas.style.display = 'none' // WebGazer hides this intentionally
-      container.appendChild(video)
-      container.appendChild(canvas)
-      document.body.appendChild(container)
-
-      const tracker = new EyeTracker()
-      await tracker.start(vi.fn())
-
-      tracker.showVideo(false)
-      // showVideo() must not touch video inline styles — CSS guard handles it
-      expect(video.style.display).toBe('')
-      // Canvas elements must NOT be overridden — WebGazer manages them
-      expect(canvas.style.display).toBe('none')
+      mockPipeline.isCalibrated.mockReturnValue(false)
+      expect(tracker.isCalibrated()).toBe(false)
     })
   })
 
-  describe('CSS guard (WASM crash prevention)', () => {
-    it('injects guard stylesheet into <head> during start()', async () => {
-      expect(document.head.querySelectorAll('style').length).toBe(0)
-
+  describe('isFaceDetected()', () => {
+    it('delegates to pipeline', () => {
+      mockPipeline.isFaceDetected.mockReturnValue(true)
       const tracker = new EyeTracker()
-      await tracker.start(vi.fn())
+      expect(tracker.isFaceDetected()).toBe(true)
 
-      const styles = document.head.querySelectorAll('style')
-      expect(styles.length).toBe(1)
-      expect(styles[0].textContent).toContain('#webgazerVideoFeed{display:block!important;opacity:0!important}')
-      expect(styles[0].textContent).toContain('#webgazerVideoContainer{display:block!important')
+      mockPipeline.isFaceDetected.mockReturnValue(false)
+      expect(tracker.isFaceDetected()).toBe(false)
+    })
+  })
+
+  describe('setLandmarkCallback()', () => {
+    it('delegates to pipeline', () => {
+      const cb = vi.fn()
+      const tracker = new EyeTracker()
+      tracker.setLandmarkCallback(cb)
+      expect(mockPipeline.setLandmarkCallback).toHaveBeenCalledWith(cb)
     })
 
-    it('guard keeps container display:block!important to prevent WASM crash', async () => {
+    it('accepts null to unsubscribe', () => {
       const tracker = new EyeTracker()
-      await tracker.start(vi.fn())
+      tracker.setLandmarkCallback(null)
+      expect(mockPipeline.setLandmarkCallback).toHaveBeenCalledWith(null)
+    })
+  })
 
-      const guardContent = document.head.querySelector('style')!.textContent!
-      // Container must also be display:block!important — WebGazer's hideVideoElement
-      // can cascade display:none to the container via showVideoPreview(false)
-      expect(guardContent).toContain('#webgazerVideoContainer{display:block!important')
+  describe('sleep()', () => {
+    it('delegates to pipeline', () => {
+      const tracker = new EyeTracker()
+      tracker.sleep()
+
+      expect(mockPipeline.sleep).toHaveBeenCalled()
     })
   })
 
   describe('destroy()', () => {
-    it('calls end() and removes DOM elements', async () => {
-      for (const id of [
-        'webgazerVideoFeed', 'webgazerVideoCanvas',
-        'webgazerFaceOverlay', 'webgazerFaceFeedbackBox',
-        'webgazerGazeDot', 'webgazerVideoContainer',
-      ]) {
-        const el = document.createElement('div')
-        el.id = id
-        document.body.appendChild(el)
-      }
-
+    it('delegates to pipeline', () => {
       const tracker = new EyeTracker()
-      await tracker.start(vi.fn())
       tracker.destroy()
 
-      expect(mockWebgazer.removeGazeListener).toHaveBeenCalled()
-      expect(mockWebgazer.end).toHaveBeenCalled()
-      expect(tracker.isReady()).toBe(false)
-      expect(tracker.isRunning()).toBe(false)
-
-      for (const id of [
-        'webgazerVideoFeed', 'webgazerVideoContainer',
-      ]) {
-        expect(document.getElementById(id)).toBeNull()
-      }
-    })
-
-    it('removes guard stylesheet from <head>', async () => {
-      const tracker = new EyeTracker()
-      await tracker.start(vi.fn())
-      expect(document.head.querySelectorAll('style').length).toBe(1)
-
-      tracker.destroy()
-      expect(document.head.querySelectorAll('style').length).toBe(0)
-    })
-
-    it('does nothing if webgazer not loaded', () => {
-      const tracker = new EyeTracker()
-      // Should not throw
-      tracker.destroy()
-      expect(mockWebgazer.end).not.toHaveBeenCalled()
+      expect(mockPipeline.destroy).toHaveBeenCalled()
     })
   })
 })

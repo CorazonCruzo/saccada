@@ -1,3 +1,3 @@
 export { getCalibrationPoints, getValidationPoints, computeAccuracy, type CalibrationPoint } from './calibration'
-export { hasWebGazerCalibrationData } from './hasCalibrationData'
+export { hasCalibrationData } from './hasCalibrationData'
 export { shouldCalibrate } from './shouldCalibrate'
