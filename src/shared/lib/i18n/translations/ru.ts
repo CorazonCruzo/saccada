@@ -205,6 +205,13 @@ export const ru: Translation = {
     legendLess: 'Мало',
     legendMore: 'Много',
     longestStreak: 'рекорд',
+    yesterday: 'Вчера',
+    focus: 'Фокус',
+    periodToday: 'Сегодня',
+    editNote: 'Редактировать',
+    noNote: 'Добавить заметку...',
+    cameraOff: 'Без камеры',
+    avgFocus: 'Ср. фокус',
   },
   settingsPage: {
     title: 'Настройки',

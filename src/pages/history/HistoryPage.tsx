@@ -1,10 +1,12 @@
-import { useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useLiveQuery } from 'dexie-react-hooks'
-import { db } from '@/shared/lib/db'
+import { db, type SessionRecord } from '@/shared/lib/db'
 import { patternsById } from '@/entities/pattern'
-import { computeStats, computeStreak, useSessionFilters, buildMonthGrid, prevMonth, nextMonth, isMonthInFuture, computeLongestStreak, colorLevel, toDateKey, type PeriodFilter, type CalendarDay, type MonthGrid } from '@/features/session-history'
+import { computeStats, computeStreak, useSessionFilters, filterSessions, buildMonthGrid, prevMonth, nextMonth, isMonthInFuture, computeLongestStreak, colorLevel, toDateKey, type PeriodFilter, type CalendarDay, type MonthGrid } from '@/features/session-history'
+import { groupSessionsByDay, getSessionFocusScore, computeAvgFocusScore } from '@/features/session-history/sessionList'
 import { computeMoodChange } from '@/pages/results/ResultsPage'
+import { reconstructDotPositions } from '@/shared/lib/math'
 import { useTranslation } from '@/shared/lib/i18n'
 import { formatTimer } from '@/shared/lib/format'
 import { Button } from '@/shared/ui/button'
@@ -14,7 +16,17 @@ export default function HistoryPage() {
   const navigate = useNavigate()
   const { t, tp, locale } = useTranslation()
   const [deleteId, setDeleteId] = useState<number | null>(null)
+  const [expandedIds, setExpandedIds] = useState<Set<number>>(new Set())
   const [showMore, setShowMore] = useState(false)
+
+  const toggleExpand = useCallback((id: number) => {
+    setExpandedIds((prev) => {
+      const next = new Set(prev)
+      if (next.has(id)) next.delete(id)
+      else next.add(id)
+      return next
+    })
+  }, [])
 
   const sessions = useLiveQuery(
     () => db.sessions.orderBy('timestamp').reverse().toArray(),
@@ -37,15 +49,18 @@ export default function HistoryPage() {
   if (!sessions) return null // loading
 
   const stats = computeStats(filteredSessions)
+  const avgFocus = computeAvgFocusScore(filteredSessions, patternsById)
   const globalStreak = computeStreak(sessions)
   const longestStreak = computeLongestStreak(sessions)
   const streakActive = globalStreak > 0
   const hasSessionToday = sessions.some((s) => toDateKey(s.timestamp) === toDateKey(Date.now()))
   const monthGrid = buildMonthGrid(sessions, calYear, calMonth, locale)
 
-  // If a calendar day is selected, narrow the session list to that day
+  // If a calendar day is selected, bypass period filter — show that day from all sessions
+  // (still respecting pattern filter)
   const displayedSessions = selectedDay
-    ? filteredSessions.filter((s) => toDateKey(s.timestamp) === selectedDay)
+    ? filterSessions(sessions, 'all', { from: '', to: '' }, selectedPatternIds)
+        .filter((s) => toDateKey(s.timestamp) === selectedDay)
     : filteredSessions
 
   async function handleDelete(id: number) {
@@ -85,6 +100,7 @@ export default function HistoryPage() {
             {/* Period tabs */}
             <Tabs value={period} onValueChange={(v) => setPeriod(v as PeriodFilter)}>
               <TabsList variant="line">
+                <TabsTrigger value="today">{t.history.periodToday}</TabsTrigger>
                 <TabsTrigger value="week">{t.history.periodWeek}</TabsTrigger>
                 <TabsTrigger value="month">{t.history.periodMonth}</TabsTrigger>
                 <TabsTrigger value="all">{t.history.periodAll}</TabsTrigger>
@@ -149,8 +165,8 @@ export default function HistoryPage() {
               <StatBlock label={t.history.totalSessions} value={String(stats.totalSessions)} />
               <StatBlock label={t.history.totalTime} value={formatTimer(stats.totalTimeMs)} />
               <StatBlock
-                label={t.history.avgMoodChange}
-                value={stats.avgMoodChange != null ? formatMoodChange(stats.avgMoodChange) : '-'}
+                label={t.history.avgFocus}
+                value={avgFocus != null ? `${avgFocus}%` : '-'}
               />
               <StatBlock
                 label={t.history.streak}
@@ -159,6 +175,10 @@ export default function HistoryPage() {
             </div>
             {showMore && (
               <div className="mt-3 grid grid-cols-4 gap-3">
+                <StatBlock
+                  label={t.history.avgMoodChange}
+                  value={stats.avgMoodChange != null ? formatMoodChange(stats.avgMoodChange) : '-'}
+                />
                 <StatBlock
                   label={t.history.bestPattern}
                   value={stats.bestPatternId ? (tp(stats.bestPatternId)?.name ?? '-') : '-'}
@@ -222,92 +242,21 @@ export default function HistoryPage() {
           </div>
         )}
 
-        {/* Session list */}
+        {/* Session list grouped by day */}
         {displayedSessions.length > 0 && (
-          <div className="mt-5 space-y-3">
-            {displayedSessions.map((session) => {
-              const pattern = patternsById[session.patternId]
-              const { hasBoth, color, arrow } = computeMoodChange(session.moodBefore, session.moodAfter)
-
-              return (
-                <div
-                  key={session.id}
-                  className="rounded-xl border border-border-ornament bg-bg-mid px-4 py-3"
-                >
-                  <div className="flex items-start justify-between">
-                    <div>
-                      {pattern?.nameDevanagari && (
-                        <span className="font-devanagari text-xs text-gold">
-                          {pattern.nameDevanagari}{' '}
-                        </span>
-                      )}
-                      <span className="font-heading text-sm font-semibold text-text-bright">
-                        {tp(session.patternId)?.name ?? session.patternName}
-                      </span>
-                    </div>
-                    <span className="font-body text-xs text-text-dim">
-                      {formatDate(session.timestamp)}
-                    </span>
-                  </div>
-
-                  <div className="mt-2 flex items-center gap-4 font-heading text-xs text-text-muted">
-                    <span className="tabular-nums text-turmeric">
-                      {formatTimer(session.elapsed)}
-                    </span>
-                    <span className={session.completed ? 'text-teal' : 'text-text-dim'}>
-                      {session.completed ? t.history.completed : t.history.endedEarly}
-                    </span>
-                    {hasBoth && (
-                      <span className={color}>
-                        {session.moodBefore} {'\u2192'} {session.moodAfter} {arrow}
-                      </span>
-                    )}
-                    {!hasBoth && session.moodBefore != null && (
-                      <span className="text-text-dim">{session.moodBefore}</span>
-                    )}
-                  </div>
-
-                  {session.note && (
-                    <p className="mt-1.5 font-body text-xs font-light text-text-muted">
-                      {session.note}
-                    </p>
-                  )}
-
-                  {/* Delete */}
-                  <div className="mt-2 flex justify-end">
-                    {deleteId === session.id ? (
-                      <div className="flex items-center gap-2">
-                        <span className="font-body text-xs text-text-dim">
-                          {t.history.deleteConfirm}
-                        </span>
-                        <Button
-                          variant="destructive"
-                          size="xs"
-                          onClick={() => handleDelete(session.id!)}
-                        >
-                          {t.history.deleteSession}
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          size="xs"
-                          onClick={() => setDeleteId(null)}
-                        >
-                          {t.common.cancel}
-                        </Button>
-                      </div>
-                    ) : (
-                      <button
-                        onClick={() => setDeleteId(session.id!)}
-                        className="cursor-pointer font-body text-xs text-text-dim transition-colors hover:text-lotus"
-                      >
-                        {t.history.deleteSession}
-                      </button>
-                    )}
-                  </div>
-                </div>
-              )
-            })}
-          </div>
+          <SessionList
+            sessions={displayedSessions}
+            expandedIds={expandedIds}
+            onToggleExpand={toggleExpand}
+            deleteId={deleteId}
+            onDeleteClick={setDeleteId}
+            onDeleteConfirm={handleDelete}
+            onDeleteCancel={() => setDeleteId(null)}
+            formatDate={formatDate}
+            t={t}
+            tp={tp}
+            locale={locale}
+          />
         )}
       </div>
     </div>
@@ -533,6 +482,319 @@ function CalendarTooltip({
         {day.count} {day.count === 1 ? t.history.calendarSession : t.history.calendarSessions}{timeStr}
       </p>
       <p className="whitespace-nowrap font-heading text-[9px] text-text-dim">{dateLabel}</p>
+    </div>
+  )
+}
+
+/* ── Session List (grouped by day) ── */
+
+interface SessionListProps {
+  sessions: SessionRecord[]
+  expandedIds: Set<number>
+  onToggleExpand: (id: number) => void
+  deleteId: number | null
+  onDeleteClick: (id: number) => void
+  onDeleteConfirm: (id: number) => void
+  onDeleteCancel: () => void
+  formatDate: (ts: number) => string
+  t: Translation
+  tp: (id: string) => { name: string } | undefined
+  locale: string
+}
+
+function SessionList({
+  sessions, expandedIds, onToggleExpand,
+  deleteId, onDeleteClick, onDeleteConfirm, onDeleteCancel,
+  formatDate, t, tp, locale,
+}: SessionListProps) {
+  const groups = useMemo(
+    () => groupSessionsByDay(sessions, locale, t),
+    [sessions, locale, t],
+  )
+
+  return (
+    <div className="mt-5 space-y-1">
+      {groups.map((group) => (
+        <div key={group.dateKey}>
+          {/* Day separator */}
+          <p className="mb-1 mt-3 font-heading text-[10px] tracking-widest text-text-dim uppercase first:mt-0">
+            {group.label}
+          </p>
+
+          <div className="space-y-2">
+            {group.sessions.map((session) => (
+              <SessionCard
+                key={session.id}
+                session={session}
+                isExpanded={expandedIds.has(session.id!)}
+                onToggle={() => onToggleExpand(session.id!)}
+                deleteId={deleteId}
+                onDeleteClick={onDeleteClick}
+                onDeleteConfirm={onDeleteConfirm}
+                onDeleteCancel={onDeleteCancel}
+                formatDate={formatDate}
+                t={t}
+                tp={tp}
+              />
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+function SessionCard({
+  session, isExpanded, onToggle,
+  deleteId, onDeleteClick, onDeleteConfirm, onDeleteCancel,
+  formatDate, t, tp,
+}: {
+  session: SessionRecord
+  isExpanded: boolean
+  onToggle: () => void
+  deleteId: number | null
+  onDeleteClick: (id: number) => void
+  onDeleteConfirm: (id: number) => void
+  onDeleteCancel: () => void
+  formatDate: (ts: number) => string
+  t: Translation
+  tp: (id: string) => { name: string } | undefined
+}) {
+  const pattern = patternsById[session.patternId]
+  const { hasBoth, color, arrow } = computeMoodChange(session.moodBefore, session.moodAfter)
+  const focusScore = useMemo(() => getSessionFocusScore(session, pattern), [session, pattern])
+  const hasGaze = session.gazePoints && session.gazePoints.length > 0
+  const [editingNote, setEditingNote] = useState(false)
+  const [noteText, setNoteText] = useState(session.note ?? '')
+
+  async function saveNote() {
+    const trimmed = noteText.trim()
+    if (session.id != null) {
+      await db.sessions.update(session.id, { note: trimmed || undefined })
+    }
+    setEditingNote(false)
+  }
+
+  return (
+    <div
+      className="cursor-pointer rounded-xl border border-border-ornament bg-bg-mid px-4 py-3 transition-colors hover:border-text-dim/40"
+      onClick={onToggle}
+    >
+      {/* Header row */}
+      <div className="flex items-start justify-between">
+        <div>
+          {pattern?.nameDevanagari && (
+            <span className="font-devanagari text-xs text-gold">
+              {pattern.nameDevanagari}{' '}
+            </span>
+          )}
+          <span className="font-heading text-sm font-semibold text-text-bright">
+            {tp(session.patternId)?.name ?? session.patternName}
+          </span>
+        </div>
+        <div className="flex items-center gap-2">
+          {focusScore != null && (
+            <span className="rounded-md bg-teal/15 px-1.5 py-0.5 font-heading text-[10px] tabular-nums text-teal">
+              {t.history.focus}: {focusScore}%
+            </span>
+          )}
+          <span className="font-body text-xs text-text-dim">
+            {formatDate(session.timestamp)}
+          </span>
+        </div>
+      </div>
+
+      {/* Meta row */}
+      <div className="mt-2 flex items-center gap-4 font-heading text-xs text-text-muted">
+        <span className="tabular-nums text-turmeric">
+          {formatTimer(session.elapsed)}
+        </span>
+        <span className={session.completed ? 'text-teal' : 'text-text-dim'}>
+          {session.completed ? t.history.completed : t.history.endedEarly}
+        </span>
+        {hasBoth && (
+          <span className={color}>
+            {session.moodBefore} {'\u2192'} {session.moodAfter} {arrow}
+          </span>
+        )}
+        {!hasBoth && session.moodBefore != null && (
+          <span className="text-text-dim">{session.moodBefore}</span>
+        )}
+      </div>
+
+      {/* Collapsed: show truncated note */}
+      {!isExpanded && session.note && (
+        <p className="mt-1.5 truncate font-body text-xs font-light text-text-muted">
+          {session.note}
+        </p>
+      )}
+
+      {/* Expanded detail */}
+      {isExpanded && (
+        <div className="mt-3 border-t border-border-ornament pt-3" onClick={(e) => e.stopPropagation()}>
+          {/* Focus Score large + timeline */}
+          {focusScore != null && hasGaze && (
+            <div className="mb-3">
+              <div className="flex items-center gap-2">
+                <span className="font-heading text-lg font-semibold tabular-nums text-teal">
+                  {focusScore}%
+                </span>
+                <span className="font-heading text-xs text-text-dim">{t.history.focus}</span>
+              </div>
+              <FocusTimelineBar session={session} />
+            </div>
+          )}
+
+          {/* Editable note */}
+          <div className="mb-3">
+            {editingNote ? (
+              <textarea
+                className="w-full rounded-md border border-border-ornament bg-bg-surface px-2 py-1.5 font-body text-xs font-light text-text-bright focus:border-turmeric focus:outline-none"
+                rows={2}
+                value={noteText}
+                onChange={(e) => setNoteText(e.target.value)}
+                onBlur={saveNote}
+                onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); saveNote() } }}
+                autoFocus
+              />
+            ) : (
+              <button
+                onClick={() => { setNoteText(session.note ?? ''); setEditingNote(true) }}
+                className="cursor-pointer text-left font-body text-xs font-light text-text-muted transition-colors hover:text-text-bright"
+              >
+                {session.note || t.history.noNote}
+              </button>
+            )}
+          </div>
+
+          {/* Actions */}
+          <div className="flex items-center justify-end">
+            {deleteId === session.id ? (
+              <div className="flex items-center gap-2">
+                <span className="font-body text-xs text-text-dim">
+                  {t.history.deleteConfirm}
+                </span>
+                <Button
+                  variant="destructive"
+                  size="xs"
+                  onClick={() => onDeleteConfirm(session.id!)}
+                >
+                  {t.history.deleteSession}
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="xs"
+                  onClick={() => onDeleteCancel()}
+                >
+                  {t.common.cancel}
+                </Button>
+              </div>
+            ) : (
+              <button
+                onClick={() => onDeleteClick(session.id!)}
+                className="cursor-pointer font-body text-xs text-text-dim transition-colors hover:text-lotus"
+              >
+                {t.history.deleteSession}
+              </button>
+            )}
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
+
+interface TimelineSegment {
+  ratio: number
+  startMs: number
+  endMs: number
+}
+
+const SEGMENT_COUNT = 40
+
+/** Thin horizontal bar showing on-target (teal) vs off-target (dim) segments. */
+function FocusTimelineBar({ session }: { session: SessionRecord }) {
+  const [hoveredSeg, setHoveredSeg] = useState<number | null>(null)
+
+  const segments = useMemo<TimelineSegment[] | null>(() => {
+    if (!session.gazePoints || session.gazePoints.length < 5) return null
+
+    const vw = session.viewportWidth ?? 1000
+    const vh = session.viewportHeight ?? 800
+    const diagonal = Math.sqrt(vw ** 2 + vh ** 2)
+    const threshold = diagonal * 0.25
+
+    const hasRecordedDot = session.gazePoints[0].dotX != null
+
+    // Get dot positions: prefer recorded, fallback to reconstruction
+    let getDot: (i: number) => { x: number; y: number }
+    if (hasRecordedDot) {
+      getDot = (i) => ({
+        x: session.gazePoints![i].dotX!,
+        y: session.gazePoints![i].dotY!,
+      })
+    } else {
+      const pattern = patternsById[session.patternId]
+      if (!pattern) return null
+      const timestamps = session.gazePoints.map((p) => p.t)
+      const speed = session.speed ?? 1
+      const vs = session.visualScale ?? 1
+      const dotPositions = reconstructDotPositions(timestamps, pattern, vw, vh, speed, vs)
+      getDot = (i) => dotPositions[i]
+    }
+
+    const minT = session.gazePoints[0].t
+    const maxT = session.gazePoints[session.gazePoints.length - 1].t
+    const duration = maxT - minT
+    if (duration <= 0) return null
+
+    const segDuration = duration / SEGMENT_COUNT
+    const onTarget = new Array(SEGMENT_COUNT).fill(0)
+    const counts = new Array(SEGMENT_COUNT).fill(0)
+
+    for (let i = 0; i < session.gazePoints.length; i++) {
+      const gaze = session.gazePoints[i]
+      const dot = getDot(i)
+      const segIdx = Math.min(Math.floor((gaze.t - minT) / segDuration), SEGMENT_COUNT - 1)
+      counts[segIdx]++
+      const dist = Math.sqrt((gaze.x - dot.x) ** 2 + (gaze.y - dot.y) ** 2)
+      if (dist < threshold) onTarget[segIdx]++
+    }
+
+    return onTarget.map((on, i) => ({
+      ratio: counts[i] > 0 ? on / counts[i] : 0,
+      startMs: minT + i * segDuration,
+      endMs: minT + (i + 1) * segDuration,
+    }))
+  }, [session])
+
+  if (!segments) return null
+
+  const hovered = hoveredSeg != null ? segments[hoveredSeg] : null
+
+  return (
+    <div className="mt-1.5">
+      <div className="flex h-2 gap-px overflow-hidden rounded-full">
+        {segments.map((seg, i) => (
+          <div
+            key={i}
+            className="flex-1 cursor-default rounded-full transition-opacity"
+            style={{
+              backgroundColor: seg.ratio >= 0.5
+                ? `rgba(46,196,182,${0.3 + seg.ratio * 0.7})`
+                : 'rgba(90,77,110,0.3)',
+              opacity: hoveredSeg != null && hoveredSeg !== i ? 0.4 : 1,
+            }}
+            onMouseEnter={() => setHoveredSeg(i)}
+            onMouseLeave={() => setHoveredSeg(null)}
+          />
+        ))}
+      </div>
+      <p className="mt-1 h-3 font-heading text-[9px] tabular-nums text-text-dim">
+        {hovered
+          ? <>{formatTimer(hovered.startMs)}&ndash;{formatTimer(hovered.endMs)}: {Math.round(hovered.ratio * 100)}%</>
+          : '\u00A0'}
+      </p>
     </div>
   )
 }

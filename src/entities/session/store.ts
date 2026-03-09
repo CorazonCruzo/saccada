@@ -15,6 +15,8 @@ export interface LastSession {
   gazePoints?: Array<{ x: number; y: number; t: number }>
   viewportWidth?: number
   viewportHeight?: number
+  speed?: number
+  visualScale?: number
 }
 
 export interface PatternSettings {

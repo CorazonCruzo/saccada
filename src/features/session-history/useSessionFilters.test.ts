@@ -25,6 +25,12 @@ describe('filterSessions', () => {
       makeSession({ id: 4, timestamp: Date.now() - 45 * DAY }),       // 45 days ago
     ]
 
+    it('"today" returns only sessions from today', () => {
+      const result = filterSessions(sessions, 'today', { from: '', to: '' }, new Set())
+      expect(result).toHaveLength(1)
+      expect(result[0].id).toBe(1)
+    })
+
     it('"all" returns all sessions', () => {
       const result = filterSessions(sessions, 'all', { from: '', to: '' }, new Set())
       expect(result).toHaveLength(4)

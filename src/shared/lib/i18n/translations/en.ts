@@ -205,6 +205,13 @@ export const en: Translation = {
     legendLess: 'Less',
     legendMore: 'More',
     longestStreak: 'best',
+    yesterday: 'Yesterday',
+    focus: 'Focus',
+    periodToday: 'Today',
+    editNote: 'Edit note',
+    noNote: 'Add note...',
+    cameraOff: 'No eye tracking',
+    avgFocus: 'Avg Focus',
   },
   settingsPage: {
     title: 'Settings',

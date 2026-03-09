@@ -10,9 +10,11 @@ export interface SessionRecord {
   moodBefore?: number
   moodAfter?: number
   note?: string
-  gazePoints?: Array<{ x: number; y: number; t: number }>
+  gazePoints?: Array<{ x: number; y: number; t: number; dotX?: number; dotY?: number }>
   viewportWidth?: number
   viewportHeight?: number
+  speed?: number
+  visualScale?: number
 }
 
 const db = new Dexie('saccada') as Dexie & {

@@ -16,7 +16,10 @@ export class GazeLog {
     const now = point.t
     if (now - this.lastLogTime < LOG_INTERVAL_MS) return
     this.lastLogTime = now
-    this.log.push({ x: point.x, y: point.y, t: point.t })
+    this.log.push({
+      x: point.x, y: point.y, t: point.t,
+      ...(point.dotX != null && { dotX: point.dotX, dotY: point.dotY }),
+    })
   }
 
   /** Get all recorded points. */

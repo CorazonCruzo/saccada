@@ -205,6 +205,13 @@ export const es: Translation = {
     legendLess: 'Menos',
     legendMore: 'Más',
     longestStreak: 'récord',
+    yesterday: 'Ayer',
+    focus: 'Enfoque',
+    periodToday: 'Hoy',
+    editNote: 'Editar nota',
+    noNote: 'Añadir nota...',
+    cameraOff: 'Sin cámara',
+    avgFocus: 'Enfoque prom.',
   },
   settingsPage: {
     title: 'Ajustes',

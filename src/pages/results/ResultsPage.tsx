@@ -1,12 +1,13 @@
-import { useRef, useCallback, useState, useEffect } from 'react'
+import { useRef, useCallback, useState, useEffect, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSessionStore } from '@/entities/session'
 import { patternsById } from '@/entities/pattern'
 import { HeatmapViewer } from '@/widgets/heatmap-viewer'
+import { getSessionFocusScore } from '@/features/session-history/sessionList'
 import { useTranslation } from '@/shared/lib/i18n'
 import { Button } from '@/shared/ui/button'
 import { formatTimer } from '@/shared/lib/format'
-import { db } from '@/shared/lib/db'
+import { db, type SessionRecord } from '@/shared/lib/db'
 
 export default function ResultsPage() {
   const navigate = useNavigate()
@@ -32,6 +33,8 @@ export default function ResultsPage() {
       gazePoints: lastSession.gazePoints,
       viewportWidth: lastSession.viewportWidth,
       viewportHeight: lastSession.viewportHeight,
+      speed: lastSession.speed,
+      visualScale: lastSession.visualScale,
     }).catch((err) => console.error('[Saccada] Failed to save session:', err))
   }, [lastSession])
 
@@ -62,6 +65,10 @@ export default function ResultsPage() {
 
   const pattern = patternsById[lastSession.patternId]
   const hasGaze = lastSession.gazePoints && lastSession.gazePoints.length > 0
+  const focusScore = useMemo(
+    () => getSessionFocusScore(lastSession as SessionRecord, pattern),
+    [lastSession, pattern],
+  )
 
   function handleNewSession() {
     setSessionState('idle')
@@ -106,6 +113,16 @@ export default function ResultsPage() {
           {hasGaze && (
             <StatRow label={t.results.gazePoints} value={String(lastSession.gazePoints!.length)} />
           )}
+          {focusScore != null && (
+            <div className="flex items-center justify-between border-b border-border-ornament/50 pb-2">
+              <span className="font-heading text-xs tracking-widest text-text-dim uppercase">
+                {t.history.focus}
+              </span>
+              <span className="font-heading text-lg font-semibold tabular-nums text-teal">
+                {focusScore}%
+              </span>
+            </div>
+          )}
           {(lastSession.moodBefore != null || lastSession.moodAfter != null) && (
             <MoodChangeRow
               before={lastSession.moodBefore}
@@ -143,22 +160,12 @@ export default function ResultsPage() {
             </Button>
           </div>
         ) : (
-          <div className="mt-6">
-            <p className="mb-2 font-heading text-xs tracking-widest text-text-dim uppercase">
-              {t.results.heatmapTitle}
-            </p>
-            <div className="relative flex h-40 items-center justify-center overflow-hidden rounded-xl border border-border-ornament bg-bg-mid">
-              {/* Decorative disabled heatmap */}
-              <div className="absolute inset-0 opacity-15">
-                <div className="absolute left-[20%] top-[30%] h-16 w-20 rounded-full bg-indigo blur-xl" />
-                <div className="absolute left-[45%] top-[40%] h-12 w-16 rounded-full bg-teal blur-lg" />
-                <div className="absolute left-[65%] top-[25%] h-10 w-14 rounded-full bg-turmeric blur-xl" />
-                <div className="absolute left-[35%] top-[55%] h-8 w-12 rounded-full bg-indigo blur-lg" />
-              </div>
-              <p className="relative z-10 max-w-[200px] text-center font-body text-xs font-light leading-relaxed text-text-muted">
-                {t.results.enableCameraHint}
-              </p>
-            </div>
+          <div className="mt-4 flex items-center gap-1.5 text-text-dim">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24" />
+              <line x1="1" y1="1" x2="23" y2="23" />
+            </svg>
+            <span className="font-body text-xs">{t.results.heatmapPlaceholder}</span>
           </div>
         )}
 

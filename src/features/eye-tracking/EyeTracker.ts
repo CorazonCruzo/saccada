@@ -2,6 +2,10 @@ export interface GazePoint {
   x: number
   y: number
   t: number
+  /** Actual dot X at this moment (recorded during session, avoids reconstruction) */
+  dotX?: number
+  /** Actual dot Y at this moment */
+  dotY?: number
 }
 
 type GazeCallback = (point: GazePoint) => void

@@ -1,7 +1,7 @@
 import { useState, useMemo } from 'react'
 import type { SessionRecord } from '@/shared/lib/db'
 
-export type PeriodFilter = 'week' | 'month' | 'all' | 'custom'
+export type PeriodFilter = 'today' | 'week' | 'month' | 'all' | 'custom'
 
 export interface DateRange {
   from: string // YYYY-MM-DD
@@ -32,7 +32,7 @@ function weekAgoStr(): string {
 }
 
 export function useSessionFilters(sessions: SessionRecord[]): SessionFilters {
-  const [period, setPeriod] = useState<PeriodFilter>('all')
+  const [period, setPeriod] = useState<PeriodFilter>('today')
   const [customRange, setCustomRange] = useState<DateRange>({ from: weekAgoStr(), to: todayStr() })
   const [selectedPatternIds, setSelectedPatternIds] = useState<Set<string>>(new Set())
 
@@ -57,7 +57,7 @@ export function useSessionFilters(sessions: SessionRecord[]): SessionFilters {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sessions, period, customRange.from, customRange.to, patternKey])
 
-  const hasActiveFilters = period !== 'all' || selectedPatternIds.size > 0
+  const hasActiveFilters = period !== 'today' || selectedPatternIds.size > 0
 
   function togglePattern(patternId: string) {
     setSelectedPatternIds((prev) => {
@@ -99,7 +99,12 @@ export function filterSessions(
   let result = sessions
 
   // Period filter
-  if (period === 'week') {
+  if (period === 'today') {
+    const todayStart = new Date()
+    todayStart.setHours(0, 0, 0, 0)
+    const cutoff = todayStart.getTime()
+    result = result.filter((s) => s.timestamp >= cutoff)
+  } else if (period === 'week') {
     const cutoff = Date.now() - 7 * 86400000
     result = result.filter((s) => s.timestamp >= cutoff)
   } else if (period === 'month') {

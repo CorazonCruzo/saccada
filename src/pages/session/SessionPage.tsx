@@ -71,9 +71,13 @@ export default function SessionPage() {
     tracker.start((point) => {
       gazeCountRef.current++
       gazeRef.current = { x: point.x, y: point.y }
-      gazeLogRef.current.record(point)
 
       const { w, h, x: dotX, y: dotY } = dotPosRef.current
+
+      // Only record gaze when animation is active (skip countdown/paused/cooldown)
+      if (phaseRef.current === 'active') {
+        gazeLogRef.current.record({ ...point, dotX, dotY })
+      }
       const m = updateAdaptiveSpeed(
         adaptiveStateRef.current,
         point.t,
@@ -178,6 +182,8 @@ export default function SessionPage() {
         gazePoints: gazePoints.length > 0 ? gazePoints : undefined,
         viewportWidth: window.innerWidth,
         viewportHeight: window.innerHeight,
+        speed: useSessionStore.getState().speed,
+        visualScale: useSessionStore.getState().visualScale,
       })
       setSessionState('mood-check-after')
       navigate('/mood-check?phase=after', { replace: true })

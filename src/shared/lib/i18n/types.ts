@@ -196,6 +196,13 @@ export interface Translation {
     legendLess: string
     legendMore: string
     longestStreak: string
+    yesterday: string
+    focus: string
+    periodToday: string
+    editNote: string
+    noNote: string
+    cameraOff: string
+    avgFocus: string
   }
   settingsPage: {
     title: string
