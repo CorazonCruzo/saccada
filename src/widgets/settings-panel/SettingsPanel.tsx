@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useSessionStore } from '@/entities/session'
 import { canVibrate } from '@/features/haptics'
 import { checkCameraPermission, requestCameraAccess } from '@/features/eye-tracking'
@@ -38,6 +38,17 @@ export function SettingsPanel({ open, onOpenChange, onStart }: SettingsPanelProp
   const [cameraStatus, setCameraStatus] = useState<string | null>(null)
   const [cameraLoading, setCameraLoading] = useState(false)
 
+  // Auto-disable eye tracking if camera permission was revoked externally
+  useEffect(() => {
+    if (!open || !eyeTrackingEnabled) return
+    checkCameraPermission().then((p) => {
+      if (p !== 'granted') {
+        setEyeTracking(false)
+        setCalibratedAt(null)
+      }
+    })
+  }, [open, eyeTrackingEnabled, setEyeTracking, setCalibratedAt])
+
   async function handleToggleEyeTracking() {
     if (cameraLoading) return
 
@@ -57,6 +68,18 @@ export function SettingsPanel({ open, onOpenChange, onStart }: SettingsPanelProp
         return
       }
 
+      if (permission === 'denied') {
+        setCameraStatus(t.sessionSettings.cameraDenied)
+        return
+      }
+
+      // Permission already granted — no need to open a throwaway stream
+      if (permission === 'granted') {
+        setEyeTracking(true)
+        return
+      }
+
+      // Permission is 'prompt' — must request to trigger browser dialog
       const granted = await requestCameraAccess()
       if (granted) {
         setEyeTracking(true)
