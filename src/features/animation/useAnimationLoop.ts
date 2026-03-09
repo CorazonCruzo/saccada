@@ -38,6 +38,7 @@ interface AnimationState {
 interface AnimationRefs {
   pattern: PatternConfig
   speed: number
+  speedMultiplierRef: React.RefObject<number> | null
   visualScale: number
   onFrame: ((info: FrameInfo) => void) | null
   state: AnimationState
@@ -50,10 +51,12 @@ export function useAnimationLoop(
   speed: number = 1,
   visualScale: number = 1,
   onFrame?: (info: FrameInfo) => void,
+  speedMultiplierRef?: React.RefObject<number>,
 ) {
   const refs = useRef<AnimationRefs>({
     pattern,
     speed,
+    speedMultiplierRef: speedMultiplierRef ?? null,
     visualScale,
     onFrame: onFrame ?? null,
     state: {
@@ -71,6 +74,7 @@ export function useAnimationLoop(
   // Update refs without re-render
   refs.current.pattern = pattern
   refs.current.speed = speed
+  refs.current.speedMultiplierRef = speedMultiplierRef ?? null
   refs.current.visualScale = visualScale
   refs.current.onFrame = onFrame ?? null
 
@@ -81,7 +85,7 @@ export function useAnimationLoop(
     const ctx = canvas.getContext('2d')
     if (!ctx) return
 
-    const { pattern: pat, speed: spd, visualScale: vs, state } = refs.current
+    const { pattern: pat, speed: spd, speedMultiplierRef: mulRef, visualScale: vs, state } = refs.current
     const dpr = window.devicePixelRatio || 1
     const w = canvas.width / dpr
     const h = canvas.height / dpr
@@ -90,9 +94,11 @@ export function useAnimationLoop(
     if (!state.running) return
 
     // Frame-delta accumulation: speed changes don't cause position jumps
+    // Multiplier ref is read every frame (no React render lag)
+    const multiplier = mulRef?.current ?? 1
     const frameDelta = now - state.lastFrameTime
     state.lastFrameTime = now
-    state.animTime += frameDelta * spd
+    state.animTime += frameDelta * spd * multiplier
     const dt = state.animTime
 
     // Determine current phase (durations are NOT divided by speed —

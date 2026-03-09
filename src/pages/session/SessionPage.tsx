@@ -56,7 +56,7 @@ export default function SessionPage() {
   // Adaptive speed + gaze logging
   const gazeLogRef = useRef(new GazeLog())
   const adaptiveStateRef = useRef(createAdaptiveSpeedState())
-  const [adaptiveMultiplier, setAdaptiveMultiplier] = useState(1.0)
+  const adaptiveMultiplierRef = useRef(1.0)
   const dotPosRef = useRef({ x: 0, y: 0, w: 0, h: 0 })
   const gazeRef = useRef<{ x: number; y: number } | null>(null)
   const gazeCountRef = useRef(0)
@@ -87,7 +87,7 @@ export default function SessionPage() {
         w,
         h,
       )
-      setAdaptiveMultiplier(m)
+      adaptiveMultiplierRef.current = m
 
     }).catch((err) => {
       console.error('[Saccada] Eye tracking start failed:', err)
@@ -331,7 +331,7 @@ export default function SessionPage() {
     dotPosRef.current = { x: dotX, y: dotY, w: canvasW, h: canvasH }
   }, [])
 
-  const effectiveSpeed = speed * adaptiveMultiplier
+  // Speed multiplier applied directly in animation loop via ref (no React render lag)
 
   const isStopwatch = sessionDuration === 0
   const remaining = Math.max(0, sessionDuration - elapsed)
@@ -362,7 +362,8 @@ export default function SessionPage() {
         <SessionPlayer
           pattern={selectedPattern}
           isPlaying={false}
-          speed={effectiveSpeed}
+          speed={speed}
+            speedMultiplierRef={adaptiveMultiplierRef}
           visualScale={visualScale}
         />
         <div className="absolute inset-0 flex items-center justify-center bg-bg-deep/80 transition-opacity duration-[3000ms]">
@@ -380,7 +381,8 @@ export default function SessionPage() {
       <SessionPlayer
         pattern={selectedPattern}
         isPlaying={phase === 'active'}
-        speed={effectiveSpeed}
+        speed={speed}
+            speedMultiplierRef={adaptiveMultiplierRef}
         visualScale={visualScale}
         audioEngine={audioEngine}
         soundEnabled={soundEnabled}

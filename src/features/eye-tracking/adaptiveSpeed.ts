@@ -2,23 +2,20 @@ import type { GazePoint } from './EyeTracker'
 
 /**
  * Adaptive speed controller.
- * Uses EMA-smoothed distance between gaze and dot to adjust speed.
- * More robust than consecutive-lag counting: a single lucky reading
- * doesn't reset the entire state.
+ * Uses EMA-smoothed gaze-to-dot distance mapped directly to a speed multiplier.
+ * No step accumulation — multiplier tracks the smoothed distance continuously.
  */
 
-const CHECK_INTERVAL_MS = 200
-const DISTANCE_EMA_ALPHA = 0.3    // smoothing factor for distance tracking
-const SLOW_THRESHOLD = 0.15       // 15% of diagonal: start slowing down
-const FAST_THRESHOLD = 0.10       // 10% of diagonal: start speeding up
-const SLOW_DOWN_STEP = 0.06       // reduce multiplier per check when lagging
-const SPEED_UP_STEP = 0.04        // restore multiplier per check when close
+const CHECK_INTERVAL_MS = 100
+const DISTANCE_EMA_ALPHA = 0.4    // higher = more responsive to changes
+const NEAR_THRESHOLD = 0.08       // below this: full speed (1.0)
+const FAR_THRESHOLD = 0.20        // above this: minimum speed
 const MIN_MULTIPLIER = 0.4
 const MAX_MULTIPLIER = 1.0
 
 export interface AdaptiveSpeedState {
   multiplier: number
-  smoothedDistance: number    // EMA of normalized gaze-to-dot distance
+  smoothedDistance: number
   lastCheckTime: number
 }
 
@@ -34,13 +31,10 @@ export function createAdaptiveSpeedState(): AdaptiveSpeedState {
  * Call on each gaze update. Throttled internally to CHECK_INTERVAL_MS.
  * Returns the updated speed multiplier.
  *
- * @param state   Mutable state object (persists between calls)
- * @param now     Current timestamp (ms)
- * @param gaze    Latest gaze position in pixels, or null if unavailable
- * @param dotX    Dot X position in pixels
- * @param dotY    Dot Y position in pixels
- * @param viewW   Viewport width in pixels
- * @param viewH   Viewport height in pixels
+ * Multiplier is directly proportional to smoothed distance:
+ *   distance <= NEAR_THRESHOLD  →  1.0 (full speed)
+ *   distance >= FAR_THRESHOLD   →  MIN_MULTIPLIER
+ *   in between                  →  linear interpolation
  */
 export function updateAdaptiveSpeed(
   state: AdaptiveSpeedState,
@@ -71,12 +65,11 @@ export function updateAdaptiveSpeed(
     DISTANCE_EMA_ALPHA * normalizedDistance +
     (1 - DISTANCE_EMA_ALPHA) * state.smoothedDistance
 
-  if (state.smoothedDistance > SLOW_THRESHOLD) {
-    state.multiplier = Math.max(MIN_MULTIPLIER, state.multiplier - SLOW_DOWN_STEP)
-  } else if (state.smoothedDistance < FAST_THRESHOLD) {
-    state.multiplier = Math.min(MAX_MULTIPLIER, state.multiplier + SPEED_UP_STEP)
-  }
-  // Between FAST_THRESHOLD and SLOW_THRESHOLD: hold current speed (dead zone)
+  // Direct proportional mapping (no steps, no dead zone)
+  const t = Math.max(0, Math.min(1,
+    (state.smoothedDistance - NEAR_THRESHOLD) / (FAR_THRESHOLD - NEAR_THRESHOLD),
+  ))
+  state.multiplier = MAX_MULTIPLIER - t * (MAX_MULTIPLIER - MIN_MULTIPLIER)
 
   return state.multiplier
 }

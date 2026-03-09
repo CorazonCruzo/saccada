@@ -9,6 +9,8 @@ interface SessionPlayerProps {
   pattern: PatternConfig
   isPlaying: boolean
   speed?: number
+  /** Ref-based speed multiplier read every frame (bypasses React render cycle) */
+  speedMultiplierRef?: React.RefObject<number>
   visualScale?: number
   audioEngine?: AudioEngine | null
   soundEnabled?: boolean
@@ -21,6 +23,7 @@ export function SessionPlayer({
   pattern,
   isPlaying,
   speed = 1,
+  speedMultiplierRef,
   visualScale = 1,
   audioEngine = null,
   soundEnabled = false,
@@ -60,7 +63,7 @@ export function SessionPlayer({
     onDotMoveRef.current?.(info.dotX, info.dotY, info.canvasW, info.canvasH)
   }, [audioEngine, soundEnabled, hapticEnabled])
 
-  useAnimationLoop(canvasRef, pattern, isPlaying, speed, visualScale, onFrame)
+  useAnimationLoop(canvasRef, pattern, isPlaying, speed, visualScale, onFrame, speedMultiplierRef)
 
   // Tab visibility: pause/resume audio when tab is hidden/shown
   useEffect(() => {
