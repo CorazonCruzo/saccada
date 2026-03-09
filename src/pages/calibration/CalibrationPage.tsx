@@ -23,9 +23,26 @@ const GAZE_FIRST_POINT_DELAY_MS = 1500 // extra time for first point
 // Iris center landmarks only (left=468, right=473)
 const IRIS_CENTER_INDICES = new Set([468, 473])
 
+const SMOOTH_ALPHA = 0.5
+
+/** Temporal smoothing: lerp positions with previous frame to reduce jitter */
+function smoothLandmarks(
+  current: NormalizedLandmark[],
+  previous: NormalizedLandmark[] | null,
+): NormalizedLandmark[] {
+  if (!previous || previous.length !== current.length) {
+    return current.map(lm => ({ x: lm.x, y: lm.y, z: lm.z }))
+  }
+  return current.map((lm, i) => ({
+    x: previous[i].x * (1 - SMOOTH_ALPHA) + lm.x * SMOOTH_ALPHA,
+    y: previous[i].y * (1 - SMOOTH_ALPHA) + lm.y * SMOOTH_ALPHA,
+    z: previous[i].z * (1 - SMOOTH_ALPHA) + lm.z * SMOOTH_ALPHA,
+  }))
+}
+
 /**
  * Draw face landmark dots on a canvas.
- * Teal colored, flickering. Iris landmarks highlighted.
+ * Unified pulse, depth-layered, iris centers highlighted.
  */
 function drawFaceMesh(
   ctx: CanvasRenderingContext2D,
@@ -50,16 +67,22 @@ function drawFaceMesh(
     const depthAlpha = 0.5 + 0.5 * Math.min(Math.max(1 - lm.z * 3, 0), 1)
 
     if (isIris) {
-      // Iris: larger, brighter, slightly different hue (more cyan-white)
+      // Pupil center: bright filled circle with soft radial glow
       const alpha = (0.7 + 0.3 * flicker) * depthAlpha
+      // Outer glow
       ctx.beginPath()
-      ctx.arc(x, y, 3, 0, Math.PI * 2)
-      ctx.fillStyle = `rgba(130,230,220,${alpha.toFixed(2)})`
+      ctx.arc(x, y, 12, 0, Math.PI * 2)
+      ctx.fillStyle = `rgba(46,196,182,${(alpha * 0.35).toFixed(2)})`
       ctx.fill()
-      // Glow ring
+      // Mid glow
       ctx.beginPath()
-      ctx.arc(x, y, 6, 0, Math.PI * 2)
-      ctx.fillStyle = `rgba(46,196,182,${(alpha * 0.2).toFixed(2)})`
+      ctx.arc(x, y, 8, 0, Math.PI * 2)
+      ctx.fillStyle = `rgba(46,196,182,${(alpha * 0.35).toFixed(2)})`
+      ctx.fill()
+      // Core
+      ctx.beginPath()
+      ctx.arc(x, y, 4, 0, Math.PI * 2)
+      ctx.fillStyle = `rgba(130,230,220,${alpha.toFixed(2)})`
       ctx.fill()
     } else {
       // Stronger depth fade for interior points: deeper = smaller & dimmer
@@ -139,6 +162,7 @@ export default function CalibrationPage() {
   // Face mesh overlay
   const meshCanvasRef = useRef<HTMLCanvasElement>(null)
   const landmarksRef = useRef<NormalizedLandmark[] | null>(null)
+  const smoothedRef = useRef<NormalizedLandmark[] | null>(null)
   const meshRafRef = useRef(0)
   const meshVisibleRef = useRef(false)
 
@@ -200,9 +224,12 @@ export default function CalibrationPage() {
       if (!lms || !meshVisibleRef.current) {
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
         ctx.clearRect(0, 0, w, h)
+        smoothedRef.current = null
         return
       }
-      drawFaceMesh(ctx, lms, w, h, dpr, performance.now() / 1000)
+      const smoothed = smoothLandmarks(lms, smoothedRef.current)
+      smoothedRef.current = smoothed
+      drawFaceMesh(ctx, smoothed, w, h, dpr, performance.now() / 1000)
     }
 
     meshRafRef.current = requestAnimationFrame(render)
