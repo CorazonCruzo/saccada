@@ -128,16 +128,43 @@ export default function CalibrationPage() {
   const [error, setError] = useState<string | null>(null)
   const [gazeProgress, setGazeProgress] = useState(0)
   const [faceDetected, setFaceDetected] = useState(true)
+  const [cursorHidden, setCursorHidden] = useState(false)
 
   const validationResults = useRef<Array<{ predicted: CalibrationPoint; actual: CalibrationPoint }>>([])
   const gazeSamplesRef = useRef<number>(0)
   const gazeIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
+  const cursorTimerRef = useRef(0)
 
   // Face mesh overlay
   const meshCanvasRef = useRef<HTMLCanvasElement>(null)
   const landmarksRef = useRef<NormalizedLandmark[] | null>(null)
   const meshRafRef = useRef(0)
   const meshVisibleRef = useRef(false)
+
+  // Cursor auto-hide (same as session page: 3s inactivity)
+  const resetCursor = useCallback(() => {
+    setCursorHidden(false)
+    clearTimeout(cursorTimerRef.current)
+    cursorTimerRef.current = window.setTimeout(() => setCursorHidden(true), 3000)
+  }, [])
+
+  useEffect(() => {
+    const isPointScreen = phase === 'calibrating' || phase === 'validating' || phase === 'validating-wait'
+    if (!isPointScreen) {
+      setCursorHidden(false)
+      return
+    }
+
+    resetCursor()
+    window.addEventListener('mousemove', resetCursor)
+    window.addEventListener('touchstart', resetCursor)
+
+    return () => {
+      window.removeEventListener('mousemove', resetCursor)
+      window.removeEventListener('touchstart', resetCursor)
+      clearTimeout(cursorTimerRef.current)
+    }
+  }, [phase, resetCursor])
 
   // On mount: hide any leftover video from a previous session
   useEffect(() => {
@@ -517,7 +544,7 @@ export default function CalibrationPage() {
 
       /* Calibration / Validation point screen */
       ) : (
-        <div className="fixed inset-0 bg-bg-deep">
+        <div className={`fixed inset-0 bg-bg-deep session-cursor ${cursorHidden ? 'session-cursor-hidden' : ''}`}>
           {/* Progress */}
           <div className="absolute inset-x-0 top-4 z-20 flex items-center justify-center gap-4">
             <span className="font-heading text-xs tracking-widest text-text-dim uppercase">
@@ -564,7 +591,7 @@ export default function CalibrationPage() {
                 top: currentPoint.y - dotSize / 2,
                 width: dotSize,
                 height: dotSize,
-                cursor: calibrationMode === 'click' && !isValidation ? 'pointer' : 'default',
+                cursor: 'inherit',
               }}
               aria-label={`${isValidation ? t.calibration.validationLabel : t.calibration.calibrationLabel} point ${pointIndex + 1}`}
             >
