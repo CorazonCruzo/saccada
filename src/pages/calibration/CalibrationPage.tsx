@@ -20,8 +20,8 @@ const GAZE_FIRST_POINT_DELAY_MS = 1500 // extra time for first point
 
 // Face mesh: CSS size set via dvw/dvh, canvas pixel size resolved dynamically
 
-// Iris landmark indices (MediaPipe Face Landmarker)
-const IRIS_INDICES = new Set([468, 469, 470, 471, 472, 473, 474, 475, 476, 477])
+// Iris center landmarks only (left=468, right=473)
+const IRIS_CENTER_INDICES = new Set([468, 473])
 
 /**
  * Draw face landmark dots on a canvas.
@@ -43,10 +43,10 @@ function drawFaceMesh(
     const x = (1 - lm.x) * w
     const y = lm.y * h
 
-    const isIris = IRIS_INDICES.has(i)
+    const isIris = IRIS_CENTER_INDICES.has(i)
 
-    // Flicker: sinusoidal opacity variation per dot
-    const flicker = 0.45 + 0.55 * Math.sin(time * 6 + i * 0.37)
+    // Unified slow pulse (~0.5 Hz) instead of per-dot flicker
+    const flicker = 0.85 + 0.15 * Math.sin(time * Math.PI)
     const depthAlpha = 0.5 + 0.5 * Math.min(Math.max(1 - lm.z * 3, 0), 1)
 
     if (isIris) {
@@ -62,9 +62,12 @@ function drawFaceMesh(
       ctx.fillStyle = `rgba(46,196,182,${(alpha * 0.2).toFixed(2)})`
       ctx.fill()
     } else {
-      const alpha = flicker * depthAlpha
+      // Stronger depth fade for interior points: deeper = smaller & dimmer
+      const zFade = Math.max(0.15, 1 - Math.abs(lm.z) * 5)
+      const alpha = flicker * depthAlpha * zFade
+      const r = 0.8 + 0.7 * zFade // 0.8..1.5 based on depth
       ctx.beginPath()
-      ctx.arc(x, y, 1.5, 0, Math.PI * 2)
+      ctx.arc(x, y, r, 0, Math.PI * 2)
       ctx.fillStyle = `rgba(46,196,182,${alpha.toFixed(2)})`
       ctx.fill()
     }
