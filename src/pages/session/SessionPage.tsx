@@ -74,8 +74,8 @@ export default function SessionPage() {
 
       const { w, h, x: dotX, y: dotY } = dotPosRef.current
 
-      // Only record gaze when animation is active (skip countdown/paused/cooldown)
-      if (phaseRef.current === 'active') {
+      // Only record gaze when animation is active and dot position is initialized
+      if (phaseRef.current === 'active' && w > 0) {
         gazeLogRef.current.record({ ...point, dotX, dotY })
       }
       const m = updateAdaptiveSpeed(

@@ -2,35 +2,36 @@ import type { GazePoint } from './EyeTracker'
 
 /**
  * Adaptive speed controller.
- * Compares gaze position to dot position every check interval.
- * If the user's gaze consistently lags behind the dot, slows it down.
- * If gaze catches up, gradually restores speed (capped at user max).
+ * Uses EMA-smoothed distance between gaze and dot to adjust speed.
+ * More robust than consecutive-lag counting: a single lucky reading
+ * doesn't reset the entire state.
  */
 
 const CHECK_INTERVAL_MS = 200
-const LAG_THRESHOLD = 0.20       // 20% of viewport diagonal
-const CONSECUTIVE_LAG_NEEDED = 3 // slow down after 3 consecutive lag checks
-const SLOW_DOWN_STEP = 0.10      // reduce multiplier by 10%
-const SPEED_UP_STEP = 0.05       // restore 5% per check
-const MIN_MULTIPLIER = 0.3
+const DISTANCE_EMA_ALPHA = 0.3    // smoothing factor for distance tracking
+const SLOW_THRESHOLD = 0.15       // 15% of diagonal: start slowing down
+const FAST_THRESHOLD = 0.10       // 10% of diagonal: start speeding up
+const SLOW_DOWN_STEP = 0.06       // reduce multiplier per check when lagging
+const SPEED_UP_STEP = 0.04        // restore multiplier per check when close
+const MIN_MULTIPLIER = 0.4
 const MAX_MULTIPLIER = 1.0
 
 export interface AdaptiveSpeedState {
   multiplier: number
-  consecutiveLag: number
+  smoothedDistance: number    // EMA of normalized gaze-to-dot distance
   lastCheckTime: number
 }
 
 export function createAdaptiveSpeedState(): AdaptiveSpeedState {
   return {
     multiplier: 1.0,
-    consecutiveLag: 0,
+    smoothedDistance: 0,
     lastCheckTime: 0,
   }
 }
 
 /**
- * Call on each animation frame (or at regular intervals).
+ * Call on each gaze update. Throttled internally to CHECK_INTERVAL_MS.
  * Returns the updated speed multiplier.
  *
  * @param state   Mutable state object (persists between calls)
@@ -65,17 +66,17 @@ export function updateAdaptiveSpeed(
   const distance = Math.sqrt(dx * dx + dy * dy)
   const normalizedDistance = distance / diagonal
 
-  if (normalizedDistance > LAG_THRESHOLD) {
-    state.consecutiveLag++
-    if (state.consecutiveLag >= CONSECUTIVE_LAG_NEEDED) {
-      state.multiplier = Math.max(MIN_MULTIPLIER, state.multiplier - SLOW_DOWN_STEP)
-    }
-  } else {
-    state.consecutiveLag = 0
-    if (state.multiplier < MAX_MULTIPLIER) {
-      state.multiplier = Math.min(MAX_MULTIPLIER, state.multiplier + SPEED_UP_STEP)
-    }
+  // EMA: smooth out noisy per-frame distances
+  state.smoothedDistance =
+    DISTANCE_EMA_ALPHA * normalizedDistance +
+    (1 - DISTANCE_EMA_ALPHA) * state.smoothedDistance
+
+  if (state.smoothedDistance > SLOW_THRESHOLD) {
+    state.multiplier = Math.max(MIN_MULTIPLIER, state.multiplier - SLOW_DOWN_STEP)
+  } else if (state.smoothedDistance < FAST_THRESHOLD) {
+    state.multiplier = Math.min(MAX_MULTIPLIER, state.multiplier + SPEED_UP_STEP)
   }
+  // Between FAST_THRESHOLD and SLOW_THRESHOLD: hold current speed (dead zone)
 
   return state.multiplier
 }

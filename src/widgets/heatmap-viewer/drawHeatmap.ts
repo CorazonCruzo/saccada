@@ -189,9 +189,11 @@ export function drawTrajectoryOverlay(
     ctx.lineTo(dotPositions[i].x, dotPositions[i].y)
   }
   ctx.strokeStyle = color
-  ctx.lineWidth = 1.5
-  ctx.globalAlpha = 0.5
+  ctx.lineWidth = 2
+  ctx.globalAlpha = 0.35
+  ctx.setLineDash([6, 4])
   ctx.stroke()
+  ctx.setLineDash([])
   ctx.globalAlpha = 1
 }
 
@@ -250,7 +252,7 @@ export function drawFocusTimeline(
   for (let i = 0; i < segments.length; i++) {
     const ratio = segments[i]
     if (ratio === null) continue
-    ctx.fillStyle = ratio >= 0.5 ? '#2ec4b6' : '#e84393'
+    ctx.fillStyle = ratio >= 0.5 ? '#2ec4b6' : '#2d2255'
     ctx.fillRect(
       Math.floor(i * segWidth),
       y,
