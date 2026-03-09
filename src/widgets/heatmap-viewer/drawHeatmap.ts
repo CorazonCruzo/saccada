@@ -7,7 +7,7 @@ import type { GazePoint } from '@/features/eye-tracking'
  * 1. Background (bg-deep)
  * 2. Gaze density heatmap (teal -> turmeric -> saffron gradient)
  * 3. Dot trajectory (thin gold line)
- * 4. Focus Timeline bar (8px, teal / lotus / dim)
+ * 4. Focus Timeline bar (8px, teal / dim)
  */
 
 const CELL_SIZE = 20
@@ -188,9 +188,9 @@ export function drawTrajectoryOverlay(
   for (let i = 1; i < dotPositions.length; i++) {
     ctx.lineTo(dotPositions[i].x, dotPositions[i].y)
   }
-  ctx.strokeStyle = color
+  ctx.strokeStyle = '#f0e6d3'
   ctx.lineWidth = 2
-  ctx.globalAlpha = 0.35
+  ctx.globalAlpha = 0.55
   ctx.setLineDash([6, 4])
   ctx.stroke()
   ctx.setLineDash([])
