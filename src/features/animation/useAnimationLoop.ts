@@ -6,6 +6,7 @@ import { drawBindu } from './drawBindu'
 import { drawFlame } from './drawFlame'
 import { drawMandala } from './drawMandala'
 import { drawTrail } from './drawTrail'
+import { readMandalaColors } from './mandalaColors'
 
 const TRAIL_MAX_LENGTH = 40
 const MANDALA_SPEED = 0.0003
@@ -36,14 +37,6 @@ interface AnimationState {
   /** Cached mandala ring colors read from CSS variables */
   mandalaRing1: string
   mandalaRing2: string
-}
-
-/** Read current mandala ring colors from CSS custom properties */
-function readMandalaColors(): [string, string] {
-  const style = getComputedStyle(document.documentElement)
-  const c1 = style.getPropertyValue('--saccada-mandala-ring1').trim()
-  const c2 = style.getPropertyValue('--saccada-mandala-ring2').trim()
-  return [c1 || '#c4956a', c2 || '#e8a838']
 }
 
 interface AnimationRefs {
