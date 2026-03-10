@@ -3,7 +3,10 @@ import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useSessionStore } from '@/entities/session'
 import { drawMoodFlame } from '@/features/animation'
 import { useTranslation } from '@/shared/lib/i18n'
+import { useSessionOrientation } from '@/shared/lib/useSessionOrientation'
+import { unlockOrientation } from '@/shared/lib/orientation'
 import { Button } from '@/shared/ui/button'
+import { RotateDeviceOverlay } from '@/shared/ui/rotate-overlay'
 
 const MOOD_LEVELS = [1, 2, 3, 4, 5] as const
 const FLAME_W = 80
@@ -94,6 +97,7 @@ export default function MoodCheckPage() {
   const [searchParams] = useSearchParams()
   const phase = searchParams.get('phase') as 'before' | 'after' ?? 'before'
   const { t } = useTranslation()
+  const { needsRotation } = useSessionOrientation()
 
   const {
     setMoodBefore,
@@ -111,6 +115,12 @@ export default function MoodCheckPage() {
     navigate('/session', { replace: true })
   }
 
+  function navigateToResults() {
+    void unlockOrientation()
+    setSessionState('results')
+    navigate('/results', { replace: true })
+  }
+
   function handleContinue() {
     if (phase === 'before') {
       setMoodBefore(selected)
@@ -119,8 +129,7 @@ export default function MoodCheckPage() {
       if (lastSession) {
         setLastSession({ ...lastSession, moodAfter: selected ?? undefined })
       }
-      setSessionState('results')
-      navigate('/results', { replace: true })
+      navigateToResults()
     }
   }
 
@@ -129,13 +138,13 @@ export default function MoodCheckPage() {
       setMoodBefore(null)
       navigateToSession()
     } else {
-      setSessionState('results')
-      navigate('/results', { replace: true })
+      navigateToResults()
     }
   }
 
   return (
     <div className="fixed inset-0 flex flex-col items-center justify-center bg-bg-deep px-6">
+      {needsRotation && <RotateDeviceOverlay />}
       <p className="font-heading text-xl font-bold text-text-bright">
         {title}
       </p>

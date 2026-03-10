@@ -46,6 +46,8 @@ export const es: Translation = {
     keyHints: 'ESPACIO pausa \u00B7 ESC salir \u00B7 F pantalla completa \u00B7 I info \u00B7 G gu\u00EDa \u00B7 +/- escala',
     hideGuide: 'Ocultar gu\u00EDa',
     showGuide: 'Mostrar gu\u00EDa',
+    rotateLandscape: 'Gira tu dispositivo',
+    rotateLandscapeHint: 'La sesi\u00F3n funciona mejor en orientaci\u00F3n horizontal. Por favor, gira tu tel\u00E9fono de lado.',
   },
 
   results: {

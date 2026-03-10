@@ -5,6 +5,7 @@ import { patternsById } from '@/entities/pattern'
 import { HeatmapViewer } from '@/widgets/heatmap-viewer'
 import { getSessionFocusScore } from '@/features/session-history/sessionList'
 import { useTranslation } from '@/shared/lib/i18n'
+import { unlockOrientation } from '@/shared/lib/orientation'
 import { Button } from '@/shared/ui/button'
 import { formatTimer } from '@/shared/lib/format'
 import { db, type SessionRecord } from '@/shared/lib/db'
@@ -26,6 +27,11 @@ export default function ResultsPage() {
   const [noteOpen, setNoteOpen] = useState(false)
   const [noteText, setNoteText] = useState('')
   const savedRef = useRef(false)
+
+  // Unlock orientation on results page (session flow ended)
+  useEffect(() => {
+    void unlockOrientation()
+  }, [])
 
   // Save session to Dexie once on mount (skip zero/trivial sessions)
   useEffect(() => {

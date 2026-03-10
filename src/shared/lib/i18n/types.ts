@@ -44,6 +44,8 @@ export interface Translation {
     keyHints: string
     hideGuide: string
     showGuide: string
+    rotateLandscape: string
+    rotateLandscapeHint: string
   }
   results: {
     title: string
