@@ -444,13 +444,9 @@ function ActivityCalendar({
                   className={`relative rounded-md transition-colors ${
                     day.isFuture ? 'cursor-default' : 'cursor-pointer'
                   } ${
-                    day.isToday && day.date === selectedDay
-                      ? 'ring-2 ring-text-bright'
-                      : day.isToday
-                        ? 'ring-2 ring-text-muted'
-                        : !day.isFuture && day.date === selectedDay
-                          ? 'ring-1 ring-text-muted ring-offset-1 ring-offset-bg-deep'
-                          : ''
+                    !day.isFuture && day.date === selectedDay
+                      ? 'ring-1 ring-text-muted ring-offset-1 ring-offset-bg-deep'
+                      : ''
                   }`}
                   style={{
                     height: 34,
@@ -460,7 +456,7 @@ function ActivityCalendar({
                       : LEVEL_COLORS[level],
                   }}
                 >
-                  <span className={`absolute inset-0 flex items-center justify-center font-heading text-[11px] tabular-nums ${
+                  <span className={`absolute inset-0 flex flex-col items-center justify-center font-heading text-[11px] tabular-nums ${
                     day.isToday
                       ? 'font-semibold text-text-bright'
                       : day.isFuture
@@ -470,6 +466,9 @@ function ActivityCalendar({
                           : 'text-text-dim'
                   }`}>
                     {day.day}
+                    {day.isToday && (
+                      <span className="absolute bottom-1 h-1 w-1 rounded-full bg-text-bright" />
+                    )}
                   </span>
                 </button>
               )
