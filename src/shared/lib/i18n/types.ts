@@ -217,6 +217,10 @@ export interface Translation {
   settingsPage: {
     title: string
     language: string
+    theme: string
+    themeLight: string
+    themeDark: string
+    themeSystem: string
   }
   trajectory: {
     horizontal: string

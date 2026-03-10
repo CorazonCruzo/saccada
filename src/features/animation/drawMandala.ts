@@ -1,9 +1,10 @@
-import { palette } from '@/shared/config/palette'
-
 /**
  * Draw a parametric mandala background.
  * Concentric rings of elliptical petals, slowly rotating.
  * Pure function — no React dependency.
+ *
+ * @param ringColor1 — color for even rings (0, 2, 4)
+ * @param ringColor2 — color for odd rings (1, 3)
  */
 export function drawMandala(
   ctx: CanvasRenderingContext2D,
@@ -12,6 +13,8 @@ export function drawMandala(
   time: number,
   opacity: number = 0.08,
   scale: number = 1,
+  ringColor1: string = '#c4956a',
+  ringColor2: string = '#e8a838',
 ) {
   ctx.save()
   ctx.translate(cx, cy)
@@ -21,7 +24,7 @@ export function drawMandala(
   for (let ring = 0; ring < 5; ring++) {
     const r = (30 + ring * 28) * scale
     const petals = 8 + ring * 4
-    ctx.strokeStyle = ring % 2 === 0 ? palette.warm.gold : palette.warm.turmeric
+    ctx.strokeStyle = ring % 2 === 0 ? ringColor1 : ringColor2
     ctx.lineWidth = 0.8 * Math.max(scale * 0.5, 0.5)
 
     for (let i = 0; i < petals; i++) {

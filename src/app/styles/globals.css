@@ -49,29 +49,24 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
 
-  /* Saccada palette — backgrounds */
-  --color-bg-deep: #0e0a1a;
-  --color-bg-mid: #1a1035;
-  --color-bg-surface: #231a42;
+  /* Saccada palette — theme-aware via CSS vars */
+  --color-bg-deep: var(--saccada-bg-deep);
+  --color-bg-mid: var(--saccada-bg-mid);
+  --color-bg-surface: var(--saccada-bg-surface);
 
-  /* Saccada palette — warm accents */
-  --color-saffron: #ff6b35;
-  --color-turmeric: #e8a838;
-  --color-gold: #c4956a;
+  --color-saffron: var(--saccada-saffron);
+  --color-turmeric: var(--saccada-turmeric);
+  --color-gold: var(--saccada-gold);
 
-  /* Saccada palette — cool accents */
-  --color-teal: #2ec4b6;
-  --color-lotus: #e84393;
-  --color-indigo: #6c5ce7;
+  --color-teal: var(--saccada-teal);
+  --color-lotus: var(--saccada-lotus);
+  --color-indigo: var(--saccada-indigo);
 
-  /* Saccada palette — text */
-  --color-text-bright: #f0e6d3;
-  --color-text-muted: #9b8eb0;
-  --color-text-dim: #5a4d6e;
+  --color-text-bright: var(--saccada-text-bright);
+  --color-text-muted: var(--saccada-text-muted);
+  --color-text-dim: var(--saccada-text-dim);
 
-  /* Saccada palette — border */
-  --color-border-ornament: #2d2255;
-
+  --color-border-ornament: var(--saccada-border-ornament);
 }
 
 /* Font families — separate @theme (not inline) so utilities use var()
@@ -82,38 +77,87 @@
   --font-devanagari: "Noto Sans Devanagari", sans-serif;
 }
 
-/* Dark-only app — :root IS the dark theme */
+/*
+ * ===== Light theme =====
+ *
+ * Derived from dark palette via OKLCH lightness mirror:
+ *   L_light ≈ 1 - L_dark,  same Hue (H=286 indigo family),  chroma reduced at extremes
+ *
+ * This preserves the Saccada indigo personality: backgrounds get a subtle
+ * lavender tint instead of generic white, text uses indigo-tinted darks.
+ *
+ * Dark OKLCH reference:
+ *   bg-deep:  oklch(0.097 0.038 286)   text-bright: oklch(0.935 0.028 82)
+ *   bg-mid:   oklch(0.154 0.067 286)   text-muted:  oklch(0.658 0.047 293)
+ *   bg-surf:  oklch(0.196 0.072 284)   text-dim:    oklch(0.420 0.053 288)
+ *   border:   oklch(0.227 0.085 284)
+ */
 :root {
   --radius: 0.625rem;
 
-  /* shadcn semantic tokens mapped to Saccada palette */
-  --background: #0e0a1a;
-  --foreground: #f0e6d3;
-  --card: #1a1035;
-  --card-foreground: #f0e6d3;
-  --popover: #1a1035;
-  --popover-foreground: #f0e6d3;
-  --primary: #ff6b35;
-  --primary-foreground: #0e0a1a;
-  --secondary: #1a1035;
-  --secondary-foreground: #f0e6d3;
-  --muted: #1a1035;
-  --muted-foreground: #9b8eb0;
-  --accent: #231a42;
-  --accent-foreground: #f0e6d3;
-  --destructive: #e84393;
-  --border: #2d2255;
-  --input: #392d5e;
-  --ring: #ff6b35;
-  --chart-1: #ff6b35;
-  --chart-2: #2ec4b6;
-  --chart-3: #e8a838;
-  --chart-4: #6c5ce7;
-  --chart-5: #e84393;
+  /* Saccada palette — light (OKLCH mirror, same hue family) */
+  --saccada-bg-deep:    oklch(0.97  0.007 286);   /* L: 0.097→0.97  subtle lavender white     */
+  --saccada-bg-mid:     oklch(0.94  0.012 286);   /* L: 0.154→0.94  card/panel lavender        */
+  --saccada-bg-surface: oklch(0.91  0.018 284);   /* L: 0.196→0.91  hover/active surface       */
+  --saccada-saffron:    oklch(0.62  0.196 46);    /* L: 0.686→0.62  darker for light-bg contrast */
+  --saccada-turmeric:   oklch(0.58  0.155 78);    /* L: 0.775→0.58  headings need more contrast */
+  --saccada-gold:       oklch(0.58  0.082 62);    /* L: 0.693→0.58  borders, subtle accents     */
+  --saccada-teal:       oklch(0.62  0.109 183);   /* L: 0.737→0.62  badges, tracking UI         */
+  --saccada-lotus:      #e84393;                   /* keeps dark value — already contrasty        */
+  --saccada-indigo:     #6c5ce7;                   /* keeps dark value — already contrasty        */
+  --saccada-text-bright: oklch(0.22 0.035 286);   /* L: 0.935→0.22  dark indigo text            */
+  --saccada-text-muted:  oklch(0.47 0.040 293);   /* L: 0.658→0.47  secondary text              */
+  --saccada-text-dim:    oklch(0.65 0.030 288);   /* L: 0.420→0.65  hints, disabled             */
+  --saccada-border-ornament: oklch(0.86 0.020 284); /* L: 0.227→0.86 light lavender border     */
+  --saccada-mandala-ring1: oklch(0.55 0.080 286);  /* cool indigo — reverse of warm gold       */
+  --saccada-mandala-ring2: oklch(0.50 0.070 284);  /* deeper purple — reverse of turmeric      */
+
+  /* shadcn semantic tokens — light */
+  --background:           oklch(0.97  0.007 286);
+  --foreground:           oklch(0.22  0.035 286);
+  --card:                 oklch(0.94  0.012 286);
+  --card-foreground:      oklch(0.22  0.035 286);
+  --popover:              oklch(0.94  0.012 286);
+  --popover-foreground:   oklch(0.22  0.035 286);
+  --primary:              oklch(0.62  0.196 46);
+  --primary-foreground:   oklch(0.97  0.007 286);
+  --secondary:            oklch(0.94  0.012 286);
+  --secondary-foreground: oklch(0.22  0.035 286);
+  --muted:                oklch(0.94  0.012 286);
+  --muted-foreground:     oklch(0.47  0.040 293);
+  --accent:               oklch(0.91  0.018 284);
+  --accent-foreground:    oklch(0.22  0.035 286);
+  --destructive:          #e84393;
+  --border:               oklch(0.86  0.020 284);
+  --input:                oklch(0.82  0.025 284);
+  --ring:                 oklch(0.62  0.196 46);
+  --chart-1:              oklch(0.62  0.196 46);
+  --chart-2:              oklch(0.62  0.109 183);
+  --chart-3:              oklch(0.58  0.155 78);
+  --chart-4:              #6c5ce7;
+  --chart-5:              #e84393;
 }
 
-/* .dark — identical to :root (dark-only app) */
+/* ===== Dark theme ===== */
 .dark {
+  /* Saccada palette — dark (original hex, proven values) */
+  --saccada-bg-deep: #0e0a1a;
+  --saccada-bg-mid: #1a1035;
+  --saccada-bg-surface: #231a42;
+  --saccada-saffron: #ff6b35;
+  --saccada-turmeric: #e8a838;
+  --saccada-gold: #c4956a;
+  --saccada-teal: #2ec4b6;
+  --saccada-lotus: #e84393;
+  --saccada-indigo: #6c5ce7;
+  --saccada-text-bright: #f0e6d3;
+  --saccada-text-muted: #9b8eb0;
+  --saccada-text-dim: #5a4d6e;
+  --saccada-border-ornament: #2d2255;
+  --saccada-mandala-ring1: #c4956a;   /* gold — warm on dark bg */
+  --saccada-mandala-ring2: #e8a838;   /* turmeric              */
+
+  /* shadcn semantic tokens — dark */
   --background: #0e0a1a;
   --foreground: #f0e6d3;
   --card: #1a1035;

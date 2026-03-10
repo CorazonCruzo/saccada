@@ -33,6 +33,17 @@ interface AnimationState {
   trail: Point[]
   mandalaAngle: number
   dotXNormalized: number
+  /** Cached mandala ring colors read from CSS variables */
+  mandalaRing1: string
+  mandalaRing2: string
+}
+
+/** Read current mandala ring colors from CSS custom properties */
+function readMandalaColors(): [string, string] {
+  const style = getComputedStyle(document.documentElement)
+  const c1 = style.getPropertyValue('--saccada-mandala-ring1').trim()
+  const c2 = style.getPropertyValue('--saccada-mandala-ring2').trim()
+  return [c1 || '#c4956a', c2 || '#e8a838']
 }
 
 interface AnimationRefs {
@@ -67,6 +78,8 @@ export function useAnimationLoop(
       trail: [],
       mandalaAngle: 0,
       dotXNormalized: 0,
+      mandalaRing1: '#c4956a',
+      mandalaRing2: '#e8a838',
     },
   })
   const rafId = useRef(0)
@@ -187,7 +200,7 @@ export function useAnimationLoop(
     // Brighter in small previews, subtler in fullscreen sessions
     const mandalaScale = Math.min(w, h) / 350 * vs
     const mandalaOpacity = h < 400 ? 0.25 : 0.15
-    drawMandala(ctx, w / 2, h / 2, state.mandalaAngle, mandalaOpacity, mandalaScale)
+    drawMandala(ctx, w / 2, h / 2, state.mandalaAngle, mandalaOpacity, mandalaScale, state.mandalaRing1, state.mandalaRing2)
 
     // 3. Trail (only for moving patterns)
     if (pat.trajectory !== 'fixation' && state.trail.length > 1) {
@@ -221,6 +234,9 @@ export function useAnimationLoop(
         state.running = true
         state.lastFrameTime = performance.now()
         state.trail = []
+        const [c1, c2] = readMandalaColors()
+        state.mandalaRing1 = c1
+        state.mandalaRing2 = c2
       }
       rafId.current = requestAnimationFrame(render)
     } else {
@@ -241,6 +257,21 @@ export function useAnimationLoop(
     state.currentPhaseIndex = 0
     state.trail = []
   }, [pattern.id])
+
+  // Read mandala colors from CSS vars on mount and when theme class changes
+  useEffect(() => {
+    const [c1, c2] = readMandalaColors()
+    refs.current.state.mandalaRing1 = c1
+    refs.current.state.mandalaRing2 = c2
+
+    const observer = new MutationObserver(() => {
+      const [nc1, nc2] = readMandalaColors()
+      refs.current.state.mandalaRing1 = nc1
+      refs.current.state.mandalaRing2 = nc2
+    })
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] })
+    return () => observer.disconnect()
+  }, [])
 
   return {
     getCurrentPhaseIndex: () => refs.current.state.currentPhaseIndex,

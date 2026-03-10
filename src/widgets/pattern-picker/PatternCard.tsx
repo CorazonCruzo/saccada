@@ -33,7 +33,7 @@ export function PatternCard({ pattern, isSelected, onSelect, onInfo }: PatternCa
       onClick={onSelect}
       className={`group relative cursor-pointer rounded-xl border p-5 text-left transition-all ${
         isSelected
-          ? 'border-saffron/50 bg-bg-surface shadow-[0_0_20px_rgba(255,107,53,0.1)]'
+          ? 'border-turmeric/50 bg-bg-surface shadow-[0_0_20px_var(--saccada-turmeric)]/10'
           : 'border-border-ornament bg-bg-mid hover:border-gold/30 hover:bg-bg-surface/60'
       }`}
     >

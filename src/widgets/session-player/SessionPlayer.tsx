@@ -85,7 +85,7 @@ export function SessionPlayer({
     <div
       ref={containerRef}
       className={className}
-      style={{ width: '100%', height: '100%', background: '#0e0a1a' }}
+      style={{ width: '100%', height: '100%', background: 'var(--saccada-bg-deep)' }}
     >
       <canvas ref={canvasRef} style={{ display: 'block' }} />
     </div>

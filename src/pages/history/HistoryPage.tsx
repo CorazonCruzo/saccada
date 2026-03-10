@@ -340,11 +340,11 @@ const WEEKDAY_KEYS = [
 ] as const
 
 const LEVEL_COLORS = [
-  '#1a1035',            // 0: bg-mid (no sessions)
-  'rgba(46,196,182,.3)', // 1: teal 30%
-  'rgba(46,196,182,.5)', // 2: teal 50%
-  'rgba(46,196,182,.7)', // 3: teal 70%
-  '#2ec4b6',             // 4: teal 100%
+  'var(--saccada-bg-surface)',
+  'color-mix(in srgb, var(--saccada-teal) 30%, transparent)',
+  'color-mix(in srgb, var(--saccada-teal) 50%, transparent)',
+  'color-mix(in srgb, var(--saccada-teal) 70%, transparent)',
+  'var(--saccada-teal)',
 ]
 
 const LEGEND_CELL = 10
@@ -452,7 +452,7 @@ function ActivityCalendar({
                     height: 34,
                     margin: 2,
                     backgroundColor: day.isFuture
-                      ? '#231a42'
+                      ? 'var(--saccada-bg-surface)'
                       : LEVEL_COLORS[level],
                   }}
                 >

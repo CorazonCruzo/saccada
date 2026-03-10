@@ -226,6 +226,10 @@ export const ru: Translation = {
   settingsPage: {
     title: 'Настройки',
     language: 'Язык',
+    theme: 'Тема',
+    themeLight: 'Светлая',
+    themeDark: 'Темная',
+    themeSystem: 'Система',
   },
 
   trajectory: {
