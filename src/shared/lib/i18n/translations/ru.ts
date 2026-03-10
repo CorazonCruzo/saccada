@@ -133,6 +133,8 @@ export const ru: Translation = {
     modeGaze: 'Только взгляд',
     modeClick: 'С нажатием',
     faceNotDetected: 'Лицо не обнаружено',
+    smallScreenTitle: 'Нужен экран побольше',
+    smallScreenMessage: 'Калибровка трекинга глаз требует экран шириной не менее 768px. Используйте ноутбук или планшет.',
   },
 
   notFound: {

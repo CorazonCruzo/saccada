@@ -91,6 +91,11 @@ export class GazePipeline {
     this.videoElement.style.pointerEvents = visible ? 'auto' : 'none'
   }
 
+  /** Access the raw video element for custom positioning/styling */
+  getVideoElement(): HTMLVideoElement | null {
+    return this.videoElement
+  }
+
   /**
    * Capture a calibration sample from the latest cached landmarks.
    * Returns null if no face was detected in the last processing frame.

@@ -133,6 +133,8 @@ export const es: Translation = {
     modeGaze: 'Solo mirada',
     modeClick: 'Clic para confirmar',
     faceNotDetected: 'Rostro no detectado',
+    smallScreenTitle: 'Se requiere pantalla mayor',
+    smallScreenMessage: 'La calibración del seguimiento ocular requiere una pantalla de al menos 768px. Usa un portátil o tablet.',
   },
 
   notFound: {

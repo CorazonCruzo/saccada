@@ -2,7 +2,10 @@ import { useState, useEffect, useRef, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSessionStore } from '@/entities/session'
 import { useEyeTracking, type NormalizedLandmark } from '@/features/eye-tracking'
-import { getCalibrationPoints, getValidationPoints, computeAccuracy, type CalibrationPoint } from '@/features/calibration'
+import {
+  getCalibrationPoints, getValidationPoints, computeAccuracy, type CalibrationPoint,
+  computeCameraPreviewLayout, isCalibrationViewportSupported, type CameraPreviewLayout,
+} from '@/features/calibration'
 import { useTranslation } from '@/shared/lib/i18n'
 import { Button } from '@/shared/ui/button'
 
@@ -22,6 +25,11 @@ const GAZE_FIRST_POINT_DELAY_MS = 1500 // extra time for first point
 
 // Iris center landmarks only (left=468, right=473)
 const IRIS_CENTER_INDICES = new Set([468, 473])
+
+// Eye contour landmarks for outline paths
+const LEFT_EYE = [33, 246, 161, 160, 159, 158, 157, 173, 133, 155, 154, 153, 145, 144, 163, 7]
+const RIGHT_EYE = [263, 466, 388, 387, 386, 385, 384, 398, 362, 382, 381, 380, 374, 373, 390, 249]
+const EYE_INDICES = new Set([...LEFT_EYE, ...RIGHT_EYE, ...IRIS_CENTER_INDICES])
 
 const SMOOTH_ALPHA = 0.5
 
@@ -50,50 +58,66 @@ function drawFaceMesh(
   w: number,
   h: number,
   dpr: number,
-  time: number,
 ) {
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
   ctx.clearRect(0, 0, w, h)
 
+  // Nose tip Y as reference for fading lower-face points
+  const noseY = landmarks[4].y
+  const chinY = landmarks[152].y
+  const lowerFaceStart = noseY - (chinY - noseY) * 0.1 // just above nose
+
+  // All 478 points: 1px, warm white — skip eye area, fade nose/mouth zone
   for (let i = 0; i < landmarks.length; i++) {
+    if (EYE_INDICES.has(i)) continue
     const lm = landmarks[i]
     const x = (1 - lm.x) * w
     const y = lm.y * h
+    // Fade points in nose/mouth zone
+    const opacity = lm.y > lowerFaceStart ? 0.1 : 0.35
+    ctx.beginPath()
+    ctx.arc(x, y, 1, 0, Math.PI * 2)
+    ctx.fillStyle = `rgba(240,230,211,${opacity})`
+    ctx.fill()
+  }
 
-    const isIris = IRIS_CENTER_INDICES.has(i)
-
-    // Unified slow pulse (~0.5 Hz) instead of per-dot flicker
-    const flicker = 0.85 + 0.15 * Math.sin(time * Math.PI)
-    const depthAlpha = 0.5 + 0.5 * Math.min(Math.max(1 - lm.z * 3, 0), 1)
-
-    if (isIris) {
-      // Pupil center: bright filled circle with soft radial glow
-      const alpha = (0.7 + 0.3 * flicker) * depthAlpha
-      // Outer glow
-      ctx.beginPath()
-      ctx.arc(x, y, 12, 0, Math.PI * 2)
-      ctx.fillStyle = `rgba(46,196,182,${(alpha * 0.35).toFixed(2)})`
-      ctx.fill()
-      // Mid glow
-      ctx.beginPath()
-      ctx.arc(x, y, 8, 0, Math.PI * 2)
-      ctx.fillStyle = `rgba(46,196,182,${(alpha * 0.35).toFixed(2)})`
-      ctx.fill()
-      // Core
-      ctx.beginPath()
-      ctx.arc(x, y, 4, 0, Math.PI * 2)
-      ctx.fillStyle = `rgba(130,230,220,${alpha.toFixed(2)})`
-      ctx.fill()
-    } else {
-      // Stronger depth fade for interior points: deeper = smaller & dimmer
-      const zFade = Math.max(0.15, 1 - Math.abs(lm.z) * 5)
-      const alpha = flicker * depthAlpha * zFade
-      const r = 0.8 + 0.7 * zFade // 0.8..1.5 based on depth
-      ctx.beginPath()
-      ctx.arc(x, y, r, 0, Math.PI * 2)
-      ctx.fillStyle = `rgba(46,196,182,${alpha.toFixed(2)})`
-      ctx.fill()
+  // Eye contours: thin teal outline
+  ctx.strokeStyle = 'rgba(46,196,182,0.5)'
+  ctx.lineWidth = 1
+  ctx.lineJoin = 'round'
+  for (const eye of [LEFT_EYE, RIGHT_EYE]) {
+    ctx.beginPath()
+    for (let i = 0; i < eye.length; i++) {
+      const lm = landmarks[eye[i]]
+      const x = (1 - lm.x) * w
+      const y = lm.y * h
+      if (i === 0) ctx.moveTo(x, y)
+      else ctx.lineTo(x, y)
     }
+    ctx.closePath()
+    ctx.stroke()
+  }
+
+  // Iris centers: small dot + soft glow
+  for (const idx of [468, 473]) {
+    const lm = landmarks[idx]
+    const x = (1 - lm.x) * w
+    const y = lm.y * h
+    // Outer glow
+    ctx.beginPath()
+    ctx.arc(x, y, 10, 0, Math.PI * 2)
+    ctx.fillStyle = 'rgba(46,196,182,0.1)'
+    ctx.fill()
+    // Mid glow
+    ctx.beginPath()
+    ctx.arc(x, y, 6, 0, Math.PI * 2)
+    ctx.fillStyle = 'rgba(46,196,182,0.25)'
+    ctx.fill()
+    // Core dot
+    ctx.beginPath()
+    ctx.arc(x, y, 2.5, 0, Math.PI * 2)
+    ctx.fillStyle = 'rgba(130,230,220,0.9)'
+    ctx.fill()
   }
 }
 
@@ -153,6 +177,26 @@ export default function CalibrationPage() {
   const [gazeProgress, setGazeProgress] = useState(0)
   const [faceDetected, setFaceDetected] = useState(true)
   const [cursorHidden, setCursorHidden] = useState(false)
+  const [viewportTooSmall, setViewportTooSmall] = useState(
+    () => !isCalibrationViewportSupported(window.innerWidth, window.innerHeight),
+  )
+  const [cameraLayout, setCameraLayout] = useState<CameraPreviewLayout | null>(
+    () => computeCameraPreviewLayout(window.innerWidth, window.innerHeight),
+  )
+
+  // Track viewport size for mobile stub + camera repositioning
+  useEffect(() => {
+    function onResize() {
+      const w = window.innerWidth
+      const h = window.innerHeight
+      setViewportTooSmall(!isCalibrationViewportSupported(w, h))
+      setCameraLayout(computeCameraPreviewLayout(w, h))
+      setPoints(getCalibrationPoints(w, h))
+      setValidationPoints(getValidationPoints(w, h))
+    }
+    window.addEventListener('resize', onResize)
+    return () => window.removeEventListener('resize', onResize)
+  }, [])
 
   const validationResults = useRef<Array<{ predicted: CalibrationPoint; actual: CalibrationPoint }>>([])
   const gazeSamplesRef = useRef<number>(0)
@@ -161,6 +205,7 @@ export default function CalibrationPage() {
 
   // Face mesh overlay
   const meshCanvasRef = useRef<HTMLCanvasElement>(null)
+  const meshContainerRef = useRef<HTMLDivElement>(null)
   const landmarksRef = useRef<NormalizedLandmark[] | null>(null)
   const smoothedRef = useRef<NormalizedLandmark[] | null>(null)
   const meshRafRef = useRef(0)
@@ -220,6 +265,21 @@ export default function CalibrationPage() {
         prevH = h
       }
 
+      // Retry attaching video if not yet done (video element may appear async)
+      if (meshVisibleRef.current && !videoAttachedRef.current) {
+        const container = meshContainerRef.current
+        const video = getTracker().getVideoElement()
+        if (container && video) {
+          video.style.cssText =
+            'width:100%;height:100%;object-fit:cover;border-radius:12px;' +
+            'transform:scaleX(-1);' +
+            'filter:brightness(0.85) saturate(0.5) contrast(0.9);' +
+            'position:absolute;top:0;left:0;opacity:1;pointer-events:none;'
+          container.insertBefore(video, container.firstChild)
+          videoAttachedRef.current = true
+        }
+      }
+
       const lms = landmarksRef.current
       if (!lms || !meshVisibleRef.current) {
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
@@ -229,7 +289,7 @@ export default function CalibrationPage() {
       }
       const smoothed = smoothLandmarks(lms, smoothedRef.current)
       smoothedRef.current = smoothed
-      drawFaceMesh(ctx, smoothed, w, h, dpr, performance.now() / 1000)
+      drawFaceMesh(ctx, smoothed, w, h, dpr)
     }
 
     meshRafRef.current = requestAnimationFrame(render)
@@ -242,10 +302,45 @@ export default function CalibrationPage() {
     setValidationPoints(getValidationPoints(window.innerWidth, window.innerHeight))
   }, [])
 
-  // Show/hide face mesh
+  // Show/hide face mesh + video preview
+  const videoAttachedRef = useRef(false)
+
+  const attachVideo = useCallback(() => {
+    if (videoAttachedRef.current) return
+    const container = meshContainerRef.current
+    const video = getTracker().getVideoElement()
+    if (!container || !video) return
+    video.style.cssText =
+      'width:100%;height:100%;object-fit:cover;border-radius:12px;' +
+      'transform:scaleX(-1);' +
+      'filter:brightness(0.85) saturate(0.5) contrast(0.9);' +
+      'position:absolute;top:0;left:0;opacity:1;pointer-events:none;'
+    container.insertBefore(video, container.firstChild)
+    videoAttachedRef.current = true
+  }, [getTracker])
+
+  const detachVideo = useCallback(() => {
+    if (!videoAttachedRef.current) return
+    const container = meshContainerRef.current
+    const video = getTracker().getVideoElement()
+    if (video && video.parentElement === container) {
+      document.body.appendChild(video)
+      video.style.cssText =
+        'position:fixed;top:50%;left:50%;transform:translate(-50%,-55%);' +
+        'width:480px;height:360px;z-index:50;opacity:0;pointer-events:none;' +
+        'border-radius:8px;object-fit:cover;'
+    }
+    videoAttachedRef.current = false
+  }, [getTracker])
+
   const setMeshVisible = useCallback((visible: boolean) => {
     meshVisibleRef.current = visible
-  }, [])
+    if (visible) {
+      attachVideo() // try now; render loop retries if video not ready yet
+    } else {
+      detachVideo()
+    }
+  }, [attachVideo, detachVideo])
 
   // ── Gaze-only calibration: auto-collect samples ──
   const stopGazeCollection = useCallback(() => {
@@ -254,6 +349,15 @@ export default function CalibrationPage() {
       gazeIntervalRef.current = null
     }
   }, [])
+
+  // Clean up tracker when viewport becomes too small (e.g., browser resize during calibration)
+  useEffect(() => {
+    if (!viewportTooSmall) return
+    stopGazeCollection()
+    setMeshVisible(false)
+    getTracker().setLandmarkCallback(null)
+    getTracker().showVideo(false)
+  }, [viewportTooSmall, stopGazeCollection, setMeshVisible, getTracker])
 
   const advancePoint = useCallback((currentIdx: number, pts: CalibrationPoint[]) => {
     const tracker = getTracker()
@@ -424,9 +528,9 @@ export default function CalibrationPage() {
 
   async function handleContinue() {
     const tracker = getTracker()
+    setMeshVisible(false)
     tracker.showVideo(false)
     tracker.setLandmarkCallback(null)
-    setMeshVisible(false)
     stopGazeCollection()
     await tracker.saveCalibration()
     setCalibratedAt(Date.now())
@@ -483,23 +587,52 @@ export default function CalibrationPage() {
     : 'text-lotus'
   const labelMap = { excellent: t.calibration.excellent, sufficient: t.calibration.good, low: t.calibration.low }
 
+  // Mobile stub
+  if (viewportTooSmall) {
+    return (
+      <div className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-bg-deep px-6">
+        <h1 className="font-heading text-2xl font-bold text-text-bright">{t.calibration.smallScreenTitle}</h1>
+        <p className="mt-4 max-w-sm text-center font-body text-sm font-light text-text-muted">
+          {t.calibration.smallScreenMessage}
+        </p>
+        <Button className="mt-6" onClick={() => navigate('/', { replace: true })}>
+          {t.calibration.backToHome}
+        </Button>
+      </div>
+    )
+  }
+
   return (
     <>
-      {/* Face mesh canvas: always in DOM so useEffect can initialize the rendering loop */}
-      <canvas
-        ref={meshCanvasRef}
+      {/* Face mesh + video preview container */}
+      <div
+        ref={meshContainerRef}
         style={{
           position: 'fixed',
-          top: '2dvh',
-          right: '2dvw',
-          width: '45dvw',
-          aspectRatio: '4 / 3',
+          left: cameraLayout ? cameraLayout.x : 0,
+          top: cameraLayout ? cameraLayout.y : 0,
+          width: cameraLayout ? cameraLayout.width : 280,
+          height: cameraLayout ? cameraLayout.height : 210,
           zIndex: 5,
           pointerEvents: 'none',
-          borderRadius: 8,
-          display: showMesh ? 'block' : 'none',
+          borderRadius: 12,
+          border: '1px solid rgba(46,196,182,0.15)',
+          overflow: 'hidden',
+          display: showMesh && cameraLayout ? 'block' : 'none',
         }}
-      />
+      >
+        <canvas
+          ref={meshCanvasRef}
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            zIndex: 1,
+          }}
+        />
+      </div>
 
       {/* Error screen */}
       {error ? (

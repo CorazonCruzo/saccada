@@ -128,6 +128,8 @@ export interface Translation {
     modeGaze: string
     modeClick: string
     faceNotDetected: string
+    smallScreenTitle: string
+    smallScreenMessage: string
   }
   notFound: {
     title: string

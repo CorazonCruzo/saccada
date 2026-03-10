@@ -133,6 +133,8 @@ export const en: Translation = {
     modeGaze: 'Gaze only',
     modeClick: 'Click to confirm',
     faceNotDetected: 'Face not detected',
+    smallScreenTitle: 'Larger screen required',
+    smallScreenMessage: 'Eye tracking calibration requires a screen width of at least 768px. Please use a laptop or tablet.',
   },
 
   notFound: {

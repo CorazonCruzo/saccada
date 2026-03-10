@@ -58,6 +58,11 @@ export class EyeTracker {
     this.pipeline.showVideo(visible)
   }
 
+  /** Access the raw video element for custom positioning/styling */
+  getVideoElement(): HTMLVideoElement | null {
+    return this.pipeline.getVideoElement()
+  }
+
   /**
    * Record a calibration sample at screen position (x, y).
    * Captures current eye features and accumulates for the current point.
