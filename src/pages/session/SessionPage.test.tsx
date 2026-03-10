@@ -1,7 +1,8 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
-import { render, act, screen } from '@testing-library/react'
+import { render, act } from '@testing-library/react'
 import { useSessionStore } from '@/entities/session'
 import { pralokita } from '@/entities/pattern'
+import { MIN_SESSION_DURATION_MS } from './SessionPage'
 
 // ── Mocks ──
 
@@ -23,11 +24,14 @@ vi.mock('@/features/audio', () => ({
   useAudio: () => mockAudioEngine,
 }))
 
-const mockSleep = vi.fn()
-class MockGazeLog {
-  record = vi.fn()
-  getPoints = vi.fn().mockReturnValue([])
-}
+const { mockSleep, MockGazeLog } = vi.hoisted(() => {
+  const mockSleep = vi.fn()
+  class MockGazeLog {
+    record = vi.fn()
+    getPoints = vi.fn().mockReturnValue([])
+  }
+  return { mockSleep, MockGazeLog }
+})
 
 vi.mock('@/features/eye-tracking', () => ({
   useEyeTracking: () => ({
@@ -76,11 +80,14 @@ function resetStore() {
   })
 }
 
-/** Advance through 3-second countdown to reach active phase */
-async function advancePastCountdown() {
+/** Advance through 3-second countdown + extra time in active phase */
+async function advancePastCountdown(extraActiveMs: number = 0) {
   // countdown: 3 → 2 → 1 → 0 → active
-  for (let i = 0; i < 4; i++) {
+  for (let i = 0; i < 3; i++) {
     await act(async () => { vi.advanceTimersByTime(1000) })
+  }
+  if (extraActiveMs > 0) {
+    await act(async () => { vi.advanceTimersByTime(extraActiveMs) })
   }
 }
 
@@ -111,24 +118,16 @@ describe('SessionPage keyboard: Escape', () => {
       }),
     )
 
-    await advancePastCountdown()
+    // Advance past countdown + spend enough time in active to exceed threshold
+    await advancePastCountdown(MIN_SESSION_DURATION_MS + 500)
 
-    // Now in active phase. Press Escape.
     pressKey('Escape')
 
-    // Should be in cooldown — verify via session state
     expect(useSessionStore.getState().sessionState).toBe('cooldown')
-
-    // Audio should be stopped (cooldown effect calls audioEngine.stop)
     expect(mockAudioEngine.stop).toHaveBeenCalled()
-
-    // Should NOT navigate to home
     expect(mockNavigate).not.toHaveBeenCalledWith('/', expect.anything())
 
-    // Advance through cooldown timer (3 seconds)
     await act(async () => { vi.advanceTimersByTime(3000) })
-
-    // Should navigate to mood-check, not home
     expect(mockNavigate).toHaveBeenCalledWith('/mood-check?phase=after', { replace: true })
 
     unmount()
@@ -142,13 +141,11 @@ describe('SessionPage keyboard: Escape', () => {
       }),
     )
 
-    await advancePastCountdown()
+    await advancePastCountdown(MIN_SESSION_DURATION_MS + 500)
 
-    // Pause first with Space
     pressKey(' ')
     expect(useSessionStore.getState().sessionState).toBe('paused')
 
-    // Now press Escape while paused
     pressKey('Escape')
 
     expect(useSessionStore.getState().sessionState).toBe('cooldown')
@@ -168,19 +165,16 @@ describe('SessionPage keyboard: Escape', () => {
       }),
     )
 
-    await advancePastCountdown()
+    await advancePastCountdown(MIN_SESSION_DURATION_MS + 500)
 
-    // First Escape — enters cooldown
     pressKey('Escape')
     expect(useSessionStore.getState().sessionState).toBe('cooldown')
 
-    // Second Escape — should be ignored
     pressKey('Escape')
     expect(useSessionStore.getState().sessionState).toBe('cooldown')
 
     await act(async () => { vi.advanceTimersByTime(3000) })
 
-    // Navigate should be called exactly once
     const moodCheckCalls = mockNavigate.mock.calls.filter(
       (c: [string, object?]) => c[0] === '/mood-check?phase=after',
     )
@@ -197,17 +191,109 @@ describe('SessionPage keyboard: Escape', () => {
       }),
     )
 
-    await advancePastCountdown()
+    await advancePastCountdown(MIN_SESSION_DURATION_MS + 500)
 
     pressKey('Escape')
 
     await act(async () => { vi.advanceTimersByTime(3000) })
 
-    // Session should be saved
     const { lastSession } = useSessionStore.getState()
     expect(lastSession).not.toBeNull()
     expect(lastSession!.patternId).toBe(pralokita.id)
 
     unmount()
+  })
+})
+
+describe('SessionPage: zero-duration session discard', () => {
+  beforeEach(() => {
+    vi.useFakeTimers()
+    vi.clearAllMocks()
+    resetStore()
+  })
+
+  afterEach(() => {
+    vi.useRealTimers()
+  })
+
+  it('Escape during countdown discards session and navigates home', async () => {
+    const { unmount } = render(
+      await import('./SessionPage').then((m) => {
+        const Page = m.default
+        return <Page />
+      }),
+    )
+
+    // Escape during countdown: elapsed = 0
+    pressKey('Escape')
+
+    expect(useSessionStore.getState().sessionState).toBe('cooldown')
+
+    // Discard cooldown is 1s (shorter than normal 3s)
+    await act(async () => { vi.advanceTimersByTime(1000) })
+
+    expect(mockNavigate).toHaveBeenCalledWith('/', { replace: true })
+    expect(mockNavigate).not.toHaveBeenCalledWith(
+      '/mood-check?phase=after',
+      expect.anything(),
+    )
+
+    expect(useSessionStore.getState().lastSession).toBeNull()
+    expect(useSessionStore.getState().sessionState).toBe('idle')
+
+    unmount()
+  })
+
+  it('discarded session does not trigger mood-check-after', async () => {
+    const { unmount } = render(
+      await import('./SessionPage').then((m) => {
+        const Page = m.default
+        return <Page />
+      }),
+    )
+
+    // Escape during countdown
+    pressKey('Escape')
+
+    // Advance well past any timer
+    await act(async () => { vi.advanceTimersByTime(5000) })
+
+    const moodCheckCalls = mockNavigate.mock.calls.filter(
+      (c: [string, object?]) => c[0]?.includes('mood-check'),
+    )
+    expect(moodCheckCalls).toHaveLength(0)
+
+    unmount()
+  })
+
+  it('session with sufficient elapsed time is NOT discarded', async () => {
+    const { unmount } = render(
+      await import('./SessionPage').then((m) => {
+        const Page = m.default
+        return <Page />
+      }),
+    )
+
+    // Spend enough time in active phase (well above threshold)
+    await advancePastCountdown(MIN_SESSION_DURATION_MS + 1000)
+
+    pressKey('Escape')
+
+    // Normal cooldown (3s), not discard cooldown (1s)
+    await act(async () => { vi.advanceTimersByTime(1000) })
+    expect(mockNavigate).not.toHaveBeenCalledWith('/', { replace: true })
+
+    await act(async () => { vi.advanceTimersByTime(2000) })
+    expect(mockNavigate).toHaveBeenCalledWith('/mood-check?phase=after', { replace: true })
+
+    const { lastSession } = useSessionStore.getState()
+    expect(lastSession).not.toBeNull()
+    expect(lastSession!.elapsed).toBeGreaterThanOrEqual(MIN_SESSION_DURATION_MS)
+
+    unmount()
+  })
+
+  it('MIN_SESSION_DURATION_MS threshold is 1 second', () => {
+    expect(MIN_SESSION_DURATION_MS).toBe(1000)
   })
 })

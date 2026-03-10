@@ -16,6 +16,9 @@ import { formatTimer } from '@/shared/lib/format'
 
 type SessionPhase = 'countdown' | 'active' | 'paused' | 'cooldown'
 
+/** Sessions shorter than this are discarded (not saved, no mood-check-after) */
+export const MIN_SESSION_DURATION_MS = 1000
+
 export default function SessionPage() {
   const {
     selectedPattern,
@@ -165,6 +168,16 @@ export default function SessionPage() {
     if (eyeTrackingEnabled) sleepTracker()
 
     const finalElapsed = accumulatedRef.current
+
+    // Discard sessions too short to be meaningful (e.g., quit during countdown)
+    if (finalElapsed < MIN_SESSION_DURATION_MS) {
+      const timer = setTimeout(() => {
+        setSessionState('idle')
+        navigate('/', { replace: true })
+      }, 1000)
+      return () => clearTimeout(timer)
+    }
+
     const completed = sessionDuration === 0 || finalElapsed >= sessionDuration
 
     const gazePoints = gazeLogRef.current.getPoints()

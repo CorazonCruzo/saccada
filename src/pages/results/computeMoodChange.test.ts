@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { computeMoodChange } from './ResultsPage'
+import { computeMoodChange, shouldSaveSession, MIN_SAVEABLE_ELAPSED_MS } from './ResultsPage'
 
 // Scale: 1 = calm (good) .. 5 = restless (bad)
 // Decrease in number = moved toward calm = improved
@@ -99,5 +99,35 @@ describe('computeMoodChange', () => {
     it('false when after is undefined', () => {
       expect(computeMoodChange(3, undefined).hasBoth).toBe(false)
     })
+  })
+})
+
+describe('shouldSaveSession', () => {
+  it('returns false for null session', () => {
+    expect(shouldSaveSession(null)).toBe(false)
+  })
+
+  it('returns false for elapsed = 0', () => {
+    expect(shouldSaveSession({ elapsed: 0 })).toBe(false)
+  })
+
+  it('returns false for elapsed = 500 (below threshold)', () => {
+    expect(shouldSaveSession({ elapsed: 500 })).toBe(false)
+  })
+
+  it('returns false for elapsed = 999 (just below threshold)', () => {
+    expect(shouldSaveSession({ elapsed: 999 })).toBe(false)
+  })
+
+  it('returns true for elapsed = 1000 (at threshold)', () => {
+    expect(shouldSaveSession({ elapsed: 1000 })).toBe(true)
+  })
+
+  it('returns true for elapsed = 60000 (normal session)', () => {
+    expect(shouldSaveSession({ elapsed: 60000 })).toBe(true)
+  })
+
+  it('threshold is 1 second', () => {
+    expect(MIN_SAVEABLE_ELAPSED_MS).toBe(1000)
   })
 })

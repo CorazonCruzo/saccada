@@ -9,6 +9,14 @@ import { Button } from '@/shared/ui/button'
 import { formatTimer } from '@/shared/lib/format'
 import { db, type SessionRecord } from '@/shared/lib/db'
 
+/** Minimum elapsed ms for a session to be persisted */
+export const MIN_SAVEABLE_ELAPSED_MS = 1000
+
+/** Whether a session is worth saving (not a zero/trivial duration) */
+export function shouldSaveSession(session: { elapsed: number } | null): boolean {
+  return session !== null && session.elapsed >= MIN_SAVEABLE_ELAPSED_MS
+}
+
 export default function ResultsPage() {
   const navigate = useNavigate()
   const { lastSession, setLastSession, setSessionState } = useSessionStore()
@@ -19,9 +27,9 @@ export default function ResultsPage() {
   const [noteText, setNoteText] = useState('')
   const savedRef = useRef(false)
 
-  // Save session to Dexie once on mount
+  // Save session to Dexie once on mount (skip zero/trivial sessions)
   useEffect(() => {
-    if (!lastSession || savedRef.current) return
+    if (!shouldSaveSession(lastSession) || savedRef.current) return
     savedRef.current = true
     db.sessions.add({
       patternId: lastSession.patternId,
