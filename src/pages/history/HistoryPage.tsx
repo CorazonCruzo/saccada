@@ -646,8 +646,8 @@ function SessionCard({
         </div>
       </div>
 
-      {/* Meta row */}
-      <div className="mt-2 flex items-center gap-4 font-heading text-xs text-text-muted">
+      {/* Meta row (min-h-6 prevents height jump when delete confirmation appears) */}
+      <div className="mt-2 flex min-h-6 items-center gap-4 font-heading text-xs text-text-muted">
         <span className="tabular-nums text-turmeric">
           {formatTimer(session.elapsed)}
         </span>
@@ -662,6 +662,36 @@ function SessionCard({
         {!hasBoth && session.moodBefore != null && (
           <span className="text-text-dim">{session.moodBefore}</span>
         )}
+        <span className="ml-auto">
+          {deleteId === session.id ? (
+            <span className="flex items-center gap-2" onClick={(e) => e.stopPropagation()}>
+              <span className="font-body text-xs text-text-dim">
+                {t.history.deleteConfirm}
+              </span>
+              <Button
+                variant="destructive"
+                size="xs"
+                onClick={() => onDeleteConfirm(session.id!)}
+              >
+                {t.history.deleteSession}
+              </Button>
+              <Button
+                variant="ghost"
+                size="xs"
+                onClick={() => onDeleteCancel()}
+              >
+                {t.common.cancel}
+              </Button>
+            </span>
+          ) : (
+            <button
+              onClick={(e) => { e.stopPropagation(); onDeleteClick(session.id!) }}
+              className="cursor-pointer font-body text-xs text-text-dim transition-colors hover:text-lotus"
+            >
+              {t.history.deleteSession}
+            </button>
+          )}
+        </span>
       </div>
 
       {/* Collapsed: show truncated note */}
@@ -709,37 +739,6 @@ function SessionCard({
             )}
           </div>
 
-          {/* Actions */}
-          <div className="flex items-center justify-end">
-            {deleteId === session.id ? (
-              <div className="flex items-center gap-2">
-                <span className="font-body text-xs text-text-dim">
-                  {t.history.deleteConfirm}
-                </span>
-                <Button
-                  variant="destructive"
-                  size="xs"
-                  onClick={() => onDeleteConfirm(session.id!)}
-                >
-                  {t.history.deleteSession}
-                </Button>
-                <Button
-                  variant="ghost"
-                  size="xs"
-                  onClick={() => onDeleteCancel()}
-                >
-                  {t.common.cancel}
-                </Button>
-              </div>
-            ) : (
-              <button
-                onClick={() => onDeleteClick(session.id!)}
-                className="cursor-pointer font-body text-xs text-text-dim transition-colors hover:text-lotus"
-              >
-                {t.history.deleteSession}
-              </button>
-            )}
-          </div>
         </div>
       )}
     </div>
