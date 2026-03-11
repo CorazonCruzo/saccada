@@ -99,7 +99,7 @@
   --saccada-bg-deep:    oklch(0.97  0.007 286);   /* L: 0.097→0.97  subtle lavender white     */
   --saccada-bg-mid:     oklch(0.94  0.012 286);   /* L: 0.154→0.94  card/panel lavender        */
   --saccada-bg-surface: oklch(0.91  0.018 284);   /* L: 0.196→0.91  hover/active surface       */
-  --saccada-saffron:    oklch(0.62  0.196 46);    /* L: 0.686→0.62  darker for light-bg contrast */
+  --saccada-saffron:    oklch(0.58  0.082 62);    /* gold — matches dark theme #c4956a */
   --saccada-turmeric:   oklch(0.58  0.155 78);    /* L: 0.775→0.58  headings need more contrast */
   --saccada-gold:       oklch(0.58  0.082 62);    /* L: 0.693→0.58  borders, subtle accents     */
   --saccada-teal:       oklch(0.62  0.109 183);   /* L: 0.737→0.62  badges, tracking UI         */
@@ -119,7 +119,7 @@
   --card-foreground:      oklch(0.22  0.035 286);
   --popover:              oklch(0.94  0.012 286);
   --popover-foreground:   oklch(0.22  0.035 286);
-  --primary:              oklch(0.62  0.196 46);
+  --primary:              oklch(0.58  0.082 62);
   --primary-foreground:   oklch(0.97  0.007 286);
   --secondary:            oklch(0.94  0.012 286);
   --secondary-foreground: oklch(0.22  0.035 286);
@@ -130,8 +130,8 @@
   --destructive:          #e84393;
   --border:               oklch(0.86  0.020 284);
   --input:                oklch(0.82  0.025 284);
-  --ring:                 oklch(0.62  0.196 46);
-  --chart-1:              oklch(0.62  0.196 46);
+  --ring:                 oklch(0.58  0.082 62);
+  --chart-1:              oklch(0.58  0.082 62);
   --chart-2:              oklch(0.62  0.109 183);
   --chart-3:              oklch(0.58  0.155 78);
   --chart-4:              #6c5ce7;
@@ -144,7 +144,7 @@
   --saccada-bg-deep: #0e0a1a;
   --saccada-bg-mid: #1a1035;
   --saccada-bg-surface: #231a42;
-  --saccada-saffron: #ff6b35;
+  --saccada-saffron: #c4956a;
   --saccada-turmeric: #e8a838;
   --saccada-gold: #c4956a;
   --saccada-teal: #2ec4b6;
@@ -164,7 +164,7 @@
   --card-foreground: #f0e6d3;
   --popover: #1a1035;
   --popover-foreground: #f0e6d3;
-  --primary: #ff6b35;
+  --primary: #c4956a;
   --primary-foreground: #0e0a1a;
   --secondary: #1a1035;
   --secondary-foreground: #f0e6d3;
@@ -175,8 +175,8 @@
   --destructive: #e84393;
   --border: #2d2255;
   --input: #392d5e;
-  --ring: #ff6b35;
-  --chart-1: #ff6b35;
+  --ring: #c4956a;
+  --chart-1: #c4956a;
   --chart-2: #2ec4b6;
   --chart-3: #e8a838;
   --chart-4: #6c5ce7;

@@ -7,7 +7,7 @@ export const palette = {
     surface: '#231a42',
   },
   warm: {
-    saffron: '#ff6b35',
+    saffron: '#c4956a',
     turmeric: '#e8a838',
     gold: '#c4956a',
   },

@@ -772,7 +772,7 @@ export default function CalibrationPage() {
                 <GazeProgressRing progress={gazeProgress} size={dotSize} />
               )}
               <span
-                className={`block rounded-full shadow-[0_0_16px_rgba(255,107,53,0.5)] transition-transform ${
+                className={`block rounded-full shadow-[0_0_16px_rgba(196,149,106,0.5)] transition-transform ${
                   phase === 'validating-wait'
                     ? 'animate-pulse bg-turmeric'
                     : calibrationMode === 'click' && !isValidation
