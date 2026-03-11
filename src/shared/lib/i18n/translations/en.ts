@@ -287,13 +287,13 @@ export const en: Translation = {
   pattern: {
     sama: {
       name: 'Sama',
-      description: 'Steady forward gaze. Unblinking fixation for concentration and calm.',
-      instruction: 'Sit comfortably. Gaze at the glowing dot in the center of the screen without looking away, trying not to blink. Keep your head still. Breathe slowly and evenly. When attention wanders, gently bring it back to the dot.',
+      description: 'Steady forward gaze. Soft fixation for concentration and calm.',
+      instruction: 'Sit comfortably. Gaze at the glowing dot in the center of the screen without looking away. Let blinking slow down naturally, but don\'t force yourself to hold it. Keep your head still. Breathe slowly and evenly. When attention wanders, gently bring it back to the dot.',
       effect: 'Calming the stream of thoughts, increased concentration, a sense of centeredness. After the session, you may briefly experience expanded perception.',
       origins: 'In Natya Shastra, Sama is described as the gaze used at the beginning of a dance and to portray deities. It is a foundational gaze fixation practice, closely related to Trataka from yogic texts.',
       benefits: ['concentration', 'calm', 'mental clarity', 'grounding'],
       phases: [
-        'Gaze at the dot without blinking. Breathe evenly.',
+        'Gaze at the dot. Let blinking slow naturally. Breathe evenly.',
         'Continue holding your gaze. Notice thoughts without following them.',
         'Close your eyes. Observe the sensations.',
         'Open your eyes. Gently return your gaze to the dot.',
@@ -370,13 +370,13 @@ export const en: Translation = {
     ullokita: {
       name: 'Ullokita',
       description: 'Upward gaze. Vertical movement with upper bias for visualization.',
-      instruction: 'The dot moves up and down, with emphasis on the upper part. Follow it with your eyes. This pattern is associated with visualization and imagination. Allow images to come freely.',
+      instruction: 'The dot moves vertically with an upward emphasis. Follow it with your eyes. This pattern is associated with visualization and imagination. Allow images to come freely.',
       effect: 'Activation of visual memory and imagination. Some people report spontaneous appearance of images and memories. Gentle stimulation that works well when combined with an intention to recall something positive.',
       origins: 'Ullokita is the upward gaze in Natya Shastra. Used to portray celestial beings, prayer, reminiscence. Vertical eye movements engage the superior and inferior rectus muscles.',
       benefits: ['visualization', 'memory access', 'imagination', 'positive resource building'],
       phases: [
         'Follow the dot up and down. Soft, smooth movement.',
-        'Pause. The dot has stopped at the top.',
+        'Pause. Allow images to come freely.',
         null,
         'Notice the images that come.',
         null,
@@ -405,13 +405,13 @@ export const en: Translation = {
     avalokita: {
       name: 'Avalokita',
       description: 'Downward gaze. Grounding vertical movement for body awareness.',
-      instruction: 'The dot moves in the lower part of the screen. Follow it with your eyes, directing your gaze downward. Pay attention to body sensations: heaviness, warmth, contact with the surface. This pattern helps you "ground."',
+      instruction: 'The dot moves vertically with a downward emphasis. Follow it with your eyes, directing your gaze downward. Pay attention to body sensations: heaviness, warmth, contact with the surface. This pattern helps you ground.',
       effect: 'A feeling of grounding, returning to the body. Reduces depersonalization and dissociation. Helps shift from "the head" to bodily awareness. Good after intense emotional work.',
       origins: 'Avalokita: the downward gaze from Natya Shastra. Expresses humility, contemplation, connection with the earth. In somatic psychotherapy, a downward gaze helps shift attention from thoughts to bodily sensations.',
       benefits: ['grounding', 'body awareness', 'dissociation reduction', 'somatic processing'],
       phases: [
         'Follow the dot. Gentle downward movements.',
-        'The dot is at the bottom. Notice sensations in your body: legs, belly, breath.',
+        'Pause. Notice sensations in your body: legs, belly, breath.',
         null,
         'What do you feel in your body right now?',
         'Close your eyes. Feel the contact of your body with the surface.',

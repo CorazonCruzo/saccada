@@ -287,13 +287,13 @@ export const es: Translation = {
   pattern: {
     sama: {
       name: 'Sama',
-      description: 'Mirada fija hacia adelante. Fijaci\u00F3n sin parpadear para concentraci\u00F3n y calma.',
-      instruction: 'Si\u00E9ntate c\u00F3modamente. Mira el punto luminoso en el centro de la pantalla sin apartar la mirada, tratando de no parpadear. Mant\u00E9n la cabeza quieta. Respira lenta y uniformemente. Cuando la atenci\u00F3n se desvie, devuelve suavemente la mirada al punto.',
+      description: 'Mirada fija hacia adelante. Fijaci\u00F3n suave para concentraci\u00F3n y calma.',
+      instruction: 'Si\u00E9ntate c\u00F3modamente. Mira el punto luminoso en el centro de la pantalla sin apartar la mirada. Deja que el parpadeo se vuelva menos frecuente, pero sin forzarlo. Mant\u00E9n la cabeza quieta. Respira lenta y uniformemente. Cuando la atenci\u00F3n se desv\u00EDe, devuelve suavemente la mirada al punto.',
       effect: 'Calma del flujo de pensamientos, mayor concentraci\u00F3n, sensaci\u00F3n de centramiento. Despu\u00E9s de la sesi\u00F3n, es posible experimentar brevemente una percepci\u00F3n expandida.',
       origins: 'En el Natya Shastra, Sama se describe como la mirada utilizada al inicio de una danza y para representar deidades. Es una pr\u00E1ctica b\u00E1sica de fijaci\u00F3n de la mirada, cercana al Trataka de los textos y\u00F3guicos.',
       benefits: ['concentraci\u00F3n', 'calma', 'claridad mental', 'arraigo'],
       phases: [
-        'Mira el punto sin parpadear. Respira uniformemente.',
+        'Mira el punto. Deja que el parpadeo se calme solo. Respira uniformemente.',
         'Contin\u00FAa sosteniendo la mirada. Observa los pensamientos sin seguirlos.',
         'Cierra los ojos. Observa las sensaciones.',
         'Abre los ojos. Devuelve suavemente la mirada al punto.',
@@ -370,13 +370,13 @@ export const es: Translation = {
     ullokita: {
       name: 'Ullokita',
       description: 'Mirada hacia arriba. Movimiento vertical con sesgo superior para visualizaci\u00F3n.',
-      instruction: 'El punto se mueve arriba y abajo, con \u00E9nfasis en la parte superior. S\u00EDguelo con los ojos. Este patr\u00F3n est\u00E1 asociado con la visualizaci\u00F3n y la imaginaci\u00F3n. Permite que las im\u00E1genes vengan libremente.',
+      instruction: 'El punto se mueve verticalmente con \u00E9nfasis en la parte superior. S\u00EDguelo con los ojos. Este patr\u00F3n est\u00E1 asociado con la visualizaci\u00F3n y la imaginaci\u00F3n. Permite que las im\u00E1genes vengan libremente.',
       effect: 'Activaci\u00F3n de la memoria visual y la imaginaci\u00F3n. Algunos reportan la aparici\u00F3n espont\u00E1nea de im\u00E1genes y recuerdos. Estimulaci\u00F3n suave que funciona bien combinada con la intenci\u00F3n de recordar algo positivo.',
       origins: 'Ullokita es la mirada hacia arriba en el Natya Shastra. Se usa para representar seres celestiales, oraci\u00F3n, reminiscencia. Los movimientos oculares verticales activan los m\u00FAsculos rectos superior e inferior.',
       benefits: ['visualizaci\u00F3n', 'acceso a la memoria', 'imaginaci\u00F3n', 'construcci\u00F3n de recursos positivos'],
       phases: [
         'Sigue el punto arriba y abajo. Movimiento suave y fluido.',
-        'Pausa. El punto se detuvo arriba.',
+        'Pausa. Permite que las im\u00E1genes vengan libremente.',
         null,
         'Observa las im\u00E1genes que vienen.',
         null,
@@ -405,13 +405,13 @@ export const es: Translation = {
     avalokita: {
       name: 'Avalokita',
       description: 'Mirada hacia abajo. Movimiento vertical de arraigo para conciencia corporal.',
-      instruction: 'El punto se mueve en la parte inferior de la pantalla. S\u00EDguelo con los ojos, dirigiendo la mirada hacia abajo. Presta atenci\u00F3n a las sensaciones corporales: pesadez, calor, contacto con la superficie. Este patr\u00F3n te ayuda a "arraigarte."',
+      instruction: 'El punto se mueve verticalmente con \u00E9nfasis en la parte inferior. S\u00EDguelo con los ojos, dirigiendo la mirada hacia abajo. Presta atenci\u00F3n a las sensaciones corporales: pesadez, calor, contacto con la superficie. Este patr\u00F3n te ayuda a arraigarte.',
       effect: 'Sensaci\u00F3n de arraigo, regreso al cuerpo. Reduce la despersonalizaci\u00F3n y la disociaci\u00F3n. Ayuda a pasar de la "cabeza" a la conciencia corporal. Bueno despu\u00E9s de un trabajo emocional intenso.',
       origins: 'Avalokita: la mirada descendente del Natya Shastra. Expresa humildad, contemplaci\u00F3n, conexi\u00F3n con la tierra. En psicoterapia som\u00E1tica, la mirada hacia abajo ayuda a cambiar la atenci\u00F3n de los pensamientos a las sensaciones corporales.',
       benefits: ['arraigo', 'conciencia corporal', 'reducci\u00F3n de disociaci\u00F3n', 'procesamiento som\u00E1tico'],
       phases: [
         'Sigue el punto. Movimientos suaves hacia abajo.',
-        'El punto est\u00E1 abajo. Observa las sensaciones en tu cuerpo: piernas, abdomen, respiraci\u00F3n.',
+        'Pausa. Observa las sensaciones en tu cuerpo: piernas, abdomen, respiraci\u00F3n.',
         null,
         '\u00BFQu\u00E9 sientes en tu cuerpo ahora mismo?',
         'Cierra los ojos. Siente el contacto de tu cuerpo con la superficie.',
