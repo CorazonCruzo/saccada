@@ -280,6 +280,7 @@ export const ru: Translation = {
     moire: 'Муар',
     'standing-wave': 'Стоячая волна',
     'perlin-flow': 'Поле потоков',
+    chladni: 'Фигуры Хладни',
   },
 
   pattern: {

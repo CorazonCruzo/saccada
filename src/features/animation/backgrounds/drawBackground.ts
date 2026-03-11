@@ -10,6 +10,7 @@ import { drawPenrose } from './drawPenrose'
 import { drawMoire } from './drawMoire'
 import { drawStandingWave } from './drawStandingWave'
 import { drawPerlinFlow } from './drawPerlinFlow'
+import { drawChladni } from './drawChladni'
 
 /**
  * Dispatch to the correct background drawing function.
@@ -53,5 +54,7 @@ export function drawBackground(
       return drawStandingWave(ctx, cx, cy, wallTime, opacity, scale, color1, color2)
     case 'perlin-flow':
       return drawPerlinFlow(ctx, cx, cy, wallTime, opacity, scale, color1, color2)
+    case 'chladni':
+      return drawChladni(ctx, cx, cy, wallTime, opacity, scale, color1, color2)
   }
 }

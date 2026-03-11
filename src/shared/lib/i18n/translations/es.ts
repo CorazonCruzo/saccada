@@ -280,6 +280,7 @@ export const es: Translation = {
     moire: 'Muare',
     'standing-wave': 'Onda estacionaria',
     'perlin-flow': 'Campo de flujo',
+    chladni: 'Chladni',
   },
 
   pattern: {

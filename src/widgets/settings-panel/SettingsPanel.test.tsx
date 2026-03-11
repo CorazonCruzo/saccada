@@ -63,6 +63,7 @@ vi.mock('@/shared/lib/i18n', () => ({
         'flower-of-life': 'Flower of Life', 'metatrons-cube': "Metatron's Cube", moire: 'Moire',
         'standing-wave': 'Standing Wave',
         'perlin-flow': 'Perlin Flow',
+        chladni: 'Chladni',
       },
     },
     tp: () => ({ name: 'Pralokita', description: '' }),

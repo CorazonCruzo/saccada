@@ -26,7 +26,13 @@ function createMockCtx() {
     strokeStyle: '',
     fillStyle: '',
     closePath: vi.fn(),
+    fillRect: vi.fn(),
+    drawImage: vi.fn(),
     lineWidth: 1,
+    lineCap: '',
+    lineJoin: '',
+    imageSmoothingEnabled: true,
+    imageSmoothingQuality: 'low',
     _fillCalls: fillCalls,
     _strokeCalls: strokeCalls,
   } as unknown as CanvasRenderingContext2D & { _fillCalls: string[]; _strokeCalls: string[] }
@@ -135,8 +141,19 @@ describe('drawBackground', () => {
     expect(ctx.lineTo).toHaveBeenCalledTimes(13500)
   })
 
+  it('chladni draws resonance nodal lines', () => {
+    drawBackground('chladni', ctx, 100, 100, 0, 5000, 0.15, 1, '#aaa', '#bbb', '#ccc')
+    expect(ctx.save).toHaveBeenCalled()
+    // In test env (no real canvas): fallback to fillRect grid
+    // In browser: uses offscreen ImageData + drawImage
+    const usedDrawImage = ctx.drawImage.mock.calls.length > 0
+    const usedFillRect = ctx.fillRect.mock.calls.length > 0
+    expect(usedDrawImage || usedFillRect).toBe(true)
+    expect(ctx.restore).toHaveBeenCalled()
+  })
+
   it('all non-zen patterns save and restore context', () => {
-    const patterns: BackgroundPatternId[] = ['aura', 'ripples', 'fibonacci', 'seed-of-life', 'mandala', 'flower-of-life', 'metatrons-cube', 'penrose', 'moire', 'standing-wave', 'perlin-flow']
+    const patterns: BackgroundPatternId[] = ['aura', 'ripples', 'fibonacci', 'seed-of-life', 'mandala', 'flower-of-life', 'metatrons-cube', 'penrose', 'moire', 'standing-wave', 'perlin-flow', 'chladni']
     for (const id of patterns) {
       const c = createMockCtx()
       drawBackground(id, c, 50, 50, 0, 1000, 0.1, 1, '#aaa', '#bbb', '#ccc')

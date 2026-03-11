@@ -280,6 +280,7 @@ export const en: Translation = {
     moire: 'Moire',
     'standing-wave': 'Standing Wave',
     'perlin-flow': 'Perlin Flow',
+    chladni: 'Chladni',
   },
 
   pattern: {
