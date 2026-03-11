@@ -5,11 +5,11 @@ export type VisualType = 'bindu' | 'flame'
 export type PatternCategory = 'drishti' | 'emdr' | 'sleep'
 export type BinduColorToken = 'saffron' | 'teal' | 'lotus' | 'indigo'
 
-export type BackgroundPatternId = 'zen' | 'aura' | 'ripples' | 'fibonacci' | 'seed-of-life' | 'mandala' | 'flower-of-life' | 'metatrons-cube' | 'penrose' | 'moire'
+export type BackgroundPatternId = 'zen' | 'aura' | 'ripples' | 'fibonacci' | 'seed-of-life' | 'mandala' | 'flower-of-life' | 'metatrons-cube' | 'penrose' | 'moire' | 'standing-wave'
 export type BackgroundRotation = 'none' | 'cw' | 'ccw'
 
 export const allBackgroundPatterns: BackgroundPatternId[] = [
-  'zen', 'aura', 'ripples', 'fibonacci', 'seed-of-life', 'mandala', 'flower-of-life', 'metatrons-cube', 'penrose', 'moire',
+  'zen', 'aura', 'ripples', 'fibonacci', 'seed-of-life', 'mandala', 'flower-of-life', 'metatrons-cube', 'penrose', 'moire', 'standing-wave',
 ]
 
 /** Backgrounds where rotation visually matters */

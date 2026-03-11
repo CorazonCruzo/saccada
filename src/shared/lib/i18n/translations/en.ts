@@ -278,6 +278,7 @@ export const en: Translation = {
     'metatrons-cube': "Metatron's Cube",
     penrose: 'Penrose',
     moire: 'Moire',
+    'standing-wave': 'Standing Wave',
   },
 
   pattern: {

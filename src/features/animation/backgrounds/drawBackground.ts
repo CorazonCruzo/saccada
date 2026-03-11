@@ -8,6 +8,7 @@ import { drawFlowerOfLife } from './drawFlowerOfLife'
 import { drawMetatronsCube } from './drawMetatronsCube'
 import { drawPenrose } from './drawPenrose'
 import { drawMoire } from './drawMoire'
+import { drawStandingWave } from './drawStandingWave'
 
 /**
  * Dispatch to the correct background drawing function.
@@ -47,5 +48,7 @@ export function drawBackground(
       return drawPenrose(ctx, cx, cy, angle, opacity, scale, color1, color2)
     case 'moire':
       return drawMoire(ctx, cx, cy, wallTime, opacity, scale, color1, color2)
+    case 'standing-wave':
+      return drawStandingWave(ctx, cx, cy, wallTime, opacity, scale, color1, color2)
   }
 }

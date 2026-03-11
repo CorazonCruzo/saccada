@@ -278,6 +278,7 @@ export const ru: Translation = {
     'metatrons-cube': 'Куб Метатрона',
     penrose: 'Пенроуз',
     moire: 'Муар',
+    'standing-wave': 'Стоячая волна',
   },
 
   pattern: {

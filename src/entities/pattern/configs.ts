@@ -307,7 +307,7 @@ export const emdrClassic: PatternConfig = {
   effect: 'Снижение эмоциональной нагрузки тревожных мыслей и воспоминаний. Стандартный EMDR-протокол — наиболее исследованная форма билатеральной стимуляции.',
   origins: 'EMDR (Eye Movement Desensitization and Reprocessing) разработан Франсин Шапиро в 1989 году. Признан ВОЗ как эффективный метод лечения ПТСР.',
   benefits: ['trauma processing', 'anxiety reduction', 'emotional regulation', 'PTSD symptom reduction'],
-  defaultBackground: 'zen',
+  defaultBackground: 'standing-wave',
   defaultBackgroundRotation: 'none',
 }
 

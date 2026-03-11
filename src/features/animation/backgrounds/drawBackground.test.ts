@@ -116,8 +116,17 @@ describe('drawBackground', () => {
     expect(ctx.stroke).toHaveBeenCalledTimes(2)
   })
 
+  it('standing-wave draws horizontal sinusoids', () => {
+    drawBackground('standing-wave', ctx, 100, 100, 0, 5000, 0.15, 1, '#aaa', '#bbb', '#ccc')
+    expect(ctx.save).toHaveBeenCalled()
+    // 8 waves, each with its own beginPath + stroke
+    expect(ctx.stroke).toHaveBeenCalledTimes(8)
+    expect(ctx.moveTo).toHaveBeenCalled()
+    expect(ctx.lineTo).toHaveBeenCalled()
+  })
+
   it('all non-zen patterns save and restore context', () => {
-    const patterns: BackgroundPatternId[] = ['aura', 'ripples', 'fibonacci', 'seed-of-life', 'mandala', 'flower-of-life', 'metatrons-cube', 'penrose', 'moire']
+    const patterns: BackgroundPatternId[] = ['aura', 'ripples', 'fibonacci', 'seed-of-life', 'mandala', 'flower-of-life', 'metatrons-cube', 'penrose', 'moire', 'standing-wave']
     for (const id of patterns) {
       const c = createMockCtx()
       drawBackground(id, c, 50, 50, 0, 1000, 0.1, 1, '#aaa', '#bbb', '#ccc')

@@ -278,6 +278,7 @@ export const es: Translation = {
     'metatrons-cube': 'Cubo de Metatr\u00F3n',
     penrose: 'Penrose',
     moire: 'Muare',
+    'standing-wave': 'Onda estacionaria',
   },
 
   pattern: {
