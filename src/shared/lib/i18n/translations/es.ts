@@ -277,6 +277,7 @@ export const es: Translation = {
     'flower-of-life': 'Flor de vida',
     'metatrons-cube': 'Cubo de Metatr\u00F3n',
     penrose: 'Penrose',
+    moire: 'Muare',
   },
 
   pattern: {

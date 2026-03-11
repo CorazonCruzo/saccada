@@ -108,8 +108,16 @@ describe('drawBackground', () => {
     expect(ctx.lineTo.mock.calls.length).toBeGreaterThan(1000)
   })
 
+  it('moire draws two sets of concentric circles', () => {
+    drawBackground('moire', ctx, 100, 100, 0, 5000, 0.15, 1, '#aaa', '#bbb', '#ccc')
+    expect(ctx.save).toHaveBeenCalled()
+    // Two sets of 30 rings = 60 arcs, batched into 2 strokes
+    expect(ctx.arc).toHaveBeenCalledTimes(60)
+    expect(ctx.stroke).toHaveBeenCalledTimes(2)
+  })
+
   it('all non-zen patterns save and restore context', () => {
-    const patterns: BackgroundPatternId[] = ['aura', 'ripples', 'fibonacci', 'seed-of-life', 'mandala', 'flower-of-life', 'metatrons-cube', 'penrose']
+    const patterns: BackgroundPatternId[] = ['aura', 'ripples', 'fibonacci', 'seed-of-life', 'mandala', 'flower-of-life', 'metatrons-cube', 'penrose', 'moire']
     for (const id of patterns) {
       const c = createMockCtx()
       drawBackground(id, c, 50, 50, 0, 1000, 0.1, 1, '#aaa', '#bbb', '#ccc')

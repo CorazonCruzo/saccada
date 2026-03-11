@@ -7,6 +7,7 @@ import { drawSeedOfLife } from './drawSeedOfLife'
 import { drawFlowerOfLife } from './drawFlowerOfLife'
 import { drawMetatronsCube } from './drawMetatronsCube'
 import { drawPenrose } from './drawPenrose'
+import { drawMoire } from './drawMoire'
 
 /**
  * Dispatch to the correct background drawing function.
@@ -44,5 +45,7 @@ export function drawBackground(
       return drawMetatronsCube(ctx, cx, cy, angle, opacity, scale, color1, color2)
     case 'penrose':
       return drawPenrose(ctx, cx, cy, angle, opacity, scale, color1, color2)
+    case 'moire':
+      return drawMoire(ctx, cx, cy, wallTime, opacity, scale, color1, color2)
   }
 }

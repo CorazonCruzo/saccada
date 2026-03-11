@@ -338,7 +338,7 @@ export const emdrDiagonal: PatternConfig = {
   effect: 'Аналогично стандартному EMDR, но с дополнительной вертикальной компонентой. Задействует больше глазных мышц. Некоторые терапевты используют диагональные сеты, когда горизонтальные не дают достаточного эффекта.',
   origins: 'Вариация стандартного EMDR-протокола. Диагональные движения используются некоторыми EMDR-терапевтами как альтернатива горизонтальным.',
   benefits: ['trauma processing', 'alternative bilateral pattern', 'full oculomotor activation'],
-  defaultBackground: 'zen',
+  defaultBackground: 'moire',
   defaultBackgroundRotation: 'none',
 }
 

@@ -277,6 +277,7 @@ export const ru: Translation = {
     'flower-of-life': 'Цветок жизни',
     'metatrons-cube': 'Куб Метатрона',
     penrose: 'Пенроуз',
+    moire: 'Муар',
   },
 
   pattern: {
