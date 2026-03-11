@@ -123,7 +123,7 @@ export default function SessionPage() {
     if (!audioStartedRef.current) {
       if (soundEnabled) {
         audioEngine.init()
-        audioEngine.setVolume(volume / 100)
+        audioEngine.setVolume((volume / 100) ** 2)
         audioEngine.start(selectedPattern.audioConfig)
       }
       audioStartedRef.current = true

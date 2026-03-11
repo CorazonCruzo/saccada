@@ -9,7 +9,7 @@ beforeEach(() => {
     selectedPattern: pralokita,
     sessionDuration: pralokita.defaultSessionDuration,
     speed: 1,
-    volume: 50,
+    volume: 40,
     soundEnabled: false,
     hapticEnabled: false,
     guidedMode: true,
@@ -52,7 +52,7 @@ describe('useSessionStore', () => {
       useSessionStore.getState().selectPattern(anuvritta)
       const state = useSessionStore.getState()
       expect(state.speed).toBe(1)
-      expect(state.volume).toBe(50)
+      expect(state.volume).toBe(40)
       expect(state.soundEnabled).toBe(false)
       expect(state.hapticEnabled).toBe(false)
       expect(state.guidedMode).toBe(true)

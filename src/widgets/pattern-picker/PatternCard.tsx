@@ -43,7 +43,7 @@ export function PatternCard({ pattern, isSelected, onSelect, onInfo }: PatternCa
         tabIndex={0}
         onClick={(e) => { e.stopPropagation(); onInfo() }}
         onKeyDown={(e) => { if (e.key === 'Enter') { e.stopPropagation(); onInfo() } }}
-        className="absolute right-2 top-2 flex h-6 w-6 cursor-pointer items-center justify-center rounded-full border border-transparent text-xs text-text-muted/70 transition-all hover:border-border-ornament hover:bg-bg-surface hover:text-text-bright"
+        className="absolute right-2 top-2 flex h-6 w-6 cursor-pointer items-center justify-center rounded-full border border-text-dim/40 text-xs text-text-muted/70 transition-all hover:border-gold/60 hover:bg-bg-surface hover:text-text-bright"
         aria-label={`Info about ${pattern.name}`}
       >
         i

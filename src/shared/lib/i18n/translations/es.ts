@@ -86,7 +86,7 @@ export const es: Translation = {
     visualScale: 'Escala visual',
     visualScaleHint: 'Tama\u00F1o de mandala, bindu y llama. Tambi\u00E9n +/- durante la sesi\u00F3n.',
     sound: 'Sonido',
-    volume: 'VOL',
+    volume: 'Volumen',
     headphonesRecommended: 'Se recomiendan auriculares',
     haptic: 'Vibraci\u00F3n',
     guided: 'Guiado',

@@ -86,7 +86,7 @@ export const en: Translation = {
     visualScale: 'Visual Scale',
     visualScaleHint: 'Mandala, bindu and flame size. Also +/- during session.',
     sound: 'Sound',
-    volume: 'VOL',
+    volume: 'Volume',
     headphonesRecommended: 'Headphones recommended',
     haptic: 'Haptic',
     guided: 'Guided',
