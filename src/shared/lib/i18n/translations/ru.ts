@@ -97,6 +97,12 @@ export const ru: Translation = {
     cameraNotAvailable: 'Камера недоступна на этом устройстве',
     cameraDenied: 'Доступ к камере запрещен. Проверьте настройки камеры в браузере (значок замка в адресной строке).',
     beginSession: 'Начать сессию',
+    background: 'Фон',
+    backgroundRotation: 'Вращение',
+    rotationNone: 'Нет',
+    rotationCW: 'По час.',
+    rotationCCW: 'Против',
+    resetBackground: 'По умолчанию',
   },
 
   calibration: {
@@ -259,6 +265,17 @@ export const ru: Translation = {
     milestone: 'нед. регулярной практики',
     days: 'д',
     daysPerWeek: 'дней в неделю',
+  },
+
+  backgroundName: {
+    zen: 'Дзен',
+    aura: 'Аура',
+    ripples: 'Волны',
+    fibonacci: 'Фибоначчи',
+    'seed-of-life': 'Зерно жизни',
+    mandala: 'Мандала',
+    'flower-of-life': 'Цветок жизни',
+    'metatrons-cube': 'Куб Метатрона',
   },
 
   pattern: {

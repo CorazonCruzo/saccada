@@ -1,0 +1,122 @@
+import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { drawBackground } from './drawBackground'
+import type { BackgroundPatternId } from '@/entities/pattern'
+
+function createMockCtx() {
+  const fillCalls: string[] = []
+  const strokeCalls: string[] = []
+
+  return {
+    save: vi.fn(),
+    restore: vi.fn(),
+    translate: vi.fn(),
+    rotate: vi.fn(),
+    beginPath: vi.fn(),
+    moveTo: vi.fn(),
+    lineTo: vi.fn(),
+    ellipse: vi.fn(),
+    arc: vi.fn(),
+    stroke: vi.fn(() => { strokeCalls.push('stroke') }),
+    fill: vi.fn(() => { fillCalls.push('fill') }),
+    clearRect: vi.fn(),
+    createRadialGradient: vi.fn(() => ({
+      addColorStop: vi.fn(),
+    })),
+    globalAlpha: 1,
+    strokeStyle: '',
+    fillStyle: '',
+    lineWidth: 1,
+    _fillCalls: fillCalls,
+    _strokeCalls: strokeCalls,
+  } as unknown as CanvasRenderingContext2D & { _fillCalls: string[]; _strokeCalls: string[] }
+}
+
+describe('drawBackground', () => {
+  let ctx: ReturnType<typeof createMockCtx>
+
+  beforeEach(() => {
+    ctx = createMockCtx()
+  })
+
+  it('zen draws nothing', () => {
+    drawBackground('zen', ctx, 100, 100, 0, 0, 0.15, 1, '#aaa', '#bbb', '#ccc')
+    expect(ctx.save).not.toHaveBeenCalled()
+    expect(ctx.stroke).not.toHaveBeenCalled()
+    expect(ctx.fill).not.toHaveBeenCalled()
+  })
+
+  it('aura draws a filled radial gradient', () => {
+    drawBackground('aura', ctx, 200, 200, 0, 5000, 0.15, 1, '#aaa', '#bbb', '#ff6b35')
+    expect(ctx.createRadialGradient).toHaveBeenCalled()
+    expect(ctx.fill).toHaveBeenCalled()
+    expect(ctx.save).toHaveBeenCalled()
+    expect(ctx.restore).toHaveBeenCalled()
+  })
+
+  it('ripples draws 10 concentric circles', () => {
+    drawBackground('ripples', ctx, 100, 100, 0, 1000, 0.15, 1, '#aaa', '#bbb', '#ccc')
+    expect(ctx.arc).toHaveBeenCalledTimes(10)
+    expect(ctx.stroke).toHaveBeenCalledTimes(10)
+  })
+
+  it('fibonacci draws a spiral path with amplified rotation', () => {
+    drawBackground('fibonacci', ctx, 100, 100, 0.5, 0, 0.12, 1, '#c4956a', '#bbb', '#ccc')
+    expect(ctx.save).toHaveBeenCalled()
+    // angle 0.5 is multiplied by internal ROTATION_FACTOR (6)
+    expect(ctx.rotate).toHaveBeenCalledWith(3.0)
+    expect(ctx.moveTo).toHaveBeenCalled()
+    expect(ctx.lineTo).toHaveBeenCalled()
+    expect(ctx.stroke).toHaveBeenCalled()
+  })
+
+  it('seed-of-life draws 7 circles', () => {
+    drawBackground('seed-of-life', ctx, 100, 100, 0, 0, 0.15, 1, '#aaa', '#bbb', '#ccc')
+    expect(ctx.arc).toHaveBeenCalledTimes(7) // 1 center + 6 surrounding
+  })
+
+  it('torus delegates to drawMandala (5 rings + ellipses)', () => {
+    drawBackground('mandala', ctx, 100, 100, 1.0, 0, 0.15, 1, '#aaa', '#bbb', '#ccc')
+    expect(ctx.ellipse).toHaveBeenCalledTimes(80) // same as drawMandala
+    expect(ctx.arc).toHaveBeenCalledTimes(5)
+  })
+
+  it('flower-of-life draws 19 circles', () => {
+    drawBackground('flower-of-life', ctx, 100, 100, 0, 0, 0.15, 1, '#aaa', '#bbb', '#ccc')
+    expect(ctx.arc).toHaveBeenCalledTimes(19)
+  })
+
+  it('metatrons-cube draws 13 circles + 78 connecting lines', () => {
+    drawBackground('metatrons-cube', ctx, 100, 100, 0, 0, 0.1, 1, '#aaa', '#bbb', '#ccc')
+    // 13 circles
+    expect(ctx.arc).toHaveBeenCalledTimes(13)
+    // 78 lines (13 choose 2 = 78) + 13 circles = 91 strokes
+    expect(ctx.stroke).toHaveBeenCalledTimes(78 + 13)
+  })
+
+  it('all non-zen patterns save and restore context', () => {
+    const patterns: BackgroundPatternId[] = ['aura', 'ripples', 'fibonacci', 'seed-of-life', 'mandala', 'flower-of-life', 'metatrons-cube']
+    for (const id of patterns) {
+      const c = createMockCtx()
+      drawBackground(id, c, 50, 50, 0, 1000, 0.1, 1, '#aaa', '#bbb', '#ccc')
+      expect(c.save).toHaveBeenCalled()
+      expect(c.restore).toHaveBeenCalled()
+    }
+  })
+
+  it('scale affects geometry size', () => {
+    const arcCalls1: number[][] = []
+    const arcCalls2: number[][] = []
+
+    const ctx1 = createMockCtx()
+    ctx1.arc = vi.fn((...args: number[]) => { arcCalls1.push(args) })
+    drawBackground('seed-of-life', ctx1, 100, 100, 0, 0, 0.15, 1, '#a', '#b', '#c')
+
+    const ctx2 = createMockCtx()
+    ctx2.arc = vi.fn((...args: number[]) => { arcCalls2.push(args) })
+    drawBackground('seed-of-life', ctx2, 100, 100, 0, 0, 0.15, 2, '#a', '#b', '#c')
+
+    // Center circle radius at scale 1: 50, at scale 2: 100
+    expect(arcCalls1[0][2]).toBeCloseTo(50)
+    expect(arcCalls2[0][2]).toBeCloseTo(100)
+  })
+})

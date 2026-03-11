@@ -32,6 +32,8 @@ export default function SessionPage() {
     guidedMode,
     sessionDuration,
     visualScale,
+    backgroundPattern,
+    backgroundRotation,
     setSessionState,
     setLastSession,
   } = useSessionStore()
@@ -383,8 +385,10 @@ export default function SessionPage() {
           pattern={selectedPattern}
           isPlaying={false}
           speed={speed}
-            speedMultiplierRef={adaptiveMultiplierRef}
+          speedMultiplierRef={adaptiveMultiplierRef}
           visualScale={visualScale}
+          backgroundPattern={backgroundPattern}
+          backgroundRotation={backgroundRotation}
         />
         <div className="absolute inset-0 flex items-center justify-center bg-bg-deep/80 transition-opacity duration-[3000ms]">
           <p className="font-body text-lg font-light text-text-muted animate-pulse">
@@ -403,8 +407,10 @@ export default function SessionPage() {
         pattern={selectedPattern}
         isPlaying={phase === 'active'}
         speed={speed}
-            speedMultiplierRef={adaptiveMultiplierRef}
+        speedMultiplierRef={adaptiveMultiplierRef}
         visualScale={visualScale}
+        backgroundPattern={backgroundPattern}
+        backgroundRotation={backgroundRotation}
         audioEngine={audioEngine}
         soundEnabled={soundEnabled}
         hapticEnabled={hapticEnabled}

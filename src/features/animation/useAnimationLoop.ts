@@ -1,11 +1,11 @@
 import { useRef, useEffect, useCallback } from 'react'
-import type { PatternConfig, Phase } from '@/entities/pattern'
+import type { PatternConfig, Phase, BackgroundPatternId, BackgroundRotation } from '@/entities/pattern'
 import { getTrajectoryPosition, toCanvasCoords, type Point } from '@/shared/lib/math'
 import { binduColors } from '@/shared/config/palette'
 import { drawBindu } from './drawBindu'
 import { drawFlame } from './drawFlame'
-import { drawMandala } from './drawMandala'
 import { drawTrail } from './drawTrail'
+import { drawBackground } from './backgrounds'
 import { readMandalaColors } from './mandalaColors'
 
 const TRAIL_MAX_LENGTH = 40
@@ -46,6 +46,8 @@ interface AnimationRefs {
   speed: number
   speedMultiplierRef: React.RefObject<number> | null
   visualScale: number
+  backgroundPattern: BackgroundPatternId
+  backgroundRotation: BackgroundRotation
   onFrame: ((info: FrameInfo) => void) | null
   state: AnimationState
 }
@@ -58,12 +60,16 @@ export function useAnimationLoop(
   visualScale: number = 1,
   onFrame?: (info: FrameInfo) => void,
   speedMultiplierRef?: React.RefObject<number>,
+  backgroundPattern: BackgroundPatternId = 'mandala',
+  backgroundRotation: BackgroundRotation = 'cw',
 ) {
   const refs = useRef<AnimationRefs>({
     pattern,
     speed,
     speedMultiplierRef: speedMultiplierRef ?? null,
     visualScale,
+    backgroundPattern,
+    backgroundRotation,
     onFrame: onFrame ?? null,
     state: {
       running: false,
@@ -84,6 +90,8 @@ export function useAnimationLoop(
   refs.current.speed = speed
   refs.current.speedMultiplierRef = speedMultiplierRef ?? null
   refs.current.visualScale = visualScale
+  refs.current.backgroundPattern = backgroundPattern
+  refs.current.backgroundRotation = backgroundRotation
   refs.current.onFrame = onFrame ?? null
 
   const render = useCallback(() => {
@@ -188,20 +196,26 @@ export function useAnimationLoop(
       }
     }
 
-    // Update mandala rotation
-    state.mandalaAngle += MANDALA_SPEED
+    // Update background rotation
+    const bgRot = refs.current.backgroundRotation
+    if (bgRot !== 'none') {
+      state.mandalaAngle += MANDALA_SPEED * (bgRot === 'ccw' ? -1 : 1)
+    }
 
     // === RENDER ===
     const color = binduColors[pat.binduColor]
+    const bgId = refs.current.backgroundPattern
 
     // 1. Clear
     ctx.clearRect(0, 0, w, h)
 
-    // 2. Mandala background (scale relative to viewport, then user scale)
+    // 2. Background (scale relative to viewport, then user scale)
     // Brighter in small previews, subtler in fullscreen sessions
-    const mandalaScale = Math.min(w, h) / 350 * vs
-    const mandalaOpacity = h < 400 ? 0.25 : 0.15
-    drawMandala(ctx, w / 2, h / 2, state.mandalaAngle, mandalaOpacity, mandalaScale, state.mandalaRing1, state.mandalaRing2)
+    if (bgId !== 'zen') {
+      const bgScale = Math.min(w, h) / 350 * vs
+      const bgOpacity = h < 400 ? 0.25 : 0.15
+      drawBackground(bgId, ctx, w / 2, h / 2, state.mandalaAngle, now, bgOpacity, bgScale, state.mandalaRing1, state.mandalaRing2, color)
+    }
 
     // 3. Trail (only for moving patterns)
     if (pat.trajectory !== 'fixation' && state.trail.length > 1) {

@@ -97,6 +97,12 @@ export const en: Translation = {
     cameraNotAvailable: 'Camera not available on this device',
     cameraDenied: 'Camera access denied. Check camera permissions in browser settings (lock icon in address bar).',
     beginSession: 'Begin Session',
+    background: 'Background',
+    backgroundRotation: 'Rotation',
+    rotationNone: 'None',
+    rotationCW: 'CW',
+    rotationCCW: 'CCW',
+    resetBackground: 'Reset',
   },
 
   calibration: {
@@ -259,6 +265,17 @@ export const en: Translation = {
     milestone: 'weeks of consistent practice',
     days: 'd',
     daysPerWeek: 'days per week',
+  },
+
+  backgroundName: {
+    zen: 'Zen',
+    aura: 'Aura',
+    ripples: 'Ripples',
+    fibonacci: 'Fibonacci',
+    'seed-of-life': 'Seed of Life',
+    mandala: 'Mandala',
+    'flower-of-life': 'Flower of Life',
+    'metatrons-cube': "Metatron's Cube",
   },
 
   pattern: {

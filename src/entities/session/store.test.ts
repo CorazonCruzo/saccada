@@ -18,6 +18,8 @@ beforeEach(() => {
     visualScale: 1,
     calibratedAt: null,
     lastSession: null,
+    backgroundPattern: pralokita.defaultBackground,
+    backgroundRotation: pralokita.defaultBackgroundRotation,
   })
 })
 
@@ -369,6 +371,53 @@ describe('useSessionStore', () => {
         expect(totalPhaseMs).toBeGreaterThan(0)
         expect(totalPhaseMs).toBeLessThanOrEqual(600_000) // max 10 min
       }
+    })
+
+    it('every pattern has valid defaultBackground', () => {
+      const validBg = ['zen', 'aura', 'ripples', 'fibonacci', 'seed-of-life', 'mandala', 'flower-of-life', 'metatrons-cube']
+      const validRot = ['none', 'cw', 'ccw']
+      for (const p of allPatterns) {
+        expect(validBg).toContain(p.defaultBackground)
+        expect(validRot).toContain(p.defaultBackgroundRotation)
+      }
+    })
+  })
+
+  describe('background pattern per pattern', () => {
+    it('defaults to pattern defaultBackground', () => {
+      expect(useSessionStore.getState().backgroundPattern).toBe(pralokita.defaultBackground)
+      expect(useSessionStore.getState().backgroundRotation).toBe(pralokita.defaultBackgroundRotation)
+    })
+
+    it('saves background per pattern', () => {
+      useSessionStore.getState().setBackgroundPattern('zen')
+      expect(useSessionStore.getState().backgroundPattern).toBe('zen')
+      expect(useSessionStore.getState().patternOverrides['pralokita']?.backgroundPattern).toBe('zen')
+    })
+
+    it('saves rotation per pattern', () => {
+      useSessionStore.getState().setBackgroundRotation('ccw')
+      expect(useSessionStore.getState().backgroundRotation).toBe('ccw')
+      expect(useSessionStore.getState().patternOverrides['pralokita']?.backgroundRotation).toBe('ccw')
+    })
+
+    it('restores background on pattern switch', () => {
+      useSessionStore.getState().setBackgroundPattern('fibonacci')
+      useSessionStore.getState().setBackgroundRotation('ccw')
+
+      useSessionStore.getState().selectPattern(sama)
+      expect(useSessionStore.getState().backgroundPattern).toBe(sama.defaultBackground)
+      expect(useSessionStore.getState().backgroundRotation).toBe(sama.defaultBackgroundRotation)
+
+      useSessionStore.getState().selectPattern(pralokita)
+      expect(useSessionStore.getState().backgroundPattern).toBe('fibonacci')
+      expect(useSessionStore.getState().backgroundRotation).toBe('ccw')
+    })
+
+    it('does not leak background between patterns', () => {
+      useSessionStore.getState().setBackgroundPattern('metatrons-cube')
+      useSessionStore.getState().selectPattern(anuvritta)
+      expect(useSessionStore.getState().backgroundPattern).toBe(anuvritta.defaultBackground)
     })
   })
 })

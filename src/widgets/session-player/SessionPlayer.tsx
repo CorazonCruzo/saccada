@@ -1,5 +1,5 @@
 import { useRef, useEffect, useCallback } from 'react'
-import type { PatternConfig } from '@/entities/pattern'
+import type { PatternConfig, BackgroundPatternId, BackgroundRotation } from '@/entities/pattern'
 import { setupCanvas } from '@/shared/lib/canvas'
 import { useAnimationLoop, type FrameInfo } from '@/features/animation'
 import { type AudioEngine } from '@/features/audio'
@@ -12,6 +12,8 @@ interface SessionPlayerProps {
   /** Ref-based speed multiplier read every frame (bypasses React render cycle) */
   speedMultiplierRef?: React.RefObject<number>
   visualScale?: number
+  backgroundPattern?: BackgroundPatternId
+  backgroundRotation?: BackgroundRotation
   audioEngine?: AudioEngine | null
   soundEnabled?: boolean
   hapticEnabled?: boolean
@@ -25,6 +27,8 @@ export function SessionPlayer({
   speed = 1,
   speedMultiplierRef,
   visualScale = 1,
+  backgroundPattern,
+  backgroundRotation,
   audioEngine = null,
   soundEnabled = false,
   hapticEnabled = false,
@@ -64,7 +68,7 @@ export function SessionPlayer({
     onDotMoveRef.current?.(info.dotX, info.dotY, info.canvasW, info.canvasH)
   }, [audioEngine, soundEnabled, hapticEnabled])
 
-  useAnimationLoop(canvasRef, pattern, isPlaying, speed, visualScale, onFrame, speedMultiplierRef)
+  useAnimationLoop(canvasRef, pattern, isPlaying, speed, visualScale, onFrame, speedMultiplierRef, backgroundPattern, backgroundRotation)
 
   // Tab visibility: pause/resume audio when tab is hidden/shown
   useEffect(() => {

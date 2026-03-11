@@ -93,6 +93,12 @@ export interface Translation {
     cameraNotAvailable: string
     cameraDenied: string
     beginSession: string
+    background: string
+    backgroundRotation: string
+    rotationNone: string
+    rotationCW: string
+    rotationCCW: string
+    resetBackground: string
   }
   calibration: {
     title: string
@@ -249,5 +255,6 @@ export interface Translation {
     days: string
     daysPerWeek: string
   }
+  backgroundName: Record<string, string>
   pattern: Record<string, PatternTranslation>
 }

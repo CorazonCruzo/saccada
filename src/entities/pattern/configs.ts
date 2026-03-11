@@ -25,6 +25,8 @@ export const sama: PatternConfig = {
   effect: 'Успокоение потока мыслей, повышение концентрации, ощущение центрированности. После сессии возможно кратковременное ощущение расширенного восприятия.',
   origins: 'В Натья Шастре Sama описана как взгляд, используемый в начале танца и для изображения божеств. Это базовая практика фиксации взгляда, близкая к Тратаке из йогических текстов.',
   benefits: ['concentration', 'calm', 'mental clarity', 'grounding'],
+  defaultBackground: 'fibonacci',
+  defaultBackgroundRotation: 'cw',
 }
 
 export const alokita: PatternConfig = {
@@ -53,6 +55,8 @@ export const alokita: PatternConfig = {
   effect: 'Расширение поля восприятия, снижение тоннельного зрения (характерного для тревоги). Мягкая активация вестибулярной системы. Ощущение \'раскрытия\' пространства вокруг.',
   origins: 'Alokita описана в Натья Шастре как широкий, обводящий взгляд. В танце используется для выражения удивления и осматривания пространства. Круговые движения глаз задействуют все шесть глазных мышц.',
   benefits: ['peripheral vision', 'spatial awareness', 'anxiety reduction', 'vestibular activation'],
+  defaultBackground: 'seed-of-life',
+  defaultBackgroundRotation: 'cw',
 }
 
 export const sachi: PatternConfig = {
@@ -82,6 +86,8 @@ export const sachi: PatternConfig = {
   effect: 'Мягкое снижение тревожности. Менее интенсивно, чем полная билатеральная стимуляция. Подходит для первого знакомства с практикой или для дней, когда полная амплитуда ощущается избыточной.',
   origins: 'Sachi — боковой взгляд в индийском танце, один из самых выразительных. Используется для передачи тонких эмоций. В контексте EMDR — укороченные саккады, более щадящий режим стимуляции.',
   benefits: ['gentle anxiety reduction', 'beginner-friendly', 'emotional processing'],
+  defaultBackground: 'flower-of-life',
+  defaultBackgroundRotation: 'cw',
 }
 
 export const pralokita: PatternConfig = {
@@ -113,6 +119,8 @@ export const pralokita: PatternConfig = {
   effect: 'Снижение интенсивности тревожных мыслей и эмоциональной нагрузки воспоминаний. Ощущение \'разрядки\'. Мета-анализ 20 исследований подтверждает немедленное снижение яркости тревожных образов и негативных эмоций.',
   origins: 'Pralokita — боковые движения глаз из Натья Шастры. Идентичны билатеральной стимуляции в EMDR (Шапиро, 1989). Три независимых открытия одного механизма: индийский танец, нейронаука REM-сна, клиническая психотерапия.',
   benefits: ['anxiety reduction', 'trauma processing', 'emotional regulation', 'memory reconsolidation'],
+  defaultBackground: 'mandala',
+  defaultBackgroundRotation: 'cw',
 }
 
 export const nimilita: PatternConfig = {
@@ -140,6 +148,8 @@ export const nimilita: PatternConfig = {
   effect: 'Глубокое расслабление, активация парасимпатической нервной системы. Помогает после интенсивной работы (например, после Pralokita). Снижает частоту сердцебиения, расслабляет мышцы лица и челюсти.',
   origins: 'Nimilita означает \'полузакрытые глаза\'. В Натья Шастре — взгляд, направленный к сердцу. Используется для изображения медитации, молитвы, божественного покоя. Нейрофизиологически — снижение визуальной стимуляции активирует парасимпатику.',
   benefits: ['deep relaxation', 'parasympathetic activation', 'cooldown after processing', 'inner focus'],
+  defaultBackground: 'fibonacci',
+  defaultBackgroundRotation: 'ccw',
 }
 
 export const ullokita: PatternConfig = {
@@ -168,6 +178,8 @@ export const ullokita: PatternConfig = {
   effect: 'Активация визуальной памяти и воображения. Некоторые отмечают спонтанное появление образов и воспоминаний. Мягкая стимуляция, хорошо работает в сочетании с намерением вспомнить что-то позитивное.',
   origins: 'Ullokita — взгляд вверх в Натья Шастре. Используется для изображения небесных существ, молитвы, воспоминаний. Вертикальные движения глаз задействуют верхнюю и нижнюю прямые мышцы глаза.',
   benefits: ['visualization', 'memory access', 'imagination', 'positive resource building'],
+  defaultBackground: 'ripples',
+  defaultBackgroundRotation: 'cw',
 }
 
 export const anuvritta: PatternConfig = {
@@ -199,6 +211,8 @@ export const anuvritta: PatternConfig = {
   effect: 'Интенсивная стимуляция, напоминающая фазу быстрого сна. Может вызвать ощущение \'обработки\' — как будто мозг сортирует информацию. После сессии возможна лёгкая усталость глаз и ощущение ясности.',
   origins: 'Anuvritta — быстрые вертикальные саккады из Натья Шастры. Напоминают движения глаз в REM-фазе сна, когда мозг консолидирует память. Стикголд (2002) предположил, что EMDR воспроизводит этот механизм наяву.',
   benefits: ['REM simulation', 'memory processing', 'emotional discharge', 'cognitive clarity'],
+  defaultBackground: 'aura',
+  defaultBackgroundRotation: 'cw',
 }
 
 export const avalokita: PatternConfig = {
@@ -227,6 +241,8 @@ export const avalokita: PatternConfig = {
   effect: 'Ощущение заземления, возвращение в тело. Снижает деперсонализацию и диссоциацию. Помогает перейти от \'головы\' к телесному осознаванию. Хорошо после интенсивной эмоциональной работы.',
   origins: 'Avalokita — нисходящий взгляд из Натья Шастры. Выражает смирение, созерцание, связь с землёй. В соматической психотерапии нисходящий взгляд помогает переключить внимание с мыслей на телесные ощущения.',
   benefits: ['grounding', 'body awareness', 'dissociation reduction', 'somatic processing'],
+  defaultBackground: 'ripples',
+  defaultBackgroundRotation: 'cw',
 }
 
 export const trataka: PatternConfig = {
@@ -256,6 +272,8 @@ export const trataka: PatternConfig = {
   effect: 'Глубокая концентрация, очищение зрительного аппарата (слёзы увлажняют). Наблюдение послеобраза — естественная визуализация без усилий. Исследования показывают улучшение внимания, снижение тревоги, улучшение качества сна.',
   origins: 'Тратака описана в Хатха Йога Прадипике как одна из шести шаткарм (очистительных практик). Индийские танцоры используют её для тренировки неподвижного, выразительного взгляда. Пламя генерируется программно на Canvas.',
   benefits: ['concentration', 'eye health', 'anxiety reduction', 'sleep quality', 'natural visualization'],
+  defaultBackground: 'metatrons-cube',
+  defaultBackgroundRotation: 'cw',
 }
 
 export const emdrClassic: PatternConfig = {
@@ -289,6 +307,8 @@ export const emdrClassic: PatternConfig = {
   effect: 'Снижение эмоциональной нагрузки тревожных мыслей и воспоминаний. Стандартный EMDR-протокол — наиболее исследованная форма билатеральной стимуляции.',
   origins: 'EMDR (Eye Movement Desensitization and Reprocessing) разработан Франсин Шапиро в 1989 году. Признан ВОЗ как эффективный метод лечения ПТСР.',
   benefits: ['trauma processing', 'anxiety reduction', 'emotional regulation', 'PTSD symptom reduction'],
+  defaultBackground: 'zen',
+  defaultBackgroundRotation: 'none',
 }
 
 export const emdrDiagonal: PatternConfig = {
@@ -318,6 +338,8 @@ export const emdrDiagonal: PatternConfig = {
   effect: 'Аналогично стандартному EMDR, но с дополнительной вертикальной компонентой. Задействует больше глазных мышц. Некоторые терапевты используют диагональные сеты, когда горизонтальные не дают достаточного эффекта.',
   origins: 'Вариация стандартного EMDR-протокола. Диагональные движения используются некоторыми EMDR-терапевтами как альтернатива горизонтальным.',
   benefits: ['trauma processing', 'alternative bilateral pattern', 'full oculomotor activation'],
+  defaultBackground: 'zen',
+  defaultBackgroundRotation: 'none',
 }
 
 export const sleepRem: PatternConfig = {
@@ -347,6 +369,8 @@ export const sleepRem: PatternConfig = {
   effect: 'Расслабление, подготовка ко сну. Бинауральные тета-биты (4 Hz) помогают мозгу перейти в состояние, предшествующее сну. Медленная восьмёрка убаюкивает без стимуляции.',
   origins: 'Вдохновлён исследованиями REM-фазы сна. Гипотеза Стикголда: движения глаз в REM-сне помогают мозгу переносить эмоционально заряженные воспоминания в долговременную память. Этот режим воссоздаёт похожий паттерн.',
   benefits: ['sleep preparation', 'relaxation', 'memory consolidation', 'stress reduction'],
+  defaultBackground: 'aura',
+  defaultBackgroundRotation: 'cw',
 }
 
 /** All patterns in display order (gentle → intense) */

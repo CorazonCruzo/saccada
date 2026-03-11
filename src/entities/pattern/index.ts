@@ -9,7 +9,11 @@ export type {
   VisualType,
   PatternCategory,
   BinduColorToken,
+  BackgroundPatternId,
+  BackgroundRotation,
 } from './types'
+
+export { allBackgroundPatterns, rotatableBackgrounds } from './types'
 
 export { allPatterns, patternsById } from './configs'
 export {

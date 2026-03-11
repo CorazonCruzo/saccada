@@ -12,7 +12,7 @@ import { Button } from '@/shared/ui/button'
 
 export default function HomePage() {
   const navigate = useNavigate()
-  const { selectedPattern, selectPattern, soundEnabled, eyeTrackingEnabled, calibratedAt, speed, visualScale } = useSessionStore()
+  const { selectedPattern, selectPattern, soundEnabled, eyeTrackingEnabled, calibratedAt, speed, visualScale, backgroundPattern, backgroundRotation } = useSessionStore()
   const [settingsOpen, setSettingsOpen] = useState(false)
   const audioEngine = useAudio()
   const { getTracker } = useEyeTracking()
@@ -94,6 +94,8 @@ export default function HomePage() {
           isPlaying={true}
           speed={speed}
           visualScale={visualScale}
+          backgroundPattern={backgroundPattern}
+          backgroundRotation={backgroundRotation}
         />
       </div>
 

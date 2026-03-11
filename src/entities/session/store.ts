@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-import { type PatternConfig, pralokita, patternsById } from '@/entities/pattern'
+import { type PatternConfig, type BackgroundPatternId, type BackgroundRotation, pralokita, patternsById } from '@/entities/pattern'
 import type { SessionState } from './types'
 
 export interface LastSession {
@@ -27,6 +27,8 @@ export interface PatternSettings {
   hapticEnabled: boolean
   guidedMode: boolean
   eyeTrackingEnabled: boolean
+  backgroundPattern: BackgroundPatternId
+  backgroundRotation: BackgroundRotation
 }
 
 const DEFAULT_SETTINGS: Omit<PatternSettings, 'sessionDuration'> = {
@@ -64,6 +66,11 @@ interface SessionStore {
   eyeTrackingEnabled: boolean
   setEyeTracking: (v: boolean) => void
 
+  backgroundPattern: BackgroundPatternId
+  setBackgroundPattern: (v: BackgroundPatternId) => void
+  backgroundRotation: BackgroundRotation
+  setBackgroundRotation: (v: BackgroundRotation) => void
+
   // Per-pattern settings storage
   patternOverrides: Record<string, Partial<PatternSettings>>
 
@@ -86,7 +93,7 @@ interface SessionStore {
 function saveOverride(
   get: () => SessionStore,
   field: keyof PatternSettings,
-  value: number | boolean,
+  value: number | boolean | string,
 ) {
   const { selectedPattern, patternOverrides } = get()
   const id = selectedPattern.id
@@ -112,6 +119,8 @@ function loadSettings(
     hapticEnabled: po.hapticEnabled ?? DEFAULT_SETTINGS.hapticEnabled,
     guidedMode: po.guidedMode ?? DEFAULT_SETTINGS.guidedMode,
     eyeTrackingEnabled: po.eyeTrackingEnabled ?? DEFAULT_SETTINGS.eyeTrackingEnabled,
+    backgroundPattern: po.backgroundPattern ?? pattern.defaultBackground,
+    backgroundRotation: po.backgroundRotation ?? pattern.defaultBackgroundRotation,
   }
 }
 
@@ -187,6 +196,18 @@ export const useSessionStore = create<SessionStore>()(
       setEyeTracking: (eyeTrackingEnabled) => set({
         eyeTrackingEnabled,
         ...saveOverride(get, 'eyeTrackingEnabled', eyeTrackingEnabled),
+      }),
+
+      backgroundPattern: pralokita.defaultBackground,
+      setBackgroundPattern: (backgroundPattern) => set({
+        backgroundPattern,
+        ...saveOverride(get, 'backgroundPattern', backgroundPattern),
+      }),
+
+      backgroundRotation: pralokita.defaultBackgroundRotation,
+      setBackgroundRotation: (backgroundRotation) => set({
+        backgroundRotation,
+        ...saveOverride(get, 'backgroundRotation', backgroundRotation),
       }),
 
       patternOverrides: {},

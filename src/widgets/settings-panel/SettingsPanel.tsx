@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useSessionStore } from '@/entities/session'
+import { type BackgroundPatternId, type BackgroundRotation, allBackgroundPatterns, rotatableBackgrounds } from '@/entities/pattern'
 import { canVibrate } from '@/features/haptics'
 import { checkCameraPermission, requestCameraAccess } from '@/features/eye-tracking'
 import { useTranslation } from '@/shared/lib/i18n'
@@ -31,6 +32,8 @@ export function SettingsPanel({ open, onOpenChange, onStart }: SettingsPanelProp
     eyeTrackingEnabled, setEyeTracking,
     calibratedAt, setCalibratedAt,
     visualScale, setVisualScale,
+    backgroundPattern, setBackgroundPattern,
+    backgroundRotation, setBackgroundRotation,
   } = useSessionStore()
 
   const { t, tp } = useTranslation()
@@ -181,6 +184,59 @@ export function SettingsPanel({ open, onOpenChange, onStart }: SettingsPanelProp
             <p className="mt-1 font-body text-[10px] font-light text-text-dim">
               {t.sessionSettings.visualScaleHint}
             </p>
+          </div>
+
+          {/* Background */}
+          <div>
+            <div className="flex items-center justify-between">
+              <span className="font-heading text-xs tracking-widest text-text-dim uppercase">{t.sessionSettings.background}</span>
+              {(backgroundPattern !== selectedPattern.defaultBackground || backgroundRotation !== selectedPattern.defaultBackgroundRotation) && (
+                <button
+                  onClick={() => {
+                    setBackgroundPattern(selectedPattern.defaultBackground)
+                    setBackgroundRotation(selectedPattern.defaultBackgroundRotation)
+                  }}
+                  className="cursor-pointer font-body text-[10px] font-light text-text-dim underline transition-colors hover:text-text-muted"
+                >
+                  {t.sessionSettings.resetBackground}
+                </button>
+              )}
+            </div>
+            <div className="mt-2 grid grid-cols-4 gap-1.5">
+              {allBackgroundPatterns.map((bgId) => (
+                <button
+                  key={bgId}
+                  onClick={() => setBackgroundPattern(bgId)}
+                  className={`cursor-pointer rounded-md px-1.5 py-1 font-heading text-[10px] font-semibold tracking-wide transition-all ${
+                    backgroundPattern === bgId
+                      ? 'bg-gold/15 text-gold'
+                      : 'text-text-dim hover:text-text-muted'
+                  }`}
+                >
+                  {t.backgroundName[bgId] ?? bgId}
+                </button>
+              ))}
+            </div>
+            {backgroundPattern !== 'zen' && rotatableBackgrounds.has(backgroundPattern) && (
+              <div className="mt-2 flex items-center gap-2">
+                <span className="font-heading text-[10px] tracking-wide text-text-dim">{t.sessionSettings.backgroundRotation}</span>
+                {(['ccw', 'none', 'cw'] as BackgroundRotation[]).map((rot) => (
+                  <button
+                    key={rot}
+                    onClick={() => setBackgroundRotation(rot)}
+                    className={`cursor-pointer rounded-md px-2 py-0.5 font-heading text-[10px] font-semibold transition-all ${
+                      backgroundRotation === rot
+                        ? 'bg-gold/15 text-gold'
+                        : 'text-text-dim hover:text-text-muted'
+                    }`}
+                  >
+                    {rot === 'ccw' ? t.sessionSettings.rotationCCW
+                      : rot === 'cw' ? t.sessionSettings.rotationCW
+                      : t.sessionSettings.rotationNone}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Toggles */}

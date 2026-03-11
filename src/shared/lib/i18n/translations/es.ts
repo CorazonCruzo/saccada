@@ -97,6 +97,12 @@ export const es: Translation = {
     cameraNotAvailable: 'C\u00E1mara no disponible en este dispositivo',
     cameraDenied: 'Acceso a la c\u00E1mara denegado. Revisa los permisos de c\u00E1mara en la configuraci\u00F3n del navegador (icono de candado en la barra de direcciones).',
     beginSession: 'Iniciar sesi\u00F3n',
+    background: 'Fondo',
+    backgroundRotation: 'Rotaci\u00F3n',
+    rotationNone: 'No',
+    rotationCW: 'Horario',
+    rotationCCW: 'Antihor.',
+    resetBackground: 'Restablecer',
   },
 
   calibration: {
@@ -259,6 +265,17 @@ export const es: Translation = {
     milestone: 'semanas de pr\u00E1ctica constante',
     days: 'd',
     daysPerWeek: 'd\u00EDas por semana',
+  },
+
+  backgroundName: {
+    zen: 'Zen',
+    aura: 'Aura',
+    ripples: 'Ondas',
+    fibonacci: 'Fibonacci',
+    'seed-of-life': 'Semilla de vida',
+    mandala: 'Mandala',
+    'flower-of-life': 'Flor de vida',
+    'metatrons-cube': 'Cubo de Metatr\u00F3n',
   },
 
   pattern: {

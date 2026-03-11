@@ -5,6 +5,18 @@ export type VisualType = 'bindu' | 'flame'
 export type PatternCategory = 'drishti' | 'emdr' | 'sleep'
 export type BinduColorToken = 'saffron' | 'teal' | 'lotus' | 'indigo'
 
+export type BackgroundPatternId = 'zen' | 'aura' | 'ripples' | 'fibonacci' | 'seed-of-life' | 'mandala' | 'flower-of-life' | 'metatrons-cube'
+export type BackgroundRotation = 'none' | 'cw' | 'ccw'
+
+export const allBackgroundPatterns: BackgroundPatternId[] = [
+  'zen', 'aura', 'ripples', 'fibonacci', 'seed-of-life', 'mandala', 'flower-of-life', 'metatrons-cube',
+]
+
+/** Backgrounds where rotation visually matters */
+export const rotatableBackgrounds = new Set<BackgroundPatternId>([
+  'fibonacci', 'seed-of-life', 'mandala', 'flower-of-life', 'metatrons-cube',
+])
+
 export interface Phase {
   type: 'movement' | 'fixation' | 'eyes-closed'
   duration: number
@@ -62,4 +74,7 @@ export interface PatternConfig {
   requiresHeadphones: boolean
   instruction: string
   effect: string
+
+  defaultBackground: BackgroundPatternId
+  defaultBackgroundRotation: BackgroundRotation
 }
