@@ -59,7 +59,7 @@ vi.mock('@/shared/lib/i18n', () => ({
       trajectory: { horizontal: 'Horizontal' },
       backgroundName: {
         zen: 'Zen', aura: 'Aura', ripples: 'Ripples', fibonacci: 'Fibonacci',
-        'seed-of-life': 'Seed of Life', mandala: 'Mandala',
+        'seed-of-life': 'Seed of Life', mandala: 'Mandala', penrose: 'Penrose',
         'flower-of-life': 'Flower of Life', 'metatrons-cube': "Metatron's Cube",
       },
     },

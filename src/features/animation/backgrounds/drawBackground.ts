@@ -6,6 +6,7 @@ import { drawFibonacci } from './drawFibonacci'
 import { drawSeedOfLife } from './drawSeedOfLife'
 import { drawFlowerOfLife } from './drawFlowerOfLife'
 import { drawMetatronsCube } from './drawMetatronsCube'
+import { drawPenrose } from './drawPenrose'
 
 /**
  * Dispatch to the correct background drawing function.
@@ -41,5 +42,7 @@ export function drawBackground(
       return drawFlowerOfLife(ctx, cx, cy, angle, opacity, scale, color1, color2)
     case 'metatrons-cube':
       return drawMetatronsCube(ctx, cx, cy, angle, opacity, scale, color1, color2)
+    case 'penrose':
+      return drawPenrose(ctx, cx, cy, angle, opacity, scale, color1, color2)
   }
 }

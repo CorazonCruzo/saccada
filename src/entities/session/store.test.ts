@@ -374,7 +374,7 @@ describe('useSessionStore', () => {
     })
 
     it('every pattern has valid defaultBackground', () => {
-      const validBg = ['zen', 'aura', 'ripples', 'fibonacci', 'seed-of-life', 'mandala', 'flower-of-life', 'metatrons-cube']
+      const validBg = ['zen', 'aura', 'ripples', 'fibonacci', 'seed-of-life', 'mandala', 'flower-of-life', 'metatrons-cube', 'penrose']
       const validRot = ['none', 'cw', 'ccw']
       for (const p of allPatterns) {
         expect(validBg).toContain(p.defaultBackground)

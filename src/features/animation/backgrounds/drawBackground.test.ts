@@ -25,6 +25,7 @@ function createMockCtx() {
     globalAlpha: 1,
     strokeStyle: '',
     fillStyle: '',
+    closePath: vi.fn(),
     lineWidth: 1,
     _fillCalls: fillCalls,
     _strokeCalls: strokeCalls,
@@ -93,8 +94,22 @@ describe('drawBackground', () => {
     expect(ctx.stroke).toHaveBeenCalledTimes(78 + 13)
   })
 
+  it('penrose draws aperiodic tiling with fill and edges', () => {
+    drawBackground('penrose', ctx, 100, 100, 0.5, 0, 0.12, 1, '#aaa', '#bbb', '#ccc')
+    expect(ctx.save).toHaveBeenCalled()
+    expect(ctx.rotate).toHaveBeenCalledWith(0.5)
+    // Thick rhombi filled
+    expect(ctx.fill).toHaveBeenCalledTimes(1)
+    expect(ctx.closePath).toHaveBeenCalled()
+    // Many edges stroked in a single batch
+    expect(ctx.stroke).toHaveBeenCalledTimes(1)
+    // Subdivision produces thousands of edges
+    expect(ctx.moveTo.mock.calls.length).toBeGreaterThan(1000)
+    expect(ctx.lineTo.mock.calls.length).toBeGreaterThan(1000)
+  })
+
   it('all non-zen patterns save and restore context', () => {
-    const patterns: BackgroundPatternId[] = ['aura', 'ripples', 'fibonacci', 'seed-of-life', 'mandala', 'flower-of-life', 'metatrons-cube']
+    const patterns: BackgroundPatternId[] = ['aura', 'ripples', 'fibonacci', 'seed-of-life', 'mandala', 'flower-of-life', 'metatrons-cube', 'penrose']
     for (const id of patterns) {
       const c = createMockCtx()
       drawBackground(id, c, 50, 50, 0, 1000, 0.1, 1, '#aaa', '#bbb', '#ccc')

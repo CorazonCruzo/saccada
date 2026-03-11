@@ -211,7 +211,7 @@ export const anuvritta: PatternConfig = {
   effect: 'Интенсивная стимуляция, напоминающая фазу быстрого сна. Может вызвать ощущение \'обработки\' — как будто мозг сортирует информацию. После сессии возможна лёгкая усталость глаз и ощущение ясности.',
   origins: 'Anuvritta — быстрые вертикальные саккады из Натья Шастры. Напоминают движения глаз в REM-фазе сна, когда мозг консолидирует память. Стикголд (2002) предположил, что EMDR воспроизводит этот механизм наяву.',
   benefits: ['REM simulation', 'memory processing', 'emotional discharge', 'cognitive clarity'],
-  defaultBackground: 'aura',
+  defaultBackground: 'penrose',
   defaultBackgroundRotation: 'cw',
 }
 

@@ -5,16 +5,16 @@ export type VisualType = 'bindu' | 'flame'
 export type PatternCategory = 'drishti' | 'emdr' | 'sleep'
 export type BinduColorToken = 'saffron' | 'teal' | 'lotus' | 'indigo'
 
-export type BackgroundPatternId = 'zen' | 'aura' | 'ripples' | 'fibonacci' | 'seed-of-life' | 'mandala' | 'flower-of-life' | 'metatrons-cube'
+export type BackgroundPatternId = 'zen' | 'aura' | 'ripples' | 'fibonacci' | 'seed-of-life' | 'mandala' | 'flower-of-life' | 'metatrons-cube' | 'penrose'
 export type BackgroundRotation = 'none' | 'cw' | 'ccw'
 
 export const allBackgroundPatterns: BackgroundPatternId[] = [
-  'zen', 'aura', 'ripples', 'fibonacci', 'seed-of-life', 'mandala', 'flower-of-life', 'metatrons-cube',
+  'zen', 'aura', 'ripples', 'fibonacci', 'seed-of-life', 'mandala', 'flower-of-life', 'metatrons-cube', 'penrose',
 ]
 
 /** Backgrounds where rotation visually matters */
 export const rotatableBackgrounds = new Set<BackgroundPatternId>([
-  'fibonacci', 'seed-of-life', 'mandala', 'flower-of-life', 'metatrons-cube',
+  'fibonacci', 'seed-of-life', 'mandala', 'flower-of-life', 'metatrons-cube', 'penrose',
 ])
 
 export interface Phase {

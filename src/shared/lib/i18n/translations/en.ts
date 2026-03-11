@@ -276,6 +276,7 @@ export const en: Translation = {
     mandala: 'Mandala',
     'flower-of-life': 'Flower of Life',
     'metatrons-cube': "Metatron's Cube",
+    penrose: 'Penrose',
   },
 
   pattern: {
