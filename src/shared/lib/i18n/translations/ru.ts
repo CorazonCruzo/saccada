@@ -279,6 +279,7 @@ export const ru: Translation = {
     penrose: 'Пенроуз',
     moire: 'Муар',
     'standing-wave': 'Стоячая волна',
+    'perlin-flow': 'Поле потоков',
   },
 
   pattern: {

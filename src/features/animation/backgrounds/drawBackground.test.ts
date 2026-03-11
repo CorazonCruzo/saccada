@@ -125,8 +125,18 @@ describe('drawBackground', () => {
     expect(ctx.lineTo).toHaveBeenCalled()
   })
 
+  it('perlin-flow draws flow field lines (mist + wisps)', () => {
+    drawBackground('perlin-flow', ctx, 100, 100, 0, 5000, 0.15, 1, '#aaa', '#bbb', '#ccc')
+    expect(ctx.save).toHaveBeenCalled()
+    // 500 mist + 120 wisps = 620 strokes
+    expect(ctx.stroke).toHaveBeenCalledTimes(620)
+    expect(ctx.moveTo).toHaveBeenCalledTimes(620)
+    // 500*15 + 120*50 = 13500 lineTo calls
+    expect(ctx.lineTo).toHaveBeenCalledTimes(13500)
+  })
+
   it('all non-zen patterns save and restore context', () => {
-    const patterns: BackgroundPatternId[] = ['aura', 'ripples', 'fibonacci', 'seed-of-life', 'mandala', 'flower-of-life', 'metatrons-cube', 'penrose', 'moire', 'standing-wave']
+    const patterns: BackgroundPatternId[] = ['aura', 'ripples', 'fibonacci', 'seed-of-life', 'mandala', 'flower-of-life', 'metatrons-cube', 'penrose', 'moire', 'standing-wave', 'perlin-flow']
     for (const id of patterns) {
       const c = createMockCtx()
       drawBackground(id, c, 50, 50, 0, 1000, 0.1, 1, '#aaa', '#bbb', '#ccc')

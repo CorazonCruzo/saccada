@@ -279,6 +279,7 @@ export const en: Translation = {
     penrose: 'Penrose',
     moire: 'Moire',
     'standing-wave': 'Standing Wave',
+    'perlin-flow': 'Perlin Flow',
   },
 
   pattern: {

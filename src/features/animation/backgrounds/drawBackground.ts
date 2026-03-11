@@ -9,6 +9,7 @@ import { drawMetatronsCube } from './drawMetatronsCube'
 import { drawPenrose } from './drawPenrose'
 import { drawMoire } from './drawMoire'
 import { drawStandingWave } from './drawStandingWave'
+import { drawPerlinFlow } from './drawPerlinFlow'
 
 /**
  * Dispatch to the correct background drawing function.
@@ -50,5 +51,7 @@ export function drawBackground(
       return drawMoire(ctx, cx, cy, wallTime, opacity, scale, color1, color2)
     case 'standing-wave':
       return drawStandingWave(ctx, cx, cy, wallTime, opacity, scale, color1, color2)
+    case 'perlin-flow':
+      return drawPerlinFlow(ctx, cx, cy, wallTime, opacity, scale, color1, color2)
   }
 }

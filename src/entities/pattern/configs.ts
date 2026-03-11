@@ -369,8 +369,8 @@ export const sleepRem: PatternConfig = {
   effect: 'Расслабление, подготовка ко сну. Бинауральные тета-биты (4 Hz) помогают мозгу перейти в состояние, предшествующее сну. Медленная восьмёрка убаюкивает без стимуляции.',
   origins: 'Вдохновлён исследованиями REM-фазы сна. Гипотеза Стикголда: движения глаз в REM-сне помогают мозгу переносить эмоционально заряженные воспоминания в долговременную память. Этот режим воссоздаёт похожий паттерн.',
   benefits: ['sleep preparation', 'relaxation', 'memory consolidation', 'stress reduction'],
-  defaultBackground: 'aura',
-  defaultBackgroundRotation: 'cw',
+  defaultBackground: 'perlin-flow',
+  defaultBackgroundRotation: 'none',
 }
 
 /** All patterns in display order (gentle → intense) */
