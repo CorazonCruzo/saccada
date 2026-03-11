@@ -101,7 +101,10 @@ export function useAnimationLoop(
     const ctx = canvas.getContext('2d')
     if (!ctx) return
 
-    const { pattern: pat, speed: spd, speedMultiplierRef: mulRef, visualScale: vs, state } = refs.current
+    const { pattern: pat, speed: spd, speedMultiplierRef: mulRef, visualScale: vsRaw, state } = refs.current
+    // Patterns that benefit from a larger base scale for comfortable viewing
+    const upscaled = new Set(['sleep_rem', 'trataka', 'alokita', 'sachi', 'pralokita', 'emdr_classic', 'emdr_diagonal', 'anuvritta'])
+    const vs = upscaled.has(pat.id) ? vsRaw * 1.5 : vsRaw
     const dpr = window.devicePixelRatio || 1
     const w = canvas.width / dpr
     const h = canvas.height / dpr
