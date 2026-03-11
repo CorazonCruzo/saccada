@@ -41,9 +41,9 @@ describe('drawFlame', () => {
     expect((ctx.ellipse as ReturnType<typeof vi.fn>).mock.calls.length).toBe(45)
   })
 
-  it('draws the wick', () => {
+  it('does not draw a wick (removed)', () => {
     drawFlame(ctx, 100, 200, 1.0)
-    expect(ctx.fillRect).toHaveBeenCalled()
+    expect(ctx.fillRect).not.toHaveBeenCalled()
   })
 
   it('draws ambient glow and base glow (2 radial gradients)', () => {
@@ -59,11 +59,11 @@ describe('drawFlame', () => {
     drawFlame(ctx1, 100, 200, 1.0, 1)
     drawFlame(ctx2, 100, 200, 1.0, 2)
 
-    // Wick dimensions scale: width = 3 * scale, height = 12 * scale
-    const wick1 = (ctx1.fillRect as ReturnType<typeof vi.fn>).mock.calls[0]
-    const wick2 = (ctx2.fillRect as ReturnType<typeof vi.fn>).mock.calls[0]
-    expect(wick2[2]).toBeCloseTo(wick1[2] * 2, 5)
-    expect(wick2[3]).toBeCloseTo(wick1[3] * 2, 5)
+    // Ellipse layers should use different radii at different scales
+    const layers1 = (ctx1.ellipse as ReturnType<typeof vi.fn>).mock.calls
+    const layers2 = (ctx2.ellipse as ReturnType<typeof vi.fn>).mock.calls
+    // Compare vertical radius (arg index 3) of a middle layer
+    expect(layers2[20][3]).toBeCloseTo(layers1[20][3] * 2, 5)
   })
 
   it('flame layers have positive width', () => {

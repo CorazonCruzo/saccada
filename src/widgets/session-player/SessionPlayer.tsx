@@ -17,7 +17,7 @@ interface SessionPlayerProps {
   audioEngine?: AudioEngine | null
   soundEnabled?: boolean
   hapticEnabled?: boolean
-  onDotMove?: (dotX: number, dotY: number, canvasW: number, canvasH: number) => void
+  onDotMove?: (dotX: number, dotY: number, canvasW: number, canvasH: number, phaseIndex: number) => void
   className?: string
 }
 
@@ -65,7 +65,7 @@ export function SessionPlayer({
     if (hapticEnabled) {
       edgeDetectorRef.current(info.dotXNormalized)
     }
-    onDotMoveRef.current?.(info.dotX, info.dotY, info.canvasW, info.canvasH)
+    onDotMoveRef.current?.(info.dotX, info.dotY, info.canvasW, info.canvasH, info.phaseIndex)
   }, [audioEngine, soundEnabled, hapticEnabled])
 
   useAnimationLoop(canvasRef, pattern, isPlaying, speed, visualScale, onFrame, speedMultiplierRef, backgroundPattern, backgroundRotation)

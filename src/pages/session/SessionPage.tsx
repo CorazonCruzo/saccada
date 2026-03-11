@@ -61,6 +61,7 @@ export default function SessionPage() {
   const audioStartedRef = useRef(false)
   const phaseRef = useRef(phase)
   phaseRef.current = phase
+  const lastPhaseIndexRef = useRef(-1)
 
   // Adaptive speed + gaze logging
   const gazeLogRef = useRef(new GazeLog())
@@ -236,33 +237,15 @@ export default function SessionPage() {
     }
   }, [phase, resetHud])
 
-  // -- Guided mode instructions --
+  // -- Guided mode instructions (synced with animation loop via onFrame callback) --
   const patternTrans = tp(selectedPattern.id)
 
   useEffect(() => {
     if (!guidedMode || phase !== 'active') {
       setCurrentInstruction(null)
-      return
+      lastPhaseIndexRef.current = -1
     }
-
-    const interval = setInterval(() => {
-      const e = accumulatedRef.current + (performance.now() - activeStartRef.current)
-      const totalDur = selectedPattern.phases.reduce((sum, p) => sum + p.duration / speed, 0)
-      const loopedTime = totalDur > 0 ? e % totalDur : 0
-
-      let acc = 0
-      for (let i = 0; i < selectedPattern.phases.length; i++) {
-        const dur = selectedPattern.phases[i].duration / speed
-        if (loopedTime < acc + dur) {
-          setCurrentInstruction(patternTrans.phases[i] ?? null)
-          break
-        }
-        acc += dur
-      }
-    }, 500)
-
-    return () => clearInterval(interval)
-  }, [guidedMode, phase, selectedPattern, speed, patternTrans])
+  }, [guidedMode, phase])
 
   // -- Keyboard shortcuts --
   useEffect(() => {
@@ -346,10 +329,14 @@ export default function SessionPage() {
     }
   }
 
-  // Track dot position for adaptive speed
-  const handleDotMove = useCallback((dotX: number, dotY: number, canvasW: number, canvasH: number) => {
+  // Track dot position for adaptive speed + sync guided instruction with animation phase
+  const handleDotMove = useCallback((dotX: number, dotY: number, canvasW: number, canvasH: number, phaseIndex: number) => {
     dotPosRef.current = { x: dotX, y: dotY, w: canvasW, h: canvasH }
-  }, [])
+    if (guidedMode && phaseIndex !== lastPhaseIndexRef.current) {
+      lastPhaseIndexRef.current = phaseIndex
+      setCurrentInstruction(patternTrans.phases[phaseIndex] ?? null)
+    }
+  }, [guidedMode, patternTrans])
 
   // Speed multiplier applied directly in animation loop via ref (no React render lag)
 

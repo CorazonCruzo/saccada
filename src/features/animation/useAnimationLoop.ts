@@ -24,6 +24,8 @@ export interface FrameInfo {
   canvasW: number
   /** Canvas height in CSS pixels */
   canvasH: number
+  /** Current phase index in the pattern's phases array */
+  phaseIndex: number
 }
 
 interface AnimationState {
@@ -183,6 +185,7 @@ export function useAnimationLoop(
         dotY: dotPos.y,
         canvasW: w,
         canvasH: h,
+        phaseIndex: state.currentPhaseIndex,
       })
     }
 
