@@ -4,7 +4,7 @@ import type { TrajectoryParams } from '@/entities/pattern'
 
 const defaultParams: TrajectoryParams = {
   amplitude: 0.8,
-  easing: 'linear',
+  easing: 'sine',
 }
 
 describe('getTrajectoryPosition', () => {
@@ -24,8 +24,8 @@ describe('getTrajectoryPosition', () => {
     })
 
     it('x scales with amplitude', () => {
-      const p1 = getTrajectoryPosition(0.5, 'horizontal', { amplitude: 0.5, easing: 'linear' })
-      const p2 = getTrajectoryPosition(0.5, 'horizontal', { amplitude: 1.0, easing: 'linear' })
+      const p1 = getTrajectoryPosition(0.25, 'horizontal', { amplitude: 0.5, easing: 'sine' })
+      const p2 = getTrajectoryPosition(0.25, 'horizontal', { amplitude: 1.0, easing: 'sine' })
       expect(Math.abs(p2.x)).toBeGreaterThan(Math.abs(p1.x))
     })
 
@@ -94,16 +94,22 @@ describe('getTrajectoryPosition', () => {
 
   describe('diagonal', () => {
     it('x and y have opposite signs', () => {
-      const p = getTrajectoryPosition(0.5, 'diagonal', defaultParams)
+      const p = getTrajectoryPosition(0.25, 'diagonal', defaultParams)
       if (p.x !== 0) {
         expect(Math.sign(p.x)).toBe(-Math.sign(p.y))
       }
     })
 
-    it('at t=0 returns origin', () => {
-      const p = getTrajectoryPosition(0, 'diagonal', defaultParams)
-      expect(p.x).toBeCloseTo(0)
-      expect(p.y).toBeCloseTo(0)
+    it('produces both positive and negative x', () => {
+      let hasPos = false
+      let hasNeg = false
+      for (let t = 0; t <= 1; t += 0.05) {
+        const p = getTrajectoryPosition(t, 'diagonal', defaultParams)
+        if (p.x > 0.1) hasPos = true
+        if (p.x < -0.1) hasNeg = true
+      }
+      expect(hasPos).toBe(true)
+      expect(hasNeg).toBe(true)
     })
   })
 
@@ -120,7 +126,7 @@ describe('getTrajectoryPosition', () => {
       expect(p.y).toBeCloseTo(0)
     })
 
-    it('y amplitude is smaller than x amplitude (0.6 factor)', () => {
+    it('y amplitude is smaller than x amplitude (0.8 factor)', () => {
       let maxX = 0
       let maxY = 0
       for (let t = 0; t < 1; t += 0.01) {
@@ -129,7 +135,7 @@ describe('getTrajectoryPosition', () => {
         maxY = Math.max(maxY, Math.abs(p.y))
       }
       expect(maxY).toBeLessThan(maxX)
-      expect(maxY / maxX).toBeCloseTo(0.6, 1)
+      expect(maxY / maxX).toBeCloseTo(0.8, 1)
     })
   })
 })

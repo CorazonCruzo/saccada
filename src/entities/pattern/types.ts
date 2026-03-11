@@ -18,6 +18,18 @@ export interface AudioConfig {
   binauralDelta?: number
   rhythmBPM?: number
   droneIntervals?: number[]
+  /** Hz offset for dual-oscillator bilateral (creates richer tone). Pralokita: 2 */
+  bilateralDetune?: number
+  /** Hz range for Y-position pitch bend on rhythmic patterns. Ullokita: 15 */
+  pitchBendRange?: number
+  /** ms interval between singing bowl strikes on drone. Sama: 35000 */
+  singingBowlInterval?: number
+  /** Gain (0-1) for pink noise layer mixed into drone. Nimilita: 0.03 */
+  pinkNoise?: number
+  /** Hz range for slow pitch LFO on drone oscillators. Trataka: 3 */
+  pitchLFO?: number
+  /** Hz for added sub-bass oscillator on rhythmic. Avalokita: 65 */
+  subBass?: number
 }
 
 export interface TrajectoryParams {

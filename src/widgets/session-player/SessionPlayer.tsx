@@ -52,10 +52,11 @@ export function SessionPlayer({
     return () => window.removeEventListener('resize', handleResize)
   }, [handleResize])
 
-  // Per-frame callback: audio pan sync + haptic edge detection + dot position forwarding
+  // Per-frame callback: audio pan/pitch sync + haptic edge detection + dot position forwarding
   const onFrame = useCallback((info: FrameInfo) => {
     if (audioEngine && soundEnabled) {
       audioEngine.setPan(info.dotXNormalized)
+      audioEngine.setPitchBend(info.dotYNormalized)
     }
     if (hapticEnabled) {
       edgeDetectorRef.current(info.dotXNormalized)

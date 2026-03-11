@@ -3,6 +3,10 @@ import type { AudioConfig } from '@/entities/pattern'
 /**
  * WebAudio synthesis engine. Plain TypeScript class — not a hook.
  * Supports four modes: bilateral, binaural, drone, rhythmic.
+ * Each mode can be enriched with optional layers:
+ * - bilateral: stereo detune for richer tone
+ * - drone: singing bowl strikes, pink noise, pitch LFO
+ * - rhythmic: sub-bass oscillator, pitch bend from dot Y
  *
  * AudioContext is deferred to first user gesture (init()).
  */
@@ -17,6 +21,22 @@ export class AudioEngine {
   private volume = 0.5
   private currentMode: AudioConfig['mode'] | null = null
   private isPlaying = false
+
+  // Singing bowl
+  private bowlInterval: ReturnType<typeof setInterval> | null = null
+  private bowlFirstTimeout: ReturnType<typeof setTimeout> | null = null
+
+  // Pink noise
+  private noiseSource: AudioBufferSourceNode | null = null
+  private noiseGain: GainNode | null = null
+
+  // Pitch LFO for drone
+  private pitchLfo: OscillatorNode | null = null
+  private pitchLfoGains: GainNode[] = []
+
+  // Pitch bend (rhythmic, Y-driven)
+  private pitchBendRange = 0
+  private pitchBendBaseFreq = 0
 
   /** Call on first user gesture (click/tap) */
   init(): void {
@@ -38,24 +58,52 @@ export class AudioEngine {
     this.stopNodes()
     const ctx = this.ensureCtx()
     this.currentMode = 'bilateral'
-
-    const osc = ctx.createOscillator()
-    osc.type = config.waveform
-    osc.frequency.value = config.frequency
-
-    const gain = ctx.createGain()
-    gain.gain.value = 1
+    const detune = config.bilateralDetune ?? 0
 
     this.pannerNode = ctx.createStereoPanner()
     this.pannerNode.pan.value = 0
-
-    osc.connect(gain)
-    gain.connect(this.pannerNode)
     this.pannerNode.connect(this.masterGain!)
 
-    osc.start()
-    this.oscillators.push(osc)
-    this.gains.push(gain)
+    if (detune > 0) {
+      // Dual oscillators with ±detune for richer bilateral tone
+      const oscA = ctx.createOscillator()
+      oscA.type = config.waveform
+      oscA.frequency.value = config.frequency - detune
+
+      const oscB = ctx.createOscillator()
+      oscB.type = config.waveform
+      oscB.frequency.value = config.frequency + detune
+
+      const gainA = ctx.createGain()
+      gainA.gain.value = 0.6
+
+      const gainB = ctx.createGain()
+      gainB.gain.value = 0.6
+
+      oscA.connect(gainA)
+      gainA.connect(this.pannerNode)
+      oscB.connect(gainB)
+      gainB.connect(this.pannerNode)
+
+      oscA.start()
+      oscB.start()
+      this.oscillators.push(oscA, oscB)
+      this.gains.push(gainA, gainB)
+    } else {
+      const osc = ctx.createOscillator()
+      osc.type = config.waveform
+      osc.frequency.value = config.frequency
+
+      const gain = ctx.createGain()
+      gain.gain.value = 1
+
+      osc.connect(gain)
+      gain.connect(this.pannerNode)
+
+      osc.start()
+      this.oscillators.push(osc)
+      this.gains.push(gain)
+    }
 
     this.fadeIn()
   }
@@ -144,6 +192,21 @@ export class AudioEngine {
     this.lfoGain.connect(this.masterGain!.gain)
     this.lfo.start()
 
+    // Pitch LFO: slow ±N Hz modulation on all drone oscillators
+    if (config.pitchLFO && config.pitchLFO > 0) {
+      this.startPitchLFO(ctx, config.pitchLFO)
+    }
+
+    // Pink noise layer
+    if (config.pinkNoise && config.pinkNoise > 0) {
+      this.startPinkNoise(ctx, config.pinkNoise)
+    }
+
+    // Singing bowl periodic strikes
+    if (config.singingBowlInterval && config.singingBowlInterval > 0) {
+      this.startSingingBowl(ctx, config.frequency, config.singingBowlInterval)
+    }
+
     this.fadeIn()
   }
 
@@ -179,6 +242,28 @@ export class AudioEngine {
     this.lfo.start()
     this.oscillators.push(osc)
     this.gains.push(oscGain)
+
+    // Sub-bass oscillator
+    if (config.subBass && config.subBass > 0) {
+      const sub = ctx.createOscillator()
+      sub.type = 'sine'
+      sub.frequency.value = config.subBass
+
+      const subGain = ctx.createGain()
+      subGain.gain.value = 0.1 // ~-20dB
+
+      sub.connect(subGain)
+      subGain.connect(this.masterGain!)
+      sub.start()
+      this.oscillators.push(sub)
+      this.gains.push(subGain)
+    }
+
+    // Pitch bend support (Y-driven)
+    if (config.pitchBendRange && config.pitchBendRange > 0) {
+      this.pitchBendRange = config.pitchBendRange
+      this.pitchBendBaseFreq = config.frequency
+    }
 
     this.fadeIn()
   }
@@ -217,6 +302,21 @@ export class AudioEngine {
     this.pannerNode.pan.cancelScheduledValues(now)
     this.pannerNode.pan.linearRampToValueAtTime(
       Math.max(-1, Math.min(1, value)),
+      now + 0.05,
+    )
+  }
+
+  /** Set pitch bend from normalized Y. value: -1 (top) to 1 (bottom). */
+  setPitchBend(normalizedY: number): void {
+    if (this.pitchBendRange <= 0 || !this.ctx) return
+    // First oscillator in rhythmic mode is the main tone
+    const osc = this.oscillators[0]
+    if (!osc) return
+    const offset = normalizedY * this.pitchBendRange
+    const now = this.ctx.currentTime
+    osc.frequency.cancelScheduledValues(now)
+    osc.frequency.linearRampToValueAtTime(
+      this.pitchBendBaseFreq + offset,
       now + 0.05,
     )
   }
@@ -276,6 +376,108 @@ export class AudioEngine {
     }
   }
 
+  // ── Audio layers ────────────────────────────────────────
+
+  /**
+   * Singing bowl: inharmonic partials with exponential decay.
+   * Strikes once immediately, then repeats at the given interval.
+   */
+  private startSingingBowl(ctx: AudioContext, baseFreq: number, intervalMs: number): void {
+    // First strike delayed 5s to let the drone establish,
+    // then repeat at intervalMs after that
+    const firstStrikeDelay = 5000
+    this.bowlFirstTimeout = setTimeout(() => {
+      if (this.isPlaying && this.ctx) {
+        this.strikeBowl(this.ctx, baseFreq)
+      }
+      this.bowlInterval = setInterval(() => {
+        if (this.isPlaying && this.ctx) {
+          this.strikeBowl(this.ctx, baseFreq)
+        }
+      }, intervalMs)
+    }, firstStrikeDelay)
+  }
+
+  /** Single singing bowl strike: 5 inharmonic partials with decay */
+  private strikeBowl(ctx: AudioContext, baseFreq: number): void {
+    // Inharmonic partial ratios characteristic of Tibetan singing bowls
+    const partials = [1.0, 2.71, 5.04, 8.09, 11.65]
+    const now = ctx.currentTime
+
+    for (let i = 0; i < partials.length; i++) {
+      const freq = baseFreq * partials[i]
+      const osc = ctx.createOscillator()
+      osc.type = 'sine'
+      osc.frequency.value = freq
+      // Characteristic frequency drift (wobble)
+      osc.frequency.linearRampToValueAtTime(
+        freq * (1 + (Math.random() - 0.5) * 0.003),
+        now + 3,
+      )
+
+      const gain = ctx.createGain()
+      // Higher partials start quieter and decay faster
+      const startGain = 0.25 / (1 + i * 0.8)
+      const decayTime = 5 / (1 + i * 0.5)
+      gain.gain.setValueAtTime(startGain, now)
+      gain.gain.exponentialRampToValueAtTime(0.001, now + decayTime)
+
+      osc.connect(gain)
+      gain.connect(this.masterGain!)
+
+      osc.start(now)
+      osc.stop(now + decayTime + 0.1)
+    }
+  }
+
+  /** Pink noise generated via Paul Kellet's algorithm, looped buffer */
+  private startPinkNoise(ctx: AudioContext, level: number): void {
+    const bufferSize = ctx.sampleRate * 2
+    const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate)
+    const data = buffer.getChannelData(0)
+
+    let b0 = 0, b1 = 0, b2 = 0, b3 = 0, b4 = 0, b5 = 0, b6 = 0
+    for (let i = 0; i < bufferSize; i++) {
+      const white = Math.random() * 2 - 1
+      b0 = 0.99886 * b0 + white * 0.0555179
+      b1 = 0.99332 * b1 + white * 0.0750759
+      b2 = 0.96900 * b2 + white * 0.1538520
+      b3 = 0.86650 * b3 + white * 0.3104856
+      b4 = 0.55000 * b4 + white * 0.5329522
+      b5 = -0.7616 * b5 - white * 0.0168980
+      data[i] = (b0 + b1 + b2 + b3 + b4 + b5 + b6 + white * 0.5362) * 0.11
+      b6 = white * 0.115926
+    }
+
+    this.noiseSource = ctx.createBufferSource()
+    this.noiseSource.buffer = buffer
+    this.noiseSource.loop = true
+
+    this.noiseGain = ctx.createGain()
+    this.noiseGain.gain.value = level
+
+    this.noiseSource.connect(this.noiseGain)
+    this.noiseGain.connect(this.masterGain!)
+    this.noiseSource.start()
+  }
+
+  /** Slow pitch modulation on all current drone oscillators */
+  private startPitchLFO(ctx: AudioContext, rangeHz: number): void {
+    this.pitchLfo = ctx.createOscillator()
+    this.pitchLfo.type = 'sine'
+    this.pitchLfo.frequency.value = 0.07 // ~4s per wobble cycle
+
+    for (const osc of this.oscillators) {
+      const lfoGain = ctx.createGain()
+      lfoGain.gain.value = rangeHz
+      this.pitchLfo.connect(lfoGain)
+      lfoGain.connect(osc.frequency)
+      this.pitchLfoGains.push(lfoGain)
+    }
+
+    this.pitchLfo.start()
+  }
+
   // ── Internal ──────────────────────────────────────────
 
   private fadeIn(): void {
@@ -287,6 +489,43 @@ export class AudioEngine {
   }
 
   private stopNodes(): void {
+    // Singing bowl interval + first strike timeout
+    if (this.bowlFirstTimeout !== null) {
+      clearTimeout(this.bowlFirstTimeout)
+      this.bowlFirstTimeout = null
+    }
+    if (this.bowlInterval !== null) {
+      clearInterval(this.bowlInterval)
+      this.bowlInterval = null
+    }
+
+    // Pink noise
+    if (this.noiseSource) {
+      try { this.noiseSource.stop() } catch { /* already stopped */ }
+      this.noiseSource.disconnect()
+      this.noiseSource = null
+    }
+    if (this.noiseGain) {
+      this.noiseGain.disconnect()
+      this.noiseGain = null
+    }
+
+    // Pitch LFO
+    if (this.pitchLfo) {
+      try { this.pitchLfo.stop() } catch { /* already stopped */ }
+      this.pitchLfo.disconnect()
+      this.pitchLfo = null
+    }
+    for (const g of this.pitchLfoGains) {
+      g.disconnect()
+    }
+    this.pitchLfoGains = []
+
+    // Reset pitch bend
+    this.pitchBendRange = 0
+    this.pitchBendBaseFreq = 0
+
+    // Core oscillators and gains
     for (const osc of this.oscillators) {
       try { osc.stop() } catch { /* already stopped */ }
       osc.disconnect()

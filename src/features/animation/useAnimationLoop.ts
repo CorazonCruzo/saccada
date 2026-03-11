@@ -14,6 +14,8 @@ const MANDALA_SPEED = 0.0003
 export interface FrameInfo {
   /** Normalized dot X: -1 (left) to 1 (right). Used for audio pan. */
   dotXNormalized: number
+  /** Normalized dot Y: -1 (top) to 1 (bottom). Used for pitch bend. */
+  dotYNormalized: number
   /** Dot X in canvas pixels */
   dotX: number
   /** Dot Y in canvas pixels */
@@ -149,17 +151,23 @@ export function useAnimationLoop(
       const normPos = getTrajectoryPosition(cycleT, pat.trajectory, pat.trajectoryParams)
       normPos.x *= vs
       normPos.y *= vs
+      // Compensate for widescreen: vertical amplitude is physically smaller
+      if (normPos.y !== 0 && w > h) {
+        normPos.y *= Math.min(w / h, 1.5)
+      }
       dotPos = toCanvasCoords(normPos, w, h)
     } else {
       // Fixation or eyes-closed: center
       dotPos = { x: w / 2, y: h / 2 }
     }
 
-    // Expose normalized X for audio pan (-1..1)
+    // Expose normalized positions for audio (-1..1)
     state.dotXNormalized = w > 0 ? (dotPos.x / w) * 2 - 1 : 0
+    const dotYNormalized = h > 0 ? (dotPos.y / h) * 2 - 1 : 0
     if (refs.current.onFrame) {
       refs.current.onFrame({
         dotXNormalized: state.dotXNormalized,
+        dotYNormalized,
         dotX: dotPos.x,
         dotY: dotPos.y,
         canvasW: w,
@@ -203,7 +211,17 @@ export function useAnimationLoop(
     // 4. Bindu or Flame (scale relative to viewport)
     const viewScale = Math.min(w, h) / 700 * vs
     const isEyesClosed = activePhase.type === 'eyes-closed'
-    const dimFactor = isEyesClosed ? 0.15 : (pat.id === 'nimilita' ? 0.3 : 1)
+    let dimFactor = 1
+    if (isEyesClosed) {
+      dimFactor = 0.15
+    } else if (pat.id === 'nimilita') {
+      // Fade from 0.5 to 0.1 over first 30s, then hold at 0.1
+      const fadeProgress = Math.min(dt / 30_000, 1)
+      dimFactor = 0.5 - fadeProgress * 0.4
+    } else if (pat.id === 'sama') {
+      // Breathing pulsation: opacity oscillates 0.8..1.0, period 4s
+      dimFactor = 0.9 + 0.1 * Math.sin(now / 1000 * Math.PI * 2 / 4)
+    }
 
     if (pat.visual === 'flame') {
       if (!isEyesClosed) {

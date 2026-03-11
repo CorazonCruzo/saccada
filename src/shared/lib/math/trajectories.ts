@@ -28,7 +28,7 @@ export function getTrajectoryPosition(
 
     case 'vertical': {
       const raw = applyEasing(t, easing) * amplitude
-      const biasOffset = bias === 'up' ? -0.15 : bias === 'down' ? 0.15 : 0
+      const biasOffset = bias === 'up' ? -0.25 : bias === 'down' ? 0.25 : 0
       return { x: 0, y: raw + biasOffset }
     }
 
@@ -49,7 +49,7 @@ export function getTrajectoryPosition(
       const angle = t * Math.PI * 2
       return {
         x: Math.sin(angle) * amplitude,
-        y: Math.sin(angle * 2) * amplitude * 0.6,
+        y: Math.sin(angle * 2) * amplitude * 0.8,
       }
     }
 
