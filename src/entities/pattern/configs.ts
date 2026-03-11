@@ -241,8 +241,8 @@ export const avalokita: PatternConfig = {
   effect: 'Ощущение заземления, возвращение в тело. Снижает деперсонализацию и диссоциацию. Помогает перейти от \'головы\' к телесному осознаванию. Хорошо после интенсивной эмоциональной работы.',
   origins: 'Avalokita — нисходящий взгляд из Натья Шастры. Выражает смирение, созерцание, связь с землёй. В соматической психотерапии нисходящий взгляд помогает переключить внимание с мыслей на телесные ощущения.',
   benefits: ['grounding', 'body awareness', 'dissociation reduction', 'somatic processing'],
-  defaultBackground: 'ripples',
-  defaultBackgroundRotation: 'cw',
+  defaultBackground: 'spiral-moire',
+  defaultBackgroundRotation: 'none',
 }
 
 export const trataka: PatternConfig = {

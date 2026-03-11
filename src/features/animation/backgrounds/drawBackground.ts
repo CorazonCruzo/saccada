@@ -11,6 +11,7 @@ import { drawMoire } from './drawMoire'
 import { drawStandingWave } from './drawStandingWave'
 import { drawPerlinFlow } from './drawPerlinFlow'
 import { drawChladni } from './drawChladni'
+import { drawSpiralMoire } from './drawSpiralMoire'
 
 /**
  * Dispatch to the correct background drawing function.
@@ -56,5 +57,7 @@ export function drawBackground(
       return drawPerlinFlow(ctx, cx, cy, wallTime, opacity, scale, color1, color2)
     case 'chladni':
       return drawChladni(ctx, cx, cy, wallTime, opacity, scale, color1, color2)
+    case 'spiral-moire':
+      return drawSpiralMoire(ctx, cx, cy, wallTime, opacity, scale, color1, color2)
   }
 }

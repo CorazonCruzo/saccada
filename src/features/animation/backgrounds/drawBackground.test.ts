@@ -152,8 +152,19 @@ describe('drawBackground', () => {
     expect(ctx.restore).toHaveBeenCalled()
   })
 
+  it('spiral-moire draws two opposing spiral sets', () => {
+    drawBackground('spiral-moire', ctx, 100, 100, 0, 5000, 0.15, 1, '#aaa', '#bbb', '#ccc')
+    expect(ctx.save).toHaveBeenCalled()
+    // 12 arms (set A) + 11 arms (set B) = 23 strokes
+    expect(ctx.stroke).toHaveBeenCalledTimes(23)
+    expect(ctx.moveTo).toHaveBeenCalledTimes(23)
+    // 201 points per arm, first is moveTo, rest lineTo = 200 * 23 = 4600
+    expect(ctx.lineTo).toHaveBeenCalledTimes(200 * 23)
+    expect(ctx.restore).toHaveBeenCalled()
+  })
+
   it('all non-zen patterns save and restore context', () => {
-    const patterns: BackgroundPatternId[] = ['aura', 'ripples', 'fibonacci', 'seed-of-life', 'mandala', 'flower-of-life', 'metatrons-cube', 'penrose', 'moire', 'standing-wave', 'perlin-flow', 'chladni']
+    const patterns: BackgroundPatternId[] = ['aura', 'ripples', 'fibonacci', 'seed-of-life', 'mandala', 'flower-of-life', 'metatrons-cube', 'penrose', 'moire', 'standing-wave', 'perlin-flow', 'chladni', 'spiral-moire']
     for (const id of patterns) {
       const c = createMockCtx()
       drawBackground(id, c, 50, 50, 0, 1000, 0.1, 1, '#aaa', '#bbb', '#ccc')

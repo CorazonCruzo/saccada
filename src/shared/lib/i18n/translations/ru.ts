@@ -281,6 +281,7 @@ export const ru: Translation = {
     'standing-wave': 'Стоячая волна',
     'perlin-flow': 'Поле потоков',
     chladni: 'Фигуры Хладни',
+    'spiral-moire': 'Спиральный муар',
   },
 
   pattern: {

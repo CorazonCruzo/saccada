@@ -281,6 +281,7 @@ export const es: Translation = {
     'standing-wave': 'Onda estacionaria',
     'perlin-flow': 'Campo de flujo',
     chladni: 'Chladni',
+    'spiral-moire': 'Muare espiral',
   },
 
   pattern: {

@@ -64,6 +64,7 @@ vi.mock('@/shared/lib/i18n', () => ({
         'standing-wave': 'Standing Wave',
         'perlin-flow': 'Perlin Flow',
         chladni: 'Chladni',
+        'spiral-moire': 'Spiral Moire',
       },
     },
     tp: () => ({ name: 'Pralokita', description: '' }),
