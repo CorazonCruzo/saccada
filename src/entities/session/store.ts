@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-import { type PatternConfig, type BackgroundPatternId, type BackgroundRotation, pralokita, patternsById } from '@/entities/pattern'
+import { type PatternConfig, type BackgroundPatternId, type BackgroundRotation, nimilita, patternsById } from '@/entities/pattern'
 import type { SessionState } from './types'
 
 export interface LastSession {
@@ -137,13 +137,13 @@ export const useSessionStore = create<SessionStore>()(
       sessionState: 'idle' as SessionState,
       setSessionState: (sessionState) => set({ sessionState }),
 
-      selectedPattern: pralokita,
+      selectedPattern: nimilita,
       selectPattern: (p) => set({
         selectedPattern: p,
         ...loadSettings(get().patternOverrides, p),
       }),
 
-      sessionDuration: pralokita.defaultSessionDuration,
+      sessionDuration: nimilita.defaultSessionDuration,
       setSessionDuration: (sessionDuration) => set({
         sessionDuration,
         ...saveOverride(get, 'sessionDuration', sessionDuration),
@@ -198,13 +198,13 @@ export const useSessionStore = create<SessionStore>()(
         ...saveOverride(get, 'eyeTrackingEnabled', eyeTrackingEnabled),
       }),
 
-      backgroundPattern: pralokita.defaultBackground,
+      backgroundPattern: nimilita.defaultBackground,
       setBackgroundPattern: (backgroundPattern) => set({
         backgroundPattern,
         ...saveOverride(get, 'backgroundPattern', backgroundPattern),
       }),
 
-      backgroundRotation: pralokita.defaultBackgroundRotation,
+      backgroundRotation: nimilita.defaultBackgroundRotation,
       setBackgroundRotation: (backgroundRotation) => set({
         backgroundRotation,
         ...saveOverride(get, 'backgroundRotation', backgroundRotation),
@@ -235,8 +235,8 @@ export const useSessionStore = create<SessionStore>()(
       merge: (persisted, current) => {
         const saved = persisted as PersistedState
         const overrides = saved.patternOverrides ?? {}
-        const patternId = saved._selectedPatternId ?? 'pralokita'
-        const pattern = patternsById[patternId] ?? pralokita
+        const patternId = saved._selectedPatternId ?? 'nimilita'
+        const pattern = patternsById[patternId] ?? nimilita
 
         return {
           ...current,

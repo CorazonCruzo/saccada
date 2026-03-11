@@ -1,13 +1,13 @@
 import { describe, it, expect, beforeEach } from 'vitest'
 import { useSessionStore } from './store'
-import { pralokita, sama, anuvritta, allPatterns } from '@/entities/pattern'
+import { pralokita, nimilita, sama, anuvritta, allPatterns } from '@/entities/pattern'
 
 // Reset store between tests
 beforeEach(() => {
   useSessionStore.setState({
     sessionState: 'idle',
-    selectedPattern: pralokita,
-    sessionDuration: pralokita.defaultSessionDuration,
+    selectedPattern: nimilita,
+    sessionDuration: nimilita.defaultSessionDuration,
     speed: 1,
     volume: 40,
     soundEnabled: false,
@@ -18,15 +18,15 @@ beforeEach(() => {
     visualScale: 1,
     calibratedAt: null,
     lastSession: null,
-    backgroundPattern: pralokita.defaultBackground,
-    backgroundRotation: pralokita.defaultBackgroundRotation,
+    backgroundPattern: nimilita.defaultBackground,
+    backgroundRotation: nimilita.defaultBackgroundRotation,
   })
 })
 
 describe('useSessionStore', () => {
   describe('pattern selection', () => {
-    it('defaults to pralokita', () => {
-      expect(useSessionStore.getState().selectedPattern.id).toBe('pralokita')
+    it('defaults to nimilita', () => {
+      expect(useSessionStore.getState().selectedPattern.id).toBe('nimilita')
     })
 
     it('changes pattern and loads default session duration', () => {
@@ -37,7 +37,7 @@ describe('useSessionStore', () => {
     })
 
     it('loads saved per-pattern settings when selecting', () => {
-      // Configure pralokita with speed 2
+      // Configure nimilita with speed 2
       useSessionStore.getState().setSpeed(2)
       expect(useSessionStore.getState().speed).toBe(2)
 
@@ -45,8 +45,8 @@ describe('useSessionStore', () => {
       useSessionStore.getState().selectPattern(sama)
       expect(useSessionStore.getState().speed).toBe(1) // default
 
-      // Switch back to pralokita: speed 2 restored
-      useSessionStore.getState().selectPattern(pralokita)
+      // Switch back to nimilita: speed 2 restored
+      useSessionStore.getState().selectPattern(nimilita)
       expect(useSessionStore.getState().speed).toBe(2)
     })
 
@@ -64,47 +64,46 @@ describe('useSessionStore', () => {
 
   describe('per-pattern settings', () => {
     it('saves speed per pattern', () => {
-      useSessionStore.getState().selectPattern(pralokita)
       useSessionStore.getState().setSpeed(1.5)
 
       useSessionStore.getState().selectPattern(sama)
       useSessionStore.getState().setSpeed(0.5)
 
       const overrides = useSessionStore.getState().patternOverrides
-      expect(overrides['pralokita']?.speed).toBe(1.5)
+      expect(overrides['nimilita']?.speed).toBe(1.5)
       expect(overrides['sama']?.speed).toBe(0.5)
     })
 
     it('saves volume per pattern', () => {
       useSessionStore.getState().setVolume(80)
-      expect(useSessionStore.getState().patternOverrides['pralokita']?.volume).toBe(80)
+      expect(useSessionStore.getState().patternOverrides['nimilita']?.volume).toBe(80)
     })
 
     it('saves duration per pattern', () => {
       useSessionStore.getState().setSessionDuration(120_000)
-      expect(useSessionStore.getState().patternOverrides['pralokita']?.sessionDuration).toBe(120_000)
+      expect(useSessionStore.getState().patternOverrides['nimilita']?.sessionDuration).toBe(120_000)
     })
 
     it('saves sound toggle per pattern', () => {
       useSessionStore.getState().toggleSound()
       expect(useSessionStore.getState().soundEnabled).toBe(true)
-      expect(useSessionStore.getState().patternOverrides['pralokita']?.soundEnabled).toBe(true)
+      expect(useSessionStore.getState().patternOverrides['nimilita']?.soundEnabled).toBe(true)
     })
 
     it('saves haptic toggle per pattern', () => {
       useSessionStore.getState().toggleHaptic()
       expect(useSessionStore.getState().hapticEnabled).toBe(true)
-      expect(useSessionStore.getState().patternOverrides['pralokita']?.hapticEnabled).toBe(true)
+      expect(useSessionStore.getState().patternOverrides['nimilita']?.hapticEnabled).toBe(true)
     })
 
     it('saves guided toggle per pattern', () => {
       useSessionStore.getState().toggleGuided()
       expect(useSessionStore.getState().guidedMode).toBe(false)
-      expect(useSessionStore.getState().patternOverrides['pralokita']?.guidedMode).toBe(false)
+      expect(useSessionStore.getState().patternOverrides['nimilita']?.guidedMode).toBe(false)
     })
 
     it('does not leak settings between patterns', () => {
-      // Set pralokita to speed 2, sound on
+      // Set nimilita to speed 2, sound on
       useSessionStore.getState().setSpeed(2)
       useSessionStore.getState().toggleSound()
 
@@ -116,8 +115,8 @@ describe('useSessionStore', () => {
       // Modify sama
       useSessionStore.getState().setSpeed(0.5)
 
-      // Back to pralokita: should have its saved settings
-      useSessionStore.getState().selectPattern(pralokita)
+      // Back to nimilita: should have its saved settings
+      useSessionStore.getState().selectPattern(nimilita)
       expect(useSessionStore.getState().speed).toBe(2)
       expect(useSessionStore.getState().soundEnabled).toBe(true)
     })
@@ -131,7 +130,7 @@ describe('useSessionStore', () => {
 
     it('saves sessionDuration 0 as per-pattern override', () => {
       useSessionStore.getState().setSessionDuration(0)
-      expect(useSessionStore.getState().patternOverrides['pralokita']?.sessionDuration).toBe(0)
+      expect(useSessionStore.getState().patternOverrides['nimilita']?.sessionDuration).toBe(0)
     })
 
     it('restores stopwatch mode on pattern switch', () => {
@@ -139,7 +138,7 @@ describe('useSessionStore', () => {
       useSessionStore.getState().selectPattern(sama)
       expect(useSessionStore.getState().sessionDuration).toBe(sama.defaultSessionDuration)
 
-      useSessionStore.getState().selectPattern(pralokita)
+      useSessionStore.getState().selectPattern(nimilita)
       expect(useSessionStore.getState().sessionDuration).toBe(0)
     })
 
@@ -283,7 +282,7 @@ describe('useSessionStore', () => {
     it('saves eye tracking per pattern', () => {
       useSessionStore.getState().setEyeTracking(true)
       expect(useSessionStore.getState().eyeTrackingEnabled).toBe(true)
-      expect(useSessionStore.getState().patternOverrides['pralokita']?.eyeTrackingEnabled).toBe(true)
+      expect(useSessionStore.getState().patternOverrides['nimilita']?.eyeTrackingEnabled).toBe(true)
     })
 
     it('restores eye tracking on pattern switch', () => {
@@ -291,7 +290,7 @@ describe('useSessionStore', () => {
       useSessionStore.getState().selectPattern(sama)
       expect(useSessionStore.getState().eyeTrackingEnabled).toBe(false) // default
 
-      useSessionStore.getState().selectPattern(pralokita)
+      useSessionStore.getState().selectPattern(nimilita)
       expect(useSessionStore.getState().eyeTrackingEnabled).toBe(true) // restored
     })
 
@@ -385,20 +384,20 @@ describe('useSessionStore', () => {
 
   describe('background pattern per pattern', () => {
     it('defaults to pattern defaultBackground', () => {
-      expect(useSessionStore.getState().backgroundPattern).toBe(pralokita.defaultBackground)
-      expect(useSessionStore.getState().backgroundRotation).toBe(pralokita.defaultBackgroundRotation)
+      expect(useSessionStore.getState().backgroundPattern).toBe(nimilita.defaultBackground)
+      expect(useSessionStore.getState().backgroundRotation).toBe(nimilita.defaultBackgroundRotation)
     })
 
     it('saves background per pattern', () => {
       useSessionStore.getState().setBackgroundPattern('zen')
       expect(useSessionStore.getState().backgroundPattern).toBe('zen')
-      expect(useSessionStore.getState().patternOverrides['pralokita']?.backgroundPattern).toBe('zen')
+      expect(useSessionStore.getState().patternOverrides['nimilita']?.backgroundPattern).toBe('zen')
     })
 
     it('saves rotation per pattern', () => {
       useSessionStore.getState().setBackgroundRotation('ccw')
       expect(useSessionStore.getState().backgroundRotation).toBe('ccw')
-      expect(useSessionStore.getState().patternOverrides['pralokita']?.backgroundRotation).toBe('ccw')
+      expect(useSessionStore.getState().patternOverrides['nimilita']?.backgroundRotation).toBe('ccw')
     })
 
     it('restores background on pattern switch', () => {
@@ -409,7 +408,7 @@ describe('useSessionStore', () => {
       expect(useSessionStore.getState().backgroundPattern).toBe(sama.defaultBackground)
       expect(useSessionStore.getState().backgroundRotation).toBe(sama.defaultBackgroundRotation)
 
-      useSessionStore.getState().selectPattern(pralokita)
+      useSessionStore.getState().selectPattern(nimilita)
       expect(useSessionStore.getState().backgroundPattern).toBe('fibonacci')
       expect(useSessionStore.getState().backgroundRotation).toBe('ccw')
     })
