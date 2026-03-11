@@ -143,10 +143,6 @@ export function drawMoodFlame(
     ctx.fill()
   }
 
-  // ── Wick ──
-  ctx.fillStyle = '#2a1a0a'
-  ctx.fillRect(x - 1.5 * scale, baseY, 3 * scale, 10 * scale)
-
   // ── Base glow (warm light pool under flame) ──
   const baseGlow = ctx.createRadialGradient(x, baseY, 0, x, baseY, 35 * scale)
   baseGlow.addColorStop(0, 'rgba(255,160,50,0.14)')

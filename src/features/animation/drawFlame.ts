@@ -98,10 +98,6 @@ export function drawFlame(
     ctx.fill()
   }
 
-  // ── Wick ──
-  ctx.fillStyle = '#2a1a0a'
-  ctx.fillRect(x - 1.5 * scale, baseY, 3 * scale, 12 * scale)
-
   // ── Base glow (warm light pool under flame) ──
   const glow = ctx.createRadialGradient(x, baseY, 0, x, baseY, 60 * scale)
   glow.addColorStop(0, 'rgba(255,160,50,0.15)')
