@@ -49,21 +49,19 @@ export function PatternCard({ pattern, isSelected, onSelect, onInfo }: PatternCa
         i
       </span>
 
-      {/* Category + Devanagari */}
-      <div className="flex items-baseline gap-2">
+      {/* Category + Devanagari + Name */}
+      <div className="pr-8">
         <span className={`font-heading text-[10px] tracking-widest uppercase ${categoryColors[pattern.category]}`}>
           {categoryLabel}
         </span>
         {pattern.nameDevanagari && (
-          <span className="font-devanagari text-xs text-gold">
+          <div className="mt-0.5 truncate font-devanagari text-xs text-gold">
             {pattern.nameDevanagari}
-          </span>
+          </div>
         )}
-      </div>
-
-      {/* Name */}
-      <div className="mt-1.5 font-heading text-base font-semibold text-text-bright">
-        {patternT.name}
+        <div className="mt-1.5 font-heading text-base font-semibold text-text-bright">
+          {patternT.name}
+        </div>
       </div>
 
       {/* Description */}
