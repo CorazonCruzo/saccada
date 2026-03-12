@@ -304,7 +304,7 @@ export function SettingsPanel({ open, onOpenChange, onStart }: SettingsPanelProp
             />
 
             {/* Eye Tracking — desktop only, hidden on mobile */}
-            <div className="hidden sm:contents">
+            <div className="hidden [@media(hover:hover)]:contents">
               <ToggleRow
                 label={t.sessionSettings.eyeTracking}
                 icon={'\u25CE'}

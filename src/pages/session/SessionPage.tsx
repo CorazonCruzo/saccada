@@ -544,7 +544,7 @@ export default function SessionPage() {
 
       {/* Keyboard hints */}
       {hudVisible && (
-        <div className="absolute bottom-6 right-4 hidden rounded-md bg-bg-surface/60 px-3 py-1.5 font-heading text-xs tracking-wide text-text-muted backdrop-blur-sm sm:block">
+        <div className="pointer-events-none absolute bottom-6 right-4 hidden rounded-md bg-bg-surface/60 px-3 py-1.5 font-heading text-xs tracking-wide text-text-muted backdrop-blur-sm [@media(hover:hover)]:block">
           {t.session.keyHints}
         </div>
       )}
