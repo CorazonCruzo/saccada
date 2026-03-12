@@ -29,17 +29,19 @@ export interface PatternSettings {
   eyeTrackingEnabled: boolean
   backgroundPattern: BackgroundPatternId
   backgroundRotation: BackgroundRotation
+  sensitivityDismissed: boolean
 }
 
 const DEFAULT_SETTINGS: Omit<PatternSettings, 'sessionDuration'> = {
   speed: 1,
   volume: 40,
-  soundEnabled: false,
+  soundEnabled: true,
   hapticEnabled: false,
   guidedMode: false,
   eyeTrackingEnabled: false,
   backgroundPattern: 'mandala',
   backgroundRotation: 'cw',
+  sensitivityDismissed: false,
 }
 
 interface SessionStore {
@@ -72,6 +74,8 @@ interface SessionStore {
   setBackgroundPattern: (v: BackgroundPatternId) => void
   backgroundRotation: BackgroundRotation
   setBackgroundRotation: (v: BackgroundRotation) => void
+  sensitivityDismissed: boolean
+  setSensitivityDismissed: (v: boolean) => void
 
   // Per-pattern settings storage
   patternOverrides: Record<string, Partial<PatternSettings>>
@@ -126,6 +130,7 @@ function loadSettings(
     eyeTrackingEnabled: po.eyeTrackingEnabled ?? DEFAULT_SETTINGS.eyeTrackingEnabled,
     backgroundPattern: po.backgroundPattern ?? pattern.defaultBackground,
     backgroundRotation: po.backgroundRotation ?? pattern.defaultBackgroundRotation,
+    sensitivityDismissed: po.sensitivityDismissed ?? DEFAULT_SETTINGS.sensitivityDismissed,
   }
 }
 
@@ -214,6 +219,12 @@ export const useSessionStore = create<SessionStore>()(
       setBackgroundRotation: (backgroundRotation) => set({
         backgroundRotation,
         ...saveOverride(get, 'backgroundRotation', backgroundRotation),
+      }),
+
+      sensitivityDismissed: false,
+      setSensitivityDismissed: (sensitivityDismissed) => set({
+        sensitivityDismissed,
+        ...saveOverride(get, 'sensitivityDismissed', sensitivityDismissed),
       }),
 
       patternOverrides: {},

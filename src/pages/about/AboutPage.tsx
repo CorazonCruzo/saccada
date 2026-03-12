@@ -19,7 +19,7 @@ export default function AboutPage() {
           </h1>
           <button
             onClick={() => navigate('/')}
-            className="cursor-pointer font-body text-sm font-light text-text-dim transition-colors hover:text-text-muted"
+            className="cursor-pointer font-heading text-base font-semibold tracking-wide text-text-muted transition-colors hover:text-text-bright"
           >
             {t.common.back}
           </button>

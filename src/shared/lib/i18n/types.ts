@@ -17,6 +17,7 @@ export interface PatternTranslation {
   description: string
   instruction: string
   effect: string
+  soundProfile: string
   origins: string
   benefits: string[]
   phases: (string | null)[]
@@ -73,6 +74,24 @@ export interface Translation {
     newSession: string
     showGazeMap: string
     hideGazeMap: string
+  }
+  preSession: {
+    start: string
+    howTo: string
+    effects: string
+    recommended: string
+    advancedSettings: string
+    learnMore: string
+    soundProfile: string
+    sensitivityWarning: string
+    sensitivityDetails: string
+    dontShowAgain: string
+    reflectionQuestion: {
+      calming: string
+      activating: string
+      focusing: string
+      processing: string
+    }
   }
   sessionSettings: {
     title: string

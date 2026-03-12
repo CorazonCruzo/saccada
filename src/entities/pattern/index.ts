@@ -11,6 +11,7 @@ export type {
   BinduColorToken,
   BackgroundPatternId,
   BackgroundRotation,
+  SessionType,
 } from './types'
 
 export { allBackgroundPatterns, rotatableBackgrounds } from './types'

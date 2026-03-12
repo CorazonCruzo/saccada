@@ -10,7 +10,7 @@ beforeEach(() => {
     sessionDuration: nimilita.defaultSessionDuration,
     speed: 1,
     volume: 40,
-    soundEnabled: false,
+    soundEnabled: true,
     hapticEnabled: false,
     guidedMode: false,
     eyeTrackingEnabled: false,
@@ -55,7 +55,7 @@ describe('useSessionStore', () => {
       const state = useSessionStore.getState()
       expect(state.speed).toBe(1)
       expect(state.volume).toBe(40)
-      expect(state.soundEnabled).toBe(false)
+      expect(state.soundEnabled).toBe(true)
       expect(state.hapticEnabled).toBe(false)
       expect(state.guidedMode).toBe(false)
       expect(state.sessionDuration).toBe(anuvritta.defaultSessionDuration)
@@ -86,8 +86,8 @@ describe('useSessionStore', () => {
 
     it('saves sound toggle per pattern', () => {
       useSessionStore.getState().toggleSound()
-      expect(useSessionStore.getState().soundEnabled).toBe(true)
-      expect(useSessionStore.getState().patternOverrides['nimilita']?.soundEnabled).toBe(true)
+      expect(useSessionStore.getState().soundEnabled).toBe(false)
+      expect(useSessionStore.getState().patternOverrides['nimilita']?.soundEnabled).toBe(false)
     })
 
     it('saves haptic toggle per pattern', () => {
@@ -103,14 +103,14 @@ describe('useSessionStore', () => {
     })
 
     it('does not leak settings between patterns', () => {
-      // Set nimilita to speed 2, sound on
+      // Set nimilita to speed 2, sound off
       useSessionStore.getState().setSpeed(2)
-      useSessionStore.getState().toggleSound()
+      useSessionStore.getState().toggleSound() // true -> false
 
       // Switch to sama: should have defaults
       useSessionStore.getState().selectPattern(sama)
       expect(useSessionStore.getState().speed).toBe(1)
-      expect(useSessionStore.getState().soundEnabled).toBe(false)
+      expect(useSessionStore.getState().soundEnabled).toBe(true) // default
 
       // Modify sama
       useSessionStore.getState().setSpeed(0.5)
@@ -118,7 +118,7 @@ describe('useSessionStore', () => {
       // Back to nimilita: should have its saved settings
       useSessionStore.getState().selectPattern(nimilita)
       expect(useSessionStore.getState().speed).toBe(2)
-      expect(useSessionStore.getState().soundEnabled).toBe(true)
+      expect(useSessionStore.getState().soundEnabled).toBe(false) // saved override
     })
   })
 

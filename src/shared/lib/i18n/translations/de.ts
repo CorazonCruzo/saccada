@@ -86,6 +86,25 @@ export const de: Translation = {
     hideGazeMap: 'Heatmap ausblenden',
   },
 
+  preSession: {
+    start: 'Starten',
+    howTo: 'So wird ge\u00FCbt',
+    effects: 'Was Sie erwartet',
+    recommended: 'Empfohlen',
+    advancedSettings: 'Erweiterte Einstellungen',
+    learnMore: 'Mehr über dieses Muster',
+    soundProfile: 'Klangprofil',
+    sensitivityWarning: 'Hinweis zur Empfindlichkeit',
+    sensitivityDetails: 'Bei Epilepsie, hoher Empfindlichkeit gegen\u00FCber visuellen Reizen oder Unwohlsein k\u00F6nnen Sie die Hintergrundanimation deaktivieren, die Geschwindigkeit verringern oder den Ton in den erweiterten Einstellungen ausschalten.',
+    dontShowAgain: 'F\u00FCr dieses Muster nicht mehr anzeigen',
+    reflectionQuestion: {
+      calming: 'Haben Sie Entspannung gespürt?',
+      activating: 'Haben Sie sich energetisiert gefühlt?',
+      focusing: 'Haben Sie erhöhte Konzentration gespürt?',
+      processing: 'Haben Sie eine emotionale Veränderung gespürt?',
+    },
+  },
+
   sessionSettings: {
     title: 'Sitzungseinstellungen',
     timerMode: 'Timer',
@@ -330,6 +349,7 @@ export const de: Translation = {
       description: 'Ruhiger gerader Blick. Sanfte Fixation f\u00FCr Konzentration und Ruhe.',
       instruction: 'Setzen Sie sich bequem hin. Blicken Sie auf den leuchtenden Punkt in der Bildschirmmitte. Lassen Sie das Blinzeln seltener werden, erzwingen Sie es aber nicht. Halten Sie den Kopf still. Atmen Sie langsam und gleichm\u00E4\u00DFig. Wenn die Aufmerksamkeit abschweift, lenken Sie den Blick sanft zum Punkt zur\u00FCck.',
       effect: 'Beruhigung des Gedankenflusses, erh\u00F6hte Konzentration, Gef\u00FChl der Zentriertheit. Nach der Sitzung ist eine kurzzeitig erweiterte Wahrnehmung m\u00F6glich.',
+      soundProfile: '196 Hz (G3) \u00B7 Ambient-Drone mit harmonischen Intervallen \u00B7 Klangschale alle 35 s markiert die Zeit',
       origins: 'Im Natya Shastra wird Sama als der Blick beschrieben, der zu Beginn eines Tanzes und zur Darstellung von Gottheiten verwendet wird. Eine grundlegende Blickfixations\u00FCbung, verwandt mit Trataka aus yogischen Texten.',
       benefits: ['Konzentration', 'Ruhe', 'Geistige Klarheit', 'Erdung'],
       phases: [
@@ -345,6 +365,7 @@ export const de: Translation = {
       description: 'Weiter kreisf\u00F6rmiger Blick. Aktiviert peripheres Sehen und Gleichgewichtssystem.',
       instruction: 'Folgen Sie dem Punkt mit den Augen auf seiner Kreisbahn. Halten Sie den Kopf still: nur die Augen bewegen sich. Achten Sie auf flie\u00DFende Bewegungen ohne Ruckeln. Bemerken Sie, was mit Ihrem peripheren Sehen geschieht.',
       effect: 'Erweiterung des Wahrnehmungsfeldes, Reduktion des Tunnelblicks (typisch bei Angst). Sanfte Aktivierung des Gleichgewichtssystems. Ein Gef\u00FChl, als \u00F6ffne sich der Raum um Sie herum.',
+      soundProfile: '396 Hz \u00B7 rhythmische Pulsation bei 60 BPM \u00B7 synchronisiert mit der Kreisbewegung',
       origins: 'Alokita wird im Natya Shastra als weiter, umfassender Blick beschrieben. Im Tanz dr\u00FCckt er \u00DCberraschung und Raumerkundung aus. Kreisf\u00F6rmige Augenbewegungen aktivieren alle sechs Augenmuskeln.',
       benefits: ['Peripheres Sehen', 'Raumwahrnehmung', 'Angstreduktion', 'Vestibul\u00E4re Aktivierung'],
       phases: [
@@ -361,6 +382,7 @@ export const de: Translation = {
       description: 'Sanfter Seitenblick. Bilaterale Stimulation mit kleiner Amplitude f\u00FCr Anf\u00E4nger.',
       instruction: 'Der Punkt bewegt sich mit kleiner Amplitude hin und her. Folgen Sie mit den Augen, ohne den Kopf zu drehen. Eine sanfte Version der bilateralen Stimulation \u2014 gut f\u00FCr den Einstieg.',
       effect: 'Sanfte Angstreduktion. Weniger intensiv als volle bilaterale Stimulation. Geeignet f\u00FCr den Einstieg oder f\u00FCr Tage, an denen volle Amplitude zu viel ist.',
+      soundProfile: '396 Hz \u00B7 bilaterales Panning synchron mit der Punktbewegung \u00B7 Kopfh\u00F6rer empfohlen',
       origins: 'Sachi ist der Seitenblick im indischen Tanz, einer der ausdrucksst\u00E4rksten. Im EMDR-Kontext: verk\u00FCrzte Sakkaden, ein sanfterer Stimulationsmodus.',
       benefits: ['Sanfte Angstreduktion', 'Anf\u00E4ngerfreundlich', 'Emotionale Verarbeitung'],
       phases: [
@@ -378,6 +400,7 @@ export const de: Translation = {
       description: 'Seitliche Augenbewegung. Kern der bilateralen Stimulation, identisch mit EMDR.',
       instruction: 'Hauptmodus der bilateralen Stimulation. Der Punkt bewegt sich von Seite zu Seite: folgen Sie mit den Augen, ohne den Kopf zu drehen. In den Pausen beobachten Sie einfach, welche Gedanken, Bilder oder Empfindungen auftauchen. Nicht analysieren, nur beobachten.',
       effect: 'Reduktion der Intensit\u00E4t \u00E4ngstlicher Gedanken und der emotionalen Ladung von Erinnerungen. Ein Gef\u00FChl der "Entladung". Eine Metaanalyse von 20 Studien best\u00E4tigt sofortige Reduktion der Lebhaftigkeit \u00E4ngstlicher Bilder.',
+      soundProfile: '285 Hz (C#4/D\u266D4) \u00B7 bilaterales Panning synchron mit der Punktbewegung \u00B7 leichte Verstimmung f\u00FCr W\u00E4rme \u00B7 Kopfh\u00F6rer empfohlen',
       origins: 'Pralokita: seitliche Augenbewegungen aus dem Natya Shastra. Identisch mit bilateraler Stimulation in EMDR (Shapiro, 1989). Drei unabh\u00E4ngige Entdeckungen desselben Mechanismus.',
       benefits: ['Angstreduktion', 'Traumaverarbeitung', 'Emotionale Regulation', 'Ged\u00E4chtnisrekonsolidierung'],
       phases: [
@@ -397,6 +420,7 @@ export const de: Translation = {
       description: 'Fixation mit halbgeschlossenen Augen. Tiefe Entspannung und parasympathische Aktivierung.',
       instruction: 'Senken Sie sanft die Augenlider: nicht ganz, sondern halb. Richten Sie einen weichen, unscharfen Blick auf den schwach leuchtenden Punkt. Versuchen Sie nicht, scharf zu sehen. Atmen Sie langsam. Lassen Sie die Aufmerksamkeit nach innen wandern.',
       effect: 'Tiefe Entspannung, Aktivierung des Parasympathikus. Hilfreich nach intensiver Arbeit. Senkt Herzfrequenz, entspannt Gesichts- und Kiefermuskulatur.',
+      soundProfile: '130.81 Hz (C3) \u00B7 geschichteter Drone mit Quinte und Oktave \u00B7 dezentes Rauschen \u00B7 langsames Lautst\u00E4rke-Atmen',
       origins: 'Nimilita bedeutet "halbgeschlossene Augen". Im Natya Shastra: ein zum Herzen gerichteter Blick. F\u00FCr Meditation, Gebet, g\u00F6ttlichen Frieden. Reduzierte visuelle Stimulation aktiviert den Parasympathikus.',
       benefits: ['Tiefe Entspannung', 'Parasympathische Aktivierung', 'Erholung nach Verarbeitung', 'Innerer Fokus'],
       phases: [
@@ -412,6 +436,7 @@ export const de: Translation = {
       description: 'Blick nach oben. Vertikale Bewegung mit Betonung oben f\u00FCr Visualisierung.',
       instruction: 'Der Punkt bewegt sich vertikal mit Betonung nach oben. Folgen Sie mit den Augen. Dieses Muster ist mit Visualisierung und Vorstellungskraft verbunden. Lassen Sie Bilder frei kommen.',
       effect: 'Aktivierung von visuellem Ged\u00E4chtnis und Vorstellungskraft. Manche berichten von spontan auftauchenden Bildern und Erinnerungen. Sanfte Stimulation, gut in Kombination mit positiven Erinnerungen.',
+      soundProfile: '432 Hz (A4) \u00B7 rhythmische Pulsation bei 50 BPM \u00B7 leichte Tonh\u00F6henverschiebung bei jedem Puls \u00B7 synchronisiert mit vertikaler Bewegung',
       origins: 'Ullokita ist der Aufblick im Natya Shastra. F\u00FCr himmlische Wesen, Gebet, Erinnerung. Vertikale Augenbewegungen aktivieren die oberen und unteren geraden Augenmuskeln.',
       benefits: ['Visualisierung', 'Ged\u00E4chtniszugang', 'Vorstellungskraft', 'Aufbau positiver Ressourcen'],
       phases: [
@@ -428,6 +453,7 @@ export const de: Translation = {
       description: 'Schnelle vertikale Sakkaden. REM-Schlaf-Simulation zur Ged\u00E4chtnisverarbeitung.',
       instruction: 'Ein schnelles Muster: der Punkt bewegt sich rasch auf und ab. Versuchen Sie mitzuhalten, auch wenn es nicht perfekt ist. In den Pausen: Augen entspannen. Dieser Modus simuliert die schnellen Augenbewegungen des REM-Schlafs.',
       effect: 'Intensive Stimulation \u00E4hnlich der REM-Phase. Kann ein Gef\u00FChl der "Verarbeitung" erzeugen. Nach der Sitzung: leichte Augenm\u00FCdigkeit und ein Gef\u00FChl der Klarheit.',
+      soundProfile: 'Binaurale Beats: 200 Hz + 206 Hz \u00B7 6 Hz Theta-Differenz \u00B7 Kopfh\u00F6rer erforderlich f\u00FCr binauralen Effekt',
       origins: 'Anuvritta: schnelle vertikale Sakkaden aus dem Natya Shastra. \u00C4hneln den Augenbewegungen im REM-Schlaf, wenn das Gehirn Erinnerungen konsolidiert. Stickgold (2002) hypothetisierte, dass EMDR diesen Mechanismus im Wachzustand reproduziert.',
       benefits: ['REM-Simulation', 'Ged\u00E4chtnisverarbeitung', 'Emotionale Entladung', 'Kognitive Klarheit'],
       phases: [
@@ -447,6 +473,7 @@ export const de: Translation = {
       description: 'Blick nach unten. Erdende vertikale Bewegung f\u00FCr K\u00F6rperbewusstsein.',
       instruction: 'Der Punkt bewegt sich vertikal mit Betonung nach unten. Folgen Sie mit den Augen. Achten Sie auf K\u00F6rperempfindungen: Schwere, W\u00E4rme, Kontakt mit der Oberfl\u00E4che. Dieses Muster hilft bei der Erdung.',
       effect: 'Erdungsgef\u00FChl, R\u00FCckkehr in den K\u00F6rper. Reduziert Depersonalisation und Dissoziation. Hilft, von "im Kopf" zu K\u00F6rperbewusstsein zu wechseln. Gut nach intensiver emotionaler Arbeit.',
+      soundProfile: '196 Hz (G3) \u00B7 rhythmische Pulsation bei 45 BPM \u00B7 Sub-Bass-Schicht bei 65 Hz f\u00FCr Erdungstiefe',
       origins: 'Avalokita: der absteigende Blick aus dem Natya Shastra. Dr\u00FCckt Demut, Kontemplation, Erdverbundenheit aus. In der somatischen Psychotherapie hilft der Abw\u00E4rtsblick, die Aufmerksamkeit von Gedanken auf K\u00F6rperempfindungen zu lenken.',
       benefits: ['Erdung', 'K\u00F6rperbewusstsein', 'Reduktion von Dissoziation', 'Somatische Verarbeitung'],
       phases: [
@@ -463,6 +490,7 @@ export const de: Translation = {
       description: 'Flammenbetrachtung. Konzentrationstraining mit Nachbildbeobachtung.',
       instruction: 'Klassische Blickfixation auf die Flamme. Starren Sie ohne zu blinzeln, bis die Augen tr\u00E4nen \u2014 das ist normal und sogar n\u00FCtzlich. Dann schlie\u00DFen Sie die Augen und beobachten das Nachbild: ein farbiger Fleck hinter den geschlossenen Lidern. Nicht festhalten, nur beobachten.',
       effect: 'Tiefe Konzentration, Reinigung des Sehapparats (Tr\u00E4nen befeuchten). Nachbildbeobachtung ist nat\u00FCrliche Visualisierung ohne Anstrengung. Studien zeigen verbesserte Aufmerksamkeit, reduzierte Angst, bessere Schlafqualit\u00E4t.',
+      soundProfile: '164.81 Hz (E3) \u00B7 warmer Drone mit gro\u00DFer Terz und Quinte \u00B7 dezentes Rauschen \u00B7 sehr langsame Tonh\u00F6hendrift',
       origins: 'Trataka wird in der Hatha Yoga Pradipika als eine der sechs Shatkarmas (Reinigungspraktiken) beschrieben. Indische T\u00E4nzer nutzen sie f\u00FCr einen festen, ausdrucksstarken Blick. Die Flamme wird prozedural auf Canvas generiert.',
       benefits: ['Konzentration', 'Augengesundheit', 'Angstreduktion', 'Schlafqualit\u00E4t', 'Nat\u00FCrliche Visualisierung'],
       phases: [
@@ -480,6 +508,7 @@ export const de: Translation = {
       description: 'Standard-EMDR bilaterale Stimulation. Die am besten erforschte Form.',
       instruction: 'Standard-EMDR-Stimulation. Der Punkt bewegt sich von Seite zu Seite. Folgen Sie mit den Augen. In den Pausen: Gedanken, Empfindungen, Bilder beobachten. Nicht kontrollieren: einfach beobachten. Bei zu hoher Intensit\u00E4t: Pause dr\u00FCcken.',
       effect: 'Reduktion der emotionalen Ladung \u00E4ngstlicher Gedanken und Erinnerungen. Standard-EMDR-Protokoll: die am besten erforschte Form bilateraler Stimulation.',
+      soundProfile: '396 Hz \u00B7 bilaterales Panning synchron mit der Punktbewegung \u00B7 Kopfh\u00F6rer empfohlen',
       origins: 'EMDR (Eye Movement Desensitization and Reprocessing) wurde 1989 von Francine Shapiro entwickelt. Von der WHO als wirksame Behandlung f\u00FCr PTBS anerkannt.',
       benefits: ['Traumaverarbeitung', 'Angstreduktion', 'Emotionale Regulation', 'PTBS-Symptomreduktion'],
       phases: [
@@ -501,6 +530,7 @@ export const de: Translation = {
       description: 'Diagonale bilaterale Stimulation. Aktiviert mehr Augenmuskeln.',
       instruction: 'Diagonale Variante der bilateralen Stimulation. Der Punkt bewegt sich von links unten nach rechts oben und zur\u00FCck. Manche finden diese Variante effektiver als horizontal.',
       effect: '\u00C4hnlich wie Standard-EMDR, aber mit zus\u00E4tzlicher vertikaler Komponente. Aktiviert mehr Augenmuskeln. Einige Therapeuten verwenden diagonale Sets, wenn horizontale nicht ausreichend wirken.',
+      soundProfile: '396 Hz \u00B7 bilaterales Panning synchron mit der diagonalen Punktbewegung \u00B7 Kopfh\u00F6rer empfohlen',
       origins: 'Eine Variation des Standard-EMDR-Protokolls. Diagonale Bewegungen werden von einigen EMDR-Therapeuten als Alternative zu horizontalen eingesetzt.',
       benefits: ['Traumaverarbeitung', 'Alternatives bilaterales Muster', 'Volle okulomotorische Aktivierung'],
       phases: [
@@ -518,6 +548,7 @@ export const de: Translation = {
       description: 'Langsame Acht mit binauralen Theta-Beats. Entspannung vor dem Schlafen.',
       instruction: 'Ein langsames, sanftes Muster, das Augenbewegungen im REM-Schlaf simuliert. Der Punkt bewegt sich in einer Acht. Sie m\u00FCssen nicht perfekt folgen: lassen Sie die Augen entspannen. F\u00FCr die Nutzung vor dem Schlafen gedacht.',
       effect: 'Entspannung, Schlafvorbereitung. Binaurale Theta-Beats (4 Hz) helfen dem Gehirn in den Vor-Schlaf-Zustand. Die langsame Acht beruhigt ohne zu stimulieren.',
+      soundProfile: 'Binaurale Beats: 180 Hz + 184 Hz \u00B7 4 Hz Theta-Differenz \u00B7 langsamer, einlullender Ton \u00B7 Kopfh\u00F6rer erforderlich',
       origins: 'Inspiriert von REM-Schlafforschung. Stickgolds Hypothese: Augenbewegungen im REM-Schlaf helfen dem Gehirn, emotional geladene Erinnerungen ins Langzeitged\u00E4chtnis zu \u00FCbertragen. Dieser Modus erzeugt ein \u00E4hnliches Muster.',
       benefits: ['Schlafvorbereitung', 'Entspannung', 'Ged\u00E4chtniskonsolidierung', 'Stressreduktion'],
       phases: [

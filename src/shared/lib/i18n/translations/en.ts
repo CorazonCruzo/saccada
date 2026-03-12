@@ -86,6 +86,25 @@ export const en: Translation = {
     hideGazeMap: 'Hide gaze map',
   },
 
+  preSession: {
+    start: 'Start',
+    howTo: 'How to practice',
+    effects: 'What to expect',
+    recommended: 'Recommended',
+    advancedSettings: 'Advanced settings',
+    learnMore: 'Learn more about this pattern',
+    soundProfile: 'Sound profile',
+    sensitivityWarning: 'Sensitivity note',
+    sensitivityDetails: 'If you have epilepsy, are highly sensitive to visual stimulation, or experience discomfort, you can turn off the background animation, reduce speed, or disable sound in advanced settings.',
+    dontShowAgain: 'Don\'t show for this pattern',
+    reflectionQuestion: {
+      calming: 'Did you feel relaxation?',
+      activating: 'Did you feel energized?',
+      focusing: 'Did you feel increased focus?',
+      processing: 'Did you feel an emotional shift?',
+    },
+  },
+
   sessionSettings: {
     title: 'Session Settings',
     timerMode: 'Timer',
@@ -326,6 +345,7 @@ export const en: Translation = {
       description: 'Steady forward gaze. Soft fixation for concentration and calm.',
       instruction: 'Sit comfortably. Gaze at the glowing dot in the center of the screen without looking away. Let blinking slow down naturally, but don\'t force yourself to hold it. Keep your head still. Breathe slowly and evenly. When attention wanders, gently bring it back to the dot.',
       effect: 'Calming the stream of thoughts, increased concentration, a sense of centeredness. After the session, you may briefly experience expanded perception.',
+      soundProfile: '196 Hz (G3) \u00B7 ambient drone with harmonic intervals \u00B7 singing bowl every 35s marks time without distraction',
       origins: 'In Natya Shastra, Sama is described as the gaze used at the beginning of a dance and to portray deities. It is a foundational gaze fixation practice, closely related to Trataka from yogic texts.',
       benefits: ['concentration', 'calm', 'mental clarity', 'grounding'],
       phases: [
@@ -341,6 +361,7 @@ export const en: Translation = {
       description: 'Wide circular gaze. Activates peripheral vision and vestibular system.',
       instruction: 'Follow the dot with your eyes as it moves in a circle. Keep your head still: only your eyes move. Try to make the movement smooth, without jerks. Notice what happens with your peripheral vision.',
       effect: 'Expansion of the field of perception, reduction of tunnel vision (characteristic of anxiety). Gentle activation of the vestibular system. A feeling of the space around you "opening up."',
+      soundProfile: '396 Hz \u00B7 rhythmic pulsing at 60 BPM \u00B7 synced with circular movement',
       origins: 'Alokita is described in Natya Shastra as a wide, sweeping gaze. In dance, it is used to express surprise and surveying the space. Circular eye movements engage all six eye muscles.',
       benefits: ['peripheral vision', 'spatial awareness', 'anxiety reduction', 'vestibular activation'],
       phases: [
@@ -357,6 +378,7 @@ export const en: Translation = {
       description: 'Gentle side glance. Short-amplitude bilateral stimulation for beginners.',
       instruction: 'The dot moves side to side with a small amplitude. Follow it with your eyes without turning your head. This is a gentle version of bilateral stimulation: a good starting point.',
       effect: 'Gentle anxiety reduction. Less intense than full bilateral stimulation. Suitable for first exposure to the practice or for days when full amplitude feels excessive.',
+      soundProfile: '396 Hz \u00B7 bilateral panning synced with dot movement \u00B7 headphones recommended',
       origins: 'Sachi is the side glance in Indian dance, one of the most expressive. Used to convey subtle emotions. In EMDR context: shortened saccades, a gentler stimulation mode.',
       benefits: ['gentle anxiety reduction', 'beginner-friendly', 'emotional processing'],
       phases: [
@@ -374,6 +396,7 @@ export const en: Translation = {
       description: 'Side to side eye movement. Core bilateral stimulation, identical to EMDR.',
       instruction: 'This is the core bilateral stimulation mode. The dot moves side to side: follow it with your eyes without turning your head. During pauses, just notice what thoughts, images, or sensations come up. Don\'t analyze, just observe.',
       effect: 'Reduction in the intensity of anxious thoughts and emotional charge of memories. A feeling of "discharge." A meta-analysis of 20 studies confirms immediate reduction in vividness of anxious images and negative emotions.',
+      soundProfile: '285 Hz (C#4/D\u266D4) \u00B7 bilateral panning synced with dot movement \u00B7 slight detuning for warmth \u00B7 headphones recommended',
       origins: 'Pralokita: lateral eye movements from Natya Shastra. Identical to bilateral stimulation in EMDR (Shapiro, 1989). Three independent discoveries of the same mechanism: Indian dance, REM sleep neuroscience, clinical psychotherapy.',
       benefits: ['anxiety reduction', 'trauma processing', 'emotional regulation', 'memory reconsolidation'],
       phases: [
@@ -393,6 +416,7 @@ export const en: Translation = {
       description: 'Half-closed eyes fixation. Deep relaxation and parasympathetic activation.',
       instruction: 'Gently half-close your eyelids: not completely, but halfway. Direct a soft, unfocused gaze at the dimly glowing dot. Don\'t try to see clearly. Breathe slowly. Let your attention turn inward.',
       effect: 'Deep relaxation, parasympathetic nervous system activation. Helpful after intense work (e.g., after Pralokita). Reduces heart rate, relaxes facial and jaw muscles.',
+      soundProfile: '130.81 Hz (C3) \u00B7 layered drone with fifth and octave harmonics \u00B7 subtle pink noise bed \u00B7 slow breathing-like volume swell',
       origins: 'Nimilita means "half-closed eyes." In Natya Shastra: a gaze directed toward the heart. Used to portray meditation, prayer, divine peace. Neurophysiologically, reducing visual stimulation activates the parasympathetic system.',
       benefits: ['deep relaxation', 'parasympathetic activation', 'cooldown after processing', 'inner focus'],
       phases: [
@@ -408,6 +432,7 @@ export const en: Translation = {
       description: 'Upward gaze. Vertical movement with upper bias for visualization.',
       instruction: 'The dot moves vertically with an upward emphasis. Follow it with your eyes. This pattern is associated with visualization and imagination. Allow images to come freely.',
       effect: 'Activation of visual memory and imagination. Some people report spontaneous appearance of images and memories. Gentle stimulation that works well when combined with an intention to recall something positive.',
+      soundProfile: '432 Hz (A4) \u00B7 rhythmic pulsing at 50 BPM \u00B7 subtle pitch bend on each pulse \u00B7 synced with vertical movement',
       origins: 'Ullokita is the upward gaze in Natya Shastra. Used to portray celestial beings, prayer, reminiscence. Vertical eye movements engage the superior and inferior rectus muscles.',
       benefits: ['visualization', 'memory access', 'imagination', 'positive resource building'],
       phases: [
@@ -424,6 +449,7 @@ export const en: Translation = {
       description: 'Rapid vertical saccades. REM sleep simulation for memory processing.',
       instruction: 'This is a fast pattern: the dot moves up and down at an accelerated pace. Try to keep up with your eyes, even if not perfectly. During pauses, relax your eyes. This mode simulates the rapid eye movements of REM sleep.',
       effect: 'Intense stimulation resembling REM sleep phase. May cause a feeling of "processing": as if the brain is sorting information. After the session, mild eye fatigue and a sense of clarity are possible.',
+      soundProfile: 'Binaural beats: 200 Hz + 206 Hz \u00B7 6 Hz theta difference \u00B7 headphones required for binaural effect',
       origins: 'Anuvritta: rapid vertical saccades from Natya Shastra. Resembling eye movements during REM sleep, when the brain consolidates memory. Stickgold (2002) hypothesized that EMDR reproduces this mechanism while awake.',
       benefits: ['REM simulation', 'memory processing', 'emotional discharge', 'cognitive clarity'],
       phases: [
@@ -443,6 +469,7 @@ export const en: Translation = {
       description: 'Downward gaze. Grounding vertical movement for body awareness.',
       instruction: 'The dot moves vertically with a downward emphasis. Follow it with your eyes, directing your gaze downward. Pay attention to body sensations: heaviness, warmth, contact with the surface. This pattern helps you ground.',
       effect: 'A feeling of grounding, returning to the body. Reduces depersonalization and dissociation. Helps shift from "the head" to bodily awareness. Good after intense emotional work.',
+      soundProfile: '196 Hz (G3) \u00B7 rhythmic pulsing at 45 BPM \u00B7 sub-bass layer at 65 Hz for grounding depth',
       origins: 'Avalokita: the downward gaze from Natya Shastra. Expresses humility, contemplation, connection with the earth. In somatic psychotherapy, a downward gaze helps shift attention from thoughts to bodily sensations.',
       benefits: ['grounding', 'body awareness', 'dissociation reduction', 'somatic processing'],
       phases: [
@@ -459,6 +486,7 @@ export const en: Translation = {
       description: 'Candle flame gazing. Concentration training with afterimage observation.',
       instruction: 'A classic gaze fixation practice using the flame. Stare without blinking until your eyes begin to water: this is normal and even beneficial. Then close your eyes and observe the afterimage: a colored spot behind your closed eyelids. Don\'t try to hold it, just observe.',
       effect: 'Deep concentration, cleansing of the visual system (tears provide moisture). Observing the afterimage is natural visualization without effort. Studies show improved attention, reduced anxiety, improved sleep quality.',
+      soundProfile: '164.81 Hz (E3) \u00B7 warm drone with major third and fifth harmonics \u00B7 subtle pink noise \u00B7 very slow pitch drift',
       origins: 'Trataka is described in Hatha Yoga Pradipika as one of the six shatkarmas (purification practices). Indian dancers use it to train a steady, expressive gaze. The flame is generated procedurally on Canvas.',
       benefits: ['concentration', 'eye health', 'anxiety reduction', 'sleep quality', 'natural visualization'],
       phases: [
@@ -476,6 +504,7 @@ export const en: Translation = {
       description: 'Standard EMDR bilateral stimulation. Most researched form.',
       instruction: 'Standard EMDR stimulation. The dot moves side to side. Follow it with your eyes. During pauses, notice your thoughts, sensations, images. Don\'t try to control the process: just observe what comes. If it becomes too intense, press pause.',
       effect: 'Reduction of the emotional charge of anxious thoughts and memories. Standard EMDR protocol: the most researched form of bilateral stimulation.',
+      soundProfile: '396 Hz \u00B7 bilateral panning synced with dot movement \u00B7 headphones recommended',
       origins: 'EMDR (Eye Movement Desensitization and Reprocessing) was developed by Francine Shapiro in 1989. Recognized by WHO as an effective treatment for PTSD.',
       benefits: ['trauma processing', 'anxiety reduction', 'emotional regulation', 'PTSD symptom reduction'],
       phases: [
@@ -497,6 +526,7 @@ export const en: Translation = {
       description: 'Diagonal bilateral stimulation. Engages more oculomotor muscles.',
       instruction: 'Diagonal variant of bilateral stimulation. The dot moves from the lower left to the upper right and back. Some find this variant more effective than horizontal.',
       effect: 'Similar to standard EMDR, but with an additional vertical component. Engages more eye muscles. Some therapists use diagonal sets when horizontal ones don\'t produce sufficient effect.',
+      soundProfile: '396 Hz \u00B7 bilateral panning synced with diagonal dot movement \u00B7 headphones recommended',
       origins: 'A variation of the standard EMDR protocol. Diagonal movements are used by some EMDR therapists as an alternative to horizontal ones.',
       benefits: ['trauma processing', 'alternative bilateral pattern', 'full oculomotor activation'],
       phases: [
@@ -514,6 +544,7 @@ export const en: Translation = {
       description: 'Slow figure-8 with binaural theta beats. Pre-sleep relaxation.',
       instruction: 'A slow, smooth pattern that simulates eye movements during REM sleep. The dot moves in a figure-8. You don\'t need to track perfectly: let your eyes relax. This mode is intended for use before sleep.',
       effect: 'Relaxation, preparation for sleep. Binaural theta beats (4 Hz) help the brain transition to a pre-sleep state. The slow figure-8 soothes without stimulation.',
+      soundProfile: 'Binaural beats: 180 Hz + 184 Hz \u00B7 4 Hz theta difference \u00B7 slow, lulling tone \u00B7 headphones required',
       origins: 'Inspired by REM sleep research. Stickgold\'s hypothesis: eye movements during REM sleep help the brain transfer emotionally charged memories to long-term storage. This mode recreates a similar pattern.',
       benefits: ['sleep preparation', 'relaxation', 'memory consolidation', 'stress reduction'],
       phases: [

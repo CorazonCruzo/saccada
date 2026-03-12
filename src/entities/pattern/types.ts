@@ -50,6 +50,8 @@ export interface TrajectoryParams {
   bias?: 'up' | 'down'
 }
 
+export type SessionType = 'calming' | 'activating' | 'focusing' | 'processing'
+
 export interface PatternConfig {
   id: string
   name: string
@@ -58,6 +60,7 @@ export interface PatternConfig {
   description: string
   category: PatternCategory
   binduColor: BinduColorToken
+  sessionType: SessionType
 
   trajectory: TrajectoryType
   trajectoryParams: TrajectoryParams
@@ -65,6 +68,8 @@ export interface PatternConfig {
 
   cycleDuration: number | null
   defaultSessionDuration: number
+  /** Recommended minimum effective duration in ms */
+  recommendedDuration: number
   phases: Phase[]
 
   audioConfig: AudioConfig

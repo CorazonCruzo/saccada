@@ -86,6 +86,25 @@ export const fr: Translation = {
     hideGazeMap: 'Masquer la carte du regard',
   },
 
+  preSession: {
+    start: 'Commencer',
+    howTo: 'Comment pratiquer',
+    effects: 'À quoi s\u2019attendre',
+    recommended: 'Recommandé',
+    advancedSettings: 'Paramètres avancés',
+    learnMore: 'En savoir plus sur ce schéma',
+    soundProfile: 'Profil sonore',
+    sensitivityWarning: 'Note de sensibilité',
+    sensitivityDetails: 'En cas d\u2019\u00E9pilepsie, de forte sensibilit\u00E9 \u00E0 la stimulation visuelle ou d\u2019inconfort, vous pouvez d\u00E9sactiver l\u2019animation de fond, r\u00E9duire la vitesse ou couper le son dans les param\u00E8tres avanc\u00E9s.',
+    dontShowAgain: 'Ne plus afficher pour ce sch\u00E9ma',
+    reflectionQuestion: {
+      calming: 'Avez-vous ressenti de la détente ?',
+      activating: 'Vous êtes-vous senti plus énergique ?',
+      focusing: 'Avez-vous ressenti une meilleure concentration ?',
+      processing: 'Avez-vous ressenti un changement émotionnel ?',
+    },
+  },
+
   sessionSettings: {
     title: 'Param\u00E8tres de session',
     timerMode: 'Minuterie',
@@ -329,6 +348,7 @@ export const fr: Translation = {
       description: 'Regard fixe stable. Fixation douce pour la concentration et le calme.',
       instruction: 'Asseyez-vous confortablement. Regardez le point lumineux au centre de l\u2019\u00E9cran sans d\u00E9tourner le regard. Laissez le clignement devenir rare, sans vous forcer. Gardez la t\u00EAte immobile. Respirez lentement et r\u00E9guli\u00E8rement. Quand l\u2019attention s\u2019\u00E9gare, ramenez-la doucement au point.',
       effect: 'Apaisement du flux de pens\u00E9es, concentration accrue, sentiment de centrage. Apr\u00E8s la session, une perception \u00E9largie peut se manifester bri\u00E8vement.',
+      soundProfile: '196 Hz (G3) \u00b7 drone ambiant avec intervalles harmoniques \u00b7 bol chantant toutes les 35 s marque le temps',
       origins: 'Dans le Natya Shastra, Sama est d\u00E9crit comme le regard utilis\u00E9 au d\u00E9but d\u2019une danse et pour repr\u00E9senter les divinit\u00E9s. C\u2019est une pratique fondamentale de fixation du regard, proche du Trataka des textes yogiques.',
       benefits: ['concentration', 'calme', 'clart\u00E9 mentale', 'ancrage'],
       phases: [
@@ -344,6 +364,7 @@ export const fr: Translation = {
       description: 'Large regard circulaire. Active la vision p\u00E9riph\u00E9rique et le syst\u00E8me vestibulaire.',
       instruction: 'Suivez le point des yeux dans son mouvement circulaire. Gardez la t\u00EAte immobile : seuls les yeux bougent. Cherchez un mouvement fluide, sans \u00E0-coups. Remarquez ce qui se passe avec votre vision p\u00E9riph\u00E9rique.',
       effect: '\u00C9largissement du champ de perception, r\u00E9duction de la vision tunnel (caract\u00E9ristique de l\u2019anxi\u00E9t\u00E9). Activation douce du syst\u00E8me vestibulaire. Sensation d\u2019ouverture de l\u2019espace autour de vous.',
+      soundProfile: '396 Hz \u00b7 pulsation rythmique \u00e0 60 BPM \u00b7 synchronis\u00e9e avec le mouvement circulaire',
       origins: 'Alokita est d\u00E9crit dans le Natya Shastra comme un large regard englobant. Dans la danse, il exprime la surprise et l\u2019exploration de l\u2019espace. Les mouvements circulaires des yeux sollicitent les six muscles oculaires.',
       benefits: ['vision p\u00E9riph\u00E9rique', 'conscience spatiale', 'r\u00E9duction de l\u2019anxi\u00E9t\u00E9', 'activation vestibulaire'],
       phases: [
@@ -360,6 +381,7 @@ export const fr: Translation = {
       description: 'Regard lat\u00E9ral doux. Stimulation bilat\u00E9rale de faible amplitude pour d\u00E9butants.',
       instruction: 'Le point se d\u00E9place de gauche \u00E0 droite avec une petite amplitude. Suivez-le des yeux sans tourner la t\u00EAte. C\u2019est une version douce de la stimulation bilat\u00E9rale \u2014 id\u00E9ale pour commencer.',
       effect: 'R\u00E9duction douce de l\u2019anxi\u00E9t\u00E9. Moins intense que la stimulation bilat\u00E9rale compl\u00E8te. Adapt\u00E9 pour une premi\u00E8re exp\u00E9rience ou les jours o\u00F9 l\u2019amplitude compl\u00E8te semble excessive.',
+      soundProfile: '396 Hz \u00b7 panoramique bilat\u00e9ral synchronis\u00e9 avec le mouvement du point \u00b7 casque recommand\u00e9',
       origins: 'Sachi est le regard lat\u00E9ral dans la danse indienne, l\u2019un des plus expressifs. Utilis\u00E9 pour transmettre des \u00E9motions subtiles. En contexte EMDR : saccades raccourcies, mode de stimulation plus doux.',
       benefits: ['r\u00E9duction douce de l\u2019anxi\u00E9t\u00E9', 'adapt\u00E9 aux d\u00E9butants', 'traitement \u00E9motionnel'],
       phases: [
@@ -377,6 +399,7 @@ export const fr: Translation = {
       description: 'Mouvement oculaire lat\u00E9ral. Stimulation bilat\u00E9rale principale, identique \u00E0 l\u2019EMDR.',
       instruction: 'Mode principal de stimulation bilat\u00E9rale. Le point se d\u00E9place de gauche \u00E0 droite : suivez-le des yeux sans tourner la t\u00EAte. Pendant les pauses, observez simplement les pens\u00E9es, images ou sensations qui surgissent. N\u2019analysez pas, observez.',
       effect: 'R\u00E9duction de l\u2019intensit\u00E9 des pens\u00E9es anxieuses et de la charge \u00E9motionnelle des souvenirs. Sensation de \u00AB d\u00E9charge \u00BB. Une m\u00E9ta-analyse de 20 \u00E9tudes confirme une r\u00E9duction imm\u00E9diate de la vivacit\u00E9 des images anxieuses et des \u00E9motions n\u00E9gatives.',
+      soundProfile: '285 Hz (C#4/D\u266d4) \u00b7 panoramique bilat\u00e9ral synchronis\u00e9 avec le mouvement du point \u00b7 l\u00e9ger d\u00e9saccord pour la chaleur \u00b7 casque recommand\u00e9',
       origins: 'Pralokita : mouvements oculaires lat\u00E9raux du Natya Shastra. Identiques \u00E0 la stimulation bilat\u00E9rale en EMDR (Shapiro, 1989). Trois d\u00E9couvertes ind\u00E9pendantes du m\u00EAme m\u00E9canisme : danse indienne, neurosciences du sommeil paradoxal, psychoth\u00E9rapie clinique.',
       benefits: ['r\u00E9duction de l\u2019anxi\u00E9t\u00E9', 'traitement des traumatismes', 'r\u00E9gulation \u00E9motionnelle', 'reconsolidation de la m\u00E9moire'],
       phases: [
@@ -396,6 +419,7 @@ export const fr: Translation = {
       description: 'Fixation les yeux mi-clos. Relaxation profonde et activation parasympathique.',
       instruction: 'Abaissez doucement les paupi\u00E8res : pas compl\u00E8tement, \u00E0 mi-chemin. Dirigez un regard doux et flou vers le point faiblement lumineux. N\u2019essayez pas de voir nettement. Respirez lentement. Laissez l\u2019attention se tourner vers l\u2019int\u00E9rieur.',
       effect: 'Relaxation profonde, activation du syst\u00E8me nerveux parasympathique. Utile apr\u00E8s un travail intense (par ex. apr\u00E8s Pralokita). R\u00E9duit le rythme cardiaque, d\u00E9tend les muscles du visage et de la m\u00E2choire.',
+      soundProfile: '130.81 Hz (C3) \u00b7 drone multicouche avec quinte et octave \u00b7 bruit rose subtil \u00b7 lent gonflement de volume comme la respiration',
       origins: 'Nimilita signifie \u00AB yeux mi-clos \u00BB. Dans le Natya Shastra : un regard dirig\u00E9 vers le c\u0153ur. Utilis\u00E9 pour repr\u00E9senter la m\u00E9ditation, la pri\u00E8re, la paix divine. R\u00E9duire la stimulation visuelle active le parasympathique.',
       benefits: ['relaxation profonde', 'activation parasympathique', 'r\u00E9cup\u00E9ration apr\u00E8s traitement', 'concentration int\u00E9rieure'],
       phases: [
@@ -411,6 +435,7 @@ export const fr: Translation = {
       description: 'Regard vers le haut. Mouvement vertical avec biais sup\u00E9rieur pour la visualisation.',
       instruction: 'Le point se d\u00E9place verticalement avec une emphase vers le haut. Suivez-le des yeux. Ce sch\u00E9ma est associ\u00E9 \u00E0 la visualisation et \u00E0 l\u2019imagination. Laissez les images venir librement.',
       effect: 'Activation de la m\u00E9moire visuelle et de l\u2019imagination. Certains rapportent l\u2019apparition spontan\u00E9e d\u2019images et de souvenirs. Stimulation douce qui fonctionne bien combin\u00E9e avec l\u2019intention de se rappeler quelque chose de positif.',
+      soundProfile: '432 Hz (A4) \u00b7 pulsation rythmique \u00e0 50 BPM \u00b7 l\u00e9ger glissement de hauteur \u00e0 chaque pulsation \u00b7 synchronis\u00e9e avec le mouvement vertical',
       origins: 'Ullokita est le regard vers le haut dans le Natya Shastra. Utilis\u00E9 pour repr\u00E9senter les \u00EAtres c\u00E9lestes, la pri\u00E8re, la r\u00E9miniscence. Les mouvements oculaires verticaux activent les muscles droits sup\u00E9rieurs et inf\u00E9rieurs.',
       benefits: ['visualisation', 'acc\u00E8s \u00E0 la m\u00E9moire', 'imagination', 'construction de ressources positives'],
       phases: [
@@ -427,6 +452,7 @@ export const fr: Translation = {
       description: 'Saccades verticales rapides. Simulation du sommeil paradoxal pour le traitement m\u00E9moriel.',
       instruction: 'Un sch\u00E9ma rapide : le point monte et descend \u00E0 rythme acc\u00E9l\u00E9r\u00E9. Essayez de suivre des yeux, m\u00EAme imparfaitement. Pendant les pauses, d\u00E9tendez vos yeux. Ce mode simule les mouvements oculaires rapides du sommeil paradoxal.',
       effect: 'Stimulation intense ressemblant \u00E0 la phase de sommeil paradoxal. Peut provoquer une sensation de \u00AB traitement \u00BB : comme si le cerveau triait des informations. Apr\u00E8s la session, l\u00E9g\u00E8re fatigue oculaire et sensation de clart\u00E9.',
+      soundProfile: 'Battements binauraux : 200 Hz + 206 Hz \u00b7 diff\u00e9rence de 6 Hz en gamme th\u00eata \u00b7 casque requis pour l\u2019effet binaural',
       origins: 'Anuvritta : saccades verticales rapides du Natya Shastra. Semblables aux mouvements oculaires du sommeil paradoxal, lorsque le cerveau consolide la m\u00E9moire. Stickgold (2002) a suppos\u00E9 que l\u2019EMDR reproduit ce m\u00E9canisme \u00E0 l\u2019\u00E9tat \u00E9veill\u00E9.',
       benefits: ['simulation REM', 'traitement m\u00E9moriel', 'd\u00E9charge \u00E9motionnelle', 'clart\u00E9 cognitive'],
       phases: [
@@ -446,6 +472,7 @@ export const fr: Translation = {
       description: 'Regard vers le bas. Mouvement vertical d\u2019ancrage pour la conscience corporelle.',
       instruction: 'Le point se d\u00E9place verticalement avec une emphase vers le bas. Suivez-le des yeux. Pr\u00EAtez attention aux sensations corporelles : lourdeur, chaleur, contact avec la surface. Ce sch\u00E9ma aide \u00E0 s\u2019ancrer.',
       effect: 'Sensation d\u2019ancrage, retour dans le corps. R\u00E9duit la d\u00E9personnalisation et la dissociation. Aide \u00E0 passer de \u00AB la t\u00EAte \u00BB \u00E0 la conscience corporelle. Id\u00E9al apr\u00E8s un travail \u00E9motionnel intense.',
+      soundProfile: '196 Hz (G3) \u00b7 pulsation rythmique \u00e0 45 BPM \u00b7 couche de sub-basse \u00e0 65 Hz pour la profondeur d\u2019ancrage',
       origins: 'Avalokita : le regard descendant du Natya Shastra. Exprime l\u2019humilit\u00E9, la contemplation, le lien avec la terre. En psychoth\u00E9rapie somatique, le regard vers le bas aide \u00E0 d\u00E9placer l\u2019attention des pens\u00E9es vers les sensations corporelles.',
       benefits: ['ancrage', 'conscience corporelle', 'r\u00E9duction de la dissociation', 'traitement somatique'],
       phases: [
@@ -462,6 +489,7 @@ export const fr: Translation = {
       description: 'Contemplation de la flamme. Entra\u00EEnement de la concentration avec observation de l\u2019image r\u00E9manente.',
       instruction: 'Pratique classique de fixation du regard sur la flamme. Regardez sans cligner jusqu\u2019\u00E0 ce que les yeux larmoient \u2014 c\u2019est normal et b\u00E9n\u00E9fique. Puis fermez les yeux et observez l\u2019image r\u00E9manente : une tache color\u00E9e derri\u00E8re les paupi\u00E8res closes. Ne la retenez pas, observez simplement.',
       effect: 'Concentration profonde, nettoyage de l\u2019appareil visuel (les larmes hydratent). L\u2019observation de l\u2019image r\u00E9manente est une visualisation naturelle sans effort. Les \u00E9tudes montrent une am\u00E9lioration de l\u2019attention, r\u00E9duction de l\u2019anxi\u00E9t\u00E9, am\u00E9lioration de la qualit\u00E9 du sommeil.',
+      soundProfile: '164.81 Hz (E3) \u00b7 drone chaud avec tierce majeure et quinte \u00b7 bruit rose subtil \u00b7 d\u00e9rive de hauteur tr\u00e8s lente',
       origins: 'Trataka est d\u00E9crit dans le Hatha Yoga Pradipika comme l\u2019une des six shatkarmas (pratiques de purification). Les danseurs indiens l\u2019utilisent pour entra\u00EEner un regard fixe et expressif. La flamme est g\u00E9n\u00E9r\u00E9e proc\u00E9duralement sur Canvas.',
       benefits: ['concentration', 'sant\u00E9 oculaire', 'r\u00E9duction de l\u2019anxi\u00E9t\u00E9', 'qualit\u00E9 du sommeil', 'visualisation naturelle'],
       phases: [
@@ -479,6 +507,7 @@ export const fr: Translation = {
       description: 'Stimulation bilat\u00E9rale EMDR standard. La forme la plus \u00E9tudi\u00E9e.',
       instruction: 'Stimulation EMDR standard. Le point se d\u00E9place de gauche \u00E0 droite. Suivez-le des yeux. Pendant les pauses, observez pens\u00E9es, sensations, images. Ne contr\u00F4lez pas le processus : observez simplement. Si c\u2019est trop intense, appuyez sur pause.',
       effect: 'R\u00E9duction de la charge \u00E9motionnelle des pens\u00E9es anxieuses et des souvenirs. Protocole EMDR standard : la forme la plus \u00E9tudi\u00E9e de stimulation bilat\u00E9rale.',
+      soundProfile: '396 Hz \u00b7 panoramique bilat\u00e9ral synchronis\u00e9 avec le mouvement du point \u00b7 casque recommand\u00e9',
       origins: 'L\u2019EMDR (Eye Movement Desensitization and Reprocessing) a \u00E9t\u00E9 d\u00E9velopp\u00E9 par Francine Shapiro en 1989. Reconnu par l\u2019OMS comme traitement efficace du TSPT.',
       benefits: ['traitement des traumatismes', 'r\u00E9duction de l\u2019anxi\u00E9t\u00E9', 'r\u00E9gulation \u00E9motionnelle', 'r\u00E9duction des sympt\u00F4mes de TSPT'],
       phases: [
@@ -500,6 +529,7 @@ export const fr: Translation = {
       description: 'Stimulation bilat\u00E9rale diagonale. Sollicite davantage de muscles oculomoteurs.',
       instruction: 'Variante diagonale de la stimulation bilat\u00E9rale. Le point se d\u00E9place du coin inf\u00E9rieur gauche au coin sup\u00E9rieur droit et inversement. Certains trouvent cette variante plus efficace que l\u2019horizontale.',
       effect: 'Similaire \u00E0 l\u2019EMDR standard, mais avec une composante verticale suppl\u00E9mentaire. Sollicite plus de muscles oculaires. Certains th\u00E9rapeutes utilisent des s\u00E9ries diagonales quand les horizontales ne sont pas assez efficaces.',
+      soundProfile: '396 Hz \u00b7 panoramique bilat\u00e9ral synchronis\u00e9 avec le mouvement diagonal du point \u00b7 casque recommand\u00e9',
       origins: 'Variation du protocole EMDR standard. Les mouvements diagonaux sont utilis\u00E9s par certains th\u00E9rapeutes EMDR comme alternative aux mouvements horizontaux.',
       benefits: ['traitement des traumatismes', 'sch\u00E9ma bilat\u00E9ral alternatif', 'activation oculomotrice compl\u00E8te'],
       phases: [
@@ -517,6 +547,7 @@ export const fr: Translation = {
       description: 'Huit lent avec battements th\u00EAta binauraux. Relaxation avant le sommeil.',
       instruction: 'Un sch\u00E9ma lent et doux simulant les mouvements oculaires du sommeil paradoxal. Le point trace un huit. Pas besoin de suivre parfaitement : laissez vos yeux se d\u00E9tendre. Ce mode est destin\u00E9 \u00E0 l\u2019utilisation avant le coucher.',
       effect: 'Relaxation, pr\u00E9paration au sommeil. Les battements th\u00EAta binauraux (4 Hz) aident le cerveau \u00E0 passer en \u00E9tat de pr\u00E9-sommeil. Le huit lent apaise sans stimuler.',
+      soundProfile: 'Battements binauraux : 180 Hz + 184 Hz \u00b7 diff\u00e9rence de 4 Hz en gamme th\u00eata \u00b7 ton lent et ber\u00e7ant \u00b7 casque requis',
       origins: 'Inspir\u00E9 de la recherche sur le sommeil paradoxal. Hypoth\u00E8se de Stickgold : les mouvements oculaires du sommeil paradoxal aident le cerveau \u00E0 transf\u00E9rer les souvenirs charg\u00E9s \u00E9motionnellement vers la m\u00E9moire \u00E0 long terme. Ce mode recr\u00E9e un sch\u00E9ma similaire.',
       benefits: ['pr\u00E9paration au sommeil', 'relaxation', 'consolidation de la m\u00E9moire', 'r\u00E9duction du stress'],
       phases: [

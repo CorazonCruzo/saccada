@@ -27,6 +27,8 @@ function makePattern(overrides: Partial<PatternConfig> = {}): PatternConfig {
     description: '',
     category: 'emdr',
     binduColor: 'saffron',
+    sessionType: 'processing',
+    recommendedDuration: 600_000,
     trajectory: 'horizontal',
     trajectoryParams: { amplitude: 0.4, easing: 'sine' },
     visual: 'bindu',

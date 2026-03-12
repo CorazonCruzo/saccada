@@ -2,19 +2,14 @@ import { useState } from 'react'
 import { useNavigate, Navigate } from 'react-router-dom'
 import { useSessionStore } from '@/entities/session'
 import { PatternPicker } from '@/widgets/pattern-picker'
-import { SettingsPanel } from '@/widgets/settings-panel'
 import { SessionPlayer } from '@/widgets/session-player'
-import { useAudio } from '@/features/audio'
-import { shouldCalibrate } from '@/features/calibration'
-import { useEyeTracking } from '@/features/eye-tracking'
+import { PreSessionDialog } from '@/pages/pre-session/PreSessionPage'
 import { useTranslation } from '@/shared/lib/i18n'
 
 export default function HomePage() {
   const navigate = useNavigate()
-  const { selectedPattern, selectPattern, soundEnabled, eyeTrackingEnabled, calibratedAt, speed, visualScale, backgroundPattern, backgroundRotation } = useSessionStore()
+  const { selectedPattern, selectPattern, speed, visualScale, backgroundPattern, backgroundRotation } = useSessionStore()
   const [settingsOpen, setSettingsOpen] = useState(false)
-  const audioEngine = useAudio()
-  const { getTracker } = useEyeTracking()
   const { t } = useTranslation()
 
   // Check onboarding
@@ -22,24 +17,9 @@ export default function HomePage() {
     return <Navigate to="/onboarding" replace />
   }
 
-  async function handleStart() {
-    // Init AudioContext in user gesture context (click handler)
-    if (soundEnabled) {
-      audioEngine.init()
-    }
-    setSettingsOpen(false)
-
-    // Calibration before mood check (if needed)
-    if (await shouldCalibrate(eyeTrackingEnabled, calibratedAt, getTracker().isReady())) {
-      useSessionStore.getState().setSessionState('calibrating')
-      navigate('/calibration')
-    } else if (useSessionStore.getState().moodCheckEnabled) {
-      useSessionStore.getState().setSessionState('mood-check-before')
-      navigate('/mood-check?phase=before')
-    } else {
-      useSessionStore.getState().setSessionState('countdown')
-      navigate('/session')
-    }
+  function handleSelectPattern(p: typeof selectedPattern) {
+    selectPattern(p)
+    setSettingsOpen(true)
   }
 
   return (
@@ -58,7 +38,7 @@ export default function HomePage() {
       <div className="mx-auto mt-6 w-full max-w-3xl">
         <PatternPicker
           selectedPattern={selectedPattern}
-          onSelect={(p) => { selectPattern(p); setSettingsOpen(true) }}
+          onSelect={handleSelectPattern}
         />
       </div>
 
@@ -96,12 +76,8 @@ export default function HomePage() {
         </button>
       </div>
 
-      {/* Settings dialog */}
-      <SettingsPanel
-        open={settingsOpen}
-        onOpenChange={setSettingsOpen}
-        onStart={handleStart}
-      />
+      {/* Pre-session dialog */}
+      <PreSessionDialog open={settingsOpen} onOpenChange={setSettingsOpen} />
     </div>
   )
 }

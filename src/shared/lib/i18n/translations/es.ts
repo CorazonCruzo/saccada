@@ -86,6 +86,25 @@ export const es: Translation = {
     hideGazeMap: 'Ocultar mapa de mirada',
   },
 
+  preSession: {
+    start: 'Iniciar',
+    howTo: 'C\u00F3mo practicar',
+    effects: 'Qu\u00E9 esperar',
+    recommended: 'Recomendado',
+    advancedSettings: 'Ajustes avanzados',
+    learnMore: 'Más sobre este patrón',
+    soundProfile: 'Perfil de sonido',
+    sensitivityWarning: 'Nota de sensibilidad',
+    sensitivityDetails: 'Si tienes epilepsia, alta sensibilidad a la estimulación visual o sientes molestias, puedes desactivar la animación de fondo, reducir la velocidad o desactivar el sonido en los ajustes avanzados.',
+    dontShowAgain: 'No mostrar para este patr\u00F3n',
+    reflectionQuestion: {
+      calming: '¿Sentiste relajación?',
+      activating: '¿Sentiste más energía?',
+      focusing: '¿Sentiste mayor concentración?',
+      processing: '¿Sentiste un cambio emocional?',
+    },
+  },
+
   sessionSettings: {
     title: 'Ajustes de sesi\u00F3n',
     timerMode: 'Temporizador',
@@ -326,6 +345,7 @@ export const es: Translation = {
       description: 'Mirada fija hacia adelante. Fijaci\u00F3n suave para concentraci\u00F3n y calma.',
       instruction: 'Si\u00E9ntate c\u00F3modamente. Mira el punto luminoso en el centro de la pantalla sin apartar la mirada. Deja que el parpadeo se vuelva menos frecuente, pero sin forzarlo. Mant\u00E9n la cabeza quieta. Respira lenta y uniformemente. Cuando la atenci\u00F3n se desv\u00EDe, devuelve suavemente la mirada al punto.',
       effect: 'Calma del flujo de pensamientos, mayor concentraci\u00F3n, sensaci\u00F3n de centramiento. Despu\u00E9s de la sesi\u00F3n, es posible experimentar brevemente una percepci\u00F3n expandida.',
+      soundProfile: '196 Hz (G3) · drone ambiental con intervalos armónicos · cuenco tibetano cada 35s marca el tiempo sin distraer',
       origins: 'En el Natya Shastra, Sama se describe como la mirada utilizada al inicio de una danza y para representar deidades. Es una pr\u00E1ctica b\u00E1sica de fijaci\u00F3n de la mirada, cercana al Trataka de los textos y\u00F3guicos.',
       benefits: ['concentraci\u00F3n', 'calma', 'claridad mental', 'arraigo'],
       phases: [
@@ -341,6 +361,7 @@ export const es: Translation = {
       description: 'Mirada circular amplia. Activa la visi\u00F3n perif\u00E9rica y el sistema vestibular.',
       instruction: 'Sigue el punto con los ojos mientras se mueve en c\u00EDrculo. Mant\u00E9n la cabeza quieta: solo mueve los ojos. Intenta que el movimiento sea suave, sin tirones. Observa qu\u00E9 pasa con tu visi\u00F3n perif\u00E9rica.',
       effect: 'Expansi\u00F3n del campo de percepci\u00F3n, reducci\u00F3n de la visi\u00F3n de t\u00FAnel (caracter\u00EDstica de la ansiedad). Activaci\u00F3n suave del sistema vestibular. Sensaci\u00F3n de que el espacio alrededor se "abre."',
+      soundProfile: '396 Hz · pulsación rítmica a 60 BPM · sincronizada con el movimiento circular',
       origins: 'Alokita se describe en el Natya Shastra como una mirada amplia y envolvente. En la danza se usa para expresar sorpresa y explorar el espacio. Los movimientos circulares de los ojos activan los seis m\u00FAsculos oculares.',
       benefits: ['visi\u00F3n perif\u00E9rica', 'conciencia espacial', 'reducci\u00F3n de ansiedad', 'activaci\u00F3n vestibular'],
       phases: [
@@ -357,6 +378,7 @@ export const es: Translation = {
       description: 'Mirada lateral suave. Estimulaci\u00F3n bilateral de baja amplitud para principiantes.',
       instruction: 'El punto se mueve de lado a lado con poca amplitud. S\u00EDguelo con los ojos sin girar la cabeza. Esta es una versi\u00F3n suave de la estimulaci\u00F3n bilateral: un buen punto de partida.',
       effect: 'Reducci\u00F3n suave de la ansiedad. Menos intenso que la estimulaci\u00F3n bilateral completa. Adecuado para el primer contacto con la pr\u00E1ctica o para d\u00EDas en que la amplitud completa se siente excesiva.',
+      soundProfile: '396 Hz · paneo bilateral sincronizado con el movimiento del punto · se recomiendan auriculares',
       origins: 'Sachi es la mirada lateral en la danza india, una de las m\u00E1s expresivas. Se usa para transmitir emociones sutiles. En el contexto EMDR: saccadas acortadas, un modo de estimulaci\u00F3n m\u00E1s suave.',
       benefits: ['reducci\u00F3n suave de ansiedad', 'apto para principiantes', 'procesamiento emocional'],
       phases: [
@@ -374,6 +396,7 @@ export const es: Translation = {
       description: 'Movimiento ocular de lado a lado. Estimulaci\u00F3n bilateral central, id\u00E9ntica al EMDR.',
       instruction: 'Este es el modo principal de estimulaci\u00F3n bilateral. El punto se mueve de lado a lado: s\u00EDguelo con los ojos sin girar la cabeza. En las pausas, simplemente observa qu\u00E9 pensamientos, im\u00E1genes o sensaciones surgen. No analices, solo observa.',
       effect: 'Reducci\u00F3n de la intensidad de pensamientos ansiosos y la carga emocional de los recuerdos. Sensaci\u00F3n de "descarga." Un metaan\u00E1lisis de 20 estudios confirma una reducci\u00F3n inmediata en la viveza de im\u00E1genes ansiosas y emociones negativas.',
+      soundProfile: '285 Hz (C#4/D♭4) · paneo bilateral sincronizado con el movimiento del punto · ligera desafinación para calidez · se recomiendan auriculares',
       origins: 'Pralokita: movimientos oculares laterales del Natya Shastra. Id\u00E9nticos a la estimulaci\u00F3n bilateral en EMDR (Shapiro, 1989). Tres descubrimientos independientes del mismo mecanismo: danza india, neurociencia del sue\u00F1o REM, psicoterapia cl\u00EDnica.',
       benefits: ['reducci\u00F3n de ansiedad', 'procesamiento de trauma', 'regulaci\u00F3n emocional', 'reconsolidaci\u00F3n de memoria'],
       phases: [
@@ -393,6 +416,7 @@ export const es: Translation = {
       description: 'Fijaci\u00F3n con ojos entrecerrados. Relajaci\u00F3n profunda y activaci\u00F3n parasimpc\u00E1tica.',
       instruction: 'Cierra suavemente los p\u00E1rpados: no completamente, sino a la mitad. Dirige una mirada desenfocada al punto tenuemente iluminado. No intentes ver con claridad. Respira lentamente. Permite que tu atenci\u00F3n se dirija hacia adentro.',
       effect: 'Relajaci\u00F3n profunda, activaci\u00F3n del sistema nervioso parasimpc\u00E1tico. \u00DAtil despu\u00E9s de un trabajo intenso (por ejemplo, despu\u00E9s de Pralokita). Reduce la frecuencia card\u00EDaca, relaja los m\u00FAsculos faciales y de la mand\u00EDbula.',
+      soundProfile: '130.81 Hz (C3) · drone multicapa con quinta y octava armónicas · sutil ruido rosa · lento vaivén de volumen como respiración',
       origins: 'Nimilita significa "ojos entrecerrados." En el Natya Shastra: una mirada dirigida al coraz\u00F3n. Se usa para representar meditaci\u00F3n, oraci\u00F3n, paz divina. Neurofisiol\u00F3gicamente, reducir la estimulaci\u00F3n visual activa el sistema parasimpc\u00E1tico.',
       benefits: ['relajaci\u00F3n profunda', 'activaci\u00F3n parasimpc\u00E1tica', 'descanso tras procesamiento', 'enfoque interior'],
       phases: [
@@ -408,6 +432,7 @@ export const es: Translation = {
       description: 'Mirada hacia arriba. Movimiento vertical con sesgo superior para visualizaci\u00F3n.',
       instruction: 'El punto se mueve verticalmente con \u00E9nfasis en la parte superior. S\u00EDguelo con los ojos. Este patr\u00F3n est\u00E1 asociado con la visualizaci\u00F3n y la imaginaci\u00F3n. Permite que las im\u00E1genes vengan libremente.',
       effect: 'Activaci\u00F3n de la memoria visual y la imaginaci\u00F3n. Algunos reportan la aparici\u00F3n espont\u00E1nea de im\u00E1genes y recuerdos. Estimulaci\u00F3n suave que funciona bien combinada con la intenci\u00F3n de recordar algo positivo.',
+      soundProfile: '432 Hz (A4) · pulsación rítmica a 50 BPM · sutil cambio de tono en cada pulso · sincronizada con el movimiento vertical',
       origins: 'Ullokita es la mirada hacia arriba en el Natya Shastra. Se usa para representar seres celestiales, oraci\u00F3n, reminiscencia. Los movimientos oculares verticales activan los m\u00FAsculos rectos superior e inferior.',
       benefits: ['visualizaci\u00F3n', 'acceso a la memoria', 'imaginaci\u00F3n', 'construcci\u00F3n de recursos positivos'],
       phases: [
@@ -424,6 +449,7 @@ export const es: Translation = {
       description: 'Saccadas verticales r\u00E1pidas. Simulaci\u00F3n del sue\u00F1o REM para procesamiento de memoria.',
       instruction: 'Este es un patr\u00F3n r\u00E1pido: el punto se mueve arriba y abajo a ritmo acelerado. Intenta seguirlo con los ojos, aunque no sea perfecto. En las pausas, relaja los ojos. Este modo simula los movimientos oculares r\u00E1pidos del sue\u00F1o REM.',
       effect: 'Estimulaci\u00F3n intensa que recuerda la fase de sue\u00F1o REM. Puede causar una sensaci\u00F3n de "procesamiento": como si el cerebro estuviera ordenando informaci\u00F3n. Despu\u00E9s de la sesi\u00F3n, es posible una leve fatiga ocular y sensaci\u00F3n de claridad.',
+      soundProfile: 'Ritmos binaurales: 200 Hz + 206 Hz · diferencia de 6 Hz en rango theta · se requieren auriculares para el efecto binaural',
       origins: 'Anuvritta: saccadas verticales r\u00E1pidas del Natya Shastra. Se asemejan a los movimientos oculares durante el sue\u00F1o REM, cuando el cerebro consolida la memoria. Stickgold (2002) hipotetiz\u00F3 que el EMDR reproduce este mecanismo estando despierto.',
       benefits: ['simulaci\u00F3n REM', 'procesamiento de memoria', 'descarga emocional', 'claridad cognitiva'],
       phases: [
@@ -443,6 +469,7 @@ export const es: Translation = {
       description: 'Mirada hacia abajo. Movimiento vertical de arraigo para conciencia corporal.',
       instruction: 'El punto se mueve verticalmente con \u00E9nfasis en la parte inferior. S\u00EDguelo con los ojos, dirigiendo la mirada hacia abajo. Presta atenci\u00F3n a las sensaciones corporales: pesadez, calor, contacto con la superficie. Este patr\u00F3n te ayuda a arraigarte.',
       effect: 'Sensaci\u00F3n de arraigo, regreso al cuerpo. Reduce la despersonalizaci\u00F3n y la disociaci\u00F3n. Ayuda a pasar de la "cabeza" a la conciencia corporal. Bueno despu\u00E9s de un trabajo emocional intenso.',
+      soundProfile: '196 Hz (G3) · pulsación rítmica a 45 BPM · capa de sub-bajo a 65 Hz para profundidad de arraigo',
       origins: 'Avalokita: la mirada descendente del Natya Shastra. Expresa humildad, contemplaci\u00F3n, conexi\u00F3n con la tierra. En psicoterapia som\u00E1tica, la mirada hacia abajo ayuda a cambiar la atenci\u00F3n de los pensamientos a las sensaciones corporales.',
       benefits: ['arraigo', 'conciencia corporal', 'reducci\u00F3n de disociaci\u00F3n', 'procesamiento som\u00E1tico'],
       phases: [
@@ -459,6 +486,7 @@ export const es: Translation = {
       description: 'Contemplaci\u00F3n de la llama. Entrenamiento de concentraci\u00F3n con observaci\u00F3n de posimagen.',
       instruction: 'Pr\u00E1ctica cl\u00E1sica de fijaci\u00F3n de la mirada en la llama. Mira sin parpadear hasta que los ojos empiecen a lagrimear: esto es normal e incluso beneficioso. Luego cierra los ojos y observa la posimagen: una mancha de color detr\u00E1s de tus p\u00E1rpados cerrados. No intentes retenerla, solo observa.',
       effect: 'Concentraci\u00F3n profunda, limpieza del aparato visual (las l\u00E1grimas hidratan). Observar la posimagen es una visualizaci\u00F3n natural sin esfuerzo. Los estudios muestran mejora de la atenci\u00F3n, reducci\u00F3n de la ansiedad, mejora de la calidad del sue\u00F1o.',
+      soundProfile: '164.81 Hz (E3) · drone cálido con tercera mayor y quinta · sutil ruido rosa · deriva de tono muy lenta',
       origins: 'Trataka se describe en el Hatha Yoga Pradipika como una de las seis shatkarmas (pr\u00E1cticas de purificaci\u00F3n). Los bailarines indios la usan para entrenar una mirada firme y expresiva. La llama se genera proceduralmente en Canvas.',
       benefits: ['concentraci\u00F3n', 'salud ocular', 'reducci\u00F3n de ansiedad', 'calidad del sue\u00F1o', 'visualizaci\u00F3n natural'],
       phases: [
@@ -476,6 +504,7 @@ export const es: Translation = {
       description: 'Estimulaci\u00F3n bilateral EMDR est\u00E1ndar. La forma m\u00E1s investigada.',
       instruction: 'Estimulaci\u00F3n EMDR est\u00E1ndar. El punto se mueve de lado a lado. S\u00EDguelo con los ojos. En las pausas, observa tus pensamientos, sensaciones, im\u00E1genes. No intentes controlar el proceso: solo observa lo que viene. Si se vuelve demasiado intenso, presiona pausa.',
       effect: 'Reducci\u00F3n de la carga emocional de pensamientos ansiosos y recuerdos. Protocolo EMDR est\u00E1ndar: la forma m\u00E1s investigada de estimulaci\u00F3n bilateral.',
+      soundProfile: '396 Hz · paneo bilateral sincronizado con el movimiento del punto · se recomiendan auriculares',
       origins: 'EMDR (Eye Movement Desensitization and Reprocessing) fue desarrollado por Francine Shapiro en 1989. Reconocido por la OMS como un tratamiento efectivo para el TEPT.',
       benefits: ['procesamiento de trauma', 'reducci\u00F3n de ansiedad', 'regulaci\u00F3n emocional', 'reducci\u00F3n de s\u00EDntomas de TEPT'],
       phases: [
@@ -497,6 +526,7 @@ export const es: Translation = {
       description: 'Estimulaci\u00F3n bilateral diagonal. Activa m\u00E1s m\u00FAsculos oculomotores.',
       instruction: 'Variante diagonal de la estimulaci\u00F3n bilateral. El punto se mueve desde la esquina inferior izquierda a la superior derecha y viceversa. Algunos encuentran esta variante m\u00E1s efectiva que la horizontal.',
       effect: 'Similar al EMDR est\u00E1ndar, pero con un componente vertical adicional. Activa m\u00E1s m\u00FAsculos oculares. Algunos terapeutas usan series diagonales cuando las horizontales no producen suficiente efecto.',
+      soundProfile: '396 Hz · paneo bilateral sincronizado con el movimiento diagonal del punto · se recomiendan auriculares',
       origins: 'Una variaci\u00F3n del protocolo EMDR est\u00E1ndar. Los movimientos diagonales son usados por algunos terapeutas EMDR como alternativa a los horizontales.',
       benefits: ['procesamiento de trauma', 'patr\u00F3n bilateral alternativo', 'activaci\u00F3n oculomotora completa'],
       phases: [
@@ -514,6 +544,7 @@ export const es: Translation = {
       description: 'Figura de 8 lenta con ritmos theta binaurales. Relajaci\u00F3n antes de dormir.',
       instruction: 'Un patr\u00F3n lento y suave que simula los movimientos oculares durante el sue\u00F1o REM. El punto se mueve en forma de ocho. No necesitas seguirlo perfectamente: deja que tus ojos se relajen. Este modo est\u00E1 dise\u00F1ado para usarse antes de dormir.',
       effect: 'Relajaci\u00F3n, preparaci\u00F3n para el sue\u00F1o. Los ritmos binaurales theta (4 Hz) ayudan al cerebro a transitar al estado previo al sue\u00F1o. La figura de ocho lenta arrulla sin estimular.',
+      soundProfile: 'Ritmos binaurales: 180 Hz + 184 Hz · diferencia de 4 Hz en rango theta · tono lento y arrullador · se requieren auriculares',
       origins: 'Inspirado en investigaciones sobre el sue\u00F1o REM. Hip\u00F3tesis de Stickgold: los movimientos oculares durante el sue\u00F1o REM ayudan al cerebro a transferir recuerdos emocionalmente cargados a la memoria a largo plazo. Este modo recrea un patr\u00F3n similar.',
       benefits: ['preparaci\u00F3n para dormir', 'relajaci\u00F3n', 'consolidaci\u00F3n de memoria', 'reducci\u00F3n de estr\u00E9s'],
       phases: [
