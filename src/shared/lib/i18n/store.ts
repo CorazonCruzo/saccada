@@ -18,12 +18,22 @@ export function detectBrowserLocale(): Locale {
   return 'en'
 }
 
+function syncHtmlLang(locale: Locale) {
+  document.documentElement.lang = locale
+}
+
 export const useLocaleStore = create<LocaleStore>()(
   persist(
     (set) => ({
       locale: detectBrowserLocale(),
-      setLocale: (locale) => set({ locale }),
+      setLocale: (locale) => {
+        syncHtmlLang(locale)
+        set({ locale })
+      },
     }),
     { name: 'saccada-locale' },
   ),
 )
+
+// Sync html lang on initial load (after rehydration from localStorage)
+syncHtmlLang(useLocaleStore.getState().locale)

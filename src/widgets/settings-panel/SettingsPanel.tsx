@@ -303,37 +303,39 @@ export function SettingsPanel({ open, onOpenChange, onStart }: SettingsPanelProp
               onToggle={toggleMoodCheck}
             />
 
-            {/* Eye Tracking */}
-            <ToggleRow
-              label={t.sessionSettings.eyeTracking}
-              icon={'\u25CE'}
-              active={eyeTrackingEnabled}
-              activeColor="indigo"
-              onToggle={handleToggleEyeTracking}
-            />
-            {eyeTrackingEnabled && !calibratedAt && (
-              <p className="ml-6 font-body text-[10px] font-light text-indigo">
-                {t.sessionSettings.calibrationNeeded}
-              </p>
-            )}
-            {eyeTrackingEnabled && calibratedAt && (
-              <div className="ml-6 flex items-center gap-2">
-                <p className="font-body text-[10px] font-light text-teal">
-                  {t.sessionSettings.calibrated}
+            {/* Eye Tracking — desktop only, hidden on mobile */}
+            <div className="hidden sm:contents">
+              <ToggleRow
+                label={t.sessionSettings.eyeTracking}
+                icon={'\u25CE'}
+                active={eyeTrackingEnabled}
+                activeColor="indigo"
+                onToggle={handleToggleEyeTracking}
+              />
+              {eyeTrackingEnabled && !calibratedAt && (
+                <p className="ml-6 font-body text-[10px] font-light text-indigo">
+                  {t.sessionSettings.calibrationNeeded}
                 </p>
-                <button
-                  onClick={() => setCalibratedAt(null)}
-                  className="cursor-pointer font-body text-[10px] font-light text-text-dim underline transition-colors hover:text-text-muted"
-                >
-                  {t.sessionSettings.recalibrate}
-                </button>
-              </div>
-            )}
-            {cameraStatus && (
-              <p className="ml-6 font-body text-[10px] font-light text-lotus">
-                {cameraStatus}
-              </p>
-            )}
+              )}
+              {eyeTrackingEnabled && calibratedAt && (
+                <div className="ml-6 flex items-center gap-2">
+                  <p className="font-body text-[10px] font-light text-teal">
+                    {t.sessionSettings.calibrated}
+                  </p>
+                  <button
+                    onClick={() => setCalibratedAt(null)}
+                    className="cursor-pointer font-body text-[10px] font-light text-text-dim underline transition-colors hover:text-text-muted"
+                  >
+                    {t.sessionSettings.recalibrate}
+                  </button>
+                </div>
+              )}
+              {cameraStatus && (
+                <p className="ml-6 font-body text-[10px] font-light text-lotus">
+                  {cameraStatus}
+                </p>
+              )}
+            </div>
           </div>
 
           {/* Start button */}
