@@ -72,8 +72,8 @@
 /* Font families — separate @theme (not inline) so utilities use var()
    and locale overrides like :root[lang="ru"] take effect */
 @theme {
-  --font-heading: "Rajdhani", sans-serif;
-  --font-body: "Nunito Sans", sans-serif;
+  --font-heading: "Rajdhani", "Noto Sans JP", sans-serif;
+  --font-body: "Nunito Sans", "Noto Sans JP", sans-serif;
   --font-devanagari: "Noto Sans Devanagari", sans-serif;
 }
 

@@ -65,6 +65,7 @@ export default function SettingsPage() {
                   key={loc}
                   variant={locale === loc ? 'default' : 'ghost'}
                   size="sm"
+                  className="font-body font-normal"
                   onClick={() => setLocale(loc)}
                 >
                   {localeNames[loc]}
