@@ -8,8 +8,6 @@ export const ja: Translation = {
   },
 
   home: {
-    tagline: '眼球運動プラクティス \u00B7 Drishti Bheda \u00D7 EMDR \u00D7 神経科学',
-    startButton: '始める',
     aboutLink: 'Saccadaについて',
   },
 

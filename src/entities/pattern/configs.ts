@@ -373,10 +373,11 @@ export const sleepRem: PatternConfig = {
   defaultBackgroundRotation: 'none',
 }
 
-/** All patterns in display order (gentle → intense) */
+/** All patterns in display order (hook patterns first, then logical grouping) */
 export const allPatterns: PatternConfig[] = [
-  nimilita, sama, sleepRem, avalokita, trataka, alokita,
-  sachi, ullokita, pralokita, emdrClassic, emdrDiagonal, anuvritta,
+  trataka, emdrClassic, pralokita, avalokita,
+  sama, nimilita, alokita, sachi,
+  ullokita, anuvritta, emdrDiagonal, sleepRem,
 ]
 
 /** Lookup by id */

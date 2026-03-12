@@ -437,7 +437,7 @@ export default function SessionPage() {
       {/* Guided instruction: always visible (independent of HUD) */}
       {guidedMode && guideVisible && currentInstruction && (
         <div className="pointer-events-none absolute inset-x-0 bottom-20 z-10 flex justify-center px-8">
-          <p className="max-w-md rounded-lg bg-bg-deep/60 px-4 py-2 text-center font-body text-sm font-light leading-relaxed text-text-bright/80 backdrop-blur-sm">
+          <p className="max-w-lg rounded-lg bg-bg-deep/70 px-6 py-3 text-center font-body text-base font-light leading-relaxed text-text-bright/90 backdrop-blur-sm sm:text-lg">
             {currentInstruction}
           </p>
         </div>
@@ -478,11 +478,11 @@ export default function SessionPage() {
           <Button
             variant="outline"
             size="icon"
-            className="h-10 w-10 rounded-full border-border-ornament bg-bg-surface/80 text-text-muted hover:text-text-bright"
+            className="h-12 w-12 rounded-full border-gold/40 bg-bg-surface text-text-bright hover:border-gold/70 hover:bg-bg-surface/90"
             onClick={() => { handlePause(); setInfoOpen(true) }}
             aria-label="Pattern info"
           >
-            <span className="text-sm">i</span>
+            <span className="text-base font-semibold">i</span>
           </Button>
 
           {/* Guide visibility toggle */}

@@ -636,11 +636,6 @@ describe('translations are actually different per locale', () => {
     expect(values.size).toBeGreaterThanOrEqual(locales.length - 1)
   })
 
-  it('home.tagline should differ between locales', () => {
-    const values = new Set(locales.map((l) => translations[l].home.tagline))
-    expect(values.size).toBe(locales.length)
-  })
-
   it('pattern names should differ for translated patterns', () => {
     // EMDR Classic has different names across locales
     const names = locales.map((l) => translations[l].pattern.emdr_classic.name)

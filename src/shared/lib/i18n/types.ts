@@ -29,8 +29,6 @@ export interface Translation {
     goHome: string
   }
   home: {
-    tagline: string
-    startButton: string
     aboutLink: string
   }
   onboarding: {

@@ -36,7 +36,7 @@ const DEFAULT_SETTINGS: Omit<PatternSettings, 'sessionDuration'> = {
   volume: 40,
   soundEnabled: false,
   hapticEnabled: false,
-  guidedMode: true,
+  guidedMode: false,
   eyeTrackingEnabled: false,
   backgroundPattern: 'mandala',
   backgroundRotation: 'cw',

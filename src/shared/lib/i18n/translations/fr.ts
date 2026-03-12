@@ -8,8 +8,6 @@ export const fr: Translation = {
   },
 
   home: {
-    tagline: 'Pratique de mouvements oculaires \u00B7 Drishti Bheda \u00D7 EMDR \u00D7 Neurosciences',
-    startButton: 'D\u00E9marrer',
     aboutLink: '\u00C0 propos de Saccada',
   },
 

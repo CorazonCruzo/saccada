@@ -8,7 +8,6 @@ import { useAudio } from '@/features/audio'
 import { shouldCalibrate } from '@/features/calibration'
 import { useEyeTracking } from '@/features/eye-tracking'
 import { useTranslation } from '@/shared/lib/i18n'
-import { Button } from '@/shared/ui/button'
 
 export default function HomePage() {
   const navigate = useNavigate()
@@ -16,8 +15,7 @@ export default function HomePage() {
   const [settingsOpen, setSettingsOpen] = useState(false)
   const audioEngine = useAudio()
   const { getTracker } = useEyeTracking()
-  const { t, tp } = useTranslation()
-  const patternT = tp(selectedPattern.id)
+  const { t } = useTranslation()
 
   // Check onboarding
   if (!localStorage.getItem('saccada-onboarded')) {
@@ -54,40 +52,14 @@ export default function HomePage() {
         <h1 className="mt-1 font-heading text-4xl font-bold tracking-tight text-text-bright">
           Saccada
         </h1>
-        <p className="mt-2 font-body text-sm font-light text-text-muted">
-          {t.home.tagline}
-        </p>
       </div>
 
       {/* Pattern picker */}
       <div className="mx-auto mt-6 w-full max-w-3xl">
         <PatternPicker
           selectedPattern={selectedPattern}
-          onSelect={selectPattern}
+          onSelect={(p) => { selectPattern(p); setSettingsOpen(true) }}
         />
-      </div>
-
-      {/* Start area */}
-      <div className="mx-auto mt-8 flex items-center gap-3">
-        <Button size="lg" onClick={() => setSettingsOpen(true)}>
-          {t.home.startButton} {patternT.name}
-        </Button>
-      </div>
-
-      {/* Selected pattern quick info */}
-      <div className="mx-auto mt-3 text-center">
-        {selectedPattern.nameDevanagari && (
-          <span className="font-devanagari text-sm text-gold">
-            {selectedPattern.nameDevanagari}
-          </span>
-        )}
-        <p className="mt-0.5 font-body text-xs font-light text-text-dim">
-          {t.trajectory[selectedPattern.trajectory]}
-          {selectedPattern.cycleDuration ? ` \u00B7 ${selectedPattern.cycleDuration}ms/cycle` : ''}
-          {' \u00B7 '}
-          {t.audioMode[selectedPattern.audioConfig.mode]}
-          {selectedPattern.requiresHeadphones ? ' \u00B7 \uD83C\uDFA7' : ''}
-        </p>
       </div>
 
       {/* Canvas preview */}

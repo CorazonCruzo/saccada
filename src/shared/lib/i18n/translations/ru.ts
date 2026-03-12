@@ -8,8 +8,6 @@ export const ru: Translation = {
   },
 
   home: {
-    tagline: 'Практика движения глаз \u00B7 Дришти Бхеда \u00D7 ДПДГ \u00D7 Нейронаука',
-    startButton: 'Начать',
     aboutLink: 'О Saccada',
   },
 

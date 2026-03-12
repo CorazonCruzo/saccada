@@ -8,8 +8,6 @@ export const de: Translation = {
   },
 
   home: {
-    tagline: 'Augenbewegungspraxis \u00B7 Drishti Bheda \u00D7 EMDR \u00D7 Neurowissenschaft',
-    startButton: 'Starten',
     aboutLink: '\u00DCber Saccada',
   },
 

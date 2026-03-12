@@ -12,7 +12,7 @@ beforeEach(() => {
     volume: 40,
     soundEnabled: false,
     hapticEnabled: false,
-    guidedMode: true,
+    guidedMode: false,
     eyeTrackingEnabled: false,
     patternOverrides: {},
     visualScale: 1,
@@ -57,7 +57,7 @@ describe('useSessionStore', () => {
       expect(state.volume).toBe(40)
       expect(state.soundEnabled).toBe(false)
       expect(state.hapticEnabled).toBe(false)
-      expect(state.guidedMode).toBe(true)
+      expect(state.guidedMode).toBe(false)
       expect(state.sessionDuration).toBe(anuvritta.defaultSessionDuration)
     })
   })
@@ -98,8 +98,8 @@ describe('useSessionStore', () => {
 
     it('saves guided toggle per pattern', () => {
       useSessionStore.getState().toggleGuided()
-      expect(useSessionStore.getState().guidedMode).toBe(false)
-      expect(useSessionStore.getState().patternOverrides['nimilita']?.guidedMode).toBe(false)
+      expect(useSessionStore.getState().guidedMode).toBe(true)
+      expect(useSessionStore.getState().patternOverrides['nimilita']?.guidedMode).toBe(true)
     })
 
     it('does not leak settings between patterns', () => {

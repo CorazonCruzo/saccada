@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useSessionStore } from '@/entities/session'
 import { type BackgroundRotation, allBackgroundPatterns, rotatableBackgrounds } from '@/entities/pattern'
-import { canVibrate } from '@/features/haptics'
 import { checkCameraPermission, requestCameraAccess } from '@/features/eye-tracking'
 import { useTranslation } from '@/shared/lib/i18n'
 import { Button } from '@/shared/ui/button'
@@ -27,7 +26,6 @@ export function SettingsPanel({ open, onOpenChange, onStart }: SettingsPanelProp
     speed, setSpeed,
     volume, setVolume,
     soundEnabled, toggleSound,
-    hapticEnabled, toggleHaptic,
     guidedMode, toggleGuided,
     moodCheckEnabled, toggleMoodCheck,
     eyeTrackingEnabled, setEyeTracking,
@@ -272,17 +270,6 @@ export function SettingsPanel({ open, onOpenChange, onStart }: SettingsPanelProp
                 <span>{'\uD83C\uDFA7'}</span>
                 <span className="font-body font-light text-indigo">{t.sessionSettings.headphonesRecommended}</span>
               </div>
-            )}
-
-            {/* Haptic (only on devices with Vibration API) */}
-            {canVibrate() && (
-              <ToggleRow
-                label={t.sessionSettings.haptic}
-                icon={'\u3030'}
-                active={hapticEnabled}
-                activeColor="teal"
-                onToggle={toggleHaptic}
-              />
             )}
 
             {/* Guided */}

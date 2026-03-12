@@ -43,42 +43,42 @@ export function PatternCard({ pattern, isSelected, onSelect, onInfo }: PatternCa
         tabIndex={0}
         onClick={(e) => { e.stopPropagation(); onInfo() }}
         onKeyDown={(e) => { if (e.key === 'Enter') { e.stopPropagation(); onInfo() } }}
-        className="absolute right-2 top-2 flex h-6 w-6 cursor-pointer items-center justify-center rounded-full border border-text-dim/40 text-xs text-text-muted/70 transition-all hover:border-gold/60 hover:bg-bg-surface hover:text-text-bright"
+        className="absolute right-3 top-3 flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border border-gold/40 text-sm font-semibold text-text-muted transition-all hover:border-gold/70 hover:bg-bg-surface hover:text-text-bright"
         aria-label={`Info about ${pattern.name}`}
       >
         i
       </span>
 
       {/* Category + Devanagari + Name */}
-      <div className="pr-8">
-        <span className={`font-heading text-[10px] tracking-widest uppercase ${categoryColors[pattern.category]}`}>
+      <div className="pr-10">
+        <span className={`font-heading text-xs tracking-widest uppercase ${categoryColors[pattern.category]}`}>
           {categoryLabel}
         </span>
         {pattern.nameDevanagari && (
-          <div className="mt-0.5 truncate font-devanagari text-xs text-gold">
+          <div className="mt-0.5 truncate font-devanagari text-sm text-gold">
             {pattern.nameDevanagari}
           </div>
         )}
-        <div className="mt-1.5 font-heading text-base font-semibold text-text-bright">
+        <div className="mt-1.5 font-heading text-lg font-semibold text-text-bright">
           {patternT.name}
         </div>
       </div>
 
       {/* Description */}
-      <div className="mt-1.5 line-clamp-2 font-body text-xs font-light leading-snug text-text-muted">
+      <div className="mt-2 line-clamp-2 font-body text-sm font-light leading-snug text-text-muted">
         {patternT.description}
       </div>
 
       {/* Bottom row */}
       <div className="mt-3 flex items-center gap-2 text-text-muted">
-        <span className="text-sm" title={t.trajectory[pattern.trajectory]}>
+        <span className="text-base" title={t.trajectory[pattern.trajectory]}>
           {trajectoryIcons[pattern.trajectory]}
         </span>
-        <span className="font-heading text-[10px] tracking-wider">
+        <span className="font-heading text-xs tracking-wider">
           {t.audioMode[pattern.audioConfig.mode].toUpperCase()}
         </span>
         {pattern.requiresHeadphones && (
-          <span className="text-[10px]" title={t.sessionSettings.headphonesRecommended}>{'\uD83C\uDFA7'}</span>
+          <span className="text-xs" title={t.sessionSettings.headphonesRecommended}>{'\uD83C\uDFA7'}</span>
         )}
       </div>
     </button>
