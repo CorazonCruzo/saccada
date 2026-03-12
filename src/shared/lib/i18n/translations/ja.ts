@@ -75,10 +75,7 @@ export const ja: Translation = {
     heatmapTitle: '視線ヒートマップ',
     exportPng: 'PNGで保存',
     gazePoints: '視線ポイント',
-    moodChange: '気分',
-    moodImproved: '改善',
-    moodSame: '変化なし',
-    moodWorse: '悪化',
+
     notePlaceholder: '気づいたことは？（任意）',
     addNote: 'メモを追加',
     repeatSession: 'もう一度',
@@ -98,12 +95,6 @@ export const ja: Translation = {
     sensitivityWarning: '感受性に関するご注意',
     sensitivityDetails: 'てんかんをお持ちの方、視覚刺激に敏感な方、不快感を感じた場合は、詳細設定で背景アニメーションの無効化、速度の低減、サウンドの停止ができます。',
     dontShowAgain: 'このパターンでは表示しない',
-    reflectionQuestion: {
-      calming: 'リラックスできましたか？',
-      activating: '活力を感じましたか？',
-      focusing: '集中力の向上を感じましたか？',
-      processing: '感情の変化を感じましたか？',
-    },
   },
 
   sessionSettings: {
@@ -126,7 +117,6 @@ export const ja: Translation = {
     recalibrate: '再キャリブレーション',
     cameraNotAvailable: 'カメラを利用できません',
     cameraDenied: 'カメラへのアクセスが拒否されました。ブラウザ設定（アドレスバーの鍵アイコン）で許可してください。',
-    moodCheck: '気分チェック',
     beginSession: 'セッション開始',
     background: '背景',
     backgroundRotation: 'アニメーション',
@@ -197,15 +187,18 @@ export const ja: Translation = {
     headphonesNote: 'このパターンにはヘッドホンを推奨します',
   },
 
-  mood: {
-    howAreYouNow: '今の気分はどうですか？',
-    howAreYouAfter: '今はどうですか？',
-    flamePrompt: '心の炎はどんな様子ですか？',
-    restless: '落ち着かない',
-    calm: '穏やか',
+  reflection: {
+    title: 'いかがでしたか？',
     skip: 'スキップ',
-    continue: '続ける',
-    levels: ['とても穏やか', '穏やか', 'ふつう', '落ち着かない', 'とても落ち着かない'],
+    save: '保存',
+    notePlaceholder: '感想や気づき...',
+    question: {
+      calming: 'リラックスや落ち着きを感じましたか？',
+      activating: 'エネルギーや覚醒を感じましたか？',
+      focusing: '集中力の向上を感じましたか？',
+      processing: '感情の変化を感じましたか？',
+    },
+    ratingLabels: ['全くない', '少し', 'まあまあ', 'かなり', 'とても'],
   },
 
   history: {
@@ -220,7 +213,7 @@ export const ja: Translation = {
     deleteConfirm: 'このセッションを削除しますか？',
     completed: '完了',
     endedEarly: '途中終了',
-    noMood: '-',
+    noRating: '-',
     periodWeek: '週',
     periodMonth: '月',
     periodAll: 'すべて',
@@ -228,7 +221,7 @@ export const ja: Translation = {
     customFrom: '開始',
     customTo: '終了',
     noResults: '条件に一致するセッションがありません。',
-    avgMoodChange: '気分',
+    avgRating: '平均評価',
     showMore: '詳細',
     showLess: '閉じる',
     bestPattern: '最良パターン',

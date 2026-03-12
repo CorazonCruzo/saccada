@@ -6,7 +6,7 @@ export interface SessionStats {
   mostUsedPatternId: string | null
   mostUsedPatternName: string | null
   streak: number
-  avgMoodChange: number | null
+  avgRating: number | null
   completionRate: number
   avgDurationMs: number
   preferredTimeOfDay: string | null
@@ -16,7 +16,7 @@ export interface SessionStats {
 export function computeStats(sessions: SessionRecord[]): SessionStats {
   const empty: SessionStats = {
     totalSessions: 0, totalTimeMs: 0, mostUsedPatternId: null, mostUsedPatternName: null,
-    streak: 0, avgMoodChange: null, completionRate: 0, avgDurationMs: 0,
+    streak: 0, avgRating: null, completionRate: 0, avgDurationMs: 0,
     preferredTimeOfDay: null, bestPatternId: null,
   }
   if (sessions.length === 0) return empty
@@ -44,8 +44,8 @@ export function computeStats(sessions: SessionRecord[]): SessionStats {
     }
   }
 
-  // Avg mood change (moodBefore - moodAfter; positive = improvement on 1-5 scale)
-  const avgMoodChange = computeAvgMoodChange(sessions)
+  // Avg reflection rating (1-5 hearts)
+  const avgRating = computeAvgRating(sessions)
 
   // Completion rate
   const completedCount = sessions.filter((s) => s.completed).length
@@ -57,7 +57,7 @@ export function computeStats(sessions: SessionRecord[]): SessionStats {
   // Preferred time of day
   const preferredTimeOfDay = computePreferredTime(sessions)
 
-  // Best pattern (by avg mood improvement)
+  // Best pattern (by avg reflection rating)
   const bestPatternId = computeBestPattern(sessions)
 
   // Streak: consecutive days with at least one session, counting back from today
@@ -65,16 +65,16 @@ export function computeStats(sessions: SessionRecord[]): SessionStats {
 
   return {
     totalSessions: sessions.length, totalTimeMs, mostUsedPatternId, mostUsedPatternName,
-    streak, avgMoodChange, completionRate, avgDurationMs, preferredTimeOfDay, bestPatternId,
+    streak, avgRating, completionRate, avgDurationMs, preferredTimeOfDay, bestPatternId,
   }
 }
 
-/** Average of (moodBefore - moodAfter). Positive = improvement. null if no mood data. */
-export function computeAvgMoodChange(sessions: SessionRecord[]): number | null {
-  const withBoth = sessions.filter((s) => s.moodBefore != null && s.moodAfter != null)
-  if (withBoth.length === 0) return null
-  const total = withBoth.reduce((sum, s) => sum + (s.moodBefore! - s.moodAfter!), 0)
-  return +(total / withBoth.length).toFixed(1)
+/** Average reflection rating (1-5). null if no ratings. */
+export function computeAvgRating(sessions: SessionRecord[]): number | null {
+  const withRating = sessions.filter((s) => s.reflectionRating != null)
+  if (withRating.length === 0) return null
+  const total = withRating.reduce((sum, s) => sum + s.reflectionRating!, 0)
+  return +(total / withRating.length).toFixed(1)
 }
 
 /** Most common time-of-day bucket: morning (5-12), afternoon (12-17), evening (17-22), night (22-5) */
@@ -99,31 +99,42 @@ export function computePreferredTime(sessions: SessionRecord[]): string | null {
   return best
 }
 
-/** Pattern with best avg mood improvement (moodBefore - moodAfter). Needs >= 1 session with both moods. */
+/**
+ * Pattern with highest weighted reflection rating.
+ * Uses Bayesian average with a neutral prior (midpoint of 1-5 scale)
+ * to prevent a single high-rated session from beating a pattern
+ * with many consistently high sessions.
+ * Formula: (count * avg + C * prior) / (count + C)
+ * C = 2, prior = 3 (scale midpoint).
+ */
 export function computeBestPattern(sessions: SessionRecord[]): string | null {
   const byPattern = new Map<string, { sum: number; count: number }>()
   for (const s of sessions) {
-    if (s.moodBefore == null || s.moodAfter == null) continue
+    if (s.reflectionRating == null) continue
     const entry = byPattern.get(s.patternId)
-    const diff = s.moodBefore - s.moodAfter
     if (entry) {
-      entry.sum += diff
+      entry.sum += s.reflectionRating
       entry.count++
     } else {
-      byPattern.set(s.patternId, { sum: diff, count: 1 })
+      byPattern.set(s.patternId, { sum: s.reflectionRating, count: 1 })
     }
   }
   if (byPattern.size === 0) return null
+
+  const C = 2
+  const PRIOR = 3 // midpoint of 1-5 rating scale
+
   let bestId: string | null = null
-  let bestAvg = -Infinity
+  let bestScore = -Infinity
   for (const [id, { sum, count }] of byPattern) {
     const avg = sum / count
-    if (avg > bestAvg) {
-      bestAvg = avg
+    const score = (count * avg + C * PRIOR) / (count + C)
+    if (score > bestScore) {
+      bestScore = score
       bestId = id
     }
   }
-  return bestAvg > 0 ? bestId : null
+  return bestId
 }
 
 export function computeStreak(sessions: SessionRecord[]): number {

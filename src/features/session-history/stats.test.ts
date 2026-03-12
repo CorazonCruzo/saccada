@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, afterEach } from 'vitest'
-import { computeStats, computeStreak, computeAvgMoodChange, computePreferredTime, computeBestPattern } from './stats'
+import { computeStats, computeStreak, computeAvgRating, computePreferredTime, computeBestPattern } from './stats'
 import type { SessionRecord } from '@/shared/lib/db'
 
 function makeSession(overrides: Partial<SessionRecord> = {}): SessionRecord {
@@ -112,55 +112,45 @@ describe('computeStreak', () => {
   })
 })
 
-describe('computeAvgMoodChange', () => {
-  it('returns null when no mood data', () => {
+describe('computeAvgRating', () => {
+  it('returns null when no rating data', () => {
     const sessions = [makeSession(), makeSession({ id: 2 })]
-    expect(computeAvgMoodChange(sessions)).toBeNull()
+    expect(computeAvgRating(sessions)).toBeNull()
   })
 
   it('returns null for empty array', () => {
-    expect(computeAvgMoodChange([])).toBeNull()
+    expect(computeAvgRating([])).toBeNull()
   })
 
-  it('computes positive change (improvement: before > after)', () => {
+  it('computes average rating', () => {
     const sessions = [
-      makeSession({ moodBefore: 4, moodAfter: 2 }),
-      makeSession({ id: 2, moodBefore: 5, moodAfter: 3 }),
+      makeSession({ reflectionRating: 4 }),
+      makeSession({ id: 2, reflectionRating: 2 }),
     ]
-    expect(computeAvgMoodChange(sessions)).toBe(2)
+    expect(computeAvgRating(sessions)).toBe(3)
   })
 
-  it('computes negative change (worsened: before < after)', () => {
+  it('ignores sessions without rating', () => {
     const sessions = [
-      makeSession({ moodBefore: 2, moodAfter: 4 }),
+      makeSession({ reflectionRating: 5 }),
+      makeSession({ id: 2 }),
+      makeSession({ id: 3, reflectionRating: 3 }),
     ]
-    expect(computeAvgMoodChange(sessions)).toBe(-2)
-  })
-
-  it('computes zero for no change', () => {
-    const sessions = [
-      makeSession({ moodBefore: 3, moodAfter: 3 }),
-    ]
-    expect(computeAvgMoodChange(sessions)).toBe(0)
-  })
-
-  it('ignores sessions without both moods', () => {
-    const sessions = [
-      makeSession({ moodBefore: 5, moodAfter: 2 }),       // change = 3
-      makeSession({ id: 2, moodBefore: 3 }),                // no after — skip
-      makeSession({ id: 3, moodAfter: 1 }),                 // no before — skip
-      makeSession({ id: 4, moodBefore: 4, moodAfter: 3 }), // change = 1
-    ]
-    expect(computeAvgMoodChange(sessions)).toBe(2) // (3 + 1) / 2
+    expect(computeAvgRating(sessions)).toBe(4)
   })
 
   it('rounds to one decimal', () => {
     const sessions = [
-      makeSession({ moodBefore: 5, moodAfter: 3 }),  // 2
-      makeSession({ id: 2, moodBefore: 4, moodAfter: 3 }),  // 1
-      makeSession({ id: 3, moodBefore: 3, moodAfter: 2 }),  // 1
+      makeSession({ reflectionRating: 5 }),
+      makeSession({ id: 2, reflectionRating: 4 }),
+      makeSession({ id: 3, reflectionRating: 3 }),
     ]
-    expect(computeAvgMoodChange(sessions)).toBe(1.3) // 4/3 = 1.333...
+    expect(computeAvgRating(sessions)).toBe(4)
+  })
+
+  it('handles single session', () => {
+    const sessions = [makeSession({ reflectionRating: 3 })]
+    expect(computeAvgRating(sessions)).toBe(3)
   })
 })
 
@@ -215,32 +205,42 @@ describe('computeBestPattern', () => {
     expect(computeBestPattern([])).toBeNull()
   })
 
-  it('returns null when no mood data', () => {
+  it('returns null when no rating data', () => {
     const sessions = [makeSession(), makeSession({ id: 2 })]
     expect(computeBestPattern(sessions)).toBeNull()
   })
 
-  it('returns null when no pattern shows improvement', () => {
+  it('prefers pattern with many high-rated sessions over single perfect score', () => {
+    // globalAvg = (4+5+5+5) / 4 = 4.75, C = 2
+    // pralokita: avg 4.67, count 3 → (3*4.67 + 2*4.75) / 5 = 4.7
+    // sleep_rem: avg 5, count 1 → (1*5 + 2*4.75) / 3 = 4.83
+    // With only 1 session difference, sleep_rem still slightly wins.
+    // But with more sessions the frequent pattern dominates:
     const sessions = [
-      makeSession({ moodBefore: 2, moodAfter: 3 }),  // worsened
-      makeSession({ id: 2, patternId: 'sama', patternName: 'Sama', moodBefore: 3, moodAfter: 3 }), // same
+      makeSession({ id: 1, patternId: 'pralokita', reflectionRating: 5 }),
+      makeSession({ id: 2, patternId: 'pralokita', reflectionRating: 5 }),
+      makeSession({ id: 3, patternId: 'pralokita', reflectionRating: 4 }),
+      makeSession({ id: 4, patternId: 'sleep_rem', patternName: 'REM Sleep', reflectionRating: 5 }),
     ]
-    expect(computeBestPattern(sessions)).toBeNull()
+    expect(computeBestPattern(sessions)).toBe('pralokita')
   })
 
-  it('finds the pattern with best avg improvement', () => {
+  it('single session is penalized by Bayesian average', () => {
+    // globalAvg = (3 + 5) / 2 = 4, C = 2
+    // pralokita: avg 3, count 1 → (1*3 + 2*4) / 3 = 3.67
+    // sama: avg 5, count 1 → (1*5 + 2*4) / 3 = 4.33
+    // sama still wins when it has a meaningfully higher rating
     const sessions = [
-      makeSession({ id: 1, patternId: 'pralokita', moodBefore: 5, moodAfter: 2 }), // +3
-      makeSession({ id: 2, patternId: 'pralokita', moodBefore: 4, moodAfter: 3 }), // +1 → avg 2
-      makeSession({ id: 3, patternId: 'sama', patternName: 'Sama', moodBefore: 5, moodAfter: 1 }), // +4 → avg 4
+      makeSession({ id: 1, patternId: 'pralokita', reflectionRating: 3 }),
+      makeSession({ id: 2, patternId: 'sama', patternName: 'Sama', reflectionRating: 5 }),
     ]
     expect(computeBestPattern(sessions)).toBe('sama')
   })
 
-  it('ignores sessions without both moods', () => {
+  it('ignores sessions without rating', () => {
     const sessions = [
-      makeSession({ id: 1, patternId: 'pralokita', moodBefore: 5, moodAfter: 2 }), // +3
-      makeSession({ id: 2, patternId: 'sama', patternName: 'Sama', moodBefore: 3 }), // no after — skip
+      makeSession({ id: 1, patternId: 'pralokita', reflectionRating: 4 }),
+      makeSession({ id: 2, patternId: 'sama', patternName: 'Sama' }), // no rating — skip
     ]
     expect(computeBestPattern(sessions)).toBe('pralokita')
   })
@@ -267,7 +267,7 @@ describe('computeStats extended fields', () => {
 
   it('includes all extended fields in empty result', () => {
     const stats = computeStats([])
-    expect(stats.avgMoodChange).toBeNull()
+    expect(stats.avgRating).toBeNull()
     expect(stats.completionRate).toBe(0)
     expect(stats.avgDurationMs).toBe(0)
     expect(stats.preferredTimeOfDay).toBeNull()

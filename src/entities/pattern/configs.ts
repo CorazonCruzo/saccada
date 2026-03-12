@@ -39,7 +39,7 @@ export const alokita: PatternConfig = {
   description: 'Wide circular gaze. Activates peripheral vision and vestibular system.',
   category: 'drishti',
   binduColor: 'teal',
-  sessionType: 'focusing',
+  sessionType: 'activating',
   recommendedDuration: 300_000,
   trajectory: 'circular',
   visual: 'bindu',

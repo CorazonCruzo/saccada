@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { isMobileDevice, isPortrait, tryLockLandscape } from './orientation'
 
 /**
- * Hook for session flow pages (mood-check, session).
+ * Hook for session flow pages (session, calibration).
  * On mobile: tries to lock landscape via Fullscreen + ScreenOrientation API.
  * If lock fails (iOS), returns `needsRotation = true` when portrait,
  * so the page can show a RotateDeviceOverlay.

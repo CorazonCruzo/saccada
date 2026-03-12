@@ -158,7 +158,7 @@ describe('translation structure', () => {
     const sections: Array<keyof Translation> = [
       'common', 'home', 'onboarding', 'session', 'results',
       'sessionSettings', 'calibration', 'notFound', 'categories',
-      'patternInfo', 'mood', 'settingsPage', 'trajectory', 'audioMode', 'pattern',
+      'patternInfo', 'reflection', 'settingsPage', 'trajectory', 'audioMode', 'pattern',
     ]
 
     for (const locale of locales) {
@@ -453,7 +453,6 @@ describe('results translations', () => {
       'title', 'noData', 'duration', 'status', 'completed',
       'endedEarly', 'pattern', 'audio', 'heatmapPlaceholder',
       'enableCameraHint', 'heatmapTitle', 'exportPng', 'gazePoints',
-      'moodChange', 'moodImproved', 'moodSame', 'moodWorse',
       'notePlaceholder', 'addNote',
       'repeatSession', 'newSession',
     ]
@@ -574,53 +573,47 @@ describe('useTranslation — tp() function', () => {
 // ────────────────────────────────────────────────────────
 // translations — mood section
 // ────────────────────────────────────────────────────────
-describe('mood translations', () => {
-  it('should have all mood keys in every locale', () => {
-    const keys: Array<keyof Translation['mood']> = [
-      'howAreYouNow', 'howAreYouAfter', 'skip', 'continue', 'levels',
+describe('reflection translations', () => {
+  it('should have all reflection keys in every locale', () => {
+    const keys: Array<keyof Translation['reflection']> = [
+      'title', 'skip', 'save', 'notePlaceholder', 'question', 'ratingLabels',
     ]
     for (const locale of locales) {
       for (const key of keys) {
-        expect(translations[locale].mood[key], `${locale}.mood.${key}`).toBeTruthy()
+        expect(translations[locale].reflection[key], `${locale}.reflection.${key}`).toBeTruthy()
       }
     }
   })
 
-  it('should have exactly 5 mood levels in every locale', () => {
+  it('should have exactly 5 rating labels in every locale', () => {
     for (const locale of locales) {
-      expect(translations[locale].mood.levels).toHaveLength(5)
+      expect(translations[locale].reflection.ratingLabels).toHaveLength(5)
     }
   })
 
-  it('each mood level should be a non-empty string', () => {
+  it('each rating label should be a non-empty string', () => {
     for (const locale of locales) {
       for (let i = 0; i < 5; i++) {
         expect(
-          translations[locale].mood.levels[i],
-          `${locale}.mood.levels[${i}]`,
+          translations[locale].reflection.ratingLabels[i],
+          `${locale}.reflection.ratingLabels[${i}]`,
         ).toBeTruthy()
       }
     }
   })
 
-  it('mood.howAreYouNow should differ between locales', () => {
-    const values = new Set(locales.map((l) => translations[l].mood.howAreYouNow))
+  it('reflection.title should differ between locales', () => {
+    const values = new Set(locales.map((l) => translations[l].reflection.title))
     expect(values.size).toBe(locales.length)
   })
 
-  it('mood.howAreYouAfter should differ between locales', () => {
-    const values = new Set(locales.map((l) => translations[l].mood.howAreYouAfter))
-    expect(values.size).toBe(locales.length)
-  })
-
-  it('results mood keys should be non-empty in every locale', () => {
-    const moodKeys: Array<keyof Translation['results']> = [
-      'moodChange', 'moodImproved', 'moodSame', 'moodWorse',
-      'notePlaceholder', 'addNote',
+  it('reflection question keys should be present in every locale', () => {
+    const questionKeys: Array<keyof Translation['reflection']['question']> = [
+      'calming', 'activating', 'focusing', 'processing',
     ]
     for (const locale of locales) {
-      for (const key of moodKeys) {
-        expect(translations[locale].results[key], `${locale}.results.${key}`).toBeTruthy()
+      for (const key of questionKeys) {
+        expect(translations[locale].reflection.question[key], `${locale}.reflection.question.${key}`).toBeTruthy()
       }
     }
   })

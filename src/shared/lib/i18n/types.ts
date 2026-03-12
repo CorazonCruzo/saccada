@@ -65,10 +65,6 @@ export interface Translation {
     heatmapTitle: string
     exportPng: string
     gazePoints: string
-    moodChange: string
-    moodImproved: string
-    moodSame: string
-    moodWorse: string
     notePlaceholder: string
     addNote: string
     repeatSession: string
@@ -87,12 +83,6 @@ export interface Translation {
     sensitivityWarning: string
     sensitivityDetails: string
     dontShowAgain: string
-    reflectionQuestion: {
-      calming: string
-      activating: string
-      focusing: string
-      processing: string
-    }
   }
   sessionSettings: {
     title: string
@@ -114,7 +104,6 @@ export interface Translation {
     recalibrate: string
     cameraNotAvailable: string
     cameraDenied: string
-    moodCheck: string
     beginSession: string
     background: string
     backgroundRotation: string
@@ -180,15 +169,18 @@ export interface Translation {
     benefits: string
     headphonesNote: string
   }
-  mood: {
-    howAreYouNow: string
-    howAreYouAfter: string
-    flamePrompt: string
-    restless: string
-    calm: string
+  reflection: {
+    title: string
     skip: string
-    continue: string
-    levels: string[]
+    save: string
+    notePlaceholder: string
+    question: {
+      calming: string
+      activating: string
+      focusing: string
+      processing: string
+    }
+    ratingLabels: string[]
   }
   history: {
     title: string
@@ -202,7 +194,7 @@ export interface Translation {
     deleteConfirm: string
     completed: string
     endedEarly: string
-    noMood: string
+    noRating: string
     periodWeek: string
     periodMonth: string
     periodAll: string
@@ -210,7 +202,7 @@ export interface Translation {
     customFrom: string
     customTo: string
     noResults: string
-    avgMoodChange: string
+    avgRating: string
     showMore: string
     showLess: string
     bestPattern: string

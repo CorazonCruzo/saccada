@@ -75,10 +75,7 @@ export const de: Translation = {
     heatmapTitle: 'Blick-Heatmap',
     exportPng: 'Als PNG speichern',
     gazePoints: 'Blickpunkte',
-    moodChange: 'Befinden',
-    moodImproved: 'verbessert',
-    moodSame: 'unver\u00E4ndert',
-    moodWorse: 'verschlechtert',
+
     notePlaceholder: 'Was haben Sie bemerkt? (optional)',
     addNote: 'Notiz hinzuf\u00FCgen',
     repeatSession: 'Sitzung wiederholen',
@@ -98,12 +95,6 @@ export const de: Translation = {
     sensitivityWarning: 'Hinweis zur Empfindlichkeit',
     sensitivityDetails: 'Bei Epilepsie, hoher Empfindlichkeit gegen\u00FCber visuellen Reizen oder Unwohlsein k\u00F6nnen Sie die Hintergrundanimation deaktivieren, die Geschwindigkeit verringern oder den Ton in den erweiterten Einstellungen ausschalten.',
     dontShowAgain: 'F\u00FCr dieses Muster nicht mehr anzeigen',
-    reflectionQuestion: {
-      calming: 'Haben Sie Entspannung gespürt?',
-      activating: 'Haben Sie sich energetisiert gefühlt?',
-      focusing: 'Haben Sie erhöhte Konzentration gespürt?',
-      processing: 'Haben Sie eine emotionale Veränderung gespürt?',
-    },
   },
 
   sessionSettings: {
@@ -126,7 +117,6 @@ export const de: Translation = {
     recalibrate: 'Neu kalibrieren',
     cameraNotAvailable: 'Kamera nicht verf\u00FCgbar',
     cameraDenied: 'Kamerazugriff verweigert. \u00DCberpr\u00FCfen Sie die Berechtigungen (Schloss-Symbol).',
-    moodCheck: 'Befinden bewerten',
     beginSession: 'Sitzung starten',
     background: 'Hintergrund',
     backgroundRotation: 'Animation',
@@ -197,15 +187,18 @@ export const de: Translation = {
     headphonesNote: 'Kopfh\u00F6rer empfohlen',
   },
 
-  mood: {
-    howAreYouNow: 'Wie f\u00FChlen Sie sich jetzt?',
-    howAreYouAfter: 'Und jetzt?',
-    flamePrompt: 'Wie sieht Ihre innere Flamme aus?',
-    restless: 'Unruhig',
-    calm: 'Ruhig',
-    skip: '\u00DCberspringen',
-    continue: 'Weiter',
-    levels: ['Sehr ruhig', 'Ruhig', 'Mittel', 'Unruhig', 'Sehr unruhig'],
+  reflection: {
+    title: 'Wie war das?',
+    skip: 'Überspringen',
+    save: 'Speichern',
+    notePlaceholder: 'Gedanken oder Beobachtungen...',
+    question: {
+      calming: 'Haben Sie Entspannung oder Ruhe gespürt?',
+      activating: 'Fühlten Sie sich energiegeladen oder wach?',
+      focusing: 'Haben Sie eine verbesserte Konzentration bemerkt?',
+      processing: 'Haben Sie eine emotionale Veränderung gespürt?',
+    },
+    ratingLabels: ['Gar nicht', 'Ein wenig', 'Mäßig', 'Ziemlich', 'Sehr stark'],
   },
 
   history: {
@@ -220,7 +213,7 @@ export const de: Translation = {
     deleteConfirm: 'Sitzung l\u00F6schen?',
     completed: 'Abgeschlossen',
     endedEarly: 'Vorzeitig',
-    noMood: '-',
+    noRating: '-',
     periodWeek: 'Woche',
     periodMonth: 'Monat',
     periodAll: 'Alle',
@@ -228,7 +221,7 @@ export const de: Translation = {
     customFrom: 'Von',
     customTo: 'Bis',
     noResults: 'Keine Sitzungen gefunden.',
-    avgMoodChange: 'Befinden',
+    avgRating: 'Durchschn. Bewertung',
     showMore: 'Mehr',
     showLess: 'Weniger',
     bestPattern: 'Bestes Muster',

@@ -9,6 +9,7 @@ export interface SessionRecord {
   timestamp: number
   moodBefore?: number
   moodAfter?: number
+  reflectionRating?: number
   note?: string
   gazePoints?: Array<{ x: number; y: number; t: number; dotX?: number; dotY?: number }>
   viewportWidth?: number
@@ -22,6 +23,11 @@ const db = new Dexie('saccada') as Dexie & {
 }
 
 db.version(1).stores({
+  sessions: '++id, patternId, timestamp',
+})
+
+// v2: add reflectionRating (no index change needed, just schema awareness)
+db.version(2).stores({
   sessions: '++id, patternId, timestamp',
 })
 

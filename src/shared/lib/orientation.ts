@@ -1,8 +1,8 @@
 /**
  * Mobile orientation utilities for session flow.
  *
- * Session flow (mood-check-before → session → mood-check-after) should be
- * in landscape on mobile devices. Android: fullscreen + orientation lock.
+ * Session flow should be in landscape on mobile devices.
+ * Android: fullscreen + orientation lock.
  * iOS: show "rotate your device" overlay (no lock API).
  */
 

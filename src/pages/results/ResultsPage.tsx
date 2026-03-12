@@ -44,8 +44,8 @@ export default function ResultsPage() {
       elapsed: lastSession.elapsed,
       completed: lastSession.completed,
       timestamp: lastSession.timestamp,
-      moodBefore: lastSession.moodBefore,
-      moodAfter: lastSession.moodAfter,
+      reflectionRating: lastSession.reflectionRating,
+      note: lastSession.note,
       gazePoints: lastSession.gazePoints,
       viewportWidth: lastSession.viewportWidth,
       viewportHeight: lastSession.viewportHeight,
@@ -92,13 +92,8 @@ export default function ResultsPage() {
   }
 
   function handleRepeat() {
-    if (useSessionStore.getState().moodCheckEnabled) {
-      setSessionState('mood-check-before')
-      navigate('/mood-check?phase=before')
-    } else {
-      setSessionState('countdown')
-      navigate('/session')
-    }
+    setSessionState('countdown')
+    navigate('/session')
   }
 
   return (
@@ -144,12 +139,19 @@ export default function ResultsPage() {
               </span>
             </div>
           )}
-          {(lastSession.moodBefore != null || lastSession.moodAfter != null) && (
-            <MoodChangeRow
-              before={lastSession.moodBefore}
-              after={lastSession.moodAfter}
-              t={t}
-            />
+          {lastSession.reflectionRating != null && (
+            <div className="flex items-center justify-between border-b border-border-ornament/50 pb-2">
+              <span className="font-heading text-xs tracking-widest text-text-dim uppercase">
+                {t.reflection.title}
+              </span>
+              <span className="flex items-center gap-0.5 text-saffron">
+                {Array.from({ length: 5 }, (_, i) => (
+                  <span key={i} className={i < lastSession.reflectionRating! ? 'opacity-100' : 'opacity-20'}>
+                    {'\u2665'}
+                  </span>
+                ))}
+              </span>
+            </div>
           )}
         </div>
 
@@ -212,25 +214,25 @@ export default function ResultsPage() {
 
         {/* Note */}
         <div className="mt-6">
-          {noteOpen ? (
+          {noteOpen || lastSession.note ? (
             <textarea
-              value={noteText}
+              value={noteText || lastSession.note || ''}
               onChange={(e) => setNoteText(e.target.value)}
               onBlur={() => {
-                if (noteText.trim() && lastSession) {
-                  const updated = { ...lastSession, note: noteText.trim() }
+                const text = noteText.trim()
+                if (text && lastSession) {
+                  const updated = { ...lastSession, note: text }
                   setLastSession(updated)
-                  // Update the Dexie record too
                   db.sessions
                     .where('timestamp').equals(lastSession.timestamp)
-                    .modify({ note: noteText.trim() })
+                    .modify({ note: text })
                     .catch(() => {})
                 }
               }}
               placeholder={t.results.notePlaceholder}
               className="w-full resize-none rounded-lg border border-border-ornament bg-bg-mid px-3 py-2 font-body text-sm font-light text-text-bright placeholder:text-text-dim focus:border-teal focus:outline-none"
               rows={3}
-              autoFocus
+              autoFocus={!lastSession.note}
             />
           ) : (
             <button
@@ -269,61 +271,6 @@ function StatRow({
     <div className="flex items-center justify-between border-b border-border-ornament/50 pb-2">
       <span className="font-heading text-xs tracking-widest text-text-dim uppercase">{label}</span>
       <span className={`font-heading text-sm ${valueColor}`}>{value}</span>
-    </div>
-  )
-}
-
-/**
- * Compute mood change display values.
- * Scale: 1 = calm (good) .. 5 = restless (bad). Decrease = improvement.
- */
-export function computeMoodChange(before?: number, after?: number) {
-  const hasBoth = before != null && after != null
-  const diff = hasBoth ? after! - before! : 0
-  const direction: 'improved' | 'worsened' | 'same' =
-    diff < 0 ? 'improved' : diff > 0 ? 'worsened' : 'same'
-  const color = diff < 0 ? 'text-teal' : diff > 0 ? 'text-lotus' : 'text-text-muted'
-  const arrow = diff < 0 ? '\u2191' : diff > 0 ? '\u2193' : ''
-  return { hasBoth, diff, direction, color, arrow }
-}
-
-function MoodChangeRow({
-  before,
-  after,
-  t,
-}: {
-  before?: number
-  after?: number
-  t: { results: { moodChange: string; moodImproved: string; moodSame: string; moodWorse: string } }
-}) {
-  const { hasBoth, direction, color, arrow } = computeMoodChange(before, after)
-  const label =
-    direction === 'improved' ? t.results.moodImproved
-    : direction === 'worsened' ? t.results.moodWorse
-    : t.results.moodSame
-
-  return (
-    <div className="flex items-center justify-between border-b border-border-ornament/50 pb-2">
-      <span className="font-heading text-xs tracking-widest text-text-dim uppercase">
-        {t.results.moodChange}
-      </span>
-      <span className="flex items-center gap-2">
-        {before != null && (
-          <span className="font-heading text-sm text-text-muted">{before}</span>
-        )}
-        {hasBoth && (
-          <>
-            <span className="text-text-dim">{'\u2192'}</span>
-            <span className={`font-heading text-sm font-bold ${color}`}>{after}</span>
-            <span className={`font-heading text-xs ${color}`}>
-              {arrow} {label}
-            </span>
-          </>
-        )}
-        {!hasBoth && after != null && (
-          <span className={`font-heading text-sm ${color}`}>{after}</span>
-        )}
-      </span>
     </div>
   )
 }

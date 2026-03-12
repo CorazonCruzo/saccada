@@ -3,11 +3,10 @@ import { useNavigate } from 'react-router-dom'
 import { useLiveQuery } from 'dexie-react-hooks'
 import { db, type SessionRecord } from '@/shared/lib/db'
 import { patternsById } from '@/entities/pattern'
-import { computeStats, computeStreak, useSessionFilters, filterSessions, buildMonthGrid, prevMonth, nextMonth, isMonthInFuture, computeLongestStreak, colorLevel, toDateKey, type PeriodFilter, type CalendarDay, type MonthGrid } from '@/features/session-history'
+import { computeStats, computeStreak, useSessionFilters, buildMonthGrid, prevMonth, nextMonth, isMonthInFuture, computeLongestStreak, colorLevel, type PeriodFilter, type CalendarDay, type MonthGrid } from '@/features/session-history'
 import { useWeeklyGoalStore, getWeeklyProgress, getISOWeekStart, getWeeklyGoalStreak } from '@/features/weekly-goal'
 import { GoalProgressBar, GoalSettingDialog } from '@/widgets/weekly-goal-widget'
 import { groupSessionsByDay, getSessionFocusScore, computeAvgFocusScore } from '@/features/session-history/sessionList'
-import { computeMoodChange } from '@/pages/results/ResultsPage'
 import { reconstructDotPositions } from '@/shared/lib/math'
 import { useTranslation } from '@/shared/lib/i18n'
 import { formatTimer } from '@/shared/lib/format'
@@ -61,12 +60,6 @@ export default function HistoryPage() {
   const weeklyGoalStreakVal = weeklyGoal ? getWeeklyGoalStreak(sessions, weeklyGoal) : 0
   const monthGrid = buildMonthGrid(sessions, calYear, calMonth, locale)
 
-  // If a calendar day is selected, bypass period filter — show that day from all sessions
-  // (still respecting pattern filter)
-  const displayedSessions = selectedDay
-    ? filterSessions(sessions, 'all', { from: '', to: '' }, selectedPatternIds)
-        .filter((s) => toDateKey(s.timestamp) === selectedDay)
-    : filteredSessions
 
   async function handleDelete(id: number) {
     await db.sessions.delete(id)
@@ -217,8 +210,8 @@ export default function HistoryPage() {
             {showMore && (
               <div className="mt-3 grid grid-cols-4 gap-3">
                 <StatBlock
-                  label={t.history.avgMoodChange}
-                  value={stats.avgMoodChange != null ? formatMoodChange(stats.avgMoodChange) : '-'}
+                  label={t.history.avgRating}
+                  value={stats.avgRating != null ? `${stats.avgRating}` : '-'}
                 />
                 <StatBlock
                   label={t.history.bestPattern}
@@ -252,7 +245,17 @@ export default function HistoryPage() {
           <ActivityCalendar
             grid={monthGrid}
             selectedDay={selectedDay}
-            onDayClick={(date) => setSelectedDay(selectedDay === date ? null : date)}
+            onDayClick={(date) => {
+              if (selectedDay === date) {
+                setSelectedDay(null)
+                setPeriod('all')
+                setCustomRange({ from: '', to: '' })
+              } else {
+                setSelectedDay(date)
+                setPeriod('custom')
+                setCustomRange({ from: date, to: date })
+              }
+            }}
             onPrev={() => { const [y, m] = prevMonth(calYear, calMonth); setCalYear(y); setCalMonth(m) }}
             onNext={() => { const [y, m] = nextMonth(calYear, calMonth); setCalYear(y); setCalMonth(m) }}
             canGoNext={!isMonthInFuture(...nextMonth(calYear, calMonth))}
@@ -282,9 +285,9 @@ export default function HistoryPage() {
         )}
 
         {/* Session list grouped by day */}
-        {displayedSessions.length > 0 && (
+        {filteredSessions.length > 0 && (
           <SessionList
-            sessions={displayedSessions}
+            sessions={filteredSessions}
             expandedIds={expandedIds}
             onToggleExpand={toggleExpand}
             deleteId={deleteId}
@@ -309,12 +312,6 @@ function StatBlock({ label, value }: { label: string; value: string }) {
       <p className="mt-0.5 font-heading text-[10px] tracking-widest text-text-dim uppercase">{label}</p>
     </div>
   )
-}
-
-function formatMoodChange(avg: number): string {
-  if (avg > 0) return `+${avg}`
-  if (avg < 0) return String(avg)
-  return '0'
 }
 
 type TranslationWithTime = { history: { timeMorning: string; timeAfternoon: string; timeEvening: string; timeNight: string } }
@@ -597,7 +594,6 @@ function SessionCard({
   tp: (id: string) => { name: string } | undefined
 }) {
   const pattern = patternsById[session.patternId]
-  const { hasBoth, color, arrow } = computeMoodChange(session.moodBefore, session.moodAfter)
   const focusScore = useMemo(() => getSessionFocusScore(session, pattern), [session, pattern])
   const hasGaze = session.gazePoints && session.gazePoints.length > 0
   const [editingNote, setEditingNote] = useState(false)
@@ -648,13 +644,14 @@ function SessionCard({
         <span className={session.completed ? 'text-teal' : 'text-text-dim'}>
           {session.completed ? t.history.completed : t.history.endedEarly}
         </span>
-        {hasBoth && (
-          <span className={color}>
-            {session.moodBefore} {'\u2192'} {session.moodAfter} {arrow}
+        {session.reflectionRating != null && (
+          <span className="flex items-center gap-0.5 text-saffron">
+            {Array.from({ length: 5 }, (_, i) => (
+              <span key={i} className={i < session.reflectionRating! ? 'opacity-100' : 'opacity-20'}>
+                {'\u2665'}
+              </span>
+            ))}
           </span>
-        )}
-        {!hasBoth && session.moodBefore != null && (
-          <span className="text-text-dim">{session.moodBefore}</span>
         )}
         <span className="ml-auto">
           {deleteId === session.id ? (

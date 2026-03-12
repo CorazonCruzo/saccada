@@ -75,10 +75,7 @@ export const pt: Translation = {
     heatmapTitle: 'Mapa de calor do olhar',
     exportPng: 'Salvar como PNG',
     gazePoints: 'Pontos de olhar',
-    moodChange: 'Humor',
-    moodImproved: 'melhorou',
-    moodSame: 'sem mudança',
-    moodWorse: 'piorou',
+
     notePlaceholder: 'O que você notou? (opcional)',
     addNote: 'Adicionar nota',
     repeatSession: 'Repetir sessão',
@@ -98,12 +95,6 @@ export const pt: Translation = {
     sensitivityWarning: 'Nota de sensibilidade',
     sensitivityDetails: 'Se voc\u00EA tem epilepsia, alta sensibilidade \u00E0 estimula\u00E7\u00E3o visual ou sente desconforto, pode desativar a anima\u00E7\u00E3o de fundo, reduzir a velocidade ou desativar o som nas configura\u00E7\u00F5es avan\u00E7adas.',
     dontShowAgain: 'N\u00E3o mostrar para este padr\u00E3o',
-    reflectionQuestion: {
-      calming: 'Você sentiu relaxamento?',
-      activating: 'Você se sentiu mais energizado?',
-      focusing: 'Você sentiu mais concentração?',
-      processing: 'Você sentiu uma mudança emocional?',
-    },
   },
 
   sessionSettings: {
@@ -126,7 +117,6 @@ export const pt: Translation = {
     recalibrate: 'Recalibrar',
     cameraNotAvailable: 'Câmera não disponível',
     cameraDenied: 'Acesso à câmera negado. Verifique as permissões (ícone de cadeado).',
-    moodCheck: 'Avaliação de humor',
     beginSession: 'Iniciar sessão',
     background: 'Fundo',
     backgroundRotation: 'Animação',
@@ -197,15 +187,18 @@ export const pt: Translation = {
     headphonesNote: 'Fones recomendados para este padrão',
   },
 
-  mood: {
-    howAreYouNow: 'Como você está se sentindo agora?',
-    howAreYouAfter: 'E agora?',
-    flamePrompt: 'Como está sua chama interior?',
-    restless: 'Inquieto',
-    calm: 'Calmo',
+  reflection: {
+    title: 'Como foi?',
     skip: 'Pular',
-    continue: 'Continuar',
-    levels: ['Muito calmo', 'Calmo', 'Moderado', 'Inquieto', 'Muito inquieto'],
+    save: 'Salvar',
+    notePlaceholder: 'Pensamentos ou observações...',
+    question: {
+      calming: 'Você sentiu relaxamento ou calma?',
+      activating: 'Você se sentiu mais energizado(a) ou alerta?',
+      focusing: 'Você notou maior concentração?',
+      processing: 'Você sentiu uma mudança emocional?',
+    },
+    ratingLabels: ['Nada', 'Um pouco', 'Moderadamente', 'Bastante', 'Muito'],
   },
 
   history: {
@@ -220,7 +213,7 @@ export const pt: Translation = {
     deleteConfirm: 'Excluir esta sessão?',
     completed: 'Concluída',
     endedEarly: 'Encerrada antes',
-    noMood: '-',
+    noRating: '-',
     periodWeek: 'Semana',
     periodMonth: 'Mês',
     periodAll: 'Tudo',
@@ -228,7 +221,7 @@ export const pt: Translation = {
     customFrom: 'De',
     customTo: 'Até',
     noResults: 'Nenhuma sessão corresponde a esses filtros.',
-    avgMoodChange: 'Humor',
+    avgRating: 'Avaliação média',
     showMore: 'Mais',
     showLess: 'Menos',
     bestPattern: 'Melhor padrão',

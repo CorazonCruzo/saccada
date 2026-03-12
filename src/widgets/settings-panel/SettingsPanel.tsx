@@ -27,7 +27,6 @@ export function SettingsPanel({ open, onOpenChange, onStart }: SettingsPanelProp
     volume, setVolume,
     soundEnabled, toggleSound,
     guidedMode, toggleGuided,
-    moodCheckEnabled, toggleMoodCheck,
     eyeTrackingEnabled, setEyeTracking,
     calibratedAt, setCalibratedAt,
     visualScale, setVisualScale,
@@ -279,15 +278,6 @@ export function SettingsPanel({ open, onOpenChange, onStart }: SettingsPanelProp
               active={guidedMode}
               activeColor="turmeric"
               onToggle={toggleGuided}
-            />
-
-            {/* Mood check */}
-            <ToggleRow
-              label={t.sessionSettings.moodCheck}
-              icon={'\u2661'}
-              active={moodCheckEnabled}
-              activeColor="gold"
-              onToggle={toggleMoodCheck}
             />
 
             {/* Eye Tracking — desktop only, hidden on mobile */}

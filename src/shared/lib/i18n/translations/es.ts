@@ -75,10 +75,7 @@ export const es: Translation = {
     heatmapTitle: 'Mapa de calor de la mirada',
     exportPng: 'Guardar como PNG',
     gazePoints: 'Puntos de mirada',
-    moodChange: 'Estado de \u00E1nimo',
-    moodImproved: 'mejor\u00F3',
-    moodSame: 'sin cambios',
-    moodWorse: 'empeor\u00F3',
+
     notePlaceholder: '\u00BFQu\u00E9 notaste? (opcional)',
     addNote: 'Agregar nota',
     repeatSession: 'Repetir sesi\u00F3n',
@@ -98,12 +95,6 @@ export const es: Translation = {
     sensitivityWarning: 'Nota de sensibilidad',
     sensitivityDetails: 'Si tienes epilepsia, alta sensibilidad a la estimulación visual o sientes molestias, puedes desactivar la animación de fondo, reducir la velocidad o desactivar el sonido en los ajustes avanzados.',
     dontShowAgain: 'No mostrar para este patr\u00F3n',
-    reflectionQuestion: {
-      calming: '¿Sentiste relajación?',
-      activating: '¿Sentiste más energía?',
-      focusing: '¿Sentiste mayor concentración?',
-      processing: '¿Sentiste un cambio emocional?',
-    },
   },
 
   sessionSettings: {
@@ -126,7 +117,6 @@ export const es: Translation = {
     recalibrate: 'Recalibrar',
     cameraNotAvailable: 'C\u00E1mara no disponible en este dispositivo',
     cameraDenied: 'Acceso a la c\u00E1mara denegado. Revisa los permisos de c\u00E1mara en la configuraci\u00F3n del navegador (icono de candado en la barra de direcciones).',
-    moodCheck: 'Control del estado',
     beginSession: 'Iniciar sesi\u00F3n',
     background: 'Fondo',
     backgroundRotation: 'Animaci\u00F3n',
@@ -197,15 +187,18 @@ export const es: Translation = {
     headphonesNote: 'Se recomiendan auriculares para este patr\u00F3n',
   },
 
-  mood: {
-    howAreYouNow: '\u00BFC\u00F3mo te sientes ahora?',
-    howAreYouAfter: '\u00BFY ahora?',
-    flamePrompt: '\u00BFC\u00F3mo es tu llama interior?',
-    restless: 'Inquieto',
-    calm: 'Tranquilo',
+  reflection: {
+    title: 'Como te sientes?',
     skip: 'Omitir',
-    continue: 'Continuar',
-    levels: ['Muy tranquilo', 'Tranquilo', 'Moderado', 'Inquieto', 'Muy inquieto'],
+    save: 'Guardar',
+    notePlaceholder: 'Pensamientos u observaciones...',
+    question: {
+      calming: 'Sentiste relajación o calma?',
+      activating: 'Te sentiste con más energía o alerta?',
+      focusing: 'Notaste mayor concentración?',
+      processing: 'Sentiste un cambio emocional?',
+    },
+    ratingLabels: ['Nada', 'Un poco', 'Moderadamente', 'Bastante', 'Mucho'],
   },
   history: {
     title: 'Historial',
@@ -219,7 +212,7 @@ export const es: Translation = {
     deleteConfirm: '\u00BFEliminar esta sesi\u00F3n?',
     completed: 'Completada',
     endedEarly: 'Terminada antes',
-    noMood: '-',
+    noRating: '-',
     periodWeek: 'Semana',
     periodMonth: 'Mes',
     periodAll: 'Todo',
@@ -227,7 +220,7 @@ export const es: Translation = {
     customFrom: 'Desde',
     customTo: 'Hasta',
     noResults: 'No hay sesiones que coincidan con los filtros.',
-    avgMoodChange: 'Estado',
+    avgRating: 'Valoración media',
     showMore: 'Más',
     showLess: 'Menos',
     bestPattern: 'Mejor patrón',

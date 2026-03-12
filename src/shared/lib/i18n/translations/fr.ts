@@ -75,10 +75,7 @@ export const fr: Translation = {
     heatmapTitle: 'Carte thermique du regard',
     exportPng: 'Enregistrer en PNG',
     gazePoints: 'Points de regard',
-    moodChange: 'Humeur',
-    moodImproved: 'am\u00E9lior\u00E9e',
-    moodSame: 'inchang\u00E9e',
-    moodWorse: 'aggrav\u00E9e',
+
     notePlaceholder: 'Qu\u2019avez-vous remarqu\u00E9 ? (facultatif)',
     addNote: 'Ajouter une note',
     repeatSession: 'R\u00E9p\u00E9ter la session',
@@ -98,12 +95,6 @@ export const fr: Translation = {
     sensitivityWarning: 'Note de sensibilité',
     sensitivityDetails: 'En cas d\u2019\u00E9pilepsie, de forte sensibilit\u00E9 \u00E0 la stimulation visuelle ou d\u2019inconfort, vous pouvez d\u00E9sactiver l\u2019animation de fond, r\u00E9duire la vitesse ou couper le son dans les param\u00E8tres avanc\u00E9s.',
     dontShowAgain: 'Ne plus afficher pour ce sch\u00E9ma',
-    reflectionQuestion: {
-      calming: 'Avez-vous ressenti de la détente ?',
-      activating: 'Vous êtes-vous senti plus énergique ?',
-      focusing: 'Avez-vous ressenti une meilleure concentration ?',
-      processing: 'Avez-vous ressenti un changement émotionnel ?',
-    },
   },
 
   sessionSettings: {
@@ -126,7 +117,6 @@ export const fr: Translation = {
     recalibrate: 'Recalibrer',
     cameraNotAvailable: 'Cam\u00E9ra non disponible',
     cameraDenied: 'Acc\u00E8s \u00E0 la cam\u00E9ra refus\u00E9. V\u00E9rifiez les autorisations (ic\u00F4ne de cadenas).',
-    moodCheck: '\u00C9valuation de l\u2019humeur',
     beginSession: 'D\u00E9marrer la session',
     background: 'Arri\u00E8re-plan',
     backgroundRotation: 'Animation',
@@ -197,15 +187,18 @@ export const fr: Translation = {
     headphonesNote: 'Casque recommand\u00E9 pour ce sch\u00E9ma',
   },
 
-  mood: {
-    howAreYouNow: 'Comment vous sentez-vous maintenant ?',
-    howAreYouAfter: 'Et maintenant ?',
-    flamePrompt: '\u00C0 quoi ressemble votre flamme int\u00E9rieure ?',
-    restless: 'Agit\u00E9',
-    calm: 'Calme',
+  reflection: {
+    title: 'Comment c\'était ?',
     skip: 'Passer',
-    continue: 'Continuer',
-    levels: ['Tr\u00E8s calme', 'Calme', 'Mod\u00E9r\u00E9', 'Agit\u00E9', 'Tr\u00E8s agit\u00E9'],
+    save: 'Enregistrer',
+    notePlaceholder: 'Pensées ou observations...',
+    question: {
+      calming: 'Avez-vous ressenti de la relaxation ou du calme ?',
+      activating: 'Vous êtes-vous senti(e) plus énergique ou alerte ?',
+      focusing: 'Avez-vous remarqué une meilleure concentration ?',
+      processing: 'Avez-vous ressenti un changement émotionnel ?',
+    },
+    ratingLabels: ['Pas du tout', 'Un peu', 'Modérément', 'Assez', 'Énormément'],
   },
 
   history: {
@@ -220,7 +213,7 @@ export const fr: Translation = {
     deleteConfirm: 'Supprimer cette session ?',
     completed: 'Termin\u00E9e',
     endedEarly: 'En avance',
-    noMood: '-',
+    noRating: '-',
     periodWeek: 'Semaine',
     periodMonth: 'Mois',
     periodAll: 'Tout',
@@ -228,7 +221,7 @@ export const fr: Translation = {
     customFrom: 'Du',
     customTo: 'Au',
     noResults: 'Aucune session ne correspond aux filtres.',
-    avgMoodChange: 'Humeur',
+    avgRating: 'Note moyenne',
     showMore: 'Plus',
     showLess: 'Moins',
     bestPattern: 'Meilleur sch\u00E9ma',

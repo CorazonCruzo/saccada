@@ -75,7 +75,6 @@ function resetStore() {
     patternOverrides: {},
     visualScale: 1,
     calibratedAt: null,
-    moodBefore: null,
     lastSession: null,
   })
 }
@@ -128,7 +127,7 @@ describe('SessionPage keyboard: Escape', () => {
     expect(mockNavigate).not.toHaveBeenCalledWith('/', expect.anything())
 
     await act(async () => { vi.advanceTimersByTime(3000) })
-    expect(mockNavigate).toHaveBeenCalledWith('/mood-check?phase=after', { replace: true })
+    expect(mockNavigate).toHaveBeenCalledWith('/reflection', { replace: true })
 
     unmount()
   })
@@ -152,7 +151,7 @@ describe('SessionPage keyboard: Escape', () => {
     expect(mockNavigate).not.toHaveBeenCalledWith('/', expect.anything())
 
     await act(async () => { vi.advanceTimersByTime(3000) })
-    expect(mockNavigate).toHaveBeenCalledWith('/mood-check?phase=after', { replace: true })
+    expect(mockNavigate).toHaveBeenCalledWith('/reflection', { replace: true })
 
     unmount()
   })
@@ -175,10 +174,10 @@ describe('SessionPage keyboard: Escape', () => {
 
     await act(async () => { vi.advanceTimersByTime(3000) })
 
-    const moodCheckCalls = (mockNavigate.mock.calls as [string, object?][]).filter(
-      (c) => c[0] === '/mood-check?phase=after',
+    const reflectionCalls = (mockNavigate.mock.calls as [string, object?][]).filter(
+      (c) => c[0] === '/reflection',
     )
-    expect(moodCheckCalls).toHaveLength(1)
+    expect(reflectionCalls).toHaveLength(1)
 
     unmount()
   })
@@ -234,7 +233,7 @@ describe('SessionPage: zero-duration session discard', () => {
 
     expect(mockNavigate).toHaveBeenCalledWith('/', { replace: true })
     expect(mockNavigate).not.toHaveBeenCalledWith(
-      '/mood-check?phase=after',
+      '/reflection',
       expect.anything(),
     )
 
@@ -244,7 +243,7 @@ describe('SessionPage: zero-duration session discard', () => {
     unmount()
   })
 
-  it('discarded session does not trigger mood-check-after', async () => {
+  it('discarded session does not trigger reflection', async () => {
     const { unmount } = render(
       await import('./SessionPage').then((m) => {
         const Page = m.default
@@ -258,10 +257,10 @@ describe('SessionPage: zero-duration session discard', () => {
     // Advance well past any timer
     await act(async () => { vi.advanceTimersByTime(5000) })
 
-    const moodCheckCalls = (mockNavigate.mock.calls as [string, object?][]).filter(
-      (c) => c[0]?.includes('mood-check'),
+    const reflectionCalls = (mockNavigate.mock.calls as [string, object?][]).filter(
+      (c) => c[0]?.includes('reflection'),
     )
-    expect(moodCheckCalls).toHaveLength(0)
+    expect(reflectionCalls).toHaveLength(0)
 
     unmount()
   })
@@ -284,7 +283,7 @@ describe('SessionPage: zero-duration session discard', () => {
     expect(mockNavigate).not.toHaveBeenCalledWith('/', { replace: true })
 
     await act(async () => { vi.advanceTimersByTime(2000) })
-    expect(mockNavigate).toHaveBeenCalledWith('/mood-check?phase=after', { replace: true })
+    expect(mockNavigate).toHaveBeenCalledWith('/reflection', { replace: true })
 
     const { lastSession } = useSessionStore.getState()
     expect(lastSession).not.toBeNull()

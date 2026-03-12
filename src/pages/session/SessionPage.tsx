@@ -19,7 +19,7 @@ import { formatTimer } from '@/shared/lib/format'
 
 type SessionPhase = 'countdown' | 'active' | 'paused' | 'cooldown'
 
-/** Sessions shorter than this are discarded (not saved, no mood-check-after) */
+/** Sessions shorter than this are discarded (not saved) */
 export const MIN_SESSION_DURATION_MS = 1000
 
 export default function SessionPage() {
@@ -195,8 +195,6 @@ export default function SessionPage() {
 
     const gazePoints = gazeLogRef.current.getPoints()
 
-    const moodBefore = useSessionStore.getState().moodBefore
-
     const timer = setTimeout(() => {
       setLastSession({
         patternId: selectedPattern.id,
@@ -204,21 +202,14 @@ export default function SessionPage() {
         elapsed: Math.round(finalElapsed),
         completed,
         timestamp: Date.now(),
-        moodBefore: moodBefore ?? undefined,
         gazePoints: gazePoints.length > 0 ? gazePoints : undefined,
         viewportWidth: window.innerWidth,
         viewportHeight: window.innerHeight,
         speed: useSessionStore.getState().speed,
         visualScale: useSessionStore.getState().visualScale,
       })
-      if (useSessionStore.getState().moodCheckEnabled) {
-        setSessionState('mood-check-after')
-        navigate('/mood-check?phase=after', { replace: true })
-      } else {
-        void unlockOrientation()
-        setSessionState('results')
-        navigate('/results', { replace: true })
-      }
+      setSessionState('reflection')
+      navigate('/reflection', { replace: true })
     }, 3000)
 
     return () => clearTimeout(timer)

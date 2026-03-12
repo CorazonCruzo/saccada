@@ -1,10 +1,9 @@
 export type SessionState =
   | 'idle'
-  | 'mood-check-before'
   | 'calibrating'
   | 'countdown'
   | 'active'
   | 'paused'
   | 'cooldown'
-  | 'mood-check-after'
+  | 'reflection'
   | 'results'

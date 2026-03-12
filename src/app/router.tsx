@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import HomePage from '@/pages/home/HomePage'
-import MoodCheckPage from '@/pages/mood-check/MoodCheckPage'
 import SessionPage from '@/pages/session/SessionPage'
+import ReflectionPage from '@/pages/reflection/ReflectionPage'
 import ResultsPage from '@/pages/results/ResultsPage'
 import OnboardingPage from '@/pages/onboarding/OnboardingPage'
 import CalibrationPage from '@/pages/calibration/CalibrationPage'
@@ -15,8 +15,8 @@ export function AppRouter() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/mood-check" element={<MoodCheckPage />} />
         <Route path="/session" element={<SessionPage />} />
+        <Route path="/reflection" element={<ReflectionPage />} />
         <Route path="/results" element={<ResultsPage />} />
         <Route path="/onboarding" element={<OnboardingPage />} />
         <Route path="/calibration" element={<CalibrationPage />} />

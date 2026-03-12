@@ -534,13 +534,8 @@ export default function CalibrationPage() {
     stopGazeCollection()
     await tracker.saveCalibration()
     setCalibratedAt(Date.now())
-    if (useSessionStore.getState().moodCheckEnabled) {
-      setSessionState('mood-check-before')
-      navigate('/mood-check?phase=before', { replace: true })
-    } else {
-      setSessionState('countdown')
-      navigate('/session', { replace: true })
-    }
+    setSessionState('countdown')
+    navigate('/session', { replace: true })
   }
 
   function handleRecalibrate() {
