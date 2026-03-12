@@ -257,9 +257,10 @@ export function useAnimationLoop(
     } else if (isEyesClosed && keepVisual) {
       dimFactor = 0.5
     } else if (pat.id === 'nimilita') {
-      // Fade from 0.5 to 0.1 over first 30s, then hold at 0.1
-      const fadeProgress = Math.min(state.realTime / 30_000, 1)
-      dimFactor = 0.5 - fadeProgress * 0.4
+      // Gradual fade over 60s (both fixation phases before eyes-closed).
+      // Starts bright (0.85), stays visible (0.35) until the bell signals eyes-closed.
+      const fadeProgress = Math.min(state.realTime / 60_000, 1)
+      dimFactor = 0.85 - fadeProgress * 0.5
     } else if (pat.id === 'sama') {
       // Breathing pulsation: opacity oscillates 0.8..1.0, period 4s
       dimFactor = 0.9 + 0.1 * Math.sin(now / 1000 * Math.PI * 2 / 4)
