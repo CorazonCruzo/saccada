@@ -3,6 +3,7 @@ import { useTranslation } from '@/shared/lib/i18n'
 
 const GITHUB_URL = 'https://github.com/CorazonCruzo/saccada'
 const ISSUES_URL = 'https://github.com/CorazonCruzo/saccada/issues'
+const LINKEDIN_URL = 'https://www.linkedin.com/in/anastasiia-chestnykh-0953922a8/'
 
 export default function AboutPage() {
   const navigate = useNavigate()
@@ -31,7 +32,31 @@ export default function AboutPage() {
           <Section title={t.about.evidenceTitle} body={t.about.evidenceBody} />
           <Section title={t.about.controlsTitle} body={t.about.controlsBody} />
           <Section title={t.about.privacyTitle} body={t.about.privacyBody} />
-          <Section title={t.about.authorTitle} body={t.about.authorBody} />
+          {/* Author */}
+          <section>
+            <h2 className="font-heading text-xs tracking-widest text-turmeric uppercase">
+              {t.about.authorTitle}
+            </h2>
+            <p className="mt-3 font-body text-sm font-light leading-relaxed text-text-muted">
+              {t.about.authorBody.split(t.about.authorName).map((part, i, arr) =>
+                i < arr.length - 1 ? (
+                  <span key={i}>
+                    {part}
+                    <a
+                      href={LINKEDIN_URL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="font-normal text-text-bright underline decoration-gold/40 underline-offset-2 transition-colors hover:text-turmeric hover:decoration-turmeric/60"
+                    >
+                      {t.about.authorName}
+                    </a>
+                  </span>
+                ) : (
+                  <span key={i}>{part}</span>
+                ),
+              )}
+            </p>
+          </section>
 
           {/* Support */}
           <section>

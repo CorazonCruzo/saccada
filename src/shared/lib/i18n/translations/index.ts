@@ -5,5 +5,6 @@ import { es } from './es'
 import { de } from './de'
 import { fr } from './fr'
 import { pt } from './pt'
+import { ja } from './ja'
 
-export const translations: Record<Locale, Translation> = { en, ru, es, de, fr, pt }
+export const translations: Record<Locale, Translation> = { en, ru, es, de, fr, pt, ja }

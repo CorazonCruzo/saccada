@@ -1,6 +1,6 @@
-export type Locale = 'en' | 'ru' | 'es' | 'de' | 'fr' | 'pt'
+export type Locale = 'en' | 'ru' | 'es' | 'de' | 'fr' | 'pt' | 'ja'
 
-export const locales: Locale[] = ['en', 'ru', 'es', 'de', 'fr', 'pt']
+export const locales: Locale[] = ['en', 'ru', 'es', 'de', 'fr', 'pt', 'ja']
 
 export const localeNames: Record<Locale, string> = {
   en: 'English',
@@ -9,6 +9,7 @@ export const localeNames: Record<Locale, string> = {
   de: 'Deutsch',
   fr: 'Fran\u00E7ais',
   pt: 'Portugu\u00EAs',
+  ja: '日本語',
 }
 
 export interface PatternTranslation {
@@ -274,6 +275,7 @@ export interface Translation {
     privacyTitle: string
     privacyBody: string
     authorTitle: string
+    authorName: string
     authorBody: string
     supportTitle: string
     supportBody: string

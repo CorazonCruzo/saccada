@@ -23,7 +23,8 @@ describe('i18n types', () => {
     expect(locales).toContain('de')
     expect(locales).toContain('fr')
     expect(locales).toContain('pt')
-    expect(locales).toHaveLength(6)
+    expect(locales).toContain('ja')
+    expect(locales).toHaveLength(7)
   })
 
   it('localeNames should map every locale to a non-empty string', () => {
@@ -40,6 +41,7 @@ describe('i18n types', () => {
     expect(localeNames.de).toBe('Deutsch')
     expect(localeNames.fr).toBe('Fran\u00E7ais')
     expect(localeNames.pt).toBe('Portugu\u00EAs')
+    expect(localeNames.ja).toBe('日本語')
   })
 })
 
@@ -100,8 +102,14 @@ describe('detectBrowserLocale', () => {
     expect(detectBrowserLocale()).toBe('pt')
   })
 
-  it('should return "en" for unsupported languages', async () => {
+  it('should return "ja" for Japanese browser locale', async () => {
     setNavigatorLanguage('ja-JP')
+    const { detectBrowserLocale } = await import('./store')
+    expect(detectBrowserLocale()).toBe('ja')
+  })
+
+  it('should return "en" for unsupported languages', async () => {
+    setNavigatorLanguage('ko-KR')
     const { detectBrowserLocale } = await import('./store')
     expect(detectBrowserLocale()).toBe('en')
   })
