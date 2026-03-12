@@ -22,7 +22,8 @@ describe('i18n types', () => {
     expect(locales).toContain('es')
     expect(locales).toContain('de')
     expect(locales).toContain('fr')
-    expect(locales).toHaveLength(5)
+    expect(locales).toContain('pt')
+    expect(locales).toHaveLength(6)
   })
 
   it('localeNames should map every locale to a non-empty string', () => {
@@ -38,6 +39,7 @@ describe('i18n types', () => {
     expect(localeNames.es).toBe('Español')
     expect(localeNames.de).toBe('Deutsch')
     expect(localeNames.fr).toBe('Fran\u00E7ais')
+    expect(localeNames.pt).toBe('Portugu\u00EAs')
   })
 })
 
@@ -90,6 +92,12 @@ describe('detectBrowserLocale', () => {
     setNavigatorLanguage('fr-FR')
     const { detectBrowserLocale } = await import('./store')
     expect(detectBrowserLocale()).toBe('fr')
+  })
+
+  it('should return "pt" for Portuguese browser locale', async () => {
+    setNavigatorLanguage('pt-BR')
+    const { detectBrowserLocale } = await import('./store')
+    expect(detectBrowserLocale()).toBe('pt')
   })
 
   it('should return "en" for unsupported languages', async () => {
@@ -614,9 +622,10 @@ describe('mood translations', () => {
 // cross-locale content differentiation
 // ────────────────────────────────────────────────────────
 describe('translations are actually different per locale', () => {
-  it('common.cancel should differ between locales', () => {
+  it('common.cancel should differ between most locales', () => {
+    // es and pt share "Cancelar" — allow one collision between related languages
     const values = new Set(locales.map((l) => translations[l].common.cancel))
-    expect(values.size).toBe(locales.length)
+    expect(values.size).toBeGreaterThanOrEqual(locales.length - 1)
   })
 
   it('home.tagline should differ between locales', () => {

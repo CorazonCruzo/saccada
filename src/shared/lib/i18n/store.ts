@@ -13,6 +13,7 @@ export function detectBrowserLocale(): Locale {
   if (lang === 'es') return 'es'
   if (lang === 'de') return 'de'
   if (lang === 'fr') return 'fr'
+  if (lang === 'pt') return 'pt'
   return 'en'
 }
 

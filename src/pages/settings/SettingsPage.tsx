@@ -59,7 +59,7 @@ export default function SettingsPage() {
             <h2 className="font-heading text-xs tracking-widest text-turmeric uppercase">
               {t.settingsPage.language}
             </h2>
-            <div className="mt-3 flex gap-2">
+            <div className="mt-3 flex flex-wrap gap-2">
               {locales.map((loc: Locale) => (
                 <Button
                   key={loc}
