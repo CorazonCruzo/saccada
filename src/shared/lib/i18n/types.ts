@@ -1,11 +1,12 @@
-export type Locale = 'en' | 'ru' | 'es'
+export type Locale = 'en' | 'ru' | 'es' | 'de'
 
-export const locales: Locale[] = ['en', 'ru', 'es']
+export const locales: Locale[] = ['en', 'ru', 'es', 'de']
 
 export const localeNames: Record<Locale, string> = {
   en: 'English',
   ru: 'Русский',
   es: 'Español',
+  de: 'Deutsch',
 }
 
 export interface PatternTranslation {

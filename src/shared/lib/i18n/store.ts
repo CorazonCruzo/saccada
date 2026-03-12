@@ -11,6 +11,7 @@ export function detectBrowserLocale(): Locale {
   const lang = navigator.language.slice(0, 2)
   if (lang === 'ru') return 'ru'
   if (lang === 'es') return 'es'
+  if (lang === 'de') return 'de'
   return 'en'
 }
 

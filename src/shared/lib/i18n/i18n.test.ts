@@ -16,11 +16,12 @@ const audioModeKeys = ['bilateral', 'binaural', 'drone', 'rhythmic'] as const
 // types.ts
 // ────────────────────────────────────────────────────────
 describe('i18n types', () => {
-  it('locales should contain exactly en, ru, es', () => {
-    expect(locales).toHaveLength(3)
+  it('locales should contain all supported languages', () => {
     expect(locales).toContain('en')
     expect(locales).toContain('ru')
     expect(locales).toContain('es')
+    expect(locales).toContain('de')
+    expect(locales).toHaveLength(4)
   })
 
   it('localeNames should map every locale to a non-empty string', () => {
@@ -34,6 +35,7 @@ describe('i18n types', () => {
     expect(localeNames.en).toBe('English')
     expect(localeNames.ru).toBe('Русский')
     expect(localeNames.es).toBe('Español')
+    expect(localeNames.de).toBe('Deutsch')
   })
 })
 
@@ -74,6 +76,12 @@ describe('detectBrowserLocale', () => {
     setNavigatorLanguage('en-US')
     const { detectBrowserLocale } = await import('./store')
     expect(detectBrowserLocale()).toBe('en')
+  })
+
+  it('should return "de" for German browser locale', async () => {
+    setNavigatorLanguage('de-DE')
+    const { detectBrowserLocale } = await import('./store')
+    expect(detectBrowserLocale()).toBe('de')
   })
 
   it('should return "en" for unsupported languages', async () => {
@@ -573,12 +581,12 @@ describe('mood translations', () => {
 
   it('mood.howAreYouNow should differ between locales', () => {
     const values = new Set(locales.map((l) => translations[l].mood.howAreYouNow))
-    expect(values.size).toBe(3)
+    expect(values.size).toBe(locales.length)
   })
 
   it('mood.howAreYouAfter should differ between locales', () => {
     const values = new Set(locales.map((l) => translations[l].mood.howAreYouAfter))
-    expect(values.size).toBe(3)
+    expect(values.size).toBe(locales.length)
   })
 
   it('results mood keys should be non-empty in every locale', () => {
@@ -598,14 +606,14 @@ describe('mood translations', () => {
 // cross-locale content differentiation
 // ────────────────────────────────────────────────────────
 describe('translations are actually different per locale', () => {
-  it('common.cancel should differ between en, ru, es', () => {
+  it('common.cancel should differ between locales', () => {
     const values = new Set(locales.map((l) => translations[l].common.cancel))
-    expect(values.size).toBe(3)
+    expect(values.size).toBe(locales.length)
   })
 
-  it('home.tagline should differ between en, ru, es', () => {
+  it('home.tagline should differ between locales', () => {
     const values = new Set(locales.map((l) => translations[l].home.tagline))
-    expect(values.size).toBe(3)
+    expect(values.size).toBe(locales.length)
   })
 
   it('pattern names should differ for translated patterns', () => {
@@ -631,8 +639,8 @@ describe('translations are actually different per locale', () => {
     }
   })
 
-  it('session.paused should differ between en, ru, es', () => {
+  it('session.paused should differ between locales', () => {
     const values = new Set(locales.map((l) => translations[l].session.paused))
-    expect(values.size).toBe(3)
+    expect(values.size).toBe(locales.length)
   })
 })
