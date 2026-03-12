@@ -256,6 +256,29 @@ export interface Translation {
     days: string
     daysPerWeek: string
   }
+  about: {
+    title: string
+    ideaTitle: string
+    ideaBody: string
+    soundTitle: string
+    soundBody: string
+    eyeTrackingTitle: string
+    eyeTrackingBody: string
+    evidenceTitle: string
+    evidenceBody: string
+    controlsTitle: string
+    controlsBody: string
+    privacyTitle: string
+    privacyBody: string
+    authorTitle: string
+    authorBody: string
+    supportTitle: string
+    supportBody: string
+    starOnGithub: string
+    feedbackTitle: string
+    feedbackBody: string
+    openIssue: string
+  }
   backgroundName: Record<string, string>
   pattern: Record<string, PatternTranslation>
 }

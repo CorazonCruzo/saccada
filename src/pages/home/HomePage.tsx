@@ -105,7 +105,7 @@ export default function HomePage() {
       {/* Footer links */}
       <div className="mx-auto mt-12 flex items-center gap-6">
         <button
-          onClick={() => navigate('/onboarding')}
+          onClick={() => navigate('/about')}
           className="cursor-pointer font-body text-xs font-light text-text-dim transition-colors hover:text-text-muted"
         >
           {t.home.aboutLink}

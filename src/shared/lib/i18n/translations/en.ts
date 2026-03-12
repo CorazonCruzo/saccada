@@ -8,7 +8,7 @@ export const en: Translation = {
   },
 
   home: {
-    tagline: 'Eye movement therapy \u00B7 Drishti Bheda \u00D7 EMDR \u00D7 Neuroscience',
+    tagline: 'Eye movement practice \u00B7 Drishti Bheda \u00D7 EMDR \u00D7 Neuroscience',
     startButton: 'Start',
     aboutLink: 'About Saccada',
   },
@@ -17,7 +17,7 @@ export const en: Translation = {
     slides: [
       {
         title: 'Saccada',
-        body: 'Eye movement therapy combining ancient Drishti Bheda traditions from Indian classical dance, EMDR bilateral stimulation, and REM sleep neuroscience.',
+        body: 'Eye movement practice combining ancient Drishti Bheda traditions from Indian classical dance, EMDR bilateral stimulation, and REM sleep neuroscience.',
       },
       {
         title: 'Follow the Bindu',
@@ -25,7 +25,19 @@ export const en: Translation = {
       },
       {
         title: 'Best with Headphones',
-        body: 'Bilateral audio pans left and right with the dot. Binaural beats create theta waves for deep processing. Tone modes provide meditative ambiance. All sound is synthesized in real time.',
+        body: 'Sound moves from left headphone to right in sync with the dot. Binaural beats create theta waves for deep processing. Drone mode creates a meditative backdrop. All sound is synthesized in real time \u2014 no audio files, works offline.',
+      },
+      {
+        title: 'Eye Tracking',
+        body: 'Enable your webcam and the app adapts to your eyes. Speed adjusts automatically. After each session \u2014 a gaze heatmap and focus score. Recalibrate when you change position or reopen your laptop. Works on desktop browsers only (Chrome, Firefox). Not available on mobile or Safari/iOS.',
+      },
+      {
+        title: 'Your Practice',
+        body: 'Mood check before and after each session. Activity calendar. Weekly goals. Focus score history. All stored locally in your browser \u2014 friendly statistics, no pressure.',
+      },
+      {
+        title: 'A Tool, Not a Cure',
+        body: 'Saccada is a self-help tool, not a replacement for therapy. Some patterns are based on well-researched protocols (EMDR). Others are hypotheses grounded in neuroscience. Each pattern\'s info panel explains the evidence level. If you work with an EMDR therapist, this tool can support your practice between sessions.',
       },
       {
         title: 'Your Data Stays Here',
@@ -84,7 +96,7 @@ export const en: Translation = {
     unlimited: 'Unlimited',
     speed: 'Speed',
     visualScale: 'Visual Scale',
-    visualScaleHint: 'Mandala, bindu and flame size. Also +/- during session.',
+    visualScaleHint: 'Background pattern, bindu and flame size. Also +/- during session.',
     sound: 'Sound',
     volume: 'Volume',
     headphonesRecommended: 'Headphones recommended',
@@ -266,6 +278,30 @@ export const en: Translation = {
     milestone: 'weeks of consistent practice',
     days: 'd',
     daysPerWeek: 'days per week',
+  },
+
+  about: {
+    title: 'About',
+    ideaTitle: 'The Idea',
+    ideaBody: 'Three traditions, millennia apart, independently discovered the same thing: rhythmic eye movements alter the state of consciousness. Indian classical dancers have trained 8 types of eye movements for over 2000 years (Drishti Bheda from Natya Shastra, ~2nd century BCE). In 1989, psychologist Francine Shapiro found that horizontal saccades reduce anxiety \u2014 EMDR was born. Neuroscientists later showed both mechanisms connect to how the brain processes information during REM sleep. Saccada is the first tool to combine all three discoveries.',
+    soundTitle: 'Sound',
+    soundBody: 'All sound is synthesized in real time via WebAudio API. No audio files \u2014 works offline. Four modes: bilateral stimulation (tone pans left-right in sync with the dot), binaural beats (theta waves 4\u20138 Hz, headphones only), drone (tanpura synthesis \u2014 enveloping meditative backdrop), rhythmic pulsation. Frequencies are selected based on research \u2014 details in each pattern\'s info panel.',
+    eyeTrackingTitle: 'Eye Tracking',
+    eyeTrackingBody: 'Your webcam analyzes gaze position in real time. Dot speed adapts automatically: if your gaze falls behind, the dot slows down. After each session you get a gaze heatmap and focus score. Recalibrate when you change position, reopen your laptop, or change lighting. Limitations: desktop only, Chrome and Firefox. Not supported in Safari, iOS, or on mobile devices. Video is processed locally \u2014 camera data never leaves your device.',
+    evidenceTitle: 'Evidence & Honesty',
+    evidenceBody: 'Some patterns in Saccada are based on well-researched protocols. Others are hypotheses. We mark the evidence level for each pattern: "researched" (clinical studies exist), "preliminary" (related research supports the mechanism), "hypothesis" (logical chain grounded in research, but not directly tested). We believe transparency about what we know and what we\'re exploring is a form of respect.',
+    controlsTitle: 'Controls',
+    controlsBody: 'Keyboard shortcuts: Space \u2014 pause/resume, Escape \u2014 stop session, F \u2014 fullscreen, I \u2014 info panel, G \u2014 guided text, +/- \u2014 visual scale. All settings accessible before session: sound, volume, speed, guided text, eye tracking, background pattern, mood check.',
+    privacyTitle: 'Privacy',
+    privacyBody: 'No servers, no databases, no accounts, no analytics, no trackers. All data is stored in your browser\'s IndexedDB. Camera processes video locally. Static site on Vercel CDN. Open source \u2014 verify it yourself.',
+    authorTitle: 'About the Author',
+    authorBody: 'Saccada is built by a developer with ADHD who needed a tool that doesn\'t cost $60/month and doesn\'t collect your data. The project is free and open source.',
+    supportTitle: 'Support',
+    supportBody: 'Saccada is free and always will be. If it helps you, consider supporting the project:',
+    starOnGithub: 'Star on GitHub',
+    feedbackTitle: 'Feedback',
+    feedbackBody: 'Found a bug or have a suggestion? Open an issue on GitHub.',
+    openIssue: 'Open issue',
   },
 
   backgroundName: {
