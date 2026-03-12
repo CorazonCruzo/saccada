@@ -23,8 +23,6 @@ describe('resolveTheme', () => {
 })
 
 describe('applyTheme', () => {
-  let originalMetaContent: string | null
-
   beforeEach(() => {
     document.documentElement.classList.remove('light', 'dark')
     // Ensure a meta theme-color exists
@@ -35,7 +33,6 @@ describe('applyTheme', () => {
       meta.setAttribute('content', '')
       document.head.appendChild(meta)
     }
-    originalMetaContent = meta.getAttribute('content')
   })
 
   afterEach(() => {

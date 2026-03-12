@@ -36,6 +36,7 @@ export default function ResultsPage() {
   // Save session to Dexie once on mount (skip zero/trivial sessions)
   useEffect(() => {
     if (!shouldSaveSession(lastSession) || savedRef.current) return
+    if (!lastSession) return
     savedRef.current = true
     db.sessions.add({
       patternId: lastSession.patternId,

@@ -110,8 +110,8 @@ describe('drawBackground', () => {
     // Many edges stroked in a single batch
     expect(ctx.stroke).toHaveBeenCalledTimes(1)
     // Subdivision produces thousands of edges
-    expect(ctx.moveTo.mock.calls.length).toBeGreaterThan(1000)
-    expect(ctx.lineTo.mock.calls.length).toBeGreaterThan(1000)
+    expect((ctx.moveTo as unknown as ReturnType<typeof vi.fn>).mock.calls.length).toBeGreaterThan(1000)
+    expect((ctx.lineTo as unknown as ReturnType<typeof vi.fn>).mock.calls.length).toBeGreaterThan(1000)
   })
 
   it('moire draws two sets of concentric circles', () => {
@@ -146,8 +146,8 @@ describe('drawBackground', () => {
     expect(ctx.save).toHaveBeenCalled()
     // In test env (no real canvas): fallback to fillRect grid
     // In browser: uses offscreen ImageData + drawImage
-    const usedDrawImage = ctx.drawImage.mock.calls.length > 0
-    const usedFillRect = ctx.fillRect.mock.calls.length > 0
+    const usedDrawImage = (ctx.drawImage as unknown as ReturnType<typeof vi.fn>).mock.calls.length > 0
+    const usedFillRect = (ctx.fillRect as unknown as ReturnType<typeof vi.fn>).mock.calls.length > 0
     expect(usedDrawImage || usedFillRect).toBe(true)
     expect(ctx.restore).toHaveBeenCalled()
   })
@@ -178,11 +178,11 @@ describe('drawBackground', () => {
     const arcCalls2: number[][] = []
 
     const ctx1 = createMockCtx()
-    ctx1.arc = vi.fn((...args: number[]) => { arcCalls1.push(args) })
+    ;(ctx1 as any).arc = vi.fn((...args: number[]) => { arcCalls1.push(args) })
     drawBackground('seed-of-life', ctx1, 100, 100, 0, 0, 0.15, 1, '#a', '#b', '#c')
 
     const ctx2 = createMockCtx()
-    ctx2.arc = vi.fn((...args: number[]) => { arcCalls2.push(args) })
+    ;(ctx2 as any).arc = vi.fn((...args: number[]) => { arcCalls2.push(args) })
     drawBackground('seed-of-life', ctx2, 100, 100, 0, 0, 0.15, 2, '#a', '#b', '#c')
 
     // Center circle radius at scale 1: 50, at scale 2: 100

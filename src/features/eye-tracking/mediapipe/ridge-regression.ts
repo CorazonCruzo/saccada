@@ -1,4 +1,4 @@
-import { matMul, matTranspose, matVecMul, matInverse, matIdentity } from './matrix-math'
+import { matMul, matTranspose, matVecMul, matInverse } from './matrix-math'
 
 /**
  * Ridge regression with closed-form solution.

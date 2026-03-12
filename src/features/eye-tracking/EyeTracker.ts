@@ -68,7 +68,7 @@ export class EyeTracker {
    * Captures current eye features and accumulates for the current point.
    * Returns true if a sample was captured (face detected), false otherwise.
    */
-  recordCalibrationPoint(x: number, y: number): boolean {
+  recordCalibrationPoint(_x: number, _y: number): boolean {
     const sample = this.pipeline.captureCalibrationSample()
     if (!sample) return false
     // Filter blinks — closed eyes produce unreliable iris landmarks

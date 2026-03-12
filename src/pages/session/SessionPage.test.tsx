@@ -175,8 +175,8 @@ describe('SessionPage keyboard: Escape', () => {
 
     await act(async () => { vi.advanceTimersByTime(3000) })
 
-    const moodCheckCalls = mockNavigate.mock.calls.filter(
-      (c: [string, object?]) => c[0] === '/mood-check?phase=after',
+    const moodCheckCalls = (mockNavigate.mock.calls as [string, object?][]).filter(
+      (c) => c[0] === '/mood-check?phase=after',
     )
     expect(moodCheckCalls).toHaveLength(1)
 
@@ -258,8 +258,8 @@ describe('SessionPage: zero-duration session discard', () => {
     // Advance well past any timer
     await act(async () => { vi.advanceTimersByTime(5000) })
 
-    const moodCheckCalls = mockNavigate.mock.calls.filter(
-      (c: [string, object?]) => c[0]?.includes('mood-check'),
+    const moodCheckCalls = (mockNavigate.mock.calls as [string, object?][]).filter(
+      (c) => c[0]?.includes('mood-check'),
     )
     expect(moodCheckCalls).toHaveLength(0)
 

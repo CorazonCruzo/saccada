@@ -14,6 +14,8 @@ export interface GazePoint {
   x: number
   y: number
   t: number
+  dotX?: number
+  dotY?: number
 }
 
 export interface DotPosition {

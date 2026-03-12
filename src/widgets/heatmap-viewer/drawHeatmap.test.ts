@@ -129,7 +129,7 @@ describe('getHeatmapColor', () => {
   })
 
   it('interpolates between teal and turmeric in 0.5-0.75 range', () => {
-    const [r, g, b] = getHeatmapColor(0.625) // midpoint of teal->turmeric
+    const [r, g] = getHeatmapColor(0.625) // midpoint of teal->turmeric
     expect(r).toBeGreaterThan(46)  // past TEAL.r
     expect(r).toBeLessThan(232)    // before TURMERIC.r
     expect(g).toBeLessThan(196)    // below TEAL.g (turmeric has lower g)
@@ -167,7 +167,6 @@ describe('computeFocusSegments', () => {
 
   it('returns 0 when gaze is far from dot', () => {
     const diagonal = 100
-    const threshold = diagonal * 0.25 // 25px
     const points = [
       { x: 0, y: 0, t: 0, dotX: 80, dotY: 80 },     // dist ~113, > 25
       { x: 0, y: 0, t: 500, dotX: 80, dotY: 80 },

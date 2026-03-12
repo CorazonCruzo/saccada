@@ -1,6 +1,5 @@
 import { describe, it, expect } from 'vitest'
 import { allPatterns, patternsById } from './configs'
-import type { PatternConfig } from './types'
 
 describe('Pattern configs', () => {
   it('contains exactly 12 patterns', () => {

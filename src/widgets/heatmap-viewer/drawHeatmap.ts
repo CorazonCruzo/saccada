@@ -188,7 +188,7 @@ export function drawTrajectoryOverlay(
   for (let i = 1; i < dotPositions.length; i++) {
     ctx.lineTo(dotPositions[i].x, dotPositions[i].y)
   }
-  ctx.strokeStyle = '#f0e6d3'
+  ctx.strokeStyle = color
   ctx.lineWidth = 2
   ctx.globalAlpha = 0.55
   ctx.setLineDash([6, 4])

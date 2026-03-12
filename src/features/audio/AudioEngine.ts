@@ -382,7 +382,7 @@ export class AudioEngine {
    * Singing bowl: inharmonic partials with exponential decay.
    * Strikes once immediately, then repeats at the given interval.
    */
-  private startSingingBowl(ctx: AudioContext, baseFreq: number, intervalMs: number): void {
+  private startSingingBowl(_ctx: AudioContext, baseFreq: number, intervalMs: number): void {
     // First strike delayed 5s to let the drone establish,
     // then repeat at intervalMs after that
     const firstStrikeDelay = 5000

@@ -31,6 +31,8 @@ function makePattern(overrides: Partial<PatternConfig> = {}): PatternConfig {
     requiresHeadphones: false,
     instruction: '',
     effect: '',
+    defaultBackground: 'mandala',
+    defaultBackgroundRotation: 'cw',
     ...overrides,
   }
 }

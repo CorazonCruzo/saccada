@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest'
 import { useSessionStore } from './store'
-import { pralokita, nimilita, sama, anuvritta, allPatterns } from '@/entities/pattern'
+import { nimilita, sama, anuvritta, allPatterns } from '@/entities/pattern'
 
 // Reset store between tests
 beforeEach(() => {

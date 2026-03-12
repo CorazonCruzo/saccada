@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useSessionStore } from '@/entities/session'
-import { type BackgroundPatternId, type BackgroundRotation, allBackgroundPatterns, rotatableBackgrounds } from '@/entities/pattern'
+import { type BackgroundRotation, allBackgroundPatterns, rotatableBackgrounds } from '@/entities/pattern'
 import { canVibrate } from '@/features/haptics'
 import { checkCameraPermission, requestCameraAccess } from '@/features/eye-tracking'
 import { useTranslation } from '@/shared/lib/i18n'

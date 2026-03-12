@@ -16,8 +16,8 @@ const mockCheckPermission = vi.fn<() => Promise<string>>()
 const mockRequestAccess = vi.fn<() => Promise<boolean>>()
 
 vi.mock('@/features/eye-tracking', () => ({
-  checkCameraPermission: (...args: unknown[]) => mockCheckPermission(...args),
-  requestCameraAccess: (...args: unknown[]) => mockRequestAccess(...args),
+  checkCameraPermission: () => mockCheckPermission(),
+  requestCameraAccess: () => mockRequestAccess(),
 }))
 
 vi.mock('@/features/haptics', () => ({

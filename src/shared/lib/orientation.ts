@@ -37,7 +37,7 @@ export async function tryLockLandscape(): Promise<boolean> {
     }
     // screen.orientation.lock is not available on all browsers
     if (screen.orientation && 'lock' in screen.orientation) {
-      await (screen.orientation as ScreenOrientation).lock('landscape')
+      await (screen.orientation as unknown as { lock(orientation: string): Promise<void> }).lock('landscape')
       return true
     }
     return false

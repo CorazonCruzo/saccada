@@ -167,7 +167,7 @@ export default function CalibrationPage() {
   const { t } = useTranslation()
 
   const [phase, setPhase] = useState<Phase>('instructions')
-  const [calibrationMode, setCalibrationMode] = useState<CalibrationMode>('gaze')
+  const [calibrationMode] = useState<CalibrationMode>('gaze')
   const [pointIndex, setPointIndex] = useState(0)
   const [clickCount, setClickCount] = useState(0)
   const [points, setPoints] = useState<CalibrationPoint[]>([])

@@ -23,9 +23,15 @@ const mockPipeline = {
   destroy: vi.fn(),
 }
 
-vi.mock('./mediapipe/pipeline', () => ({
-  GazePipeline: class { constructor() { return mockPipeline as unknown } },
-}))
+vi.mock('./mediapipe/pipeline', () => {
+  return {
+    GazePipeline: class {
+      constructor() {
+        return mockPipeline
+      }
+    },
+  }
+})
 
 beforeEach(() => {
   vi.clearAllMocks()

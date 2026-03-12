@@ -1,6 +1,6 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { describe, it, expect, beforeEach, afterEach } from 'vitest'
 import { translations } from './translations'
-import type { Locale, Translation, PatternTranslation } from './types'
+import type { Translation, PatternTranslation } from './types'
 import { locales, localeNames } from './types'
 import { allPatterns } from '@/entities/pattern'
 

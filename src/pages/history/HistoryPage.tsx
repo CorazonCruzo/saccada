@@ -57,8 +57,6 @@ export default function HistoryPage() {
   const avgFocus = computeAvgFocusScore(filteredSessions, patternsById)
   const globalStreak = computeStreak(sessions)
   const longestStreak = computeLongestStreak(sessions)
-  const streakActive = globalStreak > 0
-  const hasSessionToday = sessions.some((s) => toDateKey(s.timestamp) === toDateKey(Date.now()))
   const weeklyGoalProgress = weeklyGoal ? getWeeklyProgress(sessions, getISOWeekStart()) : 0
   const weeklyGoalStreakVal = weeklyGoal ? getWeeklyGoalStreak(sessions, weeklyGoal) : 0
   const monthGrid = buildMonthGrid(sessions, calYear, calMonth, locale)
@@ -260,8 +258,6 @@ export default function HistoryPage() {
             canGoNext={!isMonthInFuture(...nextMonth(calYear, calMonth))}
             currentStreak={globalStreak}
             longestStreak={longestStreak}
-            streakActive={streakActive}
-            hasSessionToday={hasSessionToday}
             t={t}
             locale={locale}
           />
@@ -358,8 +354,6 @@ interface CalendarProps {
   canGoNext: boolean
   currentStreak: number
   longestStreak: number
-  streakActive: boolean
-  hasSessionToday: boolean
   t: Translation
   locale: string
 }
@@ -367,7 +361,7 @@ interface CalendarProps {
 function ActivityCalendar({
   grid, selectedDay, onDayClick,
   onPrev, onNext, canGoNext,
-  currentStreak, longestStreak, streakActive, hasSessionToday,
+  currentStreak, longestStreak,
   t, locale,
 }: CalendarProps) {
   const [hoveredDay, setHoveredDay] = useState<CalendarDay | null>(null)

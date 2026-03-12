@@ -81,7 +81,7 @@ describe('drawMandala', () => {
 
   it('scales ring radii and petal sizes by scale factor', () => {
     const ellipseCalls: number[][] = []
-    ctx.ellipse = vi.fn((...args: number[]) => { ellipseCalls.push(args) })
+    ;(ctx as any).ellipse = vi.fn((...args: number[]) => { ellipseCalls.push(args) })
 
     drawMandala(ctx, 0, 0, 0, 0.08, 2)
 

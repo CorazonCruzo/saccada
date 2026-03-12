@@ -38,6 +38,8 @@ const DEFAULT_SETTINGS: Omit<PatternSettings, 'sessionDuration'> = {
   hapticEnabled: false,
   guidedMode: true,
   eyeTrackingEnabled: false,
+  backgroundPattern: 'mandala',
+  backgroundRotation: 'cw',
 }
 
 interface SessionStore {

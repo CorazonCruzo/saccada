@@ -297,7 +297,7 @@ export class GazePipeline {
       this.cachedLandmarks = result.faceLandmarks[0]
 
       // Emit raw landmarks for face mesh overlay
-      if (this.landmarkCb) {
+      if (this.landmarkCb && this.cachedLandmarks) {
         this.landmarkCb(this.cachedLandmarks)
       }
 
