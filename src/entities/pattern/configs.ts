@@ -14,7 +14,7 @@ export const sama: PatternConfig = {
   visual: 'bindu',
   trajectoryParams: { amplitude: 0, easing: 'linear' },
   cycleDuration: null,
-  defaultSessionDuration: 180_000,
+  defaultSessionDuration: 300_000,
   phases: [
     { type: 'fixation', duration: 60_000, instruction: 'Смотрите на точку. Позвольте морганию стать редким. Дышите ровно.' },
     { type: 'fixation', duration: 60_000, instruction: 'Продолжайте удерживать взгляд. Отмечайте мысли, не следуя за ними.' },
@@ -45,7 +45,7 @@ export const alokita: PatternConfig = {
   visual: 'bindu',
   trajectoryParams: { amplitude: 0.42, easing: 'sine' },
   cycleDuration: 4000,
-  defaultSessionDuration: 180_000,
+  defaultSessionDuration: 300_000,
   phases: [
     { type: 'movement', duration: 60_000, instruction: 'Следите за точкой глазами по кругу. Голова неподвижна.' },
     { type: 'fixation', duration: 15_000, instruction: 'Точка остановилась. Удерживайте взгляд в центре.' },
@@ -77,7 +77,7 @@ export const sachi: PatternConfig = {
   visual: 'bindu',
   trajectoryParams: { amplitude: 0.3, easing: 'ease-in-out' },
   cycleDuration: 2000,
-  defaultSessionDuration: 180_000,
+  defaultSessionDuration: 300_000,
   phases: [
     { type: 'movement', duration: 45_000, instruction: 'Следите за точкой. Амплитуда небольшая — мягкие движения.' },
     { type: 'fixation', duration: 10_000, instruction: 'Пауза. Что вы замечаете?' },
@@ -110,7 +110,7 @@ export const pralokita: PatternConfig = {
   visual: 'bindu',
   trajectoryParams: { amplitude: 0.45, easing: 'ease-in-out' },
   cycleDuration: 1600,
-  defaultSessionDuration: 180_000,
+  defaultSessionDuration: 600_000,
   phases: [
     { type: 'movement', duration: 30_000, instruction: 'Следите за точкой глазами. Голова неподвижна.' },
     { type: 'fixation', duration: 10_000, instruction: 'Пауза. Сделайте глубокий вдох.' },
@@ -145,7 +145,7 @@ export const nimilita: PatternConfig = {
   visual: 'bindu',
   trajectoryParams: { amplitude: 0, easing: 'linear' },
   cycleDuration: null,
-  defaultSessionDuration: 120_000,
+  defaultSessionDuration: 300_000,
   phases: [
     { type: 'fixation', duration: 30_000, instruction: 'Смотрите на точку. Начинайте мягко прикрывать веки — глаза полуоткрыты.' },
     { type: 'fixation', duration: 30_000, instruction: 'Продолжайте. Направьте внимание внутрь, к ощущениям в теле.' },
@@ -176,7 +176,7 @@ export const ullokita: PatternConfig = {
   visual: 'bindu',
   trajectoryParams: { amplitude: 0.42, easing: 'sine', bias: 'up' },
   cycleDuration: 2500,
-  defaultSessionDuration: 120_000,
+  defaultSessionDuration: 300_000,
   phases: [
     { type: 'movement', duration: 40_000, instruction: 'Следите за точкой вверх-вниз. Движение мягкое, плавное.' },
     { type: 'fixation', duration: 10_000, instruction: 'Пауза. Позвольте образам свободно приходить.' },
@@ -208,7 +208,7 @@ export const anuvritta: PatternConfig = {
   visual: 'bindu',
   trajectoryParams: { amplitude: 0.4, easing: 'linear' },
   cycleDuration: 800,
-  defaultSessionDuration: 120_000,
+  defaultSessionDuration: 300_000,
   phases: [
     { type: 'movement', duration: 20_000, instruction: 'Быстрые движения вверх-вниз. Старайтесь не отставать.' },
     { type: 'fixation', duration: 10_000, instruction: 'Пауза. Позвольте глазам отдохнуть.' },
@@ -243,7 +243,7 @@ export const avalokita: PatternConfig = {
   visual: 'bindu',
   trajectoryParams: { amplitude: 0.42, easing: 'sine', bias: 'down' },
   cycleDuration: 3500,
-  defaultSessionDuration: 120_000,
+  defaultSessionDuration: 300_000,
   phases: [
     { type: 'movement', duration: 40_000, instruction: 'Следите за точкой. Мягкие движения вниз и обратно.' },
     { type: 'fixation', duration: 15_000, instruction: 'Пауза. Обратите внимание на ощущения в теле: ноги, живот, дыхание.' },
@@ -308,7 +308,7 @@ export const emdrClassic: PatternConfig = {
   visual: 'bindu',
   trajectoryParams: { amplitude: 0.50, easing: 'sine' },
   cycleDuration: 1400,
-  defaultSessionDuration: 300_000,
+  defaultSessionDuration: 600_000,
   phases: [
     { type: 'movement', duration: 25_000, instruction: 'Следите за точкой.' },
     { type: 'fixation', duration: 8_000, instruction: 'Глубокий вдох. Что замечаете?' },
@@ -345,7 +345,7 @@ export const emdrDiagonal: PatternConfig = {
   visual: 'bindu',
   trajectoryParams: { amplitude: 0.40, easing: 'sine' },
   cycleDuration: 1800,
-  defaultSessionDuration: 180_000,
+  defaultSessionDuration: 600_000,
   phases: [
     { type: 'movement', duration: 30_000, instruction: 'Следите за точкой по диагонали.' },
     { type: 'fixation', duration: 10_000, instruction: 'Пауза.' },
@@ -378,7 +378,7 @@ export const sleepRem: PatternConfig = {
   visual: 'bindu',
   trajectoryParams: { amplitude: 0.35, easing: 'sine' },
   cycleDuration: 6000,
-  defaultSessionDuration: 300_000,
+  defaultSessionDuration: 600_000,
   phases: [
     { type: 'movement', duration: 60_000, instruction: 'Следите за точкой. Позвольте глазам расслабиться.' },
     { type: 'fixation', duration: 15_000, instruction: 'Глаза полуоткрыты. Дышите медленно.' },
