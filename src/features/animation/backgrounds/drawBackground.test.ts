@@ -117,8 +117,8 @@ describe('drawBackground', () => {
   it('moire draws two sets of concentric circles', () => {
     drawBackground('moire', ctx, 100, 100, 0, 5000, 0.15, 1, '#aaa', '#bbb', '#ccc')
     expect(ctx.save).toHaveBeenCalled()
-    // Two sets of 30 rings = 60 arcs, batched into 2 strokes
-    expect(ctx.arc).toHaveBeenCalledTimes(60)
+    // Two sets of 12 rings = 24 arcs, batched into 2 strokes
+    expect(ctx.arc).toHaveBeenCalledTimes(24)
     expect(ctx.stroke).toHaveBeenCalledTimes(2)
   })
 

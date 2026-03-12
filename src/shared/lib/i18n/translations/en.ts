@@ -295,8 +295,8 @@ export const en: Translation = {
       phases: [
         'Gaze at the dot. Let blinking slow naturally. Breathe evenly.',
         'Continue holding your gaze. Notice thoughts without following them.',
-        'Close your eyes. Observe the sensations.',
-        'Open your eyes. Gently return your gaze to the dot.',
+        'Bell — close your eyes. Observe the sensations.',
+        'Bell — open your eyes. Gently return your gaze to the dot.',
       ],
     },
 
@@ -362,8 +362,8 @@ export const en: Translation = {
       phases: [
         'Gaze at the dot. Begin gently closing your eyelids: eyes half-open.',
         'Continue. Direct your attention inward, to sensations in the body.',
-        'Close your eyes completely. Breathe with your belly.',
-        'Gently open your eyes. Return your attention to the dot.',
+        'Bell — close your eyes completely. Breathe with your belly.',
+        'Bell — gently open your eyes. Return your attention to the dot.',
       ],
     },
 
@@ -398,7 +398,7 @@ export const en: Translation = {
         null,
         null,
         null,
-        'Close your eyes. Notice the sensations behind your eyelids.',
+        'Bell — close your eyes. Notice the sensations behind your eyelids.',
       ],
     },
 
@@ -414,7 +414,7 @@ export const en: Translation = {
         'Pause. Notice sensations in your body: legs, belly, breath.',
         null,
         'What do you feel in your body right now?',
-        'Close your eyes. Feel the contact of your body with the surface.',
+        'Bell — close your eyes. Feel the contact of your body with the surface.',
       ],
     },
 
@@ -427,10 +427,10 @@ export const en: Translation = {
       benefits: ['concentration', 'eye health', 'anxiety reduction', 'sleep quality', 'natural visualization'],
       phases: [
         'Gaze at the flame without blinking. Tears are normal.',
-        'Close your eyes. Observe the afterimage of the flame behind your eyelids.',
-        'Open your eyes. Focus on the flame again.',
-        'Close your eyes. The image may be a different color: this is normal.',
-        'Final round. Gently, without strain.',
+        'Bell — close your eyes. Observe the afterimage of the flame. The next bell means open your eyes.',
+        'Bell — open your eyes. Focus on the flame again.',
+        'Close your eyes. The image may be a different color: this is normal. The bell will signal when to open.',
+        'Bell — open your eyes. Final round. Gently, without strain.',
         'Final observation. Let the image dissolve naturally.',
       ],
     },
@@ -486,7 +486,7 @@ export const en: Translation = {
         'Continue. If your eyes start closing, that\'s fine.',
         null,
         null,
-        'Close your eyes. Let your body relax. If you fall asleep, that\'s good.',
+        'Bell — close your eyes. Let your body relax. If you fall asleep, that\'s good.',
       ],
     },
   },

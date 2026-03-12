@@ -381,6 +381,84 @@ describe('AudioEngine', () => {
     })
   })
 
+  describe('strikePhaseTransition', () => {
+    it('close: creates 5 oscillators (one bell strike)', () => {
+      const engine = new AudioEngine()
+      engine.init()
+      mockCtx.createOscillator.mockClear()
+      engine.strikePhaseTransition('close')
+      expect(mockCtx.createOscillator).toHaveBeenCalledTimes(5)
+    })
+
+    it('close: first oscillator frequency is 360Hz (baseFreq * 1.0)', () => {
+      const engine = new AudioEngine()
+      engine.init()
+      mockCtx.createOscillator.mockClear()
+      engine.strikePhaseTransition('close')
+      const osc = mockCtx.createOscillator.mock.results[0].value
+      expect(osc.frequency.value).toBe(360)
+    })
+
+    it('open: creates 5 oscillators immediately + 5 more after 400ms', () => {
+      const engine = new AudioEngine()
+      engine.init()
+      mockCtx.createOscillator.mockClear()
+      engine.strikePhaseTransition('open')
+      expect(mockCtx.createOscillator).toHaveBeenCalledTimes(5)
+      vi.advanceTimersByTime(400)
+      expect(mockCtx.createOscillator).toHaveBeenCalledTimes(10)
+    })
+
+    it('open: first oscillator frequency is 420Hz', () => {
+      const engine = new AudioEngine()
+      engine.init()
+      mockCtx.createOscillator.mockClear()
+      engine.strikePhaseTransition('open')
+      const osc = mockCtx.createOscillator.mock.results[0].value
+      expect(osc.frequency.value).toBe(420)
+    })
+
+    it('close bell gain is fixed at 1.8 (volume-independent, masterGain handles volume)', () => {
+      const engine = new AudioEngine()
+      engine.init()
+      engine.setVolume(0.8)
+      mockCtx.createGain.mockClear()
+      engine.strikePhaseTransition('close')
+      const bellGain = mockCtx.createGain.mock.results[0].value
+      const rampCall = bellGain.gain.linearRampToValueAtTime.mock.calls[0]
+      expect(rampCall[0]).toBeCloseTo(1.8)
+    })
+
+    it('open bell gain is fixed at 1.3 (volume-independent)', () => {
+      const engine = new AudioEngine()
+      engine.init()
+      engine.setVolume(0.8)
+      mockCtx.createGain.mockClear()
+      engine.strikePhaseTransition('open')
+      const bellGain = mockCtx.createGain.mock.results[0].value
+      const rampCall = bellGain.gain.linearRampToValueAtTime.mock.calls[0]
+      expect(rampCall[0]).toBeCloseTo(1.3)
+    })
+
+    it('bell gain does not change with volume (masterGain handles it)', () => {
+      const engine = new AudioEngine()
+      engine.init()
+      engine.setVolume(0.3)
+      mockCtx.createGain.mockClear()
+      engine.strikePhaseTransition('close')
+      const bellGain = mockCtx.createGain.mock.results[0].value
+      const rampCall = bellGain.gain.linearRampToValueAtTime.mock.calls[0]
+      expect(rampCall[0]).toBeCloseTo(1.8)
+    })
+
+    it('no-op when context not initialized', () => {
+      const engine = new AudioEngine()
+      // Not calling init()
+      engine.strikePhaseTransition('close')
+      expect(mockCtx.createOscillator).not.toHaveBeenCalled()
+    })
+  })
+
   describe('stop / cleanup', () => {
     it('stop fades out then disconnects after timeout', () => {
       const engine = new AudioEngine()

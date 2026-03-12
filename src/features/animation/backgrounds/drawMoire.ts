@@ -10,7 +10,7 @@
  * engaged without competing with the diagonal dot trajectory.
  */
 
-const RING_COUNT = 30
+const RING_COUNT = 12
 const DRIFT_SPEED = 0.0002 // px per ms (~1px per 5s)
 
 export function drawMoire(
@@ -23,7 +23,7 @@ export function drawMoire(
   color1: string,
   color2: string,
 ) {
-  const maxR = Math.max(cx, cy) * 1.3
+  const maxR = 90 * scale
   const spacing = maxR / RING_COUNT
 
   // Second set offset: drifts in a slow circle

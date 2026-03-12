@@ -17,7 +17,7 @@ interface SessionPlayerProps {
   audioEngine?: AudioEngine | null
   soundEnabled?: boolean
   hapticEnabled?: boolean
-  onDotMove?: (dotX: number, dotY: number, canvasW: number, canvasH: number, phaseIndex: number) => void
+  onDotMove?: (dotX: number, dotY: number, canvasW: number, canvasH: number, phaseIndex: number, phaseType: 'movement' | 'fixation' | 'eyes-closed') => void
   className?: string
 }
 
@@ -65,10 +65,13 @@ export function SessionPlayer({
     if (hapticEnabled) {
       edgeDetectorRef.current(info.dotXNormalized)
     }
-    onDotMoveRef.current?.(info.dotX, info.dotY, info.canvasW, info.canvasH, info.phaseIndex)
+    onDotMoveRef.current?.(info.dotX, info.dotY, info.canvasW, info.canvasH, info.phaseIndex, info.phaseType)
   }, [audioEngine, soundEnabled, hapticEnabled])
 
-  useAnimationLoop(canvasRef, pattern, isPlaying, speed, visualScale, onFrame, speedMultiplierRef, backgroundPattern, backgroundRotation)
+  // Trataka without sound: keep flame visible during eyes-closed (no audio bell to signal)
+  const keepVisualDuringEyesClosed = pattern.visual === 'flame' && !soundEnabled
+
+  useAnimationLoop(canvasRef, pattern, isPlaying, speed, visualScale, onFrame, speedMultiplierRef, backgroundPattern, backgroundRotation, keepVisualDuringEyesClosed)
 
   // Tab visibility: pause/resume audio when tab is hidden/shown
   useEffect(() => {

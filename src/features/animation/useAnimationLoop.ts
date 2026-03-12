@@ -26,15 +26,21 @@ export interface FrameInfo {
   canvasH: number
   /** Current phase index in the pattern's phases array */
   phaseIndex: number
+  /** Current phase type */
+  phaseType: 'movement' | 'fixation' | 'eyes-closed'
 }
 
 interface AnimationState {
   running: boolean
-  /** Accumulated animation time (advances at speed * multiplier rate) */
+  /** Accumulated animation time (advances at speed * multiplier rate). Used for dot cycle position. */
   animTime: number
+  /** Wall-clock active time (pauses excluded). Used for phase boundaries and session timer sync. */
+  realTime: number
   /** Wall-clock timestamp of last rendered frame */
   lastFrameTime: number
   currentPhaseIndex: number
+  /** animTime snapshot at the start of the current phase (for cycle offset) */
+  phaseStartAnimTime: number
   trail: Point[]
   mandalaAngle: number
   dotXNormalized: number
@@ -50,6 +56,7 @@ interface AnimationRefs {
   visualScale: number
   backgroundPattern: BackgroundPatternId
   backgroundRotation: BackgroundRotation
+  keepVisualDuringEyesClosed: boolean
   onFrame: ((info: FrameInfo) => void) | null
   state: AnimationState
 }
@@ -64,6 +71,7 @@ export function useAnimationLoop(
   speedMultiplierRef?: React.RefObject<number>,
   backgroundPattern: BackgroundPatternId = 'mandala',
   backgroundRotation: BackgroundRotation = 'cw',
+  keepVisualDuringEyesClosed: boolean = false,
 ) {
   const refs = useRef<AnimationRefs>({
     pattern,
@@ -72,12 +80,15 @@ export function useAnimationLoop(
     visualScale,
     backgroundPattern,
     backgroundRotation,
+    keepVisualDuringEyesClosed: false,
     onFrame: onFrame ?? null,
     state: {
       running: false,
       animTime: 0,
+      realTime: 0,
       lastFrameTime: 0,
       currentPhaseIndex: 0,
+      phaseStartAnimTime: 0,
       trail: [],
       mandalaAngle: 0,
       dotXNormalized: 0,
@@ -94,6 +105,7 @@ export function useAnimationLoop(
   refs.current.visualScale = visualScale
   refs.current.backgroundPattern = backgroundPattern
   refs.current.backgroundRotation = backgroundRotation
+  refs.current.keepVisualDuringEyesClosed = keepVisualDuringEyesClosed
   refs.current.onFrame = onFrame ?? null
 
   const render = useCallback(() => {
@@ -114,41 +126,40 @@ export function useAnimationLoop(
     const now = performance.now()
     if (!state.running) return
 
-    // Frame-delta accumulation: speed changes don't cause position jumps
-    // Multiplier ref is read every frame (no React render lag)
+    // Two clocks:
+    // - realTime: wall-clock active time (drives phase boundaries, syncs with session timer)
+    // - animTime: speed-adjusted time (drives dot movement cycle within phases)
     const multiplier = mulRef?.current ?? 1
     const frameDelta = now - state.lastFrameTime
     state.lastFrameTime = now
+    state.realTime += frameDelta
     state.animTime += frameDelta * spd * multiplier
-    const dt = state.animTime
 
-    // Determine current phase (durations are NOT divided by speed —
-    // speed is already baked into animTime via frame-delta accumulation)
+    // Determine current phase using realTime (phase durations are wall-clock)
+    const rt = state.realTime
+    const prevPhaseIndex = state.currentPhaseIndex
     let phaseTimeAccum = 0
     let activePhase: Phase = pat.phases[0]
-    let phaseElapsed = dt
 
     for (let i = 0; i < pat.phases.length; i++) {
       const phaseDur = pat.phases[i].duration
-      if (dt < phaseTimeAccum + phaseDur) {
+      if (rt < phaseTimeAccum + phaseDur) {
         activePhase = pat.phases[i]
         state.currentPhaseIndex = i
-        phaseElapsed = dt - phaseTimeAccum
         break
       }
       phaseTimeAccum += phaseDur
       // If we've gone past all phases, loop back
       if (i === pat.phases.length - 1) {
         const totalDur = pat.phases.reduce((sum, p) => sum + p.duration, 0)
-        const loopedDt = dt % totalDur
+        const loopedRt = rt % totalDur
         // Recalculate with looped time
         let acc2 = 0
         for (let j = 0; j < pat.phases.length; j++) {
           const pd = pat.phases[j].duration
-          if (loopedDt < acc2 + pd) {
+          if (loopedRt < acc2 + pd) {
             activePhase = pat.phases[j]
             state.currentPhaseIndex = j
-            phaseElapsed = loopedDt - acc2
             break
           }
           acc2 += pd
@@ -156,11 +167,18 @@ export function useAnimationLoop(
       }
     }
 
+    // Snapshot animTime on phase transitions (for cycle offset)
+    if (state.currentPhaseIndex !== prevPhaseIndex) {
+      state.phaseStartAnimTime = state.animTime
+    }
+
     // Compute dot position (trajectory scales with visualScale)
+    // Cycle position uses speed-adjusted time within the current phase
     let dotPos: Point
     if (activePhase.type === 'movement' && pat.cycleDuration) {
+      const animPhaseElapsed = state.animTime - state.phaseStartAnimTime
       const cycleMs = pat.cycleDuration
-      const cycleT = (phaseElapsed % cycleMs) / cycleMs
+      const cycleT = (animPhaseElapsed % cycleMs) / cycleMs
       const normPos = getTrajectoryPosition(cycleT, pat.trajectory, pat.trajectoryParams)
       normPos.x *= vs
       normPos.y *= vs
@@ -186,6 +204,7 @@ export function useAnimationLoop(
         canvasW: w,
         canvasH: h,
         phaseIndex: state.currentPhaseIndex,
+        phaseType: activePhase.type,
       })
     }
 
@@ -231,12 +250,15 @@ export function useAnimationLoop(
     // 4. Bindu or Flame (scale relative to viewport)
     const viewScale = Math.min(w, h) / 700 * vs
     const isEyesClosed = activePhase.type === 'eyes-closed'
+    const keepVisual = refs.current.keepVisualDuringEyesClosed
     let dimFactor = 1
-    if (isEyesClosed) {
+    if (isEyesClosed && !keepVisual) {
       dimFactor = 0.15
+    } else if (isEyesClosed && keepVisual) {
+      dimFactor = 0.5
     } else if (pat.id === 'nimilita') {
       // Fade from 0.5 to 0.1 over first 30s, then hold at 0.1
-      const fadeProgress = Math.min(dt / 30_000, 1)
+      const fadeProgress = Math.min(state.realTime / 30_000, 1)
       dimFactor = 0.5 - fadeProgress * 0.4
     } else if (pat.id === 'sama') {
       // Breathing pulsation: opacity oscillates 0.8..1.0, period 4s
@@ -244,7 +266,7 @@ export function useAnimationLoop(
     }
 
     if (pat.visual === 'flame') {
-      if (!isEyesClosed) {
+      if (!isEyesClosed || keepVisual) {
         drawFlame(ctx, dotPos.x, dotPos.y, now / 1000 * 0.06 * 60, viewScale)
       }
     } else {
@@ -284,6 +306,8 @@ export function useAnimationLoop(
   useEffect(() => {
     const state = refs.current.state
     state.animTime = 0
+    state.realTime = 0
+    state.phaseStartAnimTime = 0
     state.lastFrameTime = performance.now()
     state.currentPhaseIndex = 0
     state.trail = []
@@ -306,6 +330,6 @@ export function useAnimationLoop(
 
   return {
     getCurrentPhaseIndex: () => refs.current.state.currentPhaseIndex,
-    getElapsed: () => refs.current.state.animTime,
+    getElapsed: () => refs.current.state.realTime,
   }
 }

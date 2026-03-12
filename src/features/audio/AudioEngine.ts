@@ -478,6 +478,64 @@ export class AudioEngine {
     this.pitchLfo.start()
   }
 
+  // ── Phase transition bell ─────────────────────────────
+
+  /**
+   * Bell-like strike for eyes-closed phase transitions.
+   * Distinct timbre from Sama periodic bowl: brighter, shorter decay,
+   * different partial ratios (harmonic bell vs inharmonic bowl).
+   *
+   * 'close' = single warm strike (signal to close eyes)
+   * 'open'  = two brighter strikes 400ms apart (signal to open eyes)
+   */
+  strikePhaseTransition(type: 'close' | 'open'): void {
+    const ctx = this.ctx
+    if (!ctx || !this.masterGain) return
+
+    // Bell level is independent of this.volume because masterGain already applies it.
+    // Drone oscillators use gain ~0.7 each (3-4 of them), so bell needs ~1.5+ to cut through.
+    if (type === 'close') {
+      // Single strike, boosted to match perceived loudness of double open-strike.
+      // 360Hz sits above drone harmonics to avoid masking.
+      this.strikeBell(ctx, 360, 1.8)
+    } else {
+      this.strikeBell(ctx, 420, 1.3)
+      setTimeout(() => {
+        if (this.ctx) this.strikeBell(this.ctx, 420, 0.85)
+      }, 400)
+    }
+  }
+
+  /**
+   * Single bell strike: harmonic partials with slow decay.
+   * Rich, resonant meditation bell that cuts through drone textures.
+   */
+  private strikeBell(ctx: AudioContext, baseFreq: number, level: number): void {
+    const partials = [1.0, 2.0, 3.0, 4.24, 5.41]
+    const gains =    [1.0, 0.6, 0.3, 0.15, 0.08]
+    const decays =   [6.0, 4.5, 3.0, 2.0,  1.5]
+    const now = ctx.currentTime
+
+    for (let i = 0; i < partials.length; i++) {
+      const freq = baseFreq * partials[i]
+      const osc = ctx.createOscillator()
+      osc.type = 'sine'
+      osc.frequency.value = freq
+
+      const gain = ctx.createGain()
+      const startGain = level * gains[i]
+      gain.gain.setValueAtTime(0, now)
+      gain.gain.linearRampToValueAtTime(startGain, now + 0.008)
+      gain.gain.exponentialRampToValueAtTime(0.001, now + decays[i])
+
+      osc.connect(gain)
+      gain.connect(this.masterGain!)
+
+      osc.start(now)
+      osc.stop(now + decays[i] + 0.1)
+    }
+  }
+
   // ── Internal ──────────────────────────────────────────
 
   private fadeIn(): void {

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useSessionStore } from '@/entities/session'
 import { SessionPlayer } from '@/widgets/session-player'
 import { PatternInfoDialog } from '@/widgets/pattern-picker'
-import { useAudio } from '@/features/audio'
+import { useAudio, detectPhaseTransition } from '@/features/audio'
 import {
   useEyeTracking,
   GazeLog,
@@ -62,6 +62,7 @@ export default function SessionPage() {
   const phaseRef = useRef(phase)
   phaseRef.current = phase
   const lastPhaseIndexRef = useRef(-1)
+  const phaseTransitionStateRef = useRef({ lastPhaseType: null as 'movement' | 'fixation' | 'eyes-closed' | null })
 
   // Adaptive speed + gaze logging
   const gazeLogRef = useRef(new GazeLog())
@@ -83,6 +84,10 @@ export default function SessionPage() {
       gazeRef.current = { x: point.x, y: point.y }
 
       const { w, h, x: dotX, y: dotY } = dotPosRef.current
+
+      // Skip gaze recording and adaptive speed during eyes-closed phases:
+      // eyes are closed, so gaze data is noise
+      if (phaseTransitionStateRef.current.lastPhaseType === 'eyes-closed') return
 
       // Only record gaze when animation is active and dot position is initialized
       if (phaseRef.current === 'active' && w > 0) {
@@ -245,6 +250,9 @@ export default function SessionPage() {
       setCurrentInstruction(null)
       lastPhaseIndexRef.current = -1
     }
+    if (phase !== 'active') {
+      phaseTransitionStateRef.current.lastPhaseType = null
+    }
   }, [guidedMode, phase])
 
   // -- Keyboard shortcuts --
@@ -330,13 +338,29 @@ export default function SessionPage() {
   }
 
   // Track dot position for adaptive speed + sync guided instruction with animation phase
-  const handleDotMove = useCallback((dotX: number, dotY: number, canvasW: number, canvasH: number, phaseIndex: number) => {
+  const handleDotMove = useCallback((dotX: number, dotY: number, canvasW: number, canvasH: number, phaseIndex: number, phaseType: 'movement' | 'fixation' | 'eyes-closed') => {
     dotPosRef.current = { x: dotX, y: dotY, w: canvasW, h: canvasH }
     if (guidedMode && phaseIndex !== lastPhaseIndexRef.current) {
       lastPhaseIndexRef.current = phaseIndex
-      setCurrentInstruction(patternTrans.phases[phaseIndex] ?? null)
+      let text = patternTrans.phases[phaseIndex] ?? null
+      // Strip bell references when sound is off (bell won't play)
+      if (text && !soundEnabled) {
+        text = text.replace(/^(?:Колокольчик|Bell|Campana) — /i, '')
+          .replace(/ Следующий колокольчик — сигнал открыть глаза\./, '')
+          .replace(/ Колокольчик подскажет, когда открыть глаза\./, '')
+          .replace(/ The next bell means open your eyes\./, '')
+          .replace(/ The bell will signal when to open\./, '')
+          .replace(/ La siguiente campana es la señal para abrir los ojos\./, '')
+          .replace(/ La campana te indicará cuándo abrir\./, '')
+      }
+      setCurrentInstruction(text)
     }
-  }, [guidedMode, patternTrans])
+    // Singing bowl strike on eyes-closed transitions
+    const signal = detectPhaseTransition(phaseTransitionStateRef.current, phaseType)
+    if (signal && soundEnabled) {
+      audioEngine.strikePhaseTransition(signal)
+    }
+  }, [guidedMode, patternTrans, soundEnabled, audioEngine])
 
   // Speed multiplier applied directly in animation loop via ref (no React render lag)
 

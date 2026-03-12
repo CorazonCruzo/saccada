@@ -295,8 +295,8 @@ export const es: Translation = {
       phases: [
         'Mira el punto. Deja que el parpadeo se calme solo. Respira uniformemente.',
         'Contin\u00FAa sosteniendo la mirada. Observa los pensamientos sin seguirlos.',
-        'Cierra los ojos. Observa las sensaciones.',
-        'Abre los ojos. Devuelve suavemente la mirada al punto.',
+        'Campana — cierra los ojos. Observa las sensaciones.',
+        'Campana — abre los ojos. Devuelve suavemente la mirada al punto.',
       ],
     },
 
@@ -362,8 +362,8 @@ export const es: Translation = {
       phases: [
         'Mira el punto. Comienza a cerrar suavemente los p\u00E1rpados: ojos entreabiertos.',
         'Contin\u00FAa. Dirige la atenci\u00F3n hacia adentro, a las sensaciones del cuerpo.',
-        'Cierra los ojos completamente. Respira con el abdomen.',
-        'Abre suavemente los ojos. Devuelve la atenci\u00F3n al punto.',
+        'Campana — cierra los ojos completamente. Respira con el abdomen.',
+        'Campana — abre suavemente los ojos. Devuelve la atenci\u00F3n al punto.',
       ],
     },
 
@@ -398,7 +398,7 @@ export const es: Translation = {
         null,
         null,
         null,
-        'Cierra los ojos. Observa las sensaciones detr\u00E1s de tus p\u00E1rpados.',
+        'Campana — cierra los ojos. Observa las sensaciones detr\u00E1s de tus p\u00E1rpados.',
       ],
     },
 
@@ -414,7 +414,7 @@ export const es: Translation = {
         'Pausa. Observa las sensaciones en tu cuerpo: piernas, abdomen, respiraci\u00F3n.',
         null,
         '\u00BFQu\u00E9 sientes en tu cuerpo ahora mismo?',
-        'Cierra los ojos. Siente el contacto de tu cuerpo con la superficie.',
+        'Campana — cierra los ojos. Siente el contacto de tu cuerpo con la superficie.',
       ],
     },
 
@@ -427,10 +427,10 @@ export const es: Translation = {
       benefits: ['concentraci\u00F3n', 'salud ocular', 'reducci\u00F3n de ansiedad', 'calidad del sue\u00F1o', 'visualizaci\u00F3n natural'],
       phases: [
         'Mira la llama sin parpadear. Las l\u00E1grimas son normales.',
-        'Cierra los ojos. Observa la posimagen de la llama detr\u00E1s de tus p\u00E1rpados.',
-        'Abre los ojos. Conc\u00E9ntrate en la llama de nuevo.',
-        'Cierra los ojos. La imagen puede ser de otro color: esto es normal.',
-        '\u00DAltima ronda. Suavemente, sin esfuerzo.',
+        'Campana — cierra los ojos. Observa la posimagen de la llama. La siguiente campana es la se\u00F1al para abrir los ojos.',
+        'Campana — abre los ojos. Conc\u00E9ntrate en la llama de nuevo.',
+        'Cierra los ojos. La imagen puede ser de otro color: esto es normal. La campana te indicar\u00E1 cu\u00E1ndo abrir.',
+        'Campana — abre los ojos. \u00DAltima ronda. Suavemente, sin esfuerzo.',
         'Observaci\u00F3n final. Deja que la imagen se disuelva naturalmente.',
       ],
     },
@@ -486,7 +486,7 @@ export const es: Translation = {
         'Contin\u00FAa. Si tus ojos empiezan a cerrarse, est\u00E1 bien.',
         null,
         null,
-        'Cierra los ojos. Deja que tu cuerpo se relaje. Si te duermes, est\u00E1 bien.',
+        'Campana — cierra los ojos. Deja que tu cuerpo se relaje. Si te duermes, est\u00E1 bien.',
       ],
     },
   },
