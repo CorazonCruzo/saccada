@@ -292,7 +292,7 @@ export const de: Translation = {
     eyeTrackingTitle: 'Eye-Tracking',
     eyeTrackingBody: 'Die Kamera erfasst Ihren Blick in Echtzeit. Die Geschwindigkeit passt sich Ihrem Fokus an. Heatmaps und Fokus-Scores werden lokal generiert. Funktioniert nur auf Desktop-Browsern (Chrome/Firefox). Keine Daten\u00FCbertragung: Die Kameraverarbeitung erfolgt lokal.',
     evidenceTitle: 'Evidenz',
-    evidenceBody: 'Einige Muster basieren auf klinischen Protokollen, andere sind Hypothesen. Wir markieren den Evidenzgrad: \u201Eerforscht\u201C, \u201Evorl\u00E4ufig\u201C, \u201EHypothese\u201C. Transparenz ist uns wichtig.',
+    evidenceBody: 'Einige Muster in Saccada basieren auf gut erforschten Protokollen. Andere sind Hypothesen. Ich kennzeichne den Evidenzgrad f\u00FCr jedes Muster: \u201Eerforscht\u201C (klinische Studien vorhanden), \u201Evorl\u00E4ufig\u201C (verwandte Forschung st\u00FCtzt den Mechanismus), \u201EHypothese\u201C (logische Kette auf Forschungsbasis, aber nicht direkt getestet). Es ist mir wichtig, ehrlich dar\u00FCber zu sein, was bewiesen ist und was noch eine Idee bleibt.',
     controlsTitle: 'Steuerung',
     controlsBody: 'Hotkeys: Leertaste (Pause), Escape (Ende), F (Vollbild), I (Info), G (Guide), +/- (Skalierung).',
     privacyTitle: 'Datenschutz',

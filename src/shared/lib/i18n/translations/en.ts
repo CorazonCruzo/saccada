@@ -289,7 +289,7 @@ export const en: Translation = {
     eyeTrackingTitle: 'Eye Tracking',
     eyeTrackingBody: 'Your webcam analyzes gaze position in real time. Dot speed adapts automatically: if your gaze falls behind, the dot slows down. After each session you get a gaze heatmap and focus score. Recalibrate when you change position, reopen your laptop, or change lighting. Limitations: desktop only, Chrome and Firefox. Not supported in Safari, iOS, or on mobile devices. Video is processed locally \u2014 camera data never leaves your device.',
     evidenceTitle: 'Evidence & Honesty',
-    evidenceBody: 'Some patterns in Saccada are based on well-researched protocols. Others are hypotheses. We mark the evidence level for each pattern: "researched" (clinical studies exist), "preliminary" (related research supports the mechanism), "hypothesis" (logical chain grounded in research, but not directly tested). We believe transparency about what we know and what we\'re exploring is a form of respect.',
+    evidenceBody: 'Some patterns in Saccada are based on well-researched protocols. Others are hypotheses. I mark the evidence level for each pattern: "researched" (clinical studies exist), "preliminary" (related research supports the mechanism), "hypothesis" (logical chain grounded in research, but not directly tested). It matters to me to be honest about what is proven and what is still just an idea.',
     controlsTitle: 'Controls',
     controlsBody: 'Keyboard shortcuts: Space \u2014 pause/resume, Escape \u2014 stop session, F \u2014 fullscreen, I \u2014 info panel, G \u2014 guided text, +/- \u2014 visual scale. All settings accessible before session: sound, volume, speed, guided text, eye tracking, background pattern, mood check.',
     privacyTitle: 'Privacy',
