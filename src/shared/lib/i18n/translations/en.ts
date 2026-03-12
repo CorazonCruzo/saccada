@@ -96,6 +96,7 @@ export const en: Translation = {
     recalibrate: 'Recalibrate',
     cameraNotAvailable: 'Camera not available on this device',
     cameraDenied: 'Camera access denied. Check camera permissions in browser settings (lock icon in address bar).',
+    moodCheck: 'Mood check',
     beginSession: 'Begin Session',
     background: 'Background',
     backgroundRotation: 'Rotation',

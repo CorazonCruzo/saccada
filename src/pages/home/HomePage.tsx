@@ -35,9 +35,12 @@ export default function HomePage() {
     if (await shouldCalibrate(eyeTrackingEnabled, calibratedAt, getTracker().isReady())) {
       useSessionStore.getState().setSessionState('calibrating')
       navigate('/calibration')
-    } else {
+    } else if (useSessionStore.getState().moodCheckEnabled) {
       useSessionStore.getState().setSessionState('mood-check-before')
       navigate('/mood-check?phase=before')
+    } else {
+      useSessionStore.getState().setSessionState('countdown')
+      navigate('/session')
     }
   }
 

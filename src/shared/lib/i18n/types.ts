@@ -92,6 +92,7 @@ export interface Translation {
     recalibrate: string
     cameraNotAvailable: string
     cameraDenied: string
+    moodCheck: string
     beginSession: string
     background: string
     backgroundRotation: string

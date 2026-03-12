@@ -81,6 +81,9 @@ interface SessionStore {
   setCalibratedAt: (t: number | null) => void
 
   // Mood check (SUDs)
+  moodCheckEnabled: boolean
+  setMoodCheckEnabled: (v: boolean) => void
+  toggleMoodCheck: () => void
   moodBefore: number | null
   setMoodBefore: (v: number | null) => void
 
@@ -129,6 +132,7 @@ interface PersistedState {
   _selectedPatternId?: string
   visualScale?: number
   calibratedAt?: number | null
+  moodCheckEnabled?: boolean
 }
 
 export const useSessionStore = create<SessionStore>()(
@@ -218,6 +222,10 @@ export const useSessionStore = create<SessionStore>()(
       calibratedAt: null,
       setCalibratedAt: (calibratedAt) => set({ calibratedAt }),
 
+      moodCheckEnabled: true,
+      setMoodCheckEnabled: (moodCheckEnabled) => set({ moodCheckEnabled }),
+      toggleMoodCheck: () => set({ moodCheckEnabled: !get().moodCheckEnabled }),
+
       moodBefore: null,
       setMoodBefore: (moodBefore) => set({ moodBefore }),
 
@@ -231,6 +239,7 @@ export const useSessionStore = create<SessionStore>()(
         _selectedPatternId: state.selectedPattern.id,
         visualScale: state.visualScale,
         calibratedAt: state.calibratedAt,
+        moodCheckEnabled: state.moodCheckEnabled,
       }),
       merge: (persisted, current) => {
         const saved = persisted as PersistedState
@@ -245,6 +254,7 @@ export const useSessionStore = create<SessionStore>()(
           ...loadSettings(overrides, pattern),
           visualScale: saved.visualScale ?? 1,
           calibratedAt: saved.calibratedAt ?? null,
+          moodCheckEnabled: saved.moodCheckEnabled ?? true,
         }
       },
     }

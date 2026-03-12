@@ -96,6 +96,7 @@ export const es: Translation = {
     recalibrate: 'Recalibrar',
     cameraNotAvailable: 'C\u00E1mara no disponible en este dispositivo',
     cameraDenied: 'Acceso a la c\u00E1mara denegado. Revisa los permisos de c\u00E1mara en la configuraci\u00F3n del navegador (icono de candado en la barra de direcciones).',
+    moodCheck: 'Control del estado',
     beginSession: 'Iniciar sesi\u00F3n',
     background: 'Fondo',
     backgroundRotation: 'Rotaci\u00F3n',

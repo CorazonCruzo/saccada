@@ -96,6 +96,7 @@ export const ru: Translation = {
     recalibrate: 'Перекалибровать',
     cameraNotAvailable: 'Камера недоступна на этом устройстве',
     cameraDenied: 'Доступ к камере запрещен. Проверьте настройки камеры в браузере (значок замка в адресной строке).',
+    moodCheck: 'Оценка состояния',
     beginSession: 'Начать сессию',
     background: 'Фон',
     backgroundRotation: 'Вращение',

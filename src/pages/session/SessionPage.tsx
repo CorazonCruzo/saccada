@@ -211,8 +211,14 @@ export default function SessionPage() {
         speed: useSessionStore.getState().speed,
         visualScale: useSessionStore.getState().visualScale,
       })
-      setSessionState('mood-check-after')
-      navigate('/mood-check?phase=after', { replace: true })
+      if (useSessionStore.getState().moodCheckEnabled) {
+        setSessionState('mood-check-after')
+        navigate('/mood-check?phase=after', { replace: true })
+      } else {
+        void unlockOrientation()
+        setSessionState('results')
+        navigate('/results', { replace: true })
+      }
     }, 3000)
 
     return () => clearTimeout(timer)

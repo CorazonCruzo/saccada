@@ -91,8 +91,13 @@ export default function ResultsPage() {
   }
 
   function handleRepeat() {
-    setSessionState('mood-check-before')
-    navigate('/mood-check?phase=before')
+    if (useSessionStore.getState().moodCheckEnabled) {
+      setSessionState('mood-check-before')
+      navigate('/mood-check?phase=before')
+    } else {
+      setSessionState('countdown')
+      navigate('/session')
+    }
   }
 
   return (
