@@ -5,6 +5,7 @@ export const en: Translation = {
     cancel: 'Cancel',
     back: 'Back',
     goHome: 'Go Home',
+    showMore: 'Show more',
   },
 
   home: {
@@ -128,10 +129,10 @@ export const en: Translation = {
     moodCheck: 'Mood check',
     beginSession: 'Begin Session',
     background: 'Background',
-    backgroundRotation: 'Rotation',
+    backgroundRotation: 'Animation',
     rotationNone: 'None',
-    rotationCW: 'CW',
-    rotationCCW: 'CCW',
+    rotationCW: 'Clockwise',
+    rotationCCW: 'Counter-clockwise',
     resetBackground: 'Reset',
   },
 

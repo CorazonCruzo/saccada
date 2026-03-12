@@ -5,6 +5,7 @@ export const de: Translation = {
     cancel: 'Abbrechen',
     back: 'Zur\u00FCck',
     goHome: 'Startseite',
+    showMore: 'Mehr erfahren',
   },
 
   home: {
@@ -128,9 +129,9 @@ export const de: Translation = {
     moodCheck: 'Befinden bewerten',
     beginSession: 'Sitzung starten',
     background: 'Hintergrund',
-    backgroundRotation: 'Rotation',
+    backgroundRotation: 'Animation',
     rotationNone: 'Keine',
-    rotationCW: 'Uhrzeigersinn',
+    rotationCW: 'Im Uhrzeigersinn',
     rotationCCW: 'Gegen Uhrzeigersinn',
     resetBackground: 'Standard',
   },

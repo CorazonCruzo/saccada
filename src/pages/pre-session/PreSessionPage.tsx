@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSessionStore } from '@/entities/session'
 import { type BackgroundRotation, type BackgroundPatternId, allBackgroundPatterns, rotatableBackgrounds } from '@/entities/pattern'
@@ -54,6 +54,13 @@ export function PreSessionDialog({ open, onOpenChange }: PreSessionDialogProps) 
   const [advancedOpen, setAdvancedOpen] = useState(false)
   const [sensitivityOpen, setSensitivityOpen] = useState(false)
   const [cameraStatus, setCameraStatus] = useState<string | null>(null)
+
+  useEffect(() => {
+    if (!open) {
+      setAdvancedOpen(false)
+      setSensitivityOpen(false)
+    }
+  }, [open])
   const [cameraLoading, setCameraLoading] = useState(false)
 
   async function handleStart() {
@@ -101,7 +108,7 @@ export function PreSessionDialog({ open, onOpenChange }: PreSessionDialogProps) 
   return (
     <>
       <Dialog open={open} onOpenChange={onOpenChange}>
-        <DialogContent className="top-[5vh] translate-y-0 border-border-ornament bg-bg-mid sm:max-w-md max-h-[90vh] overflow-y-auto">
+        <DialogContent className="top-[5vh] translate-y-0 border-border-ornament bg-bg-mid sm:max-w-lg max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="font-heading text-xl text-text-bright">
               {patternT.name}
@@ -296,7 +303,7 @@ export function PreSessionDialog({ open, onOpenChange }: PreSessionDialogProps) 
                         </button>
                       )}
                     </div>
-                    <div className="mt-2 flex items-center gap-3">
+                    <div className="mt-2">
                       <Select value={backgroundPattern} onValueChange={(v) => setBackgroundPattern(v as BackgroundPatternId)}>
                         <SelectTrigger size="sm" className="w-44 border-border-ornament bg-bg-surface/50 font-heading text-xs text-text-bright">
                           <SelectValue />
@@ -309,9 +316,12 @@ export function PreSessionDialog({ open, onOpenChange }: PreSessionDialogProps) 
                           ))}
                         </SelectContent>
                       </Select>
-                      {backgroundPattern !== 'zen' && rotatableBackgrounds.has(backgroundPattern) && (
-                        <div className="flex items-center gap-1">
-                          {(['ccw', 'none', 'cw'] as BackgroundRotation[]).map((rot) => (
+                    </div>
+                    {backgroundPattern !== 'zen' && rotatableBackgrounds.has(backgroundPattern) && (
+                      <div className="mt-3">
+                        <span className="font-heading text-xs tracking-widest text-text-dim uppercase">{t.sessionSettings.backgroundRotation}</span>
+                        <div className="mt-2 flex items-center gap-1">
+                          {(['none', 'ccw', 'cw'] as BackgroundRotation[]).map((rot) => (
                             <button
                               key={rot}
                               onClick={() => setBackgroundRotation(rot)}
@@ -319,32 +329,32 @@ export function PreSessionDialog({ open, onOpenChange }: PreSessionDialogProps) 
                                 backgroundRotation === rot ? 'bg-gold/15 text-gold' : 'text-text-dim hover:text-text-muted'
                               }`}
                             >
-                              {rot === 'ccw' ? t.sessionSettings.rotationCCW : rot === 'cw' ? t.sessionSettings.rotationCW : t.sessionSettings.rotationNone}
+                              {rot === 'none' ? '\u2715' : rot === 'ccw' ? t.sessionSettings.rotationCCW : t.sessionSettings.rotationCW}
                             </button>
                           ))}
                         </div>
-                      )}
-                    </div>
+                      </div>
+                    )}
                   </div>
 
                   {/* Guided text */}
                   <ToggleRow label={t.sessionSettings.guided} icon={'\u2630'} active={guidedMode} onToggle={toggleGuided} />
 
                   {/* Eye Tracking — desktop only */}
-                  <div className="hidden [@media(hover:hover)]:block space-y-1">
+                  <div className="hidden [@media(hover:hover)]:block">
                     <ToggleRow label={t.sessionSettings.eyeTracking} icon={'\u25CE'} active={eyeTrackingEnabled} onToggle={handleToggleEyeTracking} />
                     {eyeTrackingEnabled && !calibratedAt && (
-                      <p className="ml-8 font-body text-xs text-indigo">{t.sessionSettings.calibrationNeeded}</p>
+                      <p className="mt-1.5 pl-2 font-body text-xs text-indigo">{t.sessionSettings.calibrationNeeded}</p>
                     )}
                     {eyeTrackingEnabled && calibratedAt && (
-                      <div className="ml-8 flex items-center gap-2">
+                      <div className="mt-1.5 flex items-center gap-2 pl-2">
                         <p className="font-body text-xs text-teal">{t.sessionSettings.calibrated}</p>
                         <button onClick={() => setCalibratedAt(null)} className="cursor-pointer font-body text-xs text-text-dim underline transition-colors hover:text-text-muted">
                           {t.sessionSettings.recalibrate}
                         </button>
                       </div>
                     )}
-                    {cameraStatus && <p className="ml-8 font-body text-xs text-lotus">{cameraStatus}</p>}
+                    {cameraStatus && <p className="mt-1.5 pl-2 font-body text-xs text-lotus">{cameraStatus}</p>}
                   </div>
                 </div>
               )}

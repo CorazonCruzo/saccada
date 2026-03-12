@@ -5,6 +5,7 @@ export const ja: Translation = {
     cancel: 'キャンセル',
     back: '戻る',
     goHome: 'ホーム',
+    showMore: '詳しく見る',
   },
 
   home: {
@@ -128,7 +129,7 @@ export const ja: Translation = {
     moodCheck: '気分チェック',
     beginSession: 'セッション開始',
     background: '背景',
-    backgroundRotation: '回転',
+    backgroundRotation: 'アニメーション',
     rotationNone: 'なし',
     rotationCW: '時計回り',
     rotationCCW: '反時計回り',

@@ -5,6 +5,7 @@ export const ru: Translation = {
     cancel: 'Отмена',
     back: 'Назад',
     goHome: 'На главную',
+    showMore: 'Подробнее',
   },
 
   home: {
@@ -128,10 +129,10 @@ export const ru: Translation = {
     moodCheck: 'Оценка состояния',
     beginSession: 'Начать сессию',
     background: 'Фон',
-    backgroundRotation: 'Вращение',
+    backgroundRotation: 'Анимация',
     rotationNone: 'Нет',
-    rotationCW: 'По час.',
-    rotationCCW: 'Против',
+    rotationCW: 'По часовой',
+    rotationCCW: 'Против часовой',
     resetBackground: 'По умолчанию',
   },
 

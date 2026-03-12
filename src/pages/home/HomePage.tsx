@@ -35,7 +35,7 @@ export default function HomePage() {
       </div>
 
       {/* Pattern picker */}
-      <div className="mx-auto mt-6 w-full max-w-3xl">
+      <div className="mx-auto mt-6 w-full max-w-5xl">
         <PatternPicker
           selectedPattern={selectedPattern}
           onSelect={handleSelectPattern}

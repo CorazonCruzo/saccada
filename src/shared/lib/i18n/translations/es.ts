@@ -5,6 +5,7 @@ export const es: Translation = {
     cancel: 'Cancelar',
     back: 'Atr\u00E1s',
     goHome: 'Ir al inicio',
+    showMore: 'Ver más',
   },
 
   home: {
@@ -128,10 +129,10 @@ export const es: Translation = {
     moodCheck: 'Control del estado',
     beginSession: 'Iniciar sesi\u00F3n',
     background: 'Fondo',
-    backgroundRotation: 'Rotaci\u00F3n',
+    backgroundRotation: 'Animaci\u00F3n',
     rotationNone: 'No',
     rotationCW: 'Horario',
-    rotationCCW: 'Antihor.',
+    rotationCCW: 'Antihorario',
     resetBackground: 'Restablecer',
   },
 

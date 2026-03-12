@@ -28,6 +28,7 @@ export interface Translation {
     cancel: string
     back: string
     goHome: string
+    showMore: string
   }
   home: {
     aboutLink: string
