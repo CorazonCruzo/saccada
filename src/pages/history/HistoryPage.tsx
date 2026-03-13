@@ -143,7 +143,7 @@ export default function HistoryPage() {
                       onClick={() => togglePattern(id)}
                       className={`cursor-pointer rounded-full border px-2.5 py-0.5 font-heading text-xs tracking-wide transition-colors ${
                         isActive
-                          ? 'border-turmeric/60 text-turmeric'
+                          ? 'border-turmeric/60 text-turmeric dark:border-gold/60 dark:text-gold'
                           : 'border-border-ornament text-text-dim hover:text-text-muted'
                       }`}
                     >
@@ -448,17 +448,19 @@ function ActivityCalendar({
                   }}
                 >
                   <span className={`absolute inset-0 flex flex-col items-center justify-center font-heading text-[11px] tabular-nums ${
-                    day.isToday
-                      ? 'font-semibold text-text-bright'
-                      : day.isFuture
-                        ? 'text-text-dim/40'
-                        : level >= 1
-                          ? 'text-text-bright'
-                          : 'text-text-dim'
+                    day.isFuture
+                      ? 'text-text-dim/40'
+                      : day.isToday
+                        ? `font-semibold ${level >= 2 ? 'text-white' : 'text-text-bright'} ${level >= 3 ? 'dark:text-[#0e0a1a]' : 'dark:text-text-bright'}`
+                        : level >= 2
+                          ? `text-white ${level >= 3 ? 'dark:text-[#0e0a1a]' : 'dark:text-text-bright'}`
+                          : level >= 1
+                            ? 'text-text-bright'
+                            : 'text-text-dim dark:text-text-muted'
                   }`}>
                     {day.day}
                     {day.isToday && (
-                      <span className="absolute bottom-1 h-1 w-1 rounded-full bg-text-bright" />
+                      <span className={`absolute bottom-1 h-1 w-1 rounded-full ${level >= 2 ? 'bg-white' : 'bg-text-bright'} ${level >= 3 ? 'dark:bg-[#0e0a1a]' : 'dark:bg-text-bright'}`} />
                     )}
                   </span>
                 </button>
@@ -645,12 +647,15 @@ function SessionCard({
           {session.completed ? t.history.completed : t.history.endedEarly}
         </span>
         {session.reflectionRating != null && (
-          <span className="flex items-center gap-0.5 text-saffron">
-            {Array.from({ length: 5 }, (_, i) => (
-              <span key={i} className={i < session.reflectionRating! ? 'opacity-100' : 'opacity-20'}>
-                {'\u2665'}
-              </span>
-            ))}
+          <span className="flex items-center gap-0.5">
+            {Array.from({ length: 5 }, (_, i) => {
+              const filled = i < session.reflectionRating!
+              return (
+                <svg key={i} viewBox="0 0 24 24" className={`h-3.5 w-3.5 ${filled ? 'text-[#be85b0]' : 'text-[#be85b0]/40'}`} fill={filled ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth={1.5}>
+                  <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                </svg>
+              )
+            })}
           </span>
         )}
         <span className="ml-auto">

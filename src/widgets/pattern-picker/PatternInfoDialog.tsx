@@ -1,5 +1,6 @@
 import type { PatternConfig } from '@/entities/pattern'
 import { useTranslation } from '@/shared/lib/i18n'
+import { HeadphonesIcon } from '@/shared/ui/headphones-icon'
 import {
   Dialog,
   DialogContent,
@@ -87,8 +88,8 @@ export function PatternInfoDialog({ pattern, open, onOpenChange }: PatternInfoDi
           {/* Headphones notice */}
           {pattern.requiresHeadphones && (
             <div className="flex items-center gap-2 rounded-lg border border-indigo/30 bg-indigo/10 px-3 py-2">
-              <span className="text-sm">{'\uD83C\uDFA7'}</span>
-              <span className="font-body text-xs font-light text-indigo">
+              <HeadphonesIcon className="h-5 w-5 text-indigo" />
+              <span className="font-body text-sm font-light text-indigo">
                 {t.patternInfo.headphonesNote}
               </span>
             </div>

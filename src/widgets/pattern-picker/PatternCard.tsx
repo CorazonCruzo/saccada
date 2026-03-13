@@ -1,5 +1,6 @@
 import type { PatternConfig, TrajectoryType } from '@/entities/pattern'
 import { useTranslation } from '@/shared/lib/i18n'
+import { HeadphonesIcon } from '@/shared/ui/headphones-icon'
 
 const trajectoryIcons: Record<TrajectoryType, string> = {
   horizontal: '\u2194',
@@ -50,7 +51,7 @@ export function PatternCard({ pattern, isSelected, onSelect, onInfo }: PatternCa
             {t.audioMode[pattern.audioConfig.mode].toUpperCase()}
           </span>
           {pattern.requiresHeadphones && (
-            <span className="text-[10px]" title={t.sessionSettings.headphonesRecommended}>{'\uD83C\uDFA7'}</span>
+            <HeadphonesIcon className="h-3.5 w-3.5 text-indigo" />
           )}
         </div>
       </div>

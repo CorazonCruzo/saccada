@@ -35,15 +35,16 @@ export function PatternPicker({ selectedPattern, onSelect }: PatternPickerProps)
 
         {categoryKeys.map((key) => (
           <TabsContent key={key} value={key}>
-            <div className="mx-auto mt-4 grid w-full max-w-5xl justify-center gap-3" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 260px))' }}>
+            <div className="mx-auto mt-4 flex w-full max-w-[1120px] flex-wrap justify-center gap-3">
               {filteredPatterns.map((p) => (
-                <PatternCard
-                  key={p.id}
-                  pattern={p}
-                  isSelected={p.id === selectedPattern.id}
-                  onSelect={() => onSelect(p)}
-                  onInfo={() => setInfoPattern(p)}
-                />
+                <div key={p.id} className="w-[calc(50%-6px)] sm:w-[calc(33.333%-8px)] lg:w-[calc(25%-9px)]">
+                  <PatternCard
+                    pattern={p}
+                    isSelected={p.id === selectedPattern.id}
+                    onSelect={() => onSelect(p)}
+                    onInfo={() => setInfoPattern(p)}
+                  />
+                </div>
               ))}
             </div>
           </TabsContent>

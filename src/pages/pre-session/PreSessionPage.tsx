@@ -10,6 +10,7 @@ import { useTranslation } from '@/shared/lib/i18n'
 import { Button } from '@/shared/ui/button'
 import { Slider } from '@/shared/ui/slider'
 import { ContextualHint } from '@/shared/ui/contextual-hint'
+import { HeadphonesIcon } from '@/shared/ui/headphones-icon'
 import {
   Dialog,
   DialogContent,
@@ -247,9 +248,9 @@ export function PreSessionDialog({ open, onOpenChange }: PreSessionDialogProps) 
                 )}
               </div>
               {soundEnabled && selectedPattern.requiresHeadphones && (
-                <div className="mt-1.5 ml-2 flex items-center gap-1.5 text-xs">
-                  <span>{'\uD83C\uDFA7'}</span>
-                  <span className="font-body text-indigo">{t.sessionSettings.headphonesRecommended}</span>
+                <div className="mt-1.5 ml-2 flex items-center gap-1.5">
+                  <HeadphonesIcon className="h-4 w-4 text-indigo" />
+                  <span className="font-body text-sm text-indigo">{t.sessionSettings.headphonesRecommended}</span>
                 </div>
               )}
             </div>
