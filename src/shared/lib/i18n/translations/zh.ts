@@ -313,10 +313,10 @@ export const zh: Translation = {
   },
 
   hints: {
-    hint_eye_tracking: '在桌面端你可以通过摄像头启用眼动追踪 \u2014 速度自动适应，每次练习后可查看注视热力图。在模式设置中开启。',
+    hint_eye_tracking: '你可以启用摄像头进行眼动追踪 \u2014 速度自动适应，每次练习后可获得注视热力图和专注度评分。在模式设置中开启。',
     hint_session_controls: '空格 暂停 \u00B7 ESC 退出 \u00B7 F 全屏 \u00B7 G 引导文字',
     hint_post_session: '你的练习已保存。查看历史记录以追踪进度。',
-    hint_advanced_settings: '在高级设置中，你可以调整速度、光点大小、背景图案、引导模式和眼动追踪。',
+    hint_advanced_settings: '在高级设置中，你可以调整速度、光点大小、背景图案和引导模式。',
     hint_landscape_mobile: '提示：横屏模式为眼动提供更大空间。',
   },
 

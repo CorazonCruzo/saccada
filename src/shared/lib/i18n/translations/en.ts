@@ -313,10 +313,10 @@ export const en: Translation = {
   },
 
   hints: {
-    hint_eye_tracking: 'On desktop you can enable eye tracking via webcam \u2014 speed adapts automatically, and you\'ll see a gaze heatmap after each session. Enable it in pattern settings.',
+    hint_eye_tracking: 'You can enable the camera for eye tracking \u2014 speed adapts automatically, and after each session you get a gaze heatmap and focus score. Enable it in pattern settings.',
     hint_session_controls: 'SPACE pause \u00B7 ESC quit \u00B7 F fullscreen \u00B7 G guide text',
     hint_post_session: 'Your sessions are saved. Check History to track your progress.',
-    hint_advanced_settings: 'In Advanced Settings you can adjust speed, dot scale, background pattern, guided mode, and eye tracking.',
+    hint_advanced_settings: 'In Advanced Settings you can adjust speed, dot scale, background pattern, and guided mode.',
     hint_landscape_mobile: 'Tip: landscape orientation gives more room for eye movements.',
   },
 

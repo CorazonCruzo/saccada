@@ -33,37 +33,37 @@ export function PatternCard({ pattern, isSelected, onSelect, onInfo }: PatternCa
   return (
     <button
       onClick={onSelect}
-      className={`group flex h-full cursor-pointer flex-col rounded-xl border p-5 text-left transition-all ${
+      className={`group flex h-full cursor-pointer flex-col rounded-xl border p-3 text-left transition-all sm:p-5 ${
         isSelected
           ? 'border-turmeric/50 bg-bg-surface shadow-[0_0_20px_var(--saccada-turmeric)]/10'
           : 'border-border-ornament bg-bg-mid shadow-sm hover:border-gold/30 hover:bg-bg-surface/60'
       }`}
     >
       {/* Top row: category + meta */}
-      <div className="flex items-start justify-between gap-2">
-        <span className={`font-heading text-xs tracking-widest uppercase ${categoryColors[pattern.category]}`}>
+      <div className="flex items-start justify-between gap-1 sm:gap-2">
+        <span className={`font-heading text-[10px] tracking-widest uppercase sm:text-xs ${categoryColors[pattern.category]}`}>
           {categoryLabel}
         </span>
-        <div className="flex flex-wrap items-center justify-end gap-x-1.5 gap-y-0.5 text-text-muted">
-          <span className="text-sm" title={t.trajectory[pattern.trajectory]}>
+        <div className="flex flex-shrink-0 items-center gap-x-1 text-text-muted sm:flex-wrap sm:justify-end sm:gap-x-1.5 sm:gap-y-0.5">
+          <span className="text-xs sm:text-sm" title={t.trajectory[pattern.trajectory]}>
             {trajectoryIcons[pattern.trajectory]}
           </span>
-          <span className="font-heading text-[10px] tracking-wider">
+          <span className="hidden font-heading text-[10px] tracking-wider sm:inline">
             {t.audioMode[pattern.audioConfig.mode].toUpperCase()}
           </span>
           {pattern.requiresHeadphones && (
-            <HeadphonesIcon className="h-3.5 w-3.5 text-indigo" />
+            <HeadphonesIcon className="h-3 w-3 text-indigo sm:h-3.5 sm:w-3.5" />
           )}
         </div>
       </div>
 
       {/* Name + Evidence badge */}
-      <div className="mt-1.5 flex flex-wrap items-baseline gap-x-2 gap-y-1">
-        <span className="font-heading text-lg font-semibold text-text-bright">
+      <div className="mt-1 flex flex-wrap items-baseline gap-x-1.5 gap-y-0.5 sm:mt-1.5 sm:gap-x-2 sm:gap-y-1">
+        <span className="font-heading text-base font-semibold text-text-bright sm:text-lg">
           {patternT.name}
         </span>
         {showDevanagari && pattern.nameDevanagari && (
-          <span className="truncate font-devanagari text-sm text-gold">
+          <span className="truncate font-devanagari text-xs text-gold sm:text-sm">
             {pattern.nameDevanagari}
           </span>
         )}
@@ -71,7 +71,7 @@ export function PatternCard({ pattern, isSelected, onSelect, onInfo }: PatternCa
       </div>
 
       {/* Description */}
-      <div className="mt-1.5 line-clamp-2 font-body text-sm font-light leading-snug text-text-muted">
+      <div className="mt-1 line-clamp-2 font-body text-xs font-light leading-snug text-text-muted sm:mt-1.5 sm:text-sm">
         {patternT.description}
       </div>
 

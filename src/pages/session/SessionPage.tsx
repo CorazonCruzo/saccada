@@ -451,9 +451,9 @@ export default function SessionPage() {
           </span>
         </div>
 
-        {/* Audio indicator */}
+        {/* Audio indicator — desktop only */}
         {soundEnabled && (
-          <div className="absolute right-4 top-4 font-heading text-xs text-teal">
+          <div className="absolute right-4 top-4 hidden font-heading text-xs text-teal sm:block">
             {t.audioMode[selectedPattern.audioConfig.mode].toUpperCase()}
             {selectedPattern.requiresHeadphones ? ` \u00B7 ${t.session.headphones}` : ''}
           </div>

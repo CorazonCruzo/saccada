@@ -8,6 +8,7 @@ const STORAGE_KEY = 'saccada_dismissed_hints'
 
 export type HintId =
   | 'hint_eye_tracking'
+  | 'hint_eye_tracking_notice'
   | 'hint_session_controls'
   | 'hint_post_session'
   | 'hint_advanced_settings'

@@ -314,10 +314,10 @@ export const es: Translation = {
   },
 
   hints: {
-    hint_eye_tracking: 'En escritorio puedes activar el seguimiento ocular con la webcam — la velocidad se adapta automáticamente y verás un mapa de calor después de cada sesión. Actívalo en los ajustes del patrón.',
+    hint_eye_tracking: 'Puedes activar la cámara para seguimiento ocular \u2014 la velocidad se adapta automáticamente, y después de cada sesión obtienes un mapa de calor y puntuación de enfoque. Actívalo en los ajustes del patrón.',
     hint_session_controls: 'ESPACIO pausa · ESC salir · F pantalla completa · G texto guía',
     hint_post_session: 'Tus sesiones se guardan. Revisa el Historial para seguir tu progreso.',
-    hint_advanced_settings: 'En Ajustes avanzados puedes cambiar la velocidad, escala del punto, fondo, modo guiado y seguimiento ocular.',
+    hint_advanced_settings: 'En Ajustes avanzados puedes cambiar la velocidad, escala del punto, fondo y modo guiado.',
     hint_landscape_mobile: 'Consejo: la orientación horizontal da más espacio para los movimientos oculares.',
   },
 

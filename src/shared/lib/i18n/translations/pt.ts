@@ -317,10 +317,10 @@ export const pt: Translation = {
   },
 
   hints: {
-    hint_eye_tracking: 'No desktop você pode ativar o rastreamento ocular via webcam — a velocidade se adapta automaticamente e você verá um mapa de calor após cada sessão. Ative nas configurações do padrão.',
+    hint_eye_tracking: 'Voc\u00EA pode ativar a c\u00E2mera para rastreamento ocular \u2014 a velocidade se adapta automaticamente, e ap\u00F3s cada sess\u00E3o voc\u00EA obt\u00E9m um mapa de calor e pontua\u00E7\u00E3o de foco. Ative nas configura\u00E7\u00F5es do padr\u00E3o.',
     hint_session_controls: 'ESPAÇO pausa · ESC sair · F tela cheia · G texto guia',
     hint_post_session: 'Suas sessões são salvas. Confira o Histórico para acompanhar seu progresso.',
-    hint_advanced_settings: 'Em Configura\u00E7\u00F5es avan\u00E7adas voc\u00EA pode ajustar velocidade, escala do ponto, padr\u00E3o de fundo, modo guiado e rastreamento ocular.',
+    hint_advanced_settings: 'Em Configura\u00E7\u00F5es avan\u00E7adas voc\u00EA pode ajustar velocidade, escala do ponto, padr\u00E3o de fundo e modo guiado.',
     hint_landscape_mobile: 'Dica: a orientação paisagem oferece mais espaço para movimentos oculares.',
   },
 

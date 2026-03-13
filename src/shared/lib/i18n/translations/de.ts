@@ -317,10 +317,10 @@ export const de: Translation = {
   },
 
   hints: {
-    hint_eye_tracking: 'Am Desktop kannst du Eye-Tracking per Webcam aktivieren — die Geschwindigkeit passt sich automatisch an, und du siehst nach jeder Sitzung eine Blick-Heatmap. Aktiviere es in den Muster-Einstellungen.',
+    hint_eye_tracking: 'Du kannst die Kamera f\u00FCr Eye-Tracking aktivieren \u2014 die Geschwindigkeit passt sich automatisch an, und nach jeder Sitzung erh\u00E4ltst du eine Blick-Heatmap und Fokus-Bewertung. Aktiviere es in den Muster-Einstellungen.',
     hint_session_controls: 'LEERTASTE Pause · ESC Ende · F Vollbild · G Anleitungstext',
     hint_post_session: 'Deine Sitzungen werden gespeichert. Schau in den Verlauf, um deinen Fortschritt zu verfolgen.',
-    hint_advanced_settings: 'In den Erweiterten Einstellungen kannst du Geschwindigkeit, Punktgr\u00F6\u00DFe, Hintergrundmuster, Anleitungsmodus und Eye-Tracking anpassen.',
+    hint_advanced_settings: 'In den Erweiterten Einstellungen kannst du Geschwindigkeit, Punktgr\u00F6\u00DFe, Hintergrundmuster und Anleitungsmodus anpassen.',
     hint_landscape_mobile: 'Tipp: Im Querformat gibt es mehr Platz für Augenbewegungen.',
   },
 

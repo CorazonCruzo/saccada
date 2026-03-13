@@ -317,10 +317,10 @@ export const fr: Translation = {
   },
 
   hints: {
-    hint_eye_tracking: 'Sur ordinateur, vous pouvez activer le suivi oculaire via la webcam — la vitesse s\'adapte automatiquement et vous verrez une carte thermique après chaque session. Activez-le dans les paramètres du schéma.',
+    hint_eye_tracking: 'Vous pouvez activer la cam\u00E9ra pour le suivi oculaire \u2014 la vitesse s\'adapte automatiquement, et apr\u00E8s chaque session vous obtenez une carte thermique et un score de concentration. Activez-le dans les param\u00E8tres du sch\u00E9ma.',
     hint_session_controls: 'ESPACE pause · ÉCHAP quitter · F plein écran · G texte guide',
     hint_post_session: 'Vos sessions sont sauvegardées. Consultez l\'Historique pour suivre vos progrès.',
-    hint_advanced_settings: 'Dans les Param\u00E8tres avanc\u00E9s, vous pouvez ajuster la vitesse, la taille du point, le motif de fond, le mode guid\u00E9 et le suivi oculaire.',
+    hint_advanced_settings: 'Dans les Param\u00E8tres avanc\u00E9s, vous pouvez ajuster la vitesse, la taille du point, le motif de fond et le mode guid\u00E9.',
     hint_landscape_mobile: 'Conseil : l\'orientation paysage offre plus d\'espace pour les mouvements oculaires.',
   },
 
