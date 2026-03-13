@@ -101,9 +101,9 @@
   --saccada-bg-mid:     #FFFFFF;                   /* white cards, panels                        */
   --saccada-bg-surface: #EDE5F3;                   /* hover/active surface (soft lavender)         */
   --saccada-bg-canvas:  #FFFFFF;                   /* session & preview background (white)       */
-  --saccada-saffron:    oklch(0.58  0.082 62);    /* gold — matches dark theme #c4956a */
-  --saccada-turmeric:   oklch(0.58  0.155 78);    /* L: 0.775→0.58  headings need more contrast */
-  --saccada-gold:       oklch(0.58  0.082 62);    /* L: 0.693→0.58  borders, subtle accents     */
+  --saccada-saffron:    oklch(0.52  0.130 286);   /* lavender accent (buttons, sliders)           */
+  --saccada-turmeric:   oklch(0.48  0.150 286);   /* deeper lavender (headings, values)           */
+  --saccada-gold:       oklch(0.62  0.080 286);   /* lighter lavender (borders, subtle accents)   */
   --saccada-teal:       oklch(0.62  0.109 183);   /* L: 0.737→0.62  badges, tracking UI         */
   --saccada-lotus:      #e84393;                   /* keeps dark value — already contrasty        */
   --saccada-indigo:     #6c5ce7;                   /* keeps dark value — already contrasty        */
@@ -121,7 +121,7 @@
   --card-foreground:      oklch(0.22  0.035 286);
   --popover:              #FFFFFF;
   --popover-foreground:   oklch(0.22  0.035 286);
-  --primary:              oklch(0.58  0.082 62);
+  --primary:              oklch(0.52  0.130 286);
   --primary-foreground:   #FFFFFF;
   --secondary:            oklch(0.94  0.012 286);
   --secondary-foreground: oklch(0.22  0.035 286);
@@ -132,10 +132,10 @@
   --destructive:          #e84393;
   --border:               oklch(0.86  0.020 284);
   --input:                oklch(0.82  0.025 284);
-  --ring:                 oklch(0.58  0.082 62);
-  --chart-1:              oklch(0.58  0.082 62);
+  --ring:                 oklch(0.52  0.130 286);
+  --chart-1:              oklch(0.52  0.130 286);
   --chart-2:              oklch(0.62  0.109 183);
-  --chart-3:              oklch(0.58  0.155 78);
+  --chart-3:              oklch(0.48  0.150 286);
   --chart-4:              #6c5ce7;
   --chart-5:              #e84393;
 }
