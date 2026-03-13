@@ -100,6 +100,11 @@ export default function AboutPage() {
           </section>
         </div>
 
+        {/* Disclaimer */}
+        <p className="mt-16 font-body text-[11px] leading-relaxed text-text-dim">
+          {t.about.disclaimer}
+        </p>
+
         {/* Bottom spacing */}
         <div className="h-12" />
       </div>

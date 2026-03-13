@@ -287,17 +287,17 @@ export const en: Translation = {
   },
 
   about: {
-    title: 'About',
+    title: 'About Saccada',
     ideaTitle: 'The Idea',
     ideaBody: 'Three traditions, millennia apart, independently discovered the same thing: rhythmic eye movements alter the state of consciousness. Indian classical dancers have trained 8 types of eye movements for over 2000 years (Drishti Bheda from Natya Shastra, ~2nd century BCE). In 1989, psychologist Francine Shapiro found that horizontal saccades reduce anxiety \u2014 EMDR was born. Neuroscientists later showed both mechanisms connect to how the brain processes information during REM sleep. Saccada is the first tool to combine all three discoveries.',
     soundTitle: 'Sound',
-    soundBody: 'All sound is synthesized in real time via WebAudio API. No audio files \u2014 works offline. Four modes: bilateral stimulation (tone pans left-right in sync with the dot), binaural beats (theta waves 4\u20138 Hz, headphones only), drone (tanpura synthesis \u2014 enveloping meditative backdrop), rhythmic pulsation. Frequencies are selected based on research \u2014 details in each pattern\'s info panel.',
+    soundBody: 'All sound is synthesized in real time via WebAudio API. No audio files \u2014 works offline. Four modes: bilateral stimulation (tone pans left\u2194right in sync with the dot), binaural beats (theta waves 4\u20138 Hz, headphones only), drone (tanpura synthesis \u2014 enveloping meditative backdrop), rhythmic pulsation. Frequencies are selected based on research \u2014 details in each pattern\'s info panel.',
     eyeTrackingTitle: 'Eye Tracking',
     eyeTrackingBody: 'Your webcam analyzes gaze position in real time. Dot speed adapts automatically: if your gaze falls behind, the dot slows down. After each session you get a gaze heatmap and focus score. Recalibrate when you change position, reopen your laptop, or change lighting. Limitations: desktop only, Chrome and Firefox. Not supported in Safari, iOS, or on mobile devices. Video is processed locally \u2014 camera data never leaves your device.',
     evidenceTitle: 'Evidence & Honesty',
     evidenceBody: 'Some patterns in Saccada are based on well-researched protocols. Others are hypotheses. I mark the evidence level for each pattern: "researched" (clinical studies exist), "preliminary" (related research supports the mechanism), "hypothesis" (logical chain grounded in research, but not directly tested). It matters to me to be honest about what is proven and what is still just an idea.',
     controlsTitle: 'Controls',
-    controlsBody: 'Keyboard shortcuts: Space \u2014 pause/resume, Escape \u2014 stop session, F \u2014 fullscreen, I \u2014 info panel, G \u2014 guided text, +/- \u2014 visual scale. All settings accessible before session: sound, volume, speed, guided text, eye tracking, background pattern, mood check.',
+    controlsBody: 'Keyboard shortcuts: Space \u2014 pause/resume, Escape \u2014 stop session, F \u2014 fullscreen, I \u2014 info panel, G \u2014 guided text, +/- \u2014 visual scale. All settings accessible before session: sound, volume, speed, guided text, eye tracking, background pattern.',
     privacyTitle: 'Privacy',
     privacyBody: 'No servers, no databases, no accounts, no analytics, no trackers. All data is stored in your browser\'s IndexedDB. Camera processes video locally. Static site on Vercel CDN. Open source \u2014 verify it yourself.',
     authorTitle: 'About the Author',
@@ -309,6 +309,7 @@ export const en: Translation = {
     feedbackTitle: 'Feedback',
     feedbackBody: 'Found a bug or have a suggestion? Open an issue on GitHub.',
     openIssue: 'Open issue',
+    disclaimer: 'Saccada is a self-help tool, not a medical device or a substitute for professional therapy. If you are experiencing a mental health crisis, please contact a qualified professional.',
   },
 
   hints: {

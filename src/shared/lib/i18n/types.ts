@@ -298,6 +298,7 @@ export interface Translation {
     feedbackTitle: string
     feedbackBody: string
     openIssue: string
+    disclaimer: string
   }
   hints: {
     hint_eye_tracking: string

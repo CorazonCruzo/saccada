@@ -291,17 +291,17 @@ export const pt: Translation = {
   },
 
   about: {
-    title: 'Sobre',
+    title: 'Sobre o Saccada',
     ideaTitle: 'A ideia',
     ideaBody: 'Três tradições, separadas por milênios, descobriram independentemente a mesma coisa: movimentos oculares rítmicos alteram o estado de consciência. Dançarinos clássicos indianos praticam 8 tipos de movimentos oculares há mais de 2000 anos (Drishti Bheda do Natya Shastra, ~séc. II a.C.). Em 1989, a psicóloga Francine Shapiro descobriu que sacadas horizontais reduzem a ansiedade \u2014 nasceu o EMDR. Neurocientistas depois mostraram que ambos os mecanismos se conectam ao processamento cerebral durante o sono REM. Saccada é a primeira ferramenta a reunir essas três descobertas.',
     soundTitle: 'Som',
-    soundBody: 'Todo o som é sintetizado em tempo real via WebAudio API. Sem arquivos de áudio \u2014 funciona offline. Quatro modos: estimulação bilateral (o tom se move esquerda-direita com o ponto), batidas binaurais (ondas teta 4\u20138 Hz, apenas com fones), drone (síntese de tanpura \u2014 fundo meditativo envolvente), pulsação rítmica. As frequências são selecionadas com base em pesquisas \u2014 detalhes no painel de info de cada padrão.',
+    soundBody: 'Todo o som é sintetizado em tempo real via WebAudio API. Sem arquivos de áudio \u2014 funciona offline. Quatro modos: estimulação bilateral (o tom se move esquerda\u2194direita com o ponto), batidas binaurais (ondas teta 4\u20138 Hz, apenas com fones), drone (síntese de tanpura \u2014 fundo meditativo envolvente), pulsação rítmica. As frequências são selecionadas com base em pesquisas \u2014 detalhes no painel de info de cada padrão.',
     eyeTrackingTitle: 'Rastreamento ocular',
     eyeTrackingBody: 'Sua câmera analisa a posição do olhar em tempo real. A velocidade do ponto se adapta automaticamente: se seu olhar fica para trás, o ponto desacelera. Após cada sessão, você recebe um mapa de calor e pontuação de foco. Recalibre ao mudar de posição, reabrir o notebook ou mudar a iluminação. Limitações: apenas desktop, Chrome e Firefox. Não suportado no Safari, iOS ou celular. O vídeo é processado localmente \u2014 dados da câmera nunca saem do dispositivo.',
     evidenceTitle: 'Evidência e honestidade',
     evidenceBody: 'Alguns padrões do Saccada são baseados em protocolos bem pesquisados. Outros são hipóteses. Indico o nível de evidência para cada padrão: "pesquisado" (existem estudos clínicos), "preliminar" (pesquisas relacionadas apoiam o mecanismo), "hipótese" (cadeia lógica fundamentada em pesquisa, mas não testada diretamente). É importante para mim ser honesta sobre o que é comprovado e o que ainda é apenas uma ideia.',
     controlsTitle: 'Controles',
-    controlsBody: 'Atalhos de teclado: Espaço \u2014 pausar/retomar, Escape \u2014 parar, F \u2014 tela cheia, I \u2014 painel de info, G \u2014 texto guia, +/- \u2014 escala visual. Todas as configurações acessíveis antes da sessão: som, volume, velocidade, guia, rastreamento ocular, fundo, humor.',
+    controlsBody: 'Atalhos de teclado: Espaço \u2014 pausar/retomar, Escape \u2014 parar, F \u2014 tela cheia, I \u2014 painel de info, G \u2014 texto guia, +/- \u2014 escala visual. Todas as configurações acessíveis antes da sessão: som, volume, velocidade, guia, rastreamento ocular, fundo.',
     privacyTitle: 'Privacidade',
     privacyBody: 'Sem servidores, sem bancos de dados, sem contas, sem analytics, sem rastreadores. Todos os dados ficam no IndexedDB do seu navegador. A câmera processa vídeo localmente. Site estático no CDN da Vercel. Código aberto \u2014 verifique você mesmo.',
     authorTitle: 'Sobre a autora',
@@ -313,6 +313,7 @@ export const pt: Translation = {
     feedbackTitle: 'Feedback',
     feedbackBody: 'Encontrou um bug ou tem uma sugestão? Abra uma issue no GitHub.',
     openIssue: 'Abrir issue',
+    disclaimer: 'Saccada \u00E9 uma ferramenta de autoajuda, n\u00E3o um dispositivo m\u00E9dico nem um substituto para terapia profissional. Se voc\u00EA est\u00E1 passando por uma crise de sa\u00FAde mental, procure um profissional qualificado.',
   },
 
   hints: {

@@ -288,17 +288,17 @@ export const es: Translation = {
   },
 
   about: {
-    title: 'Acerca de',
+    title: 'Acerca de Saccada',
     ideaTitle: 'La Idea',
     ideaBody: 'Tres tradiciones, separadas por milenios, descubrieron independientemente lo mismo: los movimientos oculares r\u00EDtmicos alteran el estado de conciencia. Los bailarines cl\u00E1sicos indios han entrenado 8 tipos de movimientos oculares durante m\u00E1s de 2000 a\u00F1os (Drishti Bheda del Natya Shastra, ~siglo II a.C.). En 1989, la psic\u00F3loga Francine Shapiro descubri\u00F3 que las sacadas horizontales reducen la ansiedad \u2014 as\u00ED naci\u00F3 el EMDR. Los neurocient\u00EDficos luego demostraron que ambos mecanismos est\u00E1n conectados con c\u00F3mo el cerebro procesa informaci\u00F3n durante el sue\u00F1o REM. Saccada es la primera herramienta que combina los tres descubrimientos.',
     soundTitle: 'Sonido',
-    soundBody: 'Todo el sonido se sintetiza en tiempo real mediante WebAudio API. Sin archivos de audio \u2014 funciona sin conexi\u00F3n. Cuatro modos: estimulaci\u00F3n bilateral (el tono se desplaza izquierda-derecha sincronizado con el punto), ritmos binaurales (ondas theta 4\u20138 Hz, solo con auriculares), drone (s\u00EDntesis de tanpura \u2014 fondo meditativo envolvente), pulsaci\u00F3n r\u00EDtmica. Las frecuencias se seleccionan bas\u00E1ndose en investigaciones \u2014 detalles en el panel de informaci\u00F3n de cada patr\u00F3n.',
+    soundBody: 'Todo el sonido se sintetiza en tiempo real mediante WebAudio API. Sin archivos de audio \u2014 funciona sin conexi\u00F3n. Cuatro modos: estimulaci\u00F3n bilateral (el tono se desplaza izquierda\u2194derecha sincronizado con el punto), ritmos binaurales (ondas theta 4\u20138 Hz, solo con auriculares), drone (s\u00EDntesis de tanpura \u2014 fondo meditativo envolvente), pulsaci\u00F3n r\u00EDtmica. Las frecuencias se seleccionan bas\u00E1ndose en investigaciones \u2014 detalles en el panel de informaci\u00F3n de cada patr\u00F3n.',
     eyeTrackingTitle: 'Seguimiento Ocular',
     eyeTrackingBody: 'Tu c\u00E1mara web analiza la posici\u00F3n de la mirada en tiempo real. La velocidad del punto se adapta autom\u00E1ticamente: si tu mirada se retrasa, el punto se ralentiza. Despu\u00E9s de cada sesi\u00F3n obtienes un mapa de calor y una puntuaci\u00F3n de enfoque. Recalibra cuando cambies de posici\u00F3n, reabras tu port\u00E1til o cambies la iluminaci\u00F3n. Limitaciones: solo escritorio, Chrome y Firefox. No compatible con Safari, iOS ni dispositivos m\u00F3viles. El video se procesa localmente \u2014 los datos de la c\u00E1mara nunca salen de tu dispositivo.',
     evidenceTitle: 'Evidencia y Honestidad',
     evidenceBody: 'Algunos patrones de Saccada se basan en protocolos bien investigados. Otros son hip\u00F3tesis. Marco el nivel de evidencia para cada patr\u00F3n: \u00ABinvestigado\u00BB (existen estudios cl\u00EDnicos), \u00ABpreliminar\u00BB (investigaciones relacionadas apoyan el mecanismo), \u00ABhip\u00F3tesis\u00BB (cadena l\u00F3gica fundamentada en investigaci\u00F3n, pero no probada directamente). Para m\u00ED es importante ser honesta sobre lo que est\u00E1 probado y lo que a\u00FAn es solo una idea.',
     controlsTitle: 'Controles',
-    controlsBody: 'Atajos de teclado: Espacio \u2014 pausa/continuar, Escape \u2014 terminar sesi\u00F3n, F \u2014 pantalla completa, I \u2014 panel de informaci\u00F3n, G \u2014 texto gu\u00EDa, +/- \u2014 escala visual. Todos los ajustes accesibles antes de la sesi\u00F3n: sonido, volumen, velocidad, texto gu\u00EDa, seguimiento ocular, patr\u00F3n de fondo, control del estado.',
+    controlsBody: 'Atajos de teclado: Espacio \u2014 pausa/continuar, Escape \u2014 terminar sesi\u00F3n, F \u2014 pantalla completa, I \u2014 panel de informaci\u00F3n, G \u2014 texto gu\u00EDa, +/- \u2014 escala visual. Todos los ajustes accesibles antes de la sesi\u00F3n: sonido, volumen, velocidad, texto gu\u00EDa, seguimiento ocular, patr\u00F3n de fondo.',
     privacyTitle: 'Privacidad',
     privacyBody: 'Sin servidores, sin bases de datos, sin cuentas, sin anal\u00EDticas, sin rastreadores. Todos los datos se almacenan en el IndexedDB de tu navegador. La c\u00E1mara procesa el video localmente. Sitio est\u00E1tico en Vercel CDN. C\u00F3digo abierto \u2014 verif\u00EDcalo t\u00FA mismo.',
     authorTitle: 'Sobre la autora',
@@ -310,6 +310,7 @@ export const es: Translation = {
     feedbackTitle: 'Comentarios',
     feedbackBody: '\u00BFEncontraste un error o tienes una sugerencia? Abre un issue en GitHub.',
     openIssue: 'Abrir issue',
+    disclaimer: 'Saccada es una herramienta de autoayuda, no un dispositivo m\u00E9dico ni un sustituto de la terapia profesional. Si est\u00E1s atravesando una crisis de salud mental, consulta a un profesional cualificado.',
   },
 
   hints: {

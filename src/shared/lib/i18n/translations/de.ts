@@ -313,6 +313,7 @@ export const de: Translation = {
     feedbackTitle: 'Feedback',
     feedbackBody: 'Bug gefunden oder Vorschlag? \u00D6ffnen Sie ein Issue auf GitHub.',
     openIssue: 'Issue \u00F6ffnen',
+    disclaimer: 'Saccada ist ein Selbsthilfe-Tool, kein Medizinprodukt und kein Ersatz f\u00FCr professionelle Therapie. Wenn Sie sich in einer psychischen Krise befinden, wenden Sie sich an einen qualifizierten Fachmann.',
   },
 
   hints: {

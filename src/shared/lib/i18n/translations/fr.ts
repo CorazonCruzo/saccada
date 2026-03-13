@@ -291,17 +291,17 @@ export const fr: Translation = {
   },
 
   about: {
-    title: '\u00C0 propos',
+    title: '\u00C0 propos de Saccada',
     ideaTitle: 'L\u2019id\u00E9e',
     ideaBody: 'Trois traditions, s\u00E9par\u00E9es par des mill\u00E9naires, ont ind\u00E9pendamment d\u00E9couvert la m\u00EAme chose : les mouvements oculaires rythmiques modifient l\u2019\u00E9tat de conscience. Les danseurs classiques indiens pratiquent 8 types de mouvements oculaires depuis plus de 2000 ans (Drishti Bheda du Natya Shastra, ~IIe si\u00E8cle av. J.-C.). En 1989, la psychologue Francine Shapiro a d\u00E9couvert que les saccades horizontales r\u00E9duisent l\u2019anxi\u00E9t\u00E9 \u2014 l\u2019EMDR est n\u00E9. Les neuroscientifiques ont ensuite montr\u00E9 que les deux m\u00E9canismes sont li\u00E9s au traitement de l\u2019information pendant le sommeil paradoxal. Saccada est le premier outil \u00E0 r\u00E9unir ces trois d\u00E9couvertes.',
     soundTitle: 'Son',
-    soundBody: 'Tout le son est synth\u00E9tis\u00E9 en temps r\u00E9el via l\u2019API WebAudio. Sans fichiers audio \u2014 fonctionne hors ligne. Quatre modes : stimulation bilat\u00E9rale (le son se d\u00E9place gauche-droite avec le point), battements binauraux (ondes th\u00EAta 4\u20138 Hz, casque obligatoire), bourdon (synth\u00E8se de tanpura \u2014 fond m\u00E9ditatif enveloppant), pulsation rythmique. Les fr\u00E9quences sont choisies sur la base de recherches \u2014 d\u00E9tails dans le panneau d\u2019info de chaque sch\u00E9ma.',
+    soundBody: 'Tout le son est synth\u00E9tis\u00E9 en temps r\u00E9el via l\u2019API WebAudio. Sans fichiers audio \u2014 fonctionne hors ligne. Quatre modes : stimulation bilat\u00E9rale (le son se d\u00E9place gauche\u2194droite avec le point), battements binauraux (ondes th\u00EAta 4\u20138 Hz, casque obligatoire), bourdon (synth\u00E8se de tanpura \u2014 fond m\u00E9ditatif enveloppant), pulsation rythmique. Les fr\u00E9quences sont choisies sur la base de recherches \u2014 d\u00E9tails dans le panneau d\u2019info de chaque sch\u00E9ma.',
     eyeTrackingTitle: 'Suivi oculaire',
     eyeTrackingBody: 'Votre cam\u00E9ra analyse la position du regard en temps r\u00E9el. La vitesse du point s\u2019adapte automatiquement : si votre regard prend du retard, le point ralentit. Apr\u00E8s chaque session, vous obtenez une carte thermique et un score de concentration. Recalibrez lorsque vous changez de position, rouvrez votre ordinateur ou changez d\u2019\u00E9clairage. Limitations : bureau uniquement, Chrome et Firefox. Non pris en charge dans Safari, iOS ou sur mobile. La vid\u00E9o est trait\u00E9e localement \u2014 les donn\u00E9es cam\u00E9ra ne quittent jamais votre appareil.',
     evidenceTitle: '\u00C9vidence et honn\u00EAtet\u00E9',
     evidenceBody: 'Certains sch\u00E9mas de Saccada reposent sur des protocoles bien \u00E9tudi\u00E9s. D\u2019autres sont des hypoth\u00E8ses. J\u2019indique le niveau de preuve pour chaque sch\u00E9ma : \u00AB recherch\u00E9 \u00BB (des \u00E9tudes cliniques existent), \u00AB pr\u00E9liminaire \u00BB (des recherches connexes soutiennent le m\u00E9canisme), \u00AB hypoth\u00E8se \u00BB (cha\u00EEne logique fond\u00E9e sur la recherche, non test\u00E9e directement). Il m\u2019importe d\u2019\u00EAtre honn\u00EAte sur ce qui est prouv\u00E9 et ce qui reste une id\u00E9e.',
     controlsTitle: 'Commandes',
-    controlsBody: 'Raccourcis clavier : Espace \u2014 pause/reprendre, \u00C9chap \u2014 arr\u00EAter, F \u2014 plein \u00E9cran, I \u2014 panneau d\u2019info, G \u2014 texte guide, +/- \u2014 \u00E9chelle. Tous les param\u00E8tres sont accessibles avant la session : son, volume, vitesse, guide, suivi oculaire, fond, humeur.',
+    controlsBody: 'Raccourcis clavier : Espace \u2014 pause/reprendre, \u00C9chap \u2014 arr\u00EAter, F \u2014 plein \u00E9cran, I \u2014 panneau d\u2019info, G \u2014 texte guide, +/- \u2014 \u00E9chelle. Tous les param\u00E8tres sont accessibles avant la session : son, volume, vitesse, guide, suivi oculaire, fond.',
     privacyTitle: 'Confidentialit\u00E9',
     privacyBody: 'Pas de serveurs, pas de bases de donn\u00E9es, pas de comptes, pas d\u2019analytique, pas de traceurs. Toutes les donn\u00E9es sont stock\u00E9es dans l\u2019IndexedDB de votre navigateur. La cam\u00E9ra traite la vid\u00E9o localement. Site statique sur CDN Vercel. Open source \u2014 v\u00E9rifiez par vous-m\u00EAme.',
     authorTitle: 'L\u2019auteure',
@@ -313,6 +313,7 @@ export const fr: Translation = {
     feedbackTitle: 'Retours',
     feedbackBody: 'Bug trouv\u00E9 ou suggestion ? Ouvrez une issue sur GitHub.',
     openIssue: 'Ouvrir une issue',
+    disclaimer: 'Saccada est un outil d\u2019aide personnelle, pas un dispositif m\u00E9dical ni un substitut \u00E0 une th\u00E9rapie professionnelle. Si vous traversez une crise de sant\u00E9 mentale, consultez un professionnel qualifi\u00E9.',
   },
 
   hints: {
