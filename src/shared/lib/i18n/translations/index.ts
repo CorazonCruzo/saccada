@@ -8,5 +8,6 @@ import { pt } from './pt'
 import { ja } from './ja'
 import { hi } from './hi'
 import { ta } from './ta'
+import { zh } from './zh'
 
-export const translations: Record<Locale, Translation> = { en, ru, es, de, fr, pt, ja, hi, ta }
+export const translations: Record<Locale, Translation> = { en, ru, es, de, fr, pt, ja, hi, ta, zh }

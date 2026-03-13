@@ -26,7 +26,8 @@ describe('i18n types', () => {
     expect(locales).toContain('ja')
     expect(locales).toContain('hi')
     expect(locales).toContain('ta')
-    expect(locales).toHaveLength(9)
+    expect(locales).toContain('zh')
+    expect(locales).toHaveLength(10)
   })
 
   it('localeNames should map every locale to a non-empty string', () => {
@@ -116,10 +117,10 @@ describe('detectBrowserLocale', () => {
     expect(detectBrowserLocale()).toBe('en')
   })
 
-  it('should return "en" for Chinese locale', async () => {
+  it('should return "zh" for Chinese locale', async () => {
     setNavigatorLanguage('zh-CN')
     const { detectBrowserLocale } = await import('./store')
-    expect(detectBrowserLocale()).toBe('en')
+    expect(detectBrowserLocale()).toBe('zh')
   })
 })
 
