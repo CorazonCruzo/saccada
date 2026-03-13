@@ -343,7 +343,7 @@ export const zh: Translation = {
       description: '稳定的前方注视。柔和的凝视练习，用于集中注意力和平静内心。',
       instruction: '舒适就座。注视屏幕中央的发光圆点，不要移开目光。让眨眼自然放慢，但不要强迫自己不眨眼。保持头部不动。缓慢均匀地呼吸。当注意力游离时，轻轻将其带回圆点。',
       effect: '平息思绪，提升专注力，获得内心安定感。练习结束后可能短暂体验到感知力的扩展。',
-      soundProfile: '196 Hz (G3) \u00B7 ambient drone with harmonic intervals \u00B7 singing bowl every 35s marks time without distraction',
+      soundProfile: '196 Hz (G3) \u00B7 带和声音程的环境持续音 \u00B7 每 35 秒颂钵一响，不打断专注地标记时间',
       origins: '在 Natya Shastra 中，Sama 被描述为舞蹈开始时以及刻画神祇时所用的注视。这是一种基础的注视练习，与瑜伽文献中的 Trataka 密切相关。',
       benefits: ['专注力', '平静', '思维清晰', '内心安定'],
       phases: [
@@ -360,7 +360,7 @@ export const zh: Translation = {
       description: '宽幅环形注视。激活周边视觉和前庭系统。',
       instruction: '用眼睛跟随圆点做圆周运动。保持头部不动：只有眼睛在动。尽量让运动平滑，不要抖动。注意你的周边视觉发生了什么变化。',
       effect: '感知视野扩展，减少隧道视觉（焦虑的典型特征）。温和激活前庭系统。感觉周围空间在"打开"。',
-      soundProfile: '396 Hz \u00B7 rhythmic pulsing at 60 BPM \u00B7 synced with circular movement',
+      soundProfile: '396 Hz \u00B7 60 BPM 节奏脉冲 \u00B7 与环形运动同步',
       origins: 'Alokita 在 Natya Shastra 中被描述为宽广扫视的目光。在舞蹈中用于表达惊讶和环顾空间。环形眼动调动全部六条眼外肌。',
       benefits: ['周边视觉', '空间感知', '缓解焦虑', '前庭激活'],
       phases: [
@@ -378,7 +378,7 @@ export const zh: Translation = {
       description: '轻柔的侧目。小幅双侧刺激，适合初学者。',
       instruction: '圆点小幅左右移动。用眼睛跟随，不要转头。这是双侧刺激的温和版本：很好的入门练习。',
       effect: '温和地缓解焦虑。强度低于完整的双侧刺激。适合首次接触此类练习或感觉全幅运动过于强烈的日子。',
-      soundProfile: '396 Hz \u00B7 bilateral panning synced with dot movement \u00B7 headphones recommended',
+      soundProfile: '396 Hz \u00B7 双侧声像随光点移动同步 \u00B7 建议佩戴耳机',
       origins: 'Sachi 是印度舞蹈中的侧目，最具表现力的注视之一。用于传达细腻的情感。在 EMDR 语境中：缩短的扫视，一种更温和的刺激模式。',
       benefits: ['温和缓解焦虑', '适合初学者', '情绪处理'],
       phases: [
@@ -397,7 +397,7 @@ export const zh: Translation = {
       description: '左右眼动。核心双侧刺激，与 EMDR 相同。',
       instruction: '这是核心双侧刺激模式。圆点左右移动：用眼睛跟随，不要转头。暂停时，只是觉察浮现的想法、画面或感觉。不要分析，只是观察。',
       effect: '降低焦虑想法和记忆情绪负荷的强度。"释放"的感觉。一项涵盖 20 项研究的元分析证实能即时降低焦虑画面的生动度和负面情绪。',
-      soundProfile: '285 Hz (C#4/D\u266D4) \u00B7 bilateral panning synced with dot movement \u00B7 slight detuning for warmth \u00B7 headphones recommended',
+      soundProfile: '285 Hz (C#4/D\u266D4) \u00B7 双侧声像随光点移动同步 \u00B7 轻微失谐增添温暖感 \u00B7 建议佩戴耳机',
       origins: 'Pralokita：来自 Natya Shastra 的横向眼动。与 EMDR（Shapiro, 1989）中的双侧刺激完全相同。三个独立的发现指向同一机制：印度舞蹈、REM 睡眠神经科学、临床心理治疗。',
       benefits: ['缓解焦虑', '创伤处理', '情绪调节', '记忆再巩固'],
       phases: [
@@ -418,7 +418,7 @@ export const zh: Translation = {
       description: '半闭眼注视。深度放松和副交感神经激活。',
       instruction: '轻轻地将眼睑半合：不要完全闭上，而是闭到一半。用柔和、失焦的目光注视微弱发光的圆点。不要试图看清楚。缓慢呼吸。让注意力转向内在。',
       effect: '深度放松，副交感神经系统激活。适合在高强度练习（如 Pralokita）之后进行。降低心率，放松面部和下颌肌肉。',
-      soundProfile: '130.81 Hz (C3) \u00B7 layered drone with fifth and octave harmonics \u00B7 subtle pink noise bed \u00B7 slow breathing-like volume swell',
+      soundProfile: '130.81 Hz (C3) \u00B7 带五度和八度泛音的分层持续音 \u00B7 细微粉红噪声底层 \u00B7 缓慢呼吸般的音量起伏',
       origins: 'Nimilita 意为"半闭的眼睛"。在 Natya Shastra 中：指向内心的目光。用于刻画冥想、祈祷、神圣的宁静。从神经生理学角度，减少视觉刺激可激活副交感神经系统。',
       benefits: ['深度放松', '副交感神经激活', '高强度练习后的恢复', '内在专注'],
       phases: [
@@ -435,7 +435,7 @@ export const zh: Translation = {
       description: '上方注视。偏上的垂直运动，用于视觉化练习。',
       instruction: '圆点以偏上的方式垂直运动。用眼睛跟随。这种模式与视觉化和想象力有关。让画面自由浮现。',
       effect: '激活视觉记忆和想象力。一些人报告会自发出现画面和记忆。温和的刺激，配合回忆积极事物的意图效果更好。',
-      soundProfile: '432 Hz (A4) \u00B7 rhythmic pulsing at 50 BPM \u00B7 subtle pitch bend on each pulse \u00B7 synced with vertical movement',
+      soundProfile: '432 Hz (A4) \u00B7 50 BPM 节奏脉冲 \u00B7 每次脉冲带细微音高弯曲 \u00B7 与垂直运动同步',
       origins: 'Ullokita 是 Natya Shastra 中的上方注视。用于刻画天人、祈祷、回忆。垂直眼动调动上直肌和下直肌。',
       benefits: ['视觉化', '记忆提取', '想象力', '积极资源建设'],
       phases: [
@@ -453,7 +453,7 @@ export const zh: Translation = {
       description: '快速垂直扫视。模拟 REM 睡眠，用于记忆处理。',
       instruction: '这是快速模式：圆点快速上下运动。尽量用眼睛跟上，即使不完美也没关系。暂停时放松眼睛。此模式模拟 REM 睡眠的快速眼动。',
       effect: '类似 REM 睡眠阶段的强烈刺激。可能产生"处理中"的感觉：仿佛大脑在整理信息。练习后可能出现轻微眼疲劳和清晰感。',
-      soundProfile: 'Binaural beats: 200 Hz + 206 Hz \u00B7 6 Hz theta difference \u00B7 headphones required for binaural effect',
+      soundProfile: '双耳节拍: 200 Hz + 206 Hz \u00B7 6 Hz theta 差频 \u00B7 需佩戴耳机才能产生双耳效果',
       origins: 'Anuvritta：来自 Natya Shastra 的快速垂直扫视。类似 REM 睡眠期间的眼动，此时大脑进行记忆巩固。Stickgold（2002）假设 EMDR 在清醒状态下重现了这一机制。',
       benefits: ['REM 模拟', '记忆处理', '情绪释放', '认知清晰'],
       phases: [
@@ -474,7 +474,7 @@ export const zh: Translation = {
       description: '下方注视。向下的垂直运动，用于身体觉察和扎根。',
       instruction: '圆点以偏下的方式垂直运动。用眼睛跟随，将目光向下引导。关注身体感觉：沉重感、温暖感、与支撑面的接触。这种模式帮助你扎根。',
       effect: '扎根感，回到身体。减轻人格解体和分离感。帮助从"头脑"转向身体觉察。适合在高强度情绪工作后进行。',
-      soundProfile: '196 Hz (G3) \u00B7 rhythmic pulsing at 45 BPM \u00B7 sub-bass layer at 65 Hz for grounding depth',
+      soundProfile: '196 Hz (G3) \u00B7 45 BPM 节奏脉冲 \u00B7 65 Hz 次低音层增添扎根深度',
       origins: 'Avalokita：来自 Natya Shastra 的下方注视。表达谦逊、沉思、与大地的连接。在躯体心理治疗中，向下注视有助于将注意力从思维转向身体感觉。',
       benefits: ['扎根', '身体觉察', '减轻分离感', '躯体处理'],
       phases: [
@@ -492,7 +492,7 @@ export const zh: Translation = {
       description: '烛光凝视。专注力训练，配合残像观察。',
       instruction: '经典的凝视练习，使用火焰。不眨眼地凝视直到眼睛开始流泪：这是正常的，甚至有益。然后闭上眼睛观察残像：闭眼后看到的彩色光斑。不要试图抓住它，只是观察。',
       effect: '深度集中注意力，清洁视觉系统（泪水提供湿润）。观察残像是一种不费力的自然视觉化。研究表明可改善注意力、降低焦虑、提高睡眠质量。',
-      soundProfile: '164.81 Hz (E3) \u00B7 warm drone with major third and fifth harmonics \u00B7 subtle pink noise \u00B7 very slow pitch drift',
+      soundProfile: '164.81 Hz (E3) \u00B7 带大三度和五度泛音的温暖持续音 \u00B7 细微粉红噪声 \u00B7 极缓慢的音高漂移',
       origins: 'Trataka 在 Hatha Yoga Pradipika 中被描述为六种 shatkarma（净化法）之一。印度舞者用它来训练稳定而富有表现力的目光。火焰在 Canvas 上程序化生成。',
       benefits: ['专注力', '眼部健康', '缓解焦虑', '睡眠质量', '自然视觉化'],
       phases: [
@@ -511,7 +511,7 @@ export const zh: Translation = {
       description: '标准 EMDR 双侧刺激。研究最充分的形式。',
       instruction: '标准 EMDR 刺激。圆点左右移动。用眼睛跟随。暂停时，觉察你的想法、感觉、画面。不要试图控制过程：只是观察浮现的一切。如果感觉太强烈，按暂停。',
       effect: '降低焦虑想法和记忆的情绪负荷。标准 EMDR 方案：研究最充分的双侧刺激形式。',
-      soundProfile: '396 Hz \u00B7 bilateral panning synced with dot movement \u00B7 headphones recommended',
+      soundProfile: '396 Hz \u00B7 双侧声像随光点移动同步 \u00B7 建议佩戴耳机',
       origins: 'EMDR（眼动脱敏与再加工）由 Francine Shapiro 于 1989 年开发。被 WHO 认可为有效的 PTSD 治疗方法。',
       benefits: ['创伤处理', '缓解焦虑', '情绪调节', 'PTSD 症状减轻'],
       phases: [
@@ -534,7 +534,7 @@ export const zh: Translation = {
       description: '对角线双侧刺激。调动更多眼外肌。',
       instruction: '双侧刺激的对角线变体。圆点从左下方移动到右上方再返回。一些人觉得这种变体比水平方向更有效。',
       effect: '与标准 EMDR 相似，但增加了垂直分量。调动更多眼外肌。一些治疗师在水平刺激效果不足时使用对角线组。',
-      soundProfile: '396 Hz \u00B7 bilateral panning synced with diagonal dot movement \u00B7 headphones recommended',
+      soundProfile: '396 Hz \u00B7 双侧声像随对角线光点移动同步 \u00B7 建议佩戴耳机',
       origins: '标准 EMDR 方案的变体。一些 EMDR 治疗师将对角线运动作为水平运动的替代方案。',
       benefits: ['创伤处理', '替代双侧模式', '全面眼外肌激活'],
       phases: [
@@ -553,7 +553,7 @@ export const zh: Translation = {
       description: '缓慢 8 字形配合双耳 theta 节拍。睡前放松。',
       instruction: '缓慢、流畅的模式，模拟 REM 睡眠期间的眼动。圆点做 8 字形运动。不需要完美跟踪：让眼睛放松。此模式适合睡前使用。',
       effect: '放松，为入睡做准备。双耳 theta 节拍（4 Hz）帮助大脑过渡到临睡状态。缓慢的 8 字形运动安抚而不刺激。',
-      soundProfile: 'Binaural beats: 180 Hz + 184 Hz \u00B7 4 Hz theta difference \u00B7 slow, lulling tone \u00B7 headphones required',
+      soundProfile: '双耳节拍: 180 Hz + 184 Hz \u00B7 4 Hz theta 差频 \u00B7 缓慢催眠音调 \u00B7 需佩戴耳机',
       origins: '灵感来自 REM 睡眠研究。Stickgold 假说：REM 睡眠期间的眼动帮助大脑将情绪负荷记忆转入长期存储。此模式重现了类似的运动模式。',
       benefits: ['助眠准备', '放松', '记忆巩固', '减轻压力'],
       phases: [

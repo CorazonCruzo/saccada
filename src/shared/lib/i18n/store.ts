@@ -18,6 +18,7 @@ export function detectBrowserLocale(): Locale {
   if (lang === 'hi') return 'hi'
   if (lang === 'ta') return 'ta'
   if (lang === 'zh') return 'zh'
+  if (lang === 'bn') return 'bn'
   return 'en'
 }
 
