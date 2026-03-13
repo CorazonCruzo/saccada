@@ -43,7 +43,7 @@ export default function HomePage() {
       </div>
 
       {/* Canvas preview */}
-      <div className="mx-auto mt-6 h-56 w-full max-w-2xl overflow-hidden rounded-xl border border-border-ornament">
+      <div className="mx-auto mt-6 h-56 w-full max-w-2xl overflow-hidden rounded-xl border border-border-ornament bg-bg-canvas">
         <SessionPlayer
           pattern={selectedPattern}
           isPlaying={true}

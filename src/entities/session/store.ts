@@ -33,7 +33,7 @@ export interface PatternSettings {
 
 const DEFAULT_SETTINGS: Omit<PatternSettings, 'sessionDuration'> = {
   speed: 1,
-  volume: 40,
+  volume: 70,
   soundEnabled: true,
   hapticEnabled: false,
   guidedMode: false,

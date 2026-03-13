@@ -34,7 +34,7 @@ export function PatternCard({ pattern, isSelected, onSelect, onInfo }: PatternCa
       className={`group flex h-full cursor-pointer flex-col rounded-xl border p-5 text-left transition-all ${
         isSelected
           ? 'border-turmeric/50 bg-bg-surface shadow-[0_0_20px_var(--saccada-turmeric)]/10'
-          : 'border-border-ornament bg-bg-mid hover:border-gold/30 hover:bg-bg-surface/60'
+          : 'border-border-ornament bg-bg-mid shadow-sm hover:border-gold/30 hover:bg-bg-surface/60'
       }`}
     >
       {/* Top row: category + meta */}
@@ -42,7 +42,7 @@ export function PatternCard({ pattern, isSelected, onSelect, onInfo }: PatternCa
         <span className={`font-heading text-xs tracking-widest uppercase ${categoryColors[pattern.category]}`}>
           {categoryLabel}
         </span>
-        <div className="flex flex-wrap items-center justify-end gap-x-1.5 gap-y-0.5 text-text-dim">
+        <div className="flex flex-wrap items-center justify-end gap-x-1.5 gap-y-0.5 text-text-muted">
           <span className="text-sm" title={t.trajectory[pattern.trajectory]}>
             {trajectoryIcons[pattern.trajectory]}
           </span>

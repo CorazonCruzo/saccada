@@ -590,7 +590,7 @@ export default function CalibrationPage() {
   // Mobile stub
   if (viewportTooSmall) {
     return (
-      <div className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-bg-deep px-6">
+      <div className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-bg-canvas px-6">
         <h1 className="font-heading text-2xl font-bold text-text-bright">{t.calibration.smallScreenTitle}</h1>
         <p className="mt-4 max-w-sm text-center font-body text-sm font-light text-text-muted">
           {t.calibration.smallScreenMessage}
@@ -636,14 +636,14 @@ export default function CalibrationPage() {
 
       {/* Error screen */}
       {error ? (
-        <div className="fixed inset-0 flex flex-col items-center justify-center bg-bg-deep px-6">
+        <div className="fixed inset-0 flex flex-col items-center justify-center bg-bg-canvas px-6">
           <p className="max-w-sm text-center font-body text-base font-light text-lotus">{error}</p>
           <Button className="mt-6" onClick={handleCancel}>{t.calibration.backToHome}</Button>
         </div>
 
       /* Instructions */
       ) : phase === 'instructions' ? (
-        <div className="fixed inset-0 flex flex-col items-center justify-center bg-bg-deep px-6">
+        <div className="fixed inset-0 flex flex-col items-center justify-center bg-bg-canvas px-6">
           <h1 className="font-heading text-2xl font-bold text-text-bright">{t.calibration.title}</h1>
           <div className="mt-6 max-w-md space-y-4 text-center font-body text-sm font-light leading-relaxed text-text-muted">
             <p>{t.calibration.intro}</p>
@@ -673,7 +673,7 @@ export default function CalibrationPage() {
 
       /* Results */
       ) : phase === 'results' && accuracy ? (
-        <div className="fixed inset-0 flex flex-col items-center justify-center bg-bg-deep px-6">
+        <div className="fixed inset-0 flex flex-col items-center justify-center bg-bg-canvas px-6">
           <h1 className="font-heading text-2xl font-bold text-text-bright">{t.calibration.complete}</h1>
           <div className="mt-6 space-y-2 text-center">
             {noData ? (
@@ -716,7 +716,7 @@ export default function CalibrationPage() {
 
       /* Calibration / Validation point screen */
       ) : (
-        <div className={`fixed inset-0 bg-bg-deep session-cursor ${cursorHidden ? 'session-cursor-hidden' : ''}`}>
+        <div className={`fixed inset-0 bg-bg-canvas session-cursor ${cursorHidden ? 'session-cursor-hidden' : ''}`}>
           {/* Progress */}
           <div className="absolute inset-x-0 top-4 z-20 flex items-center justify-center gap-4">
             <span className="font-heading text-xs tracking-widest text-text-dim uppercase">

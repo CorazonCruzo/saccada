@@ -367,7 +367,7 @@ export default function SessionPage() {
   // -- Countdown screen --
   if (phase === 'countdown') {
     return (
-      <div className="fixed inset-0 z-50 flex items-center justify-center bg-bg-deep session-cursor session-cursor-hidden">
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-bg-canvas session-cursor session-cursor-hidden">
         {needsRotation && <RotateDeviceOverlay />}
         <div className="text-center">
           <p className="font-heading text-sm tracking-widest text-text-dim uppercase">
@@ -387,7 +387,7 @@ export default function SessionPage() {
   // -- Cooldown screen --
   if (phase === 'cooldown') {
     return (
-      <div className="fixed inset-0 z-50 bg-bg-deep session-cursor session-cursor-hidden">
+      <div className="fixed inset-0 z-50 bg-bg-canvas session-cursor session-cursor-hidden">
         {needsRotation && <RotateDeviceOverlay />}
         <SessionPlayer
           pattern={selectedPattern}
@@ -398,7 +398,7 @@ export default function SessionPage() {
           backgroundPattern={backgroundPattern}
           backgroundRotation={backgroundRotation}
         />
-        <div className="absolute inset-0 flex items-center justify-center bg-bg-deep/80 transition-opacity duration-[3000ms]">
+        <div className="absolute inset-0 flex items-center justify-center bg-bg-canvas/80 transition-opacity duration-[3000ms]">
           <p className="font-body text-lg font-light text-text-muted animate-pulse">
             {t.session.sessionComplete}
           </p>
@@ -428,7 +428,7 @@ export default function SessionPage() {
       {/* Guided instruction: always visible (independent of HUD) */}
       {guidedMode && guideVisible && currentInstruction && (
         <div className="pointer-events-none absolute inset-x-0 bottom-20 z-10 flex justify-center px-8">
-          <p className="max-w-lg rounded-lg bg-bg-deep/70 px-6 py-3 text-center font-body text-base font-light leading-relaxed text-text-bright/90 backdrop-blur-sm sm:text-lg">
+          <p className="max-w-lg rounded-lg bg-bg-canvas/70 px-6 py-3 text-center font-body text-base font-light leading-relaxed text-text-bright/90 backdrop-blur-sm sm:text-lg">
             {currentInstruction}
           </p>
         </div>
@@ -527,7 +527,7 @@ export default function SessionPage() {
 
         {/* Paused overlay */}
         {phase === 'paused' && !infoOpen && (
-          <div className="absolute inset-0 flex items-center justify-center bg-bg-deep/40">
+          <div className="absolute inset-0 flex items-center justify-center bg-bg-canvas/40">
             <p className="font-heading text-2xl tracking-widest text-text-dim">{t.session.paused}</p>
           </div>
         )}

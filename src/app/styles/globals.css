@@ -53,6 +53,7 @@
   --color-bg-deep: var(--saccada-bg-deep);
   --color-bg-mid: var(--saccada-bg-mid);
   --color-bg-surface: var(--saccada-bg-surface);
+  --color-bg-canvas: var(--saccada-bg-canvas);
 
   --color-saffron: var(--saccada-saffron);
   --color-turmeric: var(--saccada-turmeric);
@@ -95,10 +96,11 @@
 :root {
   --radius: 0.625rem;
 
-  /* Saccada palette — light (OKLCH mirror, same hue family) */
-  --saccada-bg-deep:    oklch(0.97  0.007 286);   /* L: 0.097→0.97  subtle lavender white     */
-  --saccada-bg-mid:     oklch(0.94  0.012 286);   /* L: 0.154→0.94  card/panel lavender        */
-  --saccada-bg-surface: oklch(0.91  0.018 284);   /* L: 0.196→0.91  hover/active surface       */
+  /* Saccada palette — light (parchment pages, white cards/session) */
+  --saccada-bg-deep:    #F7F3EE;                   /* parchment page background                  */
+  --saccada-bg-mid:     #FFFFFF;                   /* white cards, panels                        */
+  --saccada-bg-surface: #FEF4E8;                   /* hover/active surface (cream tint)          */
+  --saccada-bg-canvas:  #FFFFFF;                   /* session & preview background (white)       */
   --saccada-saffron:    oklch(0.58  0.082 62);    /* gold — matches dark theme #c4956a */
   --saccada-turmeric:   oklch(0.58  0.155 78);    /* L: 0.775→0.58  headings need more contrast */
   --saccada-gold:       oklch(0.58  0.082 62);    /* L: 0.693→0.58  borders, subtle accents     */
@@ -108,24 +110,24 @@
   --saccada-text-bright: oklch(0.22 0.035 286);   /* L: 0.935→0.22  dark indigo text            */
   --saccada-text-muted:  oklch(0.47 0.040 293);   /* L: 0.658→0.47  secondary text              */
   --saccada-text-dim:    oklch(0.65 0.030 288);   /* L: 0.420→0.65  hints, disabled             */
-  --saccada-border-ornament: oklch(0.86 0.020 284); /* L: 0.227→0.86 light lavender border     */
+  --saccada-border-ornament: oklch(0.86 0.020 284); /* neutral lavender border                   */
   --saccada-mandala-ring1: oklch(0.55 0.080 286);  /* cool indigo — reverse of warm gold       */
   --saccada-mandala-ring2: oklch(0.50 0.070 284);  /* deeper purple — reverse of turmeric      */
 
   /* shadcn semantic tokens — light */
-  --background:           oklch(0.97  0.007 286);
+  --background:           #F7F3EE;
   --foreground:           oklch(0.22  0.035 286);
-  --card:                 oklch(0.94  0.012 286);
+  --card:                 #FFFFFF;
   --card-foreground:      oklch(0.22  0.035 286);
-  --popover:              oklch(0.94  0.012 286);
+  --popover:              #FFFFFF;
   --popover-foreground:   oklch(0.22  0.035 286);
   --primary:              oklch(0.58  0.082 62);
-  --primary-foreground:   oklch(0.97  0.007 286);
+  --primary-foreground:   #FFFFFF;
   --secondary:            oklch(0.94  0.012 286);
   --secondary-foreground: oklch(0.22  0.035 286);
   --muted:                oklch(0.94  0.012 286);
   --muted-foreground:     oklch(0.47  0.040 293);
-  --accent:               oklch(0.91  0.018 284);
+  --accent:               #FEF4E8;
   --accent-foreground:    oklch(0.22  0.035 286);
   --destructive:          #e84393;
   --border:               oklch(0.86  0.020 284);
@@ -144,6 +146,7 @@
   --saccada-bg-deep: #0e0a1a;
   --saccada-bg-mid: #1a1035;
   --saccada-bg-surface: #231a42;
+  --saccada-bg-canvas: #1a1035;
   --saccada-saffron: #c4956a;
   --saccada-turmeric: #e8a838;
   --saccada-gold: #c4956a;
