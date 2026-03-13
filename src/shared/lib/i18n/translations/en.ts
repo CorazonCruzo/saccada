@@ -16,7 +16,7 @@ export const en: Translation = {
     slides: [
       {
         title: 'Saccada',
-        body: 'Eye movement practice combining ancient Drishti Bheda traditions from Indian classical dance, EMDR bilateral stimulation, and REM sleep neuroscience.',
+        body: 'Eye movement practice combining Drishti Bheda traditions from Indian classical dance and EMDR bilateral stimulation. Free and open source.',
       },
       {
         title: 'Follow the Bindu',
@@ -27,16 +27,8 @@ export const en: Translation = {
         body: 'Sound moves from left headphone to right in sync with the dot. Binaural beats create theta waves for deep processing. Drone mode creates a meditative backdrop. All sound is synthesized in real time \u2014 no audio files, works offline.',
       },
       {
-        title: 'Eye Tracking',
-        body: 'Enable your webcam and the app adapts to your eyes. Speed adjusts automatically. After each session \u2014 a gaze heatmap and focus score. Recalibrate when you change position or reopen your laptop. Works on desktop browsers only (Chrome, Firefox). Not available on mobile or Safari/iOS.',
-      },
-      {
-        title: 'Your Practice',
-        body: 'Mood check before and after each session. Activity calendar. Weekly goals. Focus score history. All stored locally in your browser \u2014 friendly statistics, no pressure.',
-      },
-      {
         title: 'A Tool, Not a Cure',
-        body: 'Saccada is a self-help tool, not a replacement for therapy. Some patterns are based on well-researched protocols (EMDR). Others are hypotheses grounded in neuroscience. Each pattern\'s info panel explains the evidence level. If you work with an EMDR therapist, this tool can support your practice between sessions.',
+        body: 'Saccada is a self-help tool, not a replacement for therapy. Evidence levels vary: bilateral stimulation is well-researched, other patterns are hypotheses. Each pattern is honestly labeled. If you work with an EMDR therapist, this tool can complement your practice.',
       },
       {
         title: 'Your Data Stays Here',
@@ -311,6 +303,14 @@ export const en: Translation = {
     feedbackTitle: 'Feedback',
     feedbackBody: 'Found a bug or have a suggestion? Open an issue on GitHub.',
     openIssue: 'Open issue',
+  },
+
+  hints: {
+    hint_eye_tracking: 'On desktop you can enable eye tracking via webcam \u2014 speed adapts automatically, and you\'ll see a gaze heatmap after each session. Enable it in pattern settings.',
+    hint_session_controls: 'SPACE pause \u00B7 ESC quit \u00B7 F fullscreen \u00B7 G guide text',
+    hint_post_session: 'Your sessions are saved. Check History to track your progress.',
+    hint_advanced_settings: 'In Advanced Settings you can adjust speed, dot scale, background pattern, guided mode, and eye tracking.',
+    hint_landscape_mobile: 'Tip: landscape orientation gives more room for eye movements.',
   },
 
   backgroundName: {

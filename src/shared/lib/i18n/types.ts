@@ -292,6 +292,13 @@ export interface Translation {
     feedbackBody: string
     openIssue: string
   }
+  hints: {
+    hint_eye_tracking: string
+    hint_session_controls: string
+    hint_post_session: string
+    hint_advanced_settings: string
+    hint_landscape_mobile: string
+  }
   backgroundName: Record<string, string>
   pattern: Record<string, PatternTranslation>
 }

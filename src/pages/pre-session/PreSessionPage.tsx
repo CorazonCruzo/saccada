@@ -9,6 +9,7 @@ import { useEyeTracking } from '@/features/eye-tracking'
 import { useTranslation } from '@/shared/lib/i18n'
 import { Button } from '@/shared/ui/button'
 import { Slider } from '@/shared/ui/slider'
+import { ContextualHint } from '@/shared/ui/contextual-hint'
 import {
   Dialog,
   DialogContent,
@@ -121,7 +122,7 @@ export function PreSessionDialog({ open, onOpenChange }: PreSessionDialogProps) 
               <h2 className="mb-2 font-heading text-xs tracking-widest text-turmeric uppercase">
                 {t.preSession.howTo}
               </h2>
-              <p className="font-body text-base leading-relaxed text-text-bright">
+              <p className="font-body text-sm leading-relaxed text-text-bright sm:text-base">
                 {patternT.instruction}
               </p>
             </div>
@@ -131,7 +132,7 @@ export function PreSessionDialog({ open, onOpenChange }: PreSessionDialogProps) 
               <h2 className="font-heading text-xs tracking-widest text-turmeric uppercase">
                 {t.preSession.effects}
               </h2>
-              <p className="mt-2 font-body text-base leading-relaxed text-text-bright">
+              <p className="mt-2 font-body text-sm leading-relaxed text-text-bright sm:text-base">
                 {patternT.effect}
               </p>
               <p className="mt-1 font-body text-xs text-teal">
@@ -365,6 +366,8 @@ export function PreSessionDialog({ open, onOpenChange }: PreSessionDialogProps) 
         </DialogContent>
       </Dialog>
 
+      {/* Hint: explore advanced settings */}
+      <ContextualHint id="hint_advanced_settings" show={open} position="bottom" />
     </>
   )
 }

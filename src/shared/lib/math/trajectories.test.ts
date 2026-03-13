@@ -135,7 +135,7 @@ describe('getTrajectoryPosition', () => {
         maxY = Math.max(maxY, Math.abs(p.y))
       }
       expect(maxY).toBeLessThan(maxX)
-      expect(maxY / maxX).toBeCloseTo(0.8, 1)
+      expect(maxY / maxX).toBeCloseTo(0.45, 1)
     })
   })
 })

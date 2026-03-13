@@ -1,14 +1,14 @@
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from '@/shared/lib/i18n'
+import { drawBindu } from '@/features/animation'
+import { setupCanvas } from '@/shared/lib/canvas'
 import { Button } from '@/shared/ui/button'
 
 const devanagariTitles = [
   '\u0926\u0943\u0937\u094D\u091F\u093F \u092D\u0947\u0926',
   '\u092C\u093F\u0928\u094D\u0926\u0941',
   '\u0928\u093E\u0926',
-  '\u0928\u0947\u0924\u094D\u0930',
-  '\u0938\u093E\u0927\u0928\u093E',
   '\u0935\u093F\u0935\u0947\u0915',
   '\u0917\u094B\u092A\u0928\u0940\u092F',
 ]
@@ -51,6 +51,9 @@ export default function OnboardingPage() {
         ))}
       </div>
 
+      {/* Animated bindu on slide 2 */}
+      {current === 1 && <BinduPreview />}
+
       {/* Slide content */}
       <div className="max-w-md text-center">
         <p className="font-devanagari text-2xl text-gold">{devanagariTitles[current]}</p>
@@ -86,4 +89,33 @@ export default function OnboardingPage() {
       </div>
     </div>
   )
+}
+
+/** Small pulsating bindu shown on the "Follow the Bindu" slide */
+function BinduPreview() {
+  const canvasRef = useRef<HTMLCanvasElement>(null)
+  const rafRef = useRef(0)
+
+  useEffect(() => {
+    const canvas = canvasRef.current
+    if (!canvas) return
+    setupCanvas(canvas, 80, 80)
+
+    function animate() {
+      const ctx = canvas!.getContext('2d')
+      if (!ctx) return
+      const dpr = window.devicePixelRatio || 1
+      const w = canvas!.width / dpr
+      const h = canvas!.height / dpr
+      ctx.clearRect(0, 0, w, h)
+      const phase = performance.now() / 1000 * 1.8
+      drawBindu(ctx, w / 2, h / 2, '#c4956a', phase, 14)
+      rafRef.current = requestAnimationFrame(animate)
+    }
+
+    rafRef.current = requestAnimationFrame(animate)
+    return () => cancelAnimationFrame(rafRef.current)
+  }, [])
+
+  return <canvas ref={canvasRef} className="mb-4 h-20 w-20" />
 }

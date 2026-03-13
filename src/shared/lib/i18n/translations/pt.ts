@@ -16,27 +16,19 @@ export const pt: Translation = {
     slides: [
       {
         title: 'Saccada',
-        body: 'Prática de movimentos oculares que combina as antigas tradições Drishti Bheda da dança clássica indiana, a estimulação bilateral EMDR e a neurociência do sono REM.',
+        body: 'Prática de movimento ocular combinando tradições Drishti Bheda da dança clássica indiana e estimulação bilateral EMDR. Gratuito e de código aberto.',
       },
       {
         title: 'Siga o Bindu',
-        body: 'Um ponto luminoso guia seus olhos por trajetórias terapêuticas. Cada padrão ativa diferentes aspectos do processamento visual e cognitivo. Fases de movimento e fixação se alternam naturalmente.',
+        body: 'Um ponto luminoso guia seus olhos através de padrões de movimento terapêuticos. Cada padrão ativa diferentes aspectos do processamento visual e cognitivo. Fases de movimento e fixação se alternam naturalmente.',
       },
       {
         title: 'Melhor com fones',
-        body: 'O som se move do fone esquerdo para o direito em sincronia com o ponto. Batidas binaurais criam ondas teta para processamento profundo. O modo drone cria uma atmosfera meditativa. Todo o som é sintetizado em tempo real \u2014 sem arquivos de áudio, funciona offline.',
-      },
-      {
-        title: 'Rastreamento ocular',
-        body: 'Ative sua câmera e o app se adapta aos seus olhos. A velocidade se ajusta automaticamente. Após cada sessão \u2014 um mapa de calor do olhar e pontuação de foco. Recalibre ao mudar de posição ou reabrir o notebook. Funciona apenas em navegadores desktop (Chrome, Firefox). Indisponível no celular e Safari/iOS.',
-      },
-      {
-        title: 'Sua prática',
-        body: 'Avaliação de humor antes e depois de cada sessão. Calendário de atividades. Metas semanais. Histórico de foco. Tudo armazenado localmente no seu navegador \u2014 estatísticas amigáveis, sem pressão.',
+        body: 'O som se move do fone esquerdo para o direito em sincronia com o ponto. Batidas binaurais criam ondas theta para processamento profundo. O modo drone cria um cenário meditativo. Todo o som é sintetizado em tempo real — sem arquivos de áudio, funciona offline.',
       },
       {
         title: 'Uma ferramenta, não uma cura',
-        body: 'Saccada é uma ferramenta de autoajuda, não um substituto para terapia. Alguns padrões são baseados em protocolos bem pesquisados (EMDR). Outros são hipóteses fundamentadas em neurociência. O painel de informações de cada padrão explica o nível de evidência. Se você trabalha com um terapeuta EMDR, esta ferramenta pode apoiar sua prática entre as sessões.',
+        body: 'Saccada é uma ferramenta de autoajuda, não substituto para terapia. Os níveis de evidência variam: a estimulação bilateral é bem pesquisada, outros padrões são hipóteses. Cada padrão é honestamente rotulado. Se você trabalha com um terapeuta EMDR, esta ferramenta pode complementar sua prática.',
       },
       {
         title: 'Seus dados ficam aqui',
@@ -315,6 +307,14 @@ export const pt: Translation = {
     feedbackTitle: 'Feedback',
     feedbackBody: 'Encontrou um bug ou tem uma sugestão? Abra uma issue no GitHub.',
     openIssue: 'Abrir issue',
+  },
+
+  hints: {
+    hint_eye_tracking: 'No desktop você pode ativar o rastreamento ocular via webcam — a velocidade se adapta automaticamente e você verá um mapa de calor após cada sessão. Ative nas configurações do padrão.',
+    hint_session_controls: 'ESPAÇO pausa · ESC sair · F tela cheia · G texto guia',
+    hint_post_session: 'Suas sessões são salvas. Confira o Histórico para acompanhar seu progresso.',
+    hint_advanced_settings: 'Em Configura\u00E7\u00F5es avan\u00E7adas voc\u00EA pode ajustar velocidade, escala do ponto, padr\u00E3o de fundo, modo guiado e rastreamento ocular.',
+    hint_landscape_mobile: 'Dica: a orientação paisagem oferece mais espaço para movimentos oculares.',
   },
 
   backgroundName: {

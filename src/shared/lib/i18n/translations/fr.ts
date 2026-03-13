@@ -16,31 +16,23 @@ export const fr: Translation = {
     slides: [
       {
         title: 'Saccada',
-        body: 'Pratique de mouvements oculaires combinant les anciennes traditions Drishti Bheda de la danse classique indienne, la stimulation bilat\u00E9rale EMDR et les neurosciences du sommeil paradoxal.',
+        body: 'Pratique de mouvement oculaire combinant les traditions Drishti Bheda de la danse classique indienne et la stimulation bilatérale EMDR. Gratuit et open source.',
       },
       {
         title: 'Suivez le Bindu',
-        body: 'Un point lumineux guide vos yeux le long de trajectoires th\u00E9rapeutiques. Chaque sch\u00E9ma active diff\u00E9rents aspects du traitement visuel et cognitif. Les phases de mouvement et de fixation alternent naturellement.',
+        body: 'Un point lumineux guide vos yeux à travers des schémas de mouvement thérapeutiques. Chaque schéma active différents aspects du traitement visuel et cognitif. Les phases de mouvement et de fixation alternent naturellement.',
       },
       {
         title: 'Mieux avec un casque',
-        body: 'Le son se d\u00E9place de l\u2019\u00E9couteur gauche au droit en synchronisation avec le point. Les battements binauraux cr\u00E9ent des ondes th\u00EAta pour un traitement profond. Le mode drone cr\u00E9e une atmosph\u00E8re m\u00E9ditative. Tout le son est synth\u00E9tis\u00E9 en temps r\u00E9el \u2014 sans fichiers audio, fonctionne hors ligne.',
+        body: 'Le son se déplace de l\'écouteur gauche au droit en synchronisation avec le point. Les battements binauraux créent des ondes thêta pour un traitement profond. Le mode drone crée une toile de fond méditative. Tout le son est synthétisé en temps réel — pas de fichiers audio, fonctionne hors ligne.',
       },
       {
-        title: 'Suivi oculaire',
-        body: 'Activez votre cam\u00E9ra et l\u2019application s\u2019adapte \u00E0 vos yeux. La vitesse s\u2019ajuste automatiquement. Apr\u00E8s chaque session \u2014 une carte thermique du regard et un score de concentration. Recalibrez lorsque vous changez de position ou rouvrez votre ordinateur. Fonctionne uniquement sur navigateurs de bureau (Chrome, Firefox). Indisponible sur mobile et Safari/iOS.',
+        title: 'Un outil, pas un remède',
+        body: 'Saccada est un outil d\'auto-assistance, pas un substitut à la thérapie. Les niveaux de preuve varient : la stimulation bilatérale est bien étudiée, d\'autres schémas sont des hypothèses. Chaque schéma est honnêtement étiqueté. Si vous travaillez avec un thérapeute EMDR, cet outil peut compléter votre pratique.',
       },
       {
-        title: 'Votre pratique',
-        body: '\u00C9valuation de l\u2019\u00E9tat avant et apr\u00E8s chaque session. Calendrier d\u2019activit\u00E9. Objectifs hebdomadaires. Historique de concentration. Tout est stock\u00E9 localement dans votre navigateur \u2014 des statistiques bienveillantes, sans pression.',
-      },
-      {
-        title: 'Un outil, pas un rem\u00E8de',
-        body: 'Saccada est un outil d\u2019auto-assistance, pas un substitut \u00E0 la th\u00E9rapie. Certains sch\u00E9mas sont bas\u00E9s sur des protocoles \u00E9prouv\u00E9s (EMDR). D\u2019autres sont des hypoth\u00E8ses fond\u00E9es sur les neurosciences. Le panneau d\u2019information de chaque sch\u00E9ma explique le niveau de preuve. Si vous travaillez avec un th\u00E9rapeute EMDR, cet outil peut soutenir votre pratique entre les sessions.',
-      },
-      {
-        title: 'Vos donn\u00E9es restent ici',
-        body: 'Pas de comptes, pas de serveurs, pas de t\u00E9l\u00E9m\u00E9trie. Tout fonctionne dans votre navigateur. Vos sessions et donn\u00E9es ne quittent jamais votre appareil.',
+        title: 'Vos données restent ici',
+        body: 'Pas de comptes, pas de serveurs, pas de télémétrie. Tout fonctionne dans votre navigateur. Vos sessions et données ne quittent jamais votre appareil.',
       },
     ],
     prev: 'Pr\u00E9c\u00E9dent',
@@ -315,6 +307,14 @@ export const fr: Translation = {
     feedbackTitle: 'Retours',
     feedbackBody: 'Bug trouv\u00E9 ou suggestion ? Ouvrez une issue sur GitHub.',
     openIssue: 'Ouvrir une issue',
+  },
+
+  hints: {
+    hint_eye_tracking: 'Sur ordinateur, vous pouvez activer le suivi oculaire via la webcam — la vitesse s\'adapte automatiquement et vous verrez une carte thermique après chaque session. Activez-le dans les paramètres du schéma.',
+    hint_session_controls: 'ESPACE pause · ÉCHAP quitter · F plein écran · G texte guide',
+    hint_post_session: 'Vos sessions sont sauvegardées. Consultez l\'Historique pour suivre vos progrès.',
+    hint_advanced_settings: 'Dans les Param\u00E8tres avanc\u00E9s, vous pouvez ajuster la vitesse, la taille du point, le motif de fond, le mode guid\u00E9 et le suivi oculaire.',
+    hint_landscape_mobile: 'Conseil : l\'orientation paysage offre plus d\'espace pour les mouvements oculaires.',
   },
 
   backgroundName: {

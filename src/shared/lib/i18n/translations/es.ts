@@ -16,31 +16,23 @@ export const es: Translation = {
     slides: [
       {
         title: 'Saccada',
-        body: 'Pr\u00E1ctica de movimiento ocular que combina las antiguas tradiciones Drishti Bheda de la danza cl\u00E1sica india, la estimulaci\u00F3n bilateral EMDR y la neurociencia del sue\u00F1o REM.',
+        body: 'Práctica de movimiento ocular que combina las tradiciones Drishti Bheda de la danza clásica india y la estimulación bilateral EMDR. Gratuita y de código abierto.',
       },
       {
         title: 'Sigue el Bindu',
-        body: 'Un punto luminoso gu\u00EDa tus ojos a trav\u00E9s de patrones de movimiento terap\u00E9uticos. Cada patr\u00F3n activa diferentes aspectos del procesamiento visual y cognitivo. Las fases de movimiento y fijaci\u00F3n se alternan naturalmente.',
+        body: 'Un punto luminoso guía tus ojos a través de patrones de movimiento terapéuticos. Cada patrón activa diferentes aspectos del procesamiento visual y cognitivo. Las fases de movimiento y fijación se alternan naturalmente.',
       },
       {
         title: 'Mejor con auriculares',
-        body: 'El sonido se desplaza del auricular izquierdo al derecho sincronizado con el punto. Los ritmos binaurales crean ondas theta para un procesamiento profundo. El modo drone crea un fondo meditativo. Todo el sonido se sintetiza en tiempo real \u2014 sin archivos de audio, funciona sin conexi\u00F3n.',
+        body: 'El sonido se mueve del auricular izquierdo al derecho en sincronía con el punto. Los ritmos binaurales crean ondas theta para un procesamiento profundo. El modo drone crea un fondo meditativo. Todo el sonido se sintetiza en tiempo real — sin archivos de audio, funciona sin conexión.',
       },
       {
-        title: 'Seguimiento Ocular',
-        body: 'Activa tu c\u00E1mara web y la app se adapta a tus ojos. La velocidad se ajusta autom\u00E1ticamente. Despu\u00E9s de cada sesi\u00F3n \u2014 un mapa de calor y puntuaci\u00F3n de enfoque. Recalibra cuando cambies de posici\u00F3n o reabras tu port\u00E1til. Solo funciona en navegadores de escritorio (Chrome, Firefox). No disponible en m\u00F3viles ni Safari/iOS.',
+        title: 'Una herramienta, no una cura',
+        body: 'Saccada es una herramienta de autoayuda, no un sustituto de la terapia. Los niveles de evidencia varían: la estimulación bilateral está bien investigada, otros patrones son hipótesis. Cada patrón está honestamente etiquetado. Si trabajas con un terapeuta EMDR, esta herramienta puede complementar tu práctica.',
       },
       {
-        title: 'Tu Pr\u00E1ctica',
-        body: 'Control del estado antes y despu\u00E9s de cada sesi\u00F3n. Calendario de actividad. Metas semanales. Historial de enfoque. Todo almacenado localmente en tu navegador \u2014 estad\u00EDsticas amigables, sin presi\u00F3n.',
-      },
-      {
-        title: 'Una Herramienta, No una Cura',
-        body: 'Saccada es una herramienta de autoayuda, no un sustituto de la terapia. Algunos patrones se basan en protocolos bien investigados (EMDR). Otros son hip\u00F3tesis fundamentadas en neurociencia. El panel de informaci\u00F3n de cada patr\u00F3n explica el nivel de evidencia. Si trabajas con un terapeuta EMDR, esta herramienta puede apoyar tu pr\u00E1ctica entre sesiones.',
-      },
-      {
-        title: 'Tus datos se quedan aqu\u00ED',
-        body: 'Sin cuentas, sin servidores, sin telemetr\u00EDa. Todo funciona en tu navegador. Tus sesiones y datos nunca salen de tu dispositivo.',
+        title: 'Tus datos se quedan aquí',
+        body: 'Sin cuentas, sin servidores, sin telemetría. Todo funciona en tu navegador. Tus sesiones y datos nunca salen de tu dispositivo.',
       },
     ],
     prev: 'Anterior',
@@ -312,6 +304,14 @@ export const es: Translation = {
     feedbackTitle: 'Comentarios',
     feedbackBody: '\u00BFEncontraste un error o tienes una sugerencia? Abre un issue en GitHub.',
     openIssue: 'Abrir issue',
+  },
+
+  hints: {
+    hint_eye_tracking: 'En escritorio puedes activar el seguimiento ocular con la webcam — la velocidad se adapta automáticamente y verás un mapa de calor después de cada sesión. Actívalo en los ajustes del patrón.',
+    hint_session_controls: 'ESPACIO pausa · ESC salir · F pantalla completa · G texto guía',
+    hint_post_session: 'Tus sesiones se guardan. Revisa el Historial para seguir tu progreso.',
+    hint_advanced_settings: 'En Ajustes avanzados puedes cambiar la velocidad, escala del punto, fondo, modo guiado y seguimiento ocular.',
+    hint_landscape_mobile: 'Consejo: la orientación horizontal da más espacio para los movimientos oculares.',
   },
 
   backgroundName: {

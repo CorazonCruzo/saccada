@@ -16,31 +16,23 @@ export const de: Translation = {
     slides: [
       {
         title: 'Saccada',
-        body: 'Augenbewegungspraxis, die alte Drishti Bheda-Traditionen aus dem indischen klassischen Tanz, bilaterale EMDR-Stimulation und die Neurowissenschaft des REM-Schlafs vereint.',
+        body: 'Augenbewegungspraxis, die Drishti Bheda-Traditionen aus dem indischen klassischen Tanz und bilaterale EMDR-Stimulation vereint. Kostenlos und Open Source.',
       },
       {
-        title: 'Folgen Sie dem Bindu',
-        body: 'Ein leuchtender Punkt f\u00FChrt Ihre Augen auf therapeutischen Bahnen. Jedes Muster aktiviert unterschiedliche Aspekte der visuellen und kognitiven Verarbeitung. Bewegungs- und Fixationsphasen wechseln sich nat\u00FCrlich ab.',
+        title: 'Folge dem Bindu',
+        body: 'Ein leuchtender Punkt führt deine Augen durch therapeutische Bewegungsmuster. Jedes Muster aktiviert verschiedene Aspekte der visuellen und kognitiven Verarbeitung. Bewegungs- und Fixierungsphasen wechseln sich natürlich ab.',
       },
       {
-        title: 'Besser mit Kopfh\u00F6rern',
-        body: 'Der Ton wandert synchron mit dem Punkt von links nach rechts. Binaurale Beats erzeugen Theta-Wellen zur tiefen Verarbeitung. Der Drohnen-Modus bietet eine meditative Atmosph\u00E4re. Der gesamte Ton wird in Echtzeit synthetisiert \u2014 ohne Audiodateien, funktioniert komplett offline.',
-      },
-      {
-        title: 'Eye-Tracking',
-        body: 'Aktivieren Sie die Kamera und die App passt sich an Ihre Augen an. Die Geschwindigkeit passt sich automatisch an. Nach der Sitzung erhalten Sie eine Heatmap und einen Fokus-Score. Kalibrieren Sie bei Positions\u00E4nderungen neu. Funktioniert nur in Desktop-Browsern (Chrome, Firefox). Auf Mobilger\u00E4ten und in Safari/iOS kein Eye-Tracking.',
-      },
-      {
-        title: 'Ihre Praxis',
-        body: 'Zustandsbewertung vor und nach der Sitzung. Aktivit\u00E4tskalender. Wochenziele. Fokus-Historie. Alles wird lokal in Ihrem Browser gespeichert \u2014 freundliche Statistiken, kein Druck.',
+        title: 'Am besten mit Kopfhörern',
+        body: 'Der Ton wandert vom linken zum rechten Kopfhörer synchron mit dem Punkt. Binaurale Beats erzeugen Theta-Wellen für tiefe Verarbeitung. Der Drone-Modus schafft einen meditativen Hintergrund. Aller Sound wird in Echtzeit synthetisiert — keine Audiodateien, funktioniert offline.',
       },
       {
         title: 'Ein Werkzeug, keine Heilung',
-        body: 'Saccada ist ein Werkzeug zur Selbsthilfe, kein Ersatz f\u00FCr eine Therapie. Einige Muster basieren auf erforschten Protokollen (EMDR). Andere sind Hypothesen, die auf Neurowissenschaften beruhen. Das Info-Panel jedes Musters erkl\u00E4rt das Evidenzniveau. Wenn Sie mit einem EMDR-Therapeuten arbeiten, kann dieses Tool Ihre Praxis zwischen den Sitzungen unterst\u00FCtzen.',
+        body: 'Saccada ist ein Selbsthilfe-Werkzeug, kein Ersatz für Therapie. Die Evidenzlage variiert: bilaterale Stimulation ist gut erforscht, andere Muster sind Hypothesen. Jedes Muster ist ehrlich gekennzeichnet. Wenn du mit einem EMDR-Therapeuten arbeitest, kann dieses Tool deine Praxis ergänzen.',
       },
       {
-        title: 'Ihre Daten bleiben hier',
-        body: 'Keine Konten, keine Server, keine Telemetrie. Alles l\u00E4uft direkt in Ihrem Browser. Ihre Sitzungen und Daten verlassen niemals Ihr Ger\u00E4t.',
+        title: 'Deine Daten bleiben hier',
+        body: 'Keine Konten, keine Server, keine Telemetrie. Alles läuft in deinem Browser. Deine Sitzungen und Daten verlassen nie dein Gerät.',
       },
     ],
     prev: 'Zur\u00FCck',
@@ -315,6 +307,14 @@ export const de: Translation = {
     feedbackTitle: 'Feedback',
     feedbackBody: 'Bug gefunden oder Vorschlag? \u00D6ffnen Sie ein Issue auf GitHub.',
     openIssue: 'Issue \u00F6ffnen',
+  },
+
+  hints: {
+    hint_eye_tracking: 'Am Desktop kannst du Eye-Tracking per Webcam aktivieren — die Geschwindigkeit passt sich automatisch an, und du siehst nach jeder Sitzung eine Blick-Heatmap. Aktiviere es in den Muster-Einstellungen.',
+    hint_session_controls: 'LEERTASTE Pause · ESC Ende · F Vollbild · G Anleitungstext',
+    hint_post_session: 'Deine Sitzungen werden gespeichert. Schau in den Verlauf, um deinen Fortschritt zu verfolgen.',
+    hint_advanced_settings: 'In den Erweiterten Einstellungen kannst du Geschwindigkeit, Punktgr\u00F6\u00DFe, Hintergrundmuster, Anleitungsmodus und Eye-Tracking anpassen.',
+    hint_landscape_mobile: 'Tipp: Im Querformat gibt es mehr Platz für Augenbewegungen.',
   },
 
   backgroundName: {

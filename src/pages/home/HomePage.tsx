@@ -5,6 +5,8 @@ import { PatternPicker } from '@/widgets/pattern-picker'
 import { SessionPlayer } from '@/widgets/session-player'
 import { PreSessionDialog } from '@/pages/pre-session/PreSessionPage'
 import { useTranslation } from '@/shared/lib/i18n'
+import { ContextualHint } from '@/shared/ui/contextual-hint'
+import { isDesktop } from '@/shared/lib/hints'
 
 export default function HomePage() {
   const navigate = useNavigate()
@@ -78,6 +80,9 @@ export default function HomePage() {
 
       {/* Pre-session dialog */}
       <PreSessionDialog open={settingsOpen} onOpenChange={setSettingsOpen} />
+
+      {/* Hint: eye tracking available on desktop */}
+      <ContextualHint id="hint_eye_tracking" show={isDesktop()} position="top" />
     </div>
   )
 }

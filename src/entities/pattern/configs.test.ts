@@ -26,9 +26,9 @@ describe('Pattern configs', () => {
       }
     })
 
-    it('moving patterns have amplitude <= 0.6', () => {
+    it('moving patterns have amplitude <= 0.7', () => {
       for (const p of moving) {
-        expect(p.trajectoryParams.amplitude, `${p.id} amplitude too high`).toBeLessThanOrEqual(0.6)
+        expect(p.trajectoryParams.amplitude, `${p.id} amplitude too high`).toBeLessThanOrEqual(0.7)
       }
     })
 

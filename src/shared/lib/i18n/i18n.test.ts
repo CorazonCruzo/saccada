@@ -226,9 +226,9 @@ describe('translation structure', () => {
 // translations — onboarding
 // ────────────────────────────────────────────────────────
 describe('onboarding translations', () => {
-  it('should have exactly 7 slides in every locale', () => {
+  it('should have exactly 5 slides in every locale', () => {
     for (const locale of locales) {
-      expect(translations[locale].onboarding.slides).toHaveLength(7)
+      expect(translations[locale].onboarding.slides).toHaveLength(5)
     }
   })
 

@@ -13,6 +13,8 @@ import {
 import { useTranslation } from '@/shared/lib/i18n'
 import { Button } from '@/shared/ui/button'
 import { formatTimer } from '@/shared/lib/format'
+import { ContextualHint } from '@/shared/ui/contextual-hint'
+import { isDesktop, isMobile, isPortrait } from '@/shared/lib/hints'
 
 type SessionPhase = 'countdown' | 'active' | 'paused' | 'cooldown'
 
@@ -543,6 +545,12 @@ export default function SessionPage() {
           if (!open && phase === 'paused') setPhase('active')
         }}
       />
+
+      {/* Hint: session controls (desktop, first session) */}
+      <ContextualHint id="hint_session_controls" show={phase === 'active' && isDesktop()} position="bottom" />
+
+      {/* Hint: landscape recommended (mobile portrait) */}
+      <ContextualHint id="hint_landscape_mobile" show={phase === 'active' && isMobile() && isPortrait()} position="center" />
     </div>
   )
 }

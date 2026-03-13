@@ -4,6 +4,7 @@ import { useSessionStore } from '@/entities/session'
 import { patternsById } from '@/entities/pattern'
 import { useTranslation } from '@/shared/lib/i18n'
 import { Button } from '@/shared/ui/button'
+import { ContextualHint } from '@/shared/ui/contextual-hint'
 
 const HEART_COUNT = 5
 
@@ -111,6 +112,9 @@ export default function ReflectionPage() {
           {t.reflection.save}
         </Button>
       </div>
+
+      {/* Hint: post-session discovery */}
+      <ContextualHint id="hint_post_session" show={true} position="top" />
     </div>
   )
 }
