@@ -99,7 +99,7 @@
   /* Saccada palette — light (parchment pages, white cards/session) */
   --saccada-bg-deep:    #F7F3EE;                   /* parchment page background                  */
   --saccada-bg-mid:     #FFFFFF;                   /* white cards, panels                        */
-  --saccada-bg-surface: #FEF4E8;                   /* hover/active surface (cream tint)          */
+  --saccada-bg-surface: #EDE5F3;                   /* hover/active surface (soft lavender)         */
   --saccada-bg-canvas:  #FFFFFF;                   /* session & preview background (white)       */
   --saccada-saffron:    oklch(0.58  0.082 62);    /* gold — matches dark theme #c4956a */
   --saccada-turmeric:   oklch(0.58  0.155 78);    /* L: 0.775→0.58  headings need more contrast */
@@ -127,7 +127,7 @@
   --secondary-foreground: oklch(0.22  0.035 286);
   --muted:                oklch(0.94  0.012 286);
   --muted-foreground:     oklch(0.47  0.040 293);
-  --accent:               #FEF4E8;
+  --accent:               #EDE5F3;
   --accent-foreground:    oklch(0.22  0.035 286);
   --destructive:          #e84393;
   --border:               oklch(0.86  0.020 284);
