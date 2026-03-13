@@ -298,6 +298,7 @@ export default function HistoryPage() {
             t={t}
             tp={tp}
             locale={locale}
+            showDevanagari={showDevanagari}
           />
         )}
       </div>
@@ -535,12 +536,13 @@ interface SessionListProps {
   t: Translation
   tp: (id: string) => { name: string } | undefined
   locale: string
+  showDevanagari: boolean
 }
 
 function SessionList({
   sessions, expandedIds, onToggleExpand,
   deleteId, onDeleteClick, onDeleteConfirm, onDeleteCancel,
-  formatDate, t, tp, locale,
+  formatDate, t, tp, locale, showDevanagari,
 }: SessionListProps) {
   const groups = useMemo(
     () => groupSessionsByDay(sessions, locale, t),
