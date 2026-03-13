@@ -1,6 +1,9 @@
 import { useState } from 'react'
 import { useNavigate, Navigate } from 'react-router-dom'
 import { useSessionStore } from '@/entities/session'
+import { useAudio } from '@/features/audio'
+import { shouldCalibrate } from '@/features/calibration'
+import { useEyeTracking } from '@/features/eye-tracking'
 import { PatternPicker } from '@/widgets/pattern-picker'
 import { SessionPlayer } from '@/widgets/session-player'
 import { PreSessionDialog } from '@/pages/pre-session/PreSessionPage'
@@ -10,9 +13,11 @@ import { EyeTrackingNotice } from '@/shared/ui/eye-tracking-notice'
 
 export default function HomePage() {
   const navigate = useNavigate()
-  const { selectedPattern, selectPattern, speed, visualScale, backgroundPattern, backgroundRotation } = useSessionStore()
+  const { selectedPattern, selectPattern, speed, visualScale, backgroundPattern, backgroundRotation, soundEnabled, eyeTrackingEnabled, calibratedAt } = useSessionStore()
   const [settingsOpen, setSettingsOpen] = useState(false)
   const { t } = useTranslation()
+  const audioEngine = useAudio()
+  const { getTracker } = useEyeTracking()
 
   // Check onboarding
   if (!localStorage.getItem('saccada-onboarded')) {
@@ -22,6 +27,19 @@ export default function HomePage() {
   function handleSelectPattern(p: typeof selectedPattern) {
     selectPattern(p)
     setSettingsOpen(true)
+  }
+
+  async function handleQuickStart() {
+    if (soundEnabled) {
+      audioEngine.init()
+    }
+    if (await shouldCalibrate(eyeTrackingEnabled, calibratedAt, getTracker().isReady())) {
+      useSessionStore.getState().setSessionState('calibrating')
+      navigate('/calibration')
+    } else {
+      useSessionStore.getState().setSessionState('countdown')
+      navigate('/session')
+    }
   }
 
   return (
@@ -44,8 +62,11 @@ export default function HomePage() {
         />
       </div>
 
-      {/* Canvas preview */}
-      <div className="mx-auto mt-6 h-56 w-full max-w-2xl overflow-hidden rounded-xl border border-border-ornament bg-bg-canvas">
+      {/* Canvas preview — tap to start session */}
+      <button
+        onClick={handleQuickStart}
+        className="mx-auto mt-6 h-56 w-full max-w-2xl cursor-pointer overflow-hidden rounded-xl border border-border-ornament bg-bg-canvas transition-shadow hover:shadow-[0_0_24px_var(--saccada-turmeric)]/15"
+      >
         <SessionPlayer
           pattern={selectedPattern}
           isPlaying={true}
@@ -54,7 +75,7 @@ export default function HomePage() {
           backgroundPattern={backgroundPattern}
           backgroundRotation={backgroundRotation}
         />
-      </div>
+      </button>
 
       {/* Footer links */}
       <div className="mx-auto mt-12 flex items-center gap-6">
