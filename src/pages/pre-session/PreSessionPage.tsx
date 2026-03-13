@@ -11,6 +11,7 @@ import { Button } from '@/shared/ui/button'
 import { Slider } from '@/shared/ui/slider'
 import { ContextualHint } from '@/shared/ui/contextual-hint'
 import { HeadphonesIcon } from '@/shared/ui/headphones-icon'
+import { EvidenceBadge } from '@/shared/ui/evidence-badge'
 import {
   Dialog,
   DialogContent,
@@ -130,9 +131,12 @@ export function PreSessionDialog({ open, onOpenChange }: PreSessionDialogProps) 
 
             {/* Effects */}
             <div>
-              <h2 className="font-heading text-xs tracking-widest text-turmeric uppercase">
-                {t.preSession.effects}
-              </h2>
+              <div className="flex items-baseline justify-between gap-2">
+                <h2 className="font-heading text-xs tracking-widest text-turmeric uppercase">
+                  {t.preSession.effects}
+                </h2>
+                <EvidenceBadge level={selectedPattern.evidenceLevel} size="md" />
+              </div>
               <p className="mt-2 font-body text-sm leading-relaxed text-text-bright sm:text-base">
                 {patternT.effect}
               </p>

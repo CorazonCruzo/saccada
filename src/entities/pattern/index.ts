@@ -12,6 +12,7 @@ export type {
   BackgroundPatternId,
   BackgroundRotation,
   SessionType,
+  EvidenceLevel,
 } from './types'
 
 export { allBackgroundPatterns, rotatableBackgrounds } from './types'

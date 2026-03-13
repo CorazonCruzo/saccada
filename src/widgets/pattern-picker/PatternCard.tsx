@@ -1,6 +1,7 @@
 import type { PatternConfig, TrajectoryType } from '@/entities/pattern'
 import { useTranslation } from '@/shared/lib/i18n'
 import { HeadphonesIcon } from '@/shared/ui/headphones-icon'
+import { EvidenceBadge } from '@/shared/ui/evidence-badge'
 
 const trajectoryIcons: Record<TrajectoryType, string> = {
   horizontal: '\u2194',
@@ -56,8 +57,8 @@ export function PatternCard({ pattern, isSelected, onSelect, onInfo }: PatternCa
         </div>
       </div>
 
-      {/* Name + Devanagari */}
-      <div className="mt-1.5 flex items-baseline gap-2">
+      {/* Name + Evidence badge */}
+      <div className="mt-1.5 flex flex-wrap items-baseline gap-x-2 gap-y-1">
         <span className="font-heading text-lg font-semibold text-text-bright">
           {patternT.name}
         </span>
@@ -66,10 +67,11 @@ export function PatternCard({ pattern, isSelected, onSelect, onInfo }: PatternCa
             {pattern.nameDevanagari}
           </span>
         )}
+        <EvidenceBadge level={pattern.evidenceLevel} size="sm" />
       </div>
 
       {/* Description */}
-      <div className="mt-2 line-clamp-2 font-body text-sm font-light leading-snug text-text-muted">
+      <div className="mt-1.5 line-clamp-2 font-body text-sm font-light leading-snug text-text-muted">
         {patternT.description}
       </div>
 

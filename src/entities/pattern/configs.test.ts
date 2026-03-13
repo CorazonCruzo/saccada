@@ -191,6 +191,36 @@ describe('Pattern configs', () => {
     })
   })
 
+  describe('evidence levels', () => {
+    it('every pattern has a valid evidenceLevel', () => {
+      const validLevels = ['researched', 'preliminary', 'hypothesis']
+      for (const p of allPatterns) {
+        expect(validLevels, `${p.id}`).toContain(p.evidenceLevel)
+      }
+    })
+
+    it('EMDR Classic and Pralokita are researched', () => {
+      expect(patternsById['emdr_classic'].evidenceLevel).toBe('researched')
+      expect(patternsById['pralokita'].evidenceLevel).toBe('researched')
+    })
+
+    it('patterns with binaural/bilateral variants are preliminary', () => {
+      expect(patternsById['sachi'].evidenceLevel).toBe('preliminary')
+      expect(patternsById['emdr_diagonal'].evidenceLevel).toBe('preliminary')
+      expect(patternsById['anuvritta'].evidenceLevel).toBe('preliminary')
+      expect(patternsById['sleep_rem'].evidenceLevel).toBe('preliminary')
+      expect(patternsById['trataka'].evidenceLevel).toBe('preliminary')
+    })
+
+    it('traditional Natya Shastra patterns without direct clinical research are hypothesis', () => {
+      expect(patternsById['sama'].evidenceLevel).toBe('hypothesis')
+      expect(patternsById['alokita'].evidenceLevel).toBe('hypothesis')
+      expect(patternsById['nimilita'].evidenceLevel).toBe('hypothesis')
+      expect(patternsById['ullokita'].evidenceLevel).toBe('hypothesis')
+      expect(patternsById['avalokita'].evidenceLevel).toBe('hypothesis')
+    })
+  })
+
   describe('visual', () => {
     it('only trataka uses flame visual', () => {
       for (const p of allPatterns) {

@@ -174,6 +174,12 @@ export const en: Translation = {
     origins: 'Origins',
     benefits: 'Benefits',
     headphonesNote: 'Headphones recommended for this pattern',
+    evidenceLevel: 'Evidence Level',
+  },
+  evidenceLevel: {
+    researched: 'Researched',
+    preliminary: 'Preliminary',
+    hypothesis: 'Hypothesis',
   },
 
   reflection: {
@@ -345,6 +351,7 @@ export const en: Translation = {
         'Bell — close your eyes. Observe the sensations.',
         'Bell — open your eyes. Gently return your gaze to the dot.',
       ],
+      evidenceDescription: 'Based on the Natya Shastra tradition of steady gaze. Mechanism is related to Trataka, but clinical studies of this specific practice are absent. The calming effect of gaze fixation is supported by general attention research.',
     },
 
     alokita: {
@@ -362,6 +369,7 @@ export const en: Translation = {
         'Pause. Notice what you feel.',
         null,
       ],
+      evidenceDescription: 'Circular eye movements from Natya Shastra tradition. Peripheral vision activation has general research support, but the therapeutic effect of this specific circular pattern has not been directly studied.',
     },
 
     sachi: {
@@ -380,6 +388,7 @@ export const en: Translation = {
         null,
         'Final pause. Note the changes.',
       ],
+      evidenceDescription: 'Based on the same bilateral stimulation mechanism as EMDR, but with reduced amplitude. EMDR research supports the underlying mechanism; this specific reduced-amplitude variant has not been separately studied.',
     },
 
     pralokita: {
@@ -400,6 +409,7 @@ export const en: Translation = {
         null,
         'Final rest. Breathe.',
       ],
+      evidenceDescription: 'Identical to EMDR bilateral stimulation. Meta-analysis of 20 studies confirms immediate reduction in vividness of anxious images and negative emotions. WHO-recognized mechanism.',
     },
 
     nimilita: {
@@ -416,6 +426,7 @@ export const en: Translation = {
         'Bell — close your eyes completely. Breathe with your belly.',
         'Bell — gently open your eyes. Return your attention to the dot.',
       ],
+      evidenceDescription: 'Based on the Natya Shastra description of half-closed gaze. The parasympathetic activation from reduced visual input has general physiological support, but this specific practice has not been clinically studied.',
     },
 
     ullokita: {
@@ -433,6 +444,7 @@ export const en: Translation = {
         'Notice the images that come.',
         null,
       ],
+      evidenceDescription: 'Upward gaze from Natya Shastra tradition. The link between gaze direction and cognitive processes (NLP eye accessing cues) lacks robust evidence. Therapeutic effect of this specific pattern is a hypothesis.',
     },
 
     anuvritta: {
@@ -453,6 +465,7 @@ export const en: Translation = {
         null,
         'Bell — close your eyes. Notice the sensations behind your eyelids.',
       ],
+      evidenceDescription: 'Based on Stickgold\'s hypothesis (2002) that EMDR reproduces REM sleep memory consolidation. REM sleep research and binaural beat studies support the underlying mechanisms, but this specific rapid vertical pattern has not been directly tested.',
     },
 
     avalokita: {
@@ -470,6 +483,7 @@ export const en: Translation = {
         'What do you feel in your body right now?',
         'Bell — close your eyes. Feel the contact of your body with the surface.',
       ],
+      evidenceDescription: 'Downward gaze from Natya Shastra. Somatic psychotherapy uses downward gaze direction for grounding, but the therapeutic effect of this specific vertical pattern has not been clinically tested.',
     },
 
     trataka: {
@@ -488,6 +502,7 @@ export const en: Translation = {
         'Bell — open your eyes. Final round. Gently, without strain.',
         'Final observation. Let the image dissolve naturally.',
       ],
+      evidenceDescription: 'Described in Hatha Yoga Pradipika. Several small studies show improved attention, reduced anxiety, and better sleep quality. Evidence is growing but sample sizes remain small.',
     },
 
     emdr_classic: {
@@ -510,6 +525,7 @@ export const en: Translation = {
         null,
         'What has changed compared to the beginning?',
       ],
+      evidenceDescription: 'WHO-recognized treatment for PTSD. 30+ randomized controlled trials. Standard clinical protocol developed by Francine Shapiro (1989). The most researched form of bilateral stimulation.',
     },
 
     emdr_diagonal: {
@@ -528,6 +544,7 @@ export const en: Translation = {
         null,
         null,
       ],
+      evidenceDescription: 'Variation of standard EMDR. Some EMDR therapists use diagonal sets clinically. The bilateral stimulation mechanism is well-researched, but the diagonal variant specifically has limited separate study.',
     },
 
     sleep_rem: {
@@ -546,6 +563,7 @@ export const en: Translation = {
         null,
         'Bell — close your eyes. Let your body relax. If you fall asleep, that\'s good.',
       ],
+      evidenceDescription: 'Based on REM sleep neuroscience and binaural beat research. Theta-range binaural beats have some evidence for relaxation. The combination of figure-8 movement with binaural beats is a novel approach not directly studied.',
     },
   },
 }

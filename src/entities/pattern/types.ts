@@ -51,6 +51,7 @@ export interface TrajectoryParams {
 }
 
 export type SessionType = 'calming' | 'activating' | 'focusing' | 'processing'
+export type EvidenceLevel = 'researched' | 'preliminary' | 'hypothesis'
 
 export interface PatternConfig {
   id: string
@@ -61,6 +62,7 @@ export interface PatternConfig {
   category: PatternCategory
   binduColor: BinduColorToken
   sessionType: SessionType
+  evidenceLevel: EvidenceLevel
 
   trajectory: TrajectoryType
   trajectoryParams: TrajectoryParams

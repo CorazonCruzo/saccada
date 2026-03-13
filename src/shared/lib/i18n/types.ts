@@ -21,6 +21,7 @@ export interface PatternTranslation {
   origins: string
   benefits: string[]
   phases: (string | null)[]
+  evidenceDescription: string
 }
 
 export interface Translation {
@@ -166,6 +167,12 @@ export interface Translation {
     origins: string
     benefits: string
     headphonesNote: string
+    evidenceLevel: string
+  }
+  evidenceLevel: {
+    researched: string
+    preliminary: string
+    hypothesis: string
   }
   reflection: {
     title: string

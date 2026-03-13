@@ -1,6 +1,7 @@
 import type { PatternConfig } from '@/entities/pattern'
 import { useTranslation } from '@/shared/lib/i18n'
 import { HeadphonesIcon } from '@/shared/ui/headphones-icon'
+import { EvidenceBadge } from '@/shared/ui/evidence-badge'
 import {
   Dialog,
   DialogContent,
@@ -83,6 +84,19 @@ export function PatternInfoDialog({ pattern, open, onOpenChange }: PatternInfoDi
                 </span>
               ))}
             </div>
+          </section>
+
+          {/* Evidence Level */}
+          <section>
+            <div className="flex items-baseline justify-between gap-2">
+              <h3 className="font-heading text-xs tracking-widest text-turmeric uppercase">
+                {t.patternInfo.evidenceLevel}
+              </h3>
+              <EvidenceBadge level={pattern.evidenceLevel} size="md" />
+            </div>
+            <p className="mt-1.5 font-body text-sm font-light leading-relaxed text-text-muted">
+              {patternT.evidenceDescription}
+            </p>
           </section>
 
           {/* Headphones notice */}

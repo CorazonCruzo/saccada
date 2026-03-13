@@ -175,6 +175,12 @@ export const pt: Translation = {
     origins: 'Origens',
     benefits: 'Benefícios',
     headphonesNote: 'Fones recomendados para este padrão',
+    evidenceLevel: 'Nível de evidência',
+  },
+  evidenceLevel: {
+    researched: 'Pesquisado',
+    preliminary: 'Preliminar',
+    hypothesis: 'Hipótese',
   },
 
   reflection: {
@@ -349,6 +355,7 @@ export const pt: Translation = {
         'Sino \u2014 feche os olhos. Observe as sensações.',
         'Sino \u2014 abra os olhos. Retorne gentilmente o olhar ao ponto.',
       ],
+      evidenceDescription: 'Baseado na tradição do Natya Shastra de olhar fixo. O mecanismo está relacionado ao Trataka, mas estudos clínicos desta prática específica são inexistentes. O efeito calmante da fixação do olhar é sustentado por pesquisas gerais sobre atenção.',
     },
 
     alokita: {
@@ -366,6 +373,7 @@ export const pt: Translation = {
         'Pausa. Note o que você sente.',
         null,
       ],
+      evidenceDescription: 'Movimentos oculares circulares da tradição do Natya Shastra. A ativação da visão periférica tem suporte geral de pesquisas, mas o efeito terapêutico deste padrão circular específico não foi diretamente estudado.',
     },
 
     sachi: {
@@ -384,6 +392,7 @@ export const pt: Translation = {
         null,
         'Última pausa. Observe as mudanças.',
       ],
+      evidenceDescription: 'Baseado no mesmo mecanismo de estimulação bilateral do EMDR, mas com amplitude reduzida. A pesquisa sobre EMDR sustenta o mecanismo subjacente; esta variante específica de amplitude reduzida não foi estudada separadamente.',
     },
 
     pralokita: {
@@ -404,6 +413,7 @@ export const pt: Translation = {
         null,
         'Último descanso. Respire.',
       ],
+      evidenceDescription: 'Idêntico à estimulação bilateral EMDR. Uma meta-análise de 20 estudos confirma redução imediata na vivacidade de imagens ansiosas e emoções negativas. Mecanismo reconhecido pela OMS.',
     },
 
     nimilita: {
@@ -420,6 +430,7 @@ export const pt: Translation = {
         'Sino \u2014 feche completamente os olhos. Respiração abdominal.',
         'Sino \u2014 abra suavemente os olhos. Retorne a atenção ao ponto.',
       ],
+      evidenceDescription: 'Baseado na descrição do Natya Shastra do olhar semicerrado. A ativação parassimpática pela redução da entrada visual tem suporte fisiológico geral, mas esta prática específica não foi estudada clinicamente.',
     },
 
     ullokita: {
@@ -437,6 +448,7 @@ export const pt: Translation = {
         'Observe as imagens que surgem.',
         null,
       ],
+      evidenceDescription: 'Olhar para cima da tradição do Natya Shastra. A relação entre direção do olhar e processos cognitivos (pistas de acesso ocular da PNL) carece de evidências robustas. O efeito terapêutico deste padrão específico é uma hipótese.',
     },
 
     anuvritta: {
@@ -457,6 +469,7 @@ export const pt: Translation = {
         null,
         'Sino \u2014 feche os olhos. Observe as sensações atrás das pálpebras.',
       ],
+      evidenceDescription: 'Baseado na hipótese de Stickgold (2002) de que o EMDR reproduz a consolidação da memória do sono REM. Pesquisas sobre sono REM e estudos de batidas binaurais sustentam os mecanismos subjacentes, mas este padrão vertical rápido específico não foi diretamente testado.',
     },
 
     avalokita: {
@@ -474,6 +487,7 @@ export const pt: Translation = {
         'O que você sente no corpo agora?',
         'Sino \u2014 feche os olhos. Sinta o contato do corpo com a superfície.',
       ],
+      evidenceDescription: 'Olhar para baixo do Natya Shastra. A psicoterapia somática utiliza a direção do olhar para baixo para ancoragem, mas o efeito terapêutico deste padrão vertical específico não foi testado clinicamente.',
     },
 
     trataka: {
@@ -492,6 +506,7 @@ export const pt: Translation = {
         'Sino \u2014 abra os olhos. Última rodada. Suavemente, sem esforço.',
         'Última observação. Deixe a imagem se dissolver naturalmente.',
       ],
+      evidenceDescription: 'Descrito no Hatha Yoga Pradipika. Vários estudos pequenos mostram melhora na atenção, redução da ansiedade e melhor qualidade do sono. A evidência está crescendo, mas os tamanhos das amostras permanecem pequenos.',
     },
 
     emdr_classic: {
@@ -514,6 +529,7 @@ export const pt: Translation = {
         null,
         'O que mudou desde o início?',
       ],
+      evidenceDescription: 'Tratamento reconhecido pela OMS para TEPT. Mais de 30 ensaios clínicos randomizados. Protocolo clínico padrão desenvolvido por Francine Shapiro (1989). A forma mais pesquisada de estimulação bilateral.',
     },
 
     emdr_diagonal: {
@@ -532,6 +548,7 @@ export const pt: Translation = {
         null,
         null,
       ],
+      evidenceDescription: 'Variação do EMDR padrão. Alguns terapeutas EMDR usam séries diagonais na prática clínica. O mecanismo de estimulação bilateral é bem pesquisado, mas a variante diagonal especificamente tem estudo separado limitado.',
     },
 
     sleep_rem: {
@@ -550,6 +567,7 @@ export const pt: Translation = {
         null,
         'Sino \u2014 feche os olhos. Deixe seu corpo relaxar. Se adormecer, ótimo.',
       ],
+      evidenceDescription: 'Baseado na neurociência do sono REM e na pesquisa sobre batidas binaurais. Batidas binaurais na faixa teta têm alguma evidência de relaxamento. A combinação do movimento em forma de oito com batidas binaurais é uma abordagem inovadora que não foi diretamente estudada.',
     },
   },
 }

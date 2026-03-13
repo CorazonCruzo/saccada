@@ -175,6 +175,12 @@ export const fr: Translation = {
     origins: 'Origines',
     benefits: 'Effets',
     headphonesNote: 'Casque recommand\u00E9 pour ce sch\u00E9ma',
+    evidenceLevel: 'Niveau de preuve',
+  },
+  evidenceLevel: {
+    researched: 'Recherché',
+    preliminary: 'Préliminaire',
+    hypothesis: 'Hypothèse',
   },
 
   reflection: {
@@ -349,6 +355,7 @@ export const fr: Translation = {
         'Cloche \u2014 fermez les yeux. Observez les sensations.',
         'Cloche \u2014 ouvrez les yeux. Ramenez doucement le regard au point.',
       ],
+      evidenceDescription: 'Basé sur la tradition du Natya Shastra du regard fixe. Le mécanisme est lié au Trataka, mais les études cliniques de cette pratique spécifique sont absentes. L\'effet apaisant de la fixation du regard est soutenu par la recherche générale sur l\'attention.',
     },
 
     alokita: {
@@ -366,6 +373,7 @@ export const fr: Translation = {
         'Pause. Remarquez ce que vous ressentez.',
         null,
       ],
+      evidenceDescription: 'Mouvements oculaires circulaires de la tradition du Natya Shastra. L\'activation de la vision périphérique bénéficie d\'un soutien général de la recherche, mais l\'effet thérapeutique de ce schéma circulaire spécifique n\'a pas été directement étudié.',
     },
 
     sachi: {
@@ -384,6 +392,7 @@ export const fr: Translation = {
         null,
         'Derni\u00E8re pause. Observez les changements.',
       ],
+      evidenceDescription: 'Basé sur le même mécanisme de stimulation bilatérale que l\'EMDR, mais avec une amplitude réduite. La recherche EMDR soutient le mécanisme sous-jacent ; cette variante spécifique à amplitude réduite n\'a pas été étudiée séparément.',
     },
 
     pralokita: {
@@ -404,6 +413,7 @@ export const fr: Translation = {
         null,
         'Dernier repos. Respirez.',
       ],
+      evidenceDescription: 'Identique à la stimulation bilatérale EMDR. Une méta-analyse de 20 études confirme une réduction immédiate de la vivacité des images anxieuses et des émotions négatives. Mécanisme reconnu par l\'OMS.',
     },
 
     nimilita: {
@@ -420,6 +430,7 @@ export const fr: Translation = {
         'Cloche \u2014 fermez compl\u00E8tement les yeux. Respiration abdominale.',
         'Cloche \u2014 ouvrez doucement les yeux. Ramenez l\u2019attention au point.',
       ],
+      evidenceDescription: 'Basé sur la description du Natya Shastra du regard mi-clos. L\'activation parasympathique par la réduction des stimuli visuels a un soutien physiologique général, mais cette pratique spécifique n\'a pas été étudiée cliniquement.',
     },
 
     ullokita: {
@@ -437,6 +448,7 @@ export const fr: Translation = {
         'Observez les images qui viennent.',
         null,
       ],
+      evidenceDescription: 'Regard vers le haut de la tradition du Natya Shastra. Le lien entre la direction du regard et les processus cognitifs (indices d\'accès oculaire de la PNL) manque de preuves solides. L\'effet thérapeutique de ce schéma spécifique est une hypothèse.',
     },
 
     anuvritta: {
@@ -457,6 +469,7 @@ export const fr: Translation = {
         null,
         'Cloche \u2014 fermez les yeux. Observez les sensations derri\u00E8re vos paupi\u00E8res.',
       ],
+      evidenceDescription: 'Basé sur l\'hypothèse de Stickgold (2002) selon laquelle l\'EMDR reproduit la consolidation de la mémoire du sommeil paradoxal. La recherche sur le sommeil paradoxal et les études sur les battements binauraux soutiennent les mécanismes sous-jacents, mais ce schéma vertical rapide spécifique n\'a pas été directement testé.',
     },
 
     avalokita: {
@@ -474,6 +487,7 @@ export const fr: Translation = {
         'Que ressentez-vous dans votre corps en ce moment ?',
         'Cloche \u2014 fermez les yeux. Sentez le contact de votre corps avec la surface.',
       ],
+      evidenceDescription: 'Regard vers le bas du Natya Shastra. La psychothérapie somatique utilise la direction du regard vers le bas pour l\'ancrage, mais l\'effet thérapeutique de ce schéma vertical spécifique n\'a pas été testé cliniquement.',
     },
 
     trataka: {
@@ -492,6 +506,7 @@ export const fr: Translation = {
         'Cloche \u2014 ouvrez les yeux. Dernier tour. Doucement, sans effort.',
         'Derni\u00E8re observation. Laissez l\u2019image se dissoudre naturellement.',
       ],
+      evidenceDescription: 'Décrit dans le Hatha Yoga Pradipika. Plusieurs petites études montrent une amélioration de l\'attention, une réduction de l\'anxiété et une meilleure qualité du sommeil. Les preuves s\'accumulent mais les tailles d\'échantillon restent petites.',
     },
 
     emdr_classic: {
@@ -514,6 +529,7 @@ export const fr: Translation = {
         null,
         'Qu\u2019est-ce qui a chang\u00E9 par rapport au d\u00E9but ?',
       ],
+      evidenceDescription: 'Traitement reconnu par l\'OMS pour le TSPT. Plus de 30 essais contrôlés randomisés. Protocole clinique standard développé par Francine Shapiro (1989). La forme la plus étudiée de stimulation bilatérale.',
     },
 
     emdr_diagonal: {
@@ -532,6 +548,7 @@ export const fr: Translation = {
         null,
         null,
       ],
+      evidenceDescription: 'Variation de l\'EMDR standard. Certains thérapeutes EMDR utilisent des séries diagonales en clinique. Le mécanisme de stimulation bilatérale est bien étudié, mais la variante diagonale spécifiquement a fait l\'objet d\'études séparées limitées.',
     },
 
     sleep_rem: {
@@ -550,6 +567,7 @@ export const fr: Translation = {
         null,
         'Cloche \u2014 fermez les yeux. Laissez votre corps se d\u00E9tendre. Si vous vous endormez, tant mieux.',
       ],
+      evidenceDescription: 'Basé sur les neurosciences du sommeil paradoxal et la recherche sur les battements binauraux. Les battements binauraux en gamme thêta ont quelques preuves de relaxation. La combinaison du mouvement en huit avec les battements binauraux est une approche novatrice qui n\'a pas été directement étudiée.',
     },
   },
 }
