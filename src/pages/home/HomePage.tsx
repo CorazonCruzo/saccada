@@ -7,6 +7,7 @@ import { PreSessionDialog } from '@/pages/pre-session/PreSessionPage'
 import { useTranslation } from '@/shared/lib/i18n'
 import { ContextualHint } from '@/shared/ui/contextual-hint'
 import { isDesktop } from '@/shared/lib/hints'
+import { SensitivityNotice } from '@/shared/ui/sensitivity-notice'
 
 export default function HomePage() {
   const navigate = useNavigate()
@@ -83,6 +84,9 @@ export default function HomePage() {
 
       {/* Hint: eye tracking available on desktop */}
       <ContextualHint id="hint_eye_tracking" show={isDesktop()} position="top" />
+
+      {/* Sensitivity notice */}
+      <SensitivityNotice />
     </div>
   )
 }

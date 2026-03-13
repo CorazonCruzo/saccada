@@ -82,8 +82,8 @@ export const en: Translation = {
     learnMore: 'Learn more about this pattern',
     soundProfile: 'Sound profile',
     sensitivityWarning: 'Sensitivity note',
-    sensitivityDetails: 'If you have epilepsy, are highly sensitive to visual stimulation, or experience discomfort, you can turn off the background animation, reduce speed, or disable sound in advanced settings.',
-    dontShowAgain: 'Don\'t show for this pattern',
+    sensitivityDetails: 'If you have epilepsy, are sensitive to visual stimulation, or experience discomfort, you can adjust speed, disable background animation, or turn off sound before starting a session.',
+    dontShowAgain: 'Don\'t show again',
   },
 
   sessionSettings: {

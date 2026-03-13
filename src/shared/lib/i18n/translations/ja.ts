@@ -83,8 +83,8 @@ export const ja: Translation = {
     learnMore: 'このパターンについて詳しく見る',
     soundProfile: 'サウンドプロファイル',
     sensitivityWarning: '感受性に関するご注意',
-    sensitivityDetails: 'てんかんをお持ちの方、視覚刺激に敏感な方、不快感を感じた場合は、詳細設定で背景アニメーションの無効化、速度の低減、サウンドの停止ができます。',
-    dontShowAgain: 'このパターンでは表示しない',
+    sensitivityDetails: 'てんかんをお持ちの方、視覚刺激に敏感な方、不快感を感じた場合は、セッション開始前に速度の調整、背景アニメーションの無効化、サウンドの停止ができます。',
+    dontShowAgain: '今後表示しない',
   },
 
   sessionSettings: {

@@ -83,8 +83,8 @@ export const de: Translation = {
     learnMore: 'Mehr über dieses Muster',
     soundProfile: 'Klangprofil',
     sensitivityWarning: 'Hinweis zur Empfindlichkeit',
-    sensitivityDetails: 'Bei Epilepsie, hoher Empfindlichkeit gegen\u00FCber visuellen Reizen oder Unwohlsein k\u00F6nnen Sie die Hintergrundanimation deaktivieren, die Geschwindigkeit verringern oder den Ton in den erweiterten Einstellungen ausschalten.',
-    dontShowAgain: 'F\u00FCr dieses Muster nicht mehr anzeigen',
+    sensitivityDetails: 'Bei Epilepsie, hoher Empfindlichkeit gegen\u00FCber visuellen Reizen oder Unwohlsein k\u00F6nnen Sie die Geschwindigkeit anpassen, die Hintergrundanimation deaktivieren oder den Ton vor Beginn einer Sitzung ausschalten.',
+    dontShowAgain: 'Nicht mehr anzeigen',
   },
 
   sessionSettings: {

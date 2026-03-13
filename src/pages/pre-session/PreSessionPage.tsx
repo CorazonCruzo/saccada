@@ -46,7 +46,6 @@ export function PreSessionDialog({ open, onOpenChange }: PreSessionDialogProps) 
     visualScale, setVisualScale,
     backgroundPattern, setBackgroundPattern,
     backgroundRotation, setBackgroundRotation,
-    sensitivityDismissed, setSensitivityDismissed,
   } = useSessionStore()
 
   const { t, tp } = useTranslation()
@@ -55,13 +54,11 @@ export function PreSessionDialog({ open, onOpenChange }: PreSessionDialogProps) 
   const { getTracker } = useEyeTracking()
 
   const [advancedOpen, setAdvancedOpen] = useState(false)
-  const [sensitivityOpen, setSensitivityOpen] = useState(false)
   const [cameraStatus, setCameraStatus] = useState<string | null>(null)
 
   useEffect(() => {
     if (!open) {
       setAdvancedOpen(false)
-      setSensitivityOpen(false)
     }
   }, [open])
   const [cameraLoading, setCameraLoading] = useState(false)
@@ -151,37 +148,6 @@ export function PreSessionDialog({ open, onOpenChange }: PreSessionDialogProps) 
               )}
             </div>
 
-            {/* Sensitivity warning */}
-            {!sensitivityDismissed && (
-              <div className="rounded-md border border-turmeric/20 bg-turmeric/5 px-3 py-2">
-                <button
-                  onClick={() => setSensitivityOpen(!sensitivityOpen)}
-                  className="flex w-full cursor-pointer items-center gap-2 text-left"
-                >
-                  <span className="text-base">{'\u26A0\uFE0F'}</span>
-                  <span className="font-body text-sm text-turmeric">
-                    {t.preSession.sensitivityWarning}
-                  </span>
-                  <span className="ml-auto text-xs text-turmeric">{sensitivityOpen ? '\u25B4' : '\u25BE'}</span>
-                </button>
-                {sensitivityOpen && (
-                  <div className="mt-2">
-                    <p className="font-body text-xs leading-relaxed text-text-muted">
-                      {t.preSession.sensitivityDetails}
-                    </p>
-                    <label className="mt-2 flex cursor-pointer items-center gap-2">
-                      <input
-                        type="checkbox"
-                        onChange={(e) => { if (e.target.checked) setSensitivityDismissed(true) }}
-                        className="accent-turmeric"
-                      />
-                      <span className="font-body text-xs text-text-dim">{t.preSession.dontShowAgain}</span>
-                    </label>
-                  </div>
-                )}
-              </div>
-            )}
-
             {/* Duration */}
             <div>
               <div className="flex items-center gap-2">
@@ -226,9 +192,9 @@ export function PreSessionDialog({ open, onOpenChange }: PreSessionDialogProps) 
               )}
             </div>
 
-            {/* Sound + Volume */}
+            {/* Sound + Volume + Headphones */}
             <div>
-              <div className="flex items-center gap-3">
+              <div className="flex flex-wrap items-center gap-3">
                 <button
                   onClick={toggleSound}
                   className={`flex cursor-pointer items-center gap-2 rounded-md px-2 py-1.5 transition-all ${
@@ -239,7 +205,7 @@ export function PreSessionDialog({ open, onOpenChange }: PreSessionDialogProps) 
                   <span className="font-heading text-sm font-semibold tracking-wide">{t.sessionSettings.sound}</span>
                 </button>
                 {soundEnabled && (
-                  <div className="flex flex-1 items-center gap-2">
+                  <div className="flex items-center gap-2">
                     <Slider
                       value={[volume]}
                       onValueChange={([v]) => setVolume(v)}
@@ -250,13 +216,13 @@ export function PreSessionDialog({ open, onOpenChange }: PreSessionDialogProps) 
                     <span className="font-heading text-xs text-turmeric">{volume}%</span>
                   </div>
                 )}
+                {soundEnabled && selectedPattern.requiresHeadphones && (
+                  <div className="flex items-center gap-1.5">
+                    <HeadphonesIcon className="h-4 w-4 text-indigo" />
+                    <span className="font-body text-xs text-indigo">{t.sessionSettings.headphonesRecommended}</span>
+                  </div>
+                )}
               </div>
-              {soundEnabled && selectedPattern.requiresHeadphones && (
-                <div className="mt-1.5 ml-2 flex items-center gap-1.5">
-                  <HeadphonesIcon className="h-4 w-4 text-indigo" />
-                  <span className="font-body text-sm text-indigo">{t.sessionSettings.headphonesRecommended}</span>
-                </div>
-              )}
             </div>
 
             {/* Advanced settings */}

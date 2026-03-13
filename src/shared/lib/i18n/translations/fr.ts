@@ -83,8 +83,8 @@ export const fr: Translation = {
     learnMore: 'En savoir plus sur ce schéma',
     soundProfile: 'Profil sonore',
     sensitivityWarning: 'Note de sensibilité',
-    sensitivityDetails: 'En cas d\u2019\u00E9pilepsie, de forte sensibilit\u00E9 \u00E0 la stimulation visuelle ou d\u2019inconfort, vous pouvez d\u00E9sactiver l\u2019animation de fond, r\u00E9duire la vitesse ou couper le son dans les param\u00E8tres avanc\u00E9s.',
-    dontShowAgain: 'Ne plus afficher pour ce sch\u00E9ma',
+    sensitivityDetails: 'En cas d\u2019\u00E9pilepsie, de forte sensibilit\u00E9 \u00E0 la stimulation visuelle ou d\u2019inconfort, vous pouvez ajuster la vitesse, d\u00E9sactiver l\u2019animation de fond ou couper le son avant de commencer une session.',
+    dontShowAgain: 'Ne plus afficher',
   },
 
   sessionSettings: {

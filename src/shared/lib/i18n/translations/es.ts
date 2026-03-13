@@ -83,8 +83,8 @@ export const es: Translation = {
     learnMore: 'Más sobre este patrón',
     soundProfile: 'Perfil de sonido',
     sensitivityWarning: 'Nota de sensibilidad',
-    sensitivityDetails: 'Si tienes epilepsia, alta sensibilidad a la estimulación visual o sientes molestias, puedes desactivar la animación de fondo, reducir la velocidad o desactivar el sonido en los ajustes avanzados.',
-    dontShowAgain: 'No mostrar para este patr\u00F3n',
+    sensitivityDetails: 'Si tienes epilepsia, alta sensibilidad a la estimulación visual o sientes molestias, puedes ajustar la velocidad, desactivar la animación de fondo o el sonido antes de iniciar una sesión.',
+    dontShowAgain: 'No mostrar de nuevo',
   },
 
   sessionSettings: {
