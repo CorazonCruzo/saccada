@@ -54,7 +54,7 @@ describe('useSessionStore', () => {
       useSessionStore.getState().selectPattern(anuvritta)
       const state = useSessionStore.getState()
       expect(state.speed).toBe(1)
-      expect(state.volume).toBe(40)
+      expect(state.volume).toBe(70)
       expect(state.soundEnabled).toBe(true)
       expect(state.hapticEnabled).toBe(false)
       expect(state.guidedMode).toBe(false)

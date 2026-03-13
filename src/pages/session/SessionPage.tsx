@@ -11,10 +11,7 @@ import {
   updateAdaptiveSpeed,
 } from '@/features/eye-tracking'
 import { useTranslation } from '@/shared/lib/i18n'
-import { useSessionOrientation } from '@/shared/lib/useSessionOrientation'
-import { unlockOrientation } from '@/shared/lib/orientation'
 import { Button } from '@/shared/ui/button'
-import { RotateDeviceOverlay } from '@/shared/ui/rotate-overlay'
 import { formatTimer } from '@/shared/lib/format'
 
 type SessionPhase = 'countdown' | 'active' | 'paused' | 'cooldown'
@@ -43,7 +40,6 @@ export default function SessionPage() {
   const { getTracker, sleep: sleepTracker } = useEyeTracking()
   const eyeTrackingEnabled = useSessionStore((s) => s.eyeTrackingEnabled)
   const { t, tp } = useTranslation()
-  const { needsRotation } = useSessionOrientation()
 
   // Local session lifecycle
   const [phase, setPhase] = useState<SessionPhase>('countdown')
@@ -184,7 +180,6 @@ export default function SessionPage() {
     // Discard sessions too short to be meaningful (e.g., quit during countdown)
     if (finalElapsed < MIN_SESSION_DURATION_MS) {
       const timer = setTimeout(() => {
-        void unlockOrientation()
         setSessionState('idle')
         navigate('/', { replace: true })
       }, 1000)
@@ -368,7 +363,7 @@ export default function SessionPage() {
   if (phase === 'countdown') {
     return (
       <div className="fixed inset-0 z-50 flex items-center justify-center bg-bg-canvas session-cursor session-cursor-hidden">
-        {needsRotation && <RotateDeviceOverlay />}
+
         <div className="text-center">
           <p className="font-heading text-sm tracking-widest text-text-dim uppercase">
             {patternTrans.name}
@@ -388,7 +383,7 @@ export default function SessionPage() {
   if (phase === 'cooldown') {
     return (
       <div className="fixed inset-0 z-50 bg-bg-canvas session-cursor session-cursor-hidden">
-        {needsRotation && <RotateDeviceOverlay />}
+
         <SessionPlayer
           pattern={selectedPattern}
           isPlaying={false}
@@ -410,7 +405,6 @@ export default function SessionPage() {
   // -- Active / Paused session --
   return (
     <div className={`fixed inset-0 z-50 session-cursor ${!hudVisible && phase === 'active' ? 'session-cursor-hidden' : ''}`}>
-      {needsRotation && <RotateDeviceOverlay />}
       <SessionPlayer
         pattern={selectedPattern}
         isPlaying={phase === 'active'}

@@ -57,8 +57,6 @@ export const en: Translation = {
     keyHints: 'SPACE pause \u00B7 ESC quit \u00B7 F fullscreen \u00B7 I info \u00B7 G guide \u00B7 +/- scale',
     hideGuide: 'Hide guide',
     showGuide: 'Show guide',
-    rotateLandscape: 'Rotate your device',
-    rotateLandscapeHint: 'The session works best in landscape orientation. Please turn your phone sideways.',
   },
 
   results: {

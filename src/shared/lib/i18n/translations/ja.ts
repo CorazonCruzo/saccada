@@ -57,8 +57,6 @@ export const ja: Translation = {
     keyHints: 'SPACE 一時停止 \u00B7 ESC 終了 \u00B7 F 全画面 \u00B7 I 情報 \u00B7 G ガイド \u00B7 +/- スケール',
     hideGuide: 'ガイドを隠す',
     showGuide: 'ガイドを表示',
-    rotateLandscape: '端末を回転してください',
-    rotateLandscapeHint: '横向きでのご利用を推奨します。スマートフォンを横にしてください。',
   },
 
   results: {

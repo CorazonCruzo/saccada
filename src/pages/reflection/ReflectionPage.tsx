@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom'
 import { useSessionStore } from '@/entities/session'
 import { patternsById } from '@/entities/pattern'
 import { useTranslation } from '@/shared/lib/i18n'
-import { unlockOrientation } from '@/shared/lib/orientation'
 import { Button } from '@/shared/ui/button'
 
 const HEART_COUNT = 5
@@ -36,7 +35,6 @@ export default function ReflectionPage() {
   const question = t.reflection.question[sessionType] ?? t.reflection.title
 
   function navigateToResults() {
-    void unlockOrientation()
     setSessionState('results')
     navigate('/results', { replace: true })
   }

@@ -49,7 +49,7 @@ export function getTrajectoryPosition(
       const angle = t * Math.PI * 2
       return {
         x: Math.sin(angle) * amplitude,
-        y: Math.sin(angle * 2) * amplitude * 0.8,
+        y: Math.sin(angle * 2) * amplitude * 0.45,
       }
     }
 

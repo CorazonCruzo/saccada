@@ -57,8 +57,6 @@ export const fr: Translation = {
     keyHints: 'ESPACE pause \u00B7 \u00C9CHAP quitter \u00B7 F plein \u00E9cran \u00B7 I info \u00B7 G guide \u00B7 +/- \u00E9chelle',
     hideGuide: 'Masquer le guide',
     showGuide: 'Afficher le guide',
-    rotateLandscape: 'Tournez votre appareil',
-    rotateLandscapeHint: 'La session fonctionne mieux en mode paysage. Veuillez tourner votre t\u00E9l\u00E9phone.',
   },
 
   results: {

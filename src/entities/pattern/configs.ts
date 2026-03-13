@@ -376,7 +376,7 @@ export const sleepRem: PatternConfig = {
   recommendedDuration: 600_000,
   trajectory: 'figure8',
   visual: 'bindu',
-  trajectoryParams: { amplitude: 0.35, easing: 'sine' },
+  trajectoryParams: { amplitude: 0.65, easing: 'sine' },
   cycleDuration: 6000,
   defaultSessionDuration: 600_000,
   phases: [

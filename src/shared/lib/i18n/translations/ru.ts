@@ -57,8 +57,6 @@ export const ru: Translation = {
     keyHints: 'ПРОБЕЛ пауза \u00B7 ESC выход \u00B7 F полный экран \u00B7 I инфо \u00B7 G текст \u00B7 +/- масштаб',
     hideGuide: 'Скрыть текст',
     showGuide: 'Показать текст',
-    rotateLandscape: 'Переверните устройство',
-    rotateLandscapeHint: 'Сессия работает лучше в горизонтальной ориентации. Пожалуйста, поверните телефон набок.',
   },
 
   results: {

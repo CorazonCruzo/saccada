@@ -5,7 +5,6 @@ import { patternsById } from '@/entities/pattern'
 import { HeatmapViewer } from '@/widgets/heatmap-viewer'
 import { getSessionFocusScore } from '@/features/session-history/sessionList'
 import { useTranslation } from '@/shared/lib/i18n'
-import { unlockOrientation } from '@/shared/lib/orientation'
 import { Button } from '@/shared/ui/button'
 import { formatTimer } from '@/shared/lib/format'
 import { db, type SessionRecord } from '@/shared/lib/db'
@@ -27,11 +26,6 @@ export default function ResultsPage() {
   const [noteOpen, setNoteOpen] = useState(false)
   const [noteText, setNoteText] = useState('')
   const savedRef = useRef(false)
-
-  // Unlock orientation on results page (session flow ended)
-  useEffect(() => {
-    void unlockOrientation()
-  }, [])
 
   // Save session to Dexie once on mount (skip zero/trivial sessions)
   useEffect(() => {
@@ -155,7 +149,8 @@ export default function ResultsPage() {
           )}
         </div>
 
-        {/* Heatmap */}
+        {/* Heatmap (desktop only — eye tracking requires webcam) */}
+        <div className="hidden sm:block">
         {hasGaze ? (
           <div className="mt-6">
             {gazeMapOpen ? (
@@ -211,6 +206,7 @@ export default function ResultsPage() {
             <span className="font-body text-xs">{t.results.heatmapPlaceholder}</span>
           </div>
         )}
+        </div>
 
         {/* Note */}
         <div className="mt-6">

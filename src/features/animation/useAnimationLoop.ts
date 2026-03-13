@@ -182,9 +182,16 @@ export function useAnimationLoop(
       const normPos = getTrajectoryPosition(cycleT, pat.trajectory, pat.trajectoryParams)
       normPos.x *= vs
       normPos.y *= vs
-      // Compensate for widescreen: vertical amplitude is physically smaller
-      if (normPos.y !== 0 && w > h) {
-        normPos.y *= Math.min(w / h, 1.5)
+      // Aspect-ratio compensation: scale the shorter axis so
+      // movements feel proportional in both portrait and landscape
+      const aspect = w / h
+      if (normPos.y !== 0 && aspect > 1) {
+        // Landscape: boost vertical to compensate for shorter height
+        normPos.y *= Math.min(aspect, 1.5)
+      }
+      if (normPos.x !== 0 && aspect < 1) {
+        // Portrait: boost horizontal to compensate for shorter width
+        normPos.x *= Math.min(1 / aspect, 1.5)
       }
       dotPos = toCanvasCoords(normPos, w, h)
     } else {
@@ -244,11 +251,12 @@ export function useAnimationLoop(
 
     // 3. Trail (only for moving patterns)
     if (pat.trajectory !== 'fixation' && state.trail.length > 1) {
-      drawTrail(ctx, state.trail, color, Math.min(w, h) / 700 * vs)
+      drawTrail(ctx, state.trail, color, Math.max(Math.min(w, h) / 700 * vs, 0.85))
     }
 
-    // 4. Bindu or Flame (scale relative to viewport)
+    // 4. Bindu or Flame (scale relative to viewport, boosted on small screens)
     const viewScale = Math.min(w, h) / 700 * vs
+    const dotScale = Math.max(viewScale, 0.85)
     const isEyesClosed = activePhase.type === 'eyes-closed'
     const keepVisual = refs.current.keepVisualDuringEyesClosed
     let dimFactor = 1
@@ -268,11 +276,11 @@ export function useAnimationLoop(
 
     if (pat.visual === 'flame') {
       if (!isEyesClosed || keepVisual) {
-        drawFlame(ctx, dotPos.x, dotPos.y, now / 1000 * 0.06 * 60, viewScale)
+        drawFlame(ctx, dotPos.x, dotPos.y, now / 1000 * 0.06 * 60, dotScale)
       }
     } else {
       const pulsePhase = now / 1000 * 1.8
-      drawBindu(ctx, dotPos.x, dotPos.y, color, pulsePhase, 16 * viewScale, dimFactor)
+      drawBindu(ctx, dotPos.x, dotPos.y, color, pulsePhase, 16 * dotScale, dimFactor)
     }
 
     // Continue loop

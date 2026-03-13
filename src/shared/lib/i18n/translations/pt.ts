@@ -57,8 +57,6 @@ export const pt: Translation = {
     keyHints: 'ESPAÇO pausa \u00B7 ESC sair \u00B7 F tela cheia \u00B7 I info \u00B7 G guia \u00B7 +/- escala',
     hideGuide: 'Ocultar guia',
     showGuide: 'Mostrar guia',
-    rotateLandscape: 'Gire seu dispositivo',
-    rotateLandscapeHint: 'A sessão funciona melhor na orientação paisagem. Por favor, gire o celular.',
   },
 
   results: {

@@ -57,8 +57,6 @@ export const de: Translation = {
     keyHints: 'LEERTASTE Pause \u00B7 ESC Ende \u00B7 F Vollbild \u00B7 I Info \u00B7 G Text \u00B7 +/- Skalierung',
     hideGuide: 'Text ausblenden',
     showGuide: 'Text einblenden',
-    rotateLandscape: 'Ger\u00E4t drehen',
-    rotateLandscapeHint: 'Die Sitzung funktioniert am besten im Querformat. Bitte drehen Sie Ihr Ger\u00E4t.',
   },
 
   results: {
