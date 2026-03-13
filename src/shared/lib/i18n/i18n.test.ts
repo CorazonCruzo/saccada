@@ -24,7 +24,8 @@ describe('i18n types', () => {
     expect(locales).toContain('fr')
     expect(locales).toContain('pt')
     expect(locales).toContain('ja')
-    expect(locales).toHaveLength(7)
+    expect(locales).toContain('hi')
+    expect(locales).toHaveLength(8)
   })
 
   it('localeNames should map every locale to a non-empty string', () => {

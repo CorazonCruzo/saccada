@@ -20,7 +20,7 @@ export function shouldSaveSession(session: { elapsed: number } | null): boolean 
 export default function ResultsPage() {
   const navigate = useNavigate()
   const { lastSession, setLastSession, setSessionState } = useSessionStore()
-  const { t, tp } = useTranslation()
+  const { t, tp, showDevanagari } = useTranslation()
   const heatmapContainerRef = useRef<HTMLDivElement>(null)
   const [gazeMapOpen, setGazeMapOpen] = useState(false)
   const [noteOpen, setNoteOpen] = useState(false)
@@ -98,7 +98,7 @@ export default function ResultsPage() {
           <p className="font-heading text-xs tracking-widest text-text-dim uppercase">
             {t.results.title}
           </p>
-          {pattern?.nameDevanagari && (
+          {showDevanagari && pattern?.nameDevanagari && (
             <p className="mt-2 font-devanagari text-xl text-gold">{pattern.nameDevanagari}</p>
           )}
           <h1 className="mt-1 font-heading text-3xl font-bold text-text-bright">

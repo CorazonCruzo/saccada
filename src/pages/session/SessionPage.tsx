@@ -41,7 +41,7 @@ export default function SessionPage() {
   const audioEngine = useAudio()
   const { getTracker, sleep: sleepTracker } = useEyeTracking()
   const eyeTrackingEnabled = useSessionStore((s) => s.eyeTrackingEnabled)
-  const { t, tp } = useTranslation()
+  const { t, tp, showDevanagari } = useTranslation()
 
   // Local session lifecycle
   const [phase, setPhase] = useState<SessionPhase>('countdown')
@@ -441,7 +441,7 @@ export default function SessionPage() {
           <span className="font-heading text-sm tracking-widest text-text-dim">
             {patternTrans.name.toUpperCase()}
           </span>
-          {selectedPattern.nameDevanagari && (
+          {showDevanagari && selectedPattern.nameDevanagari && (
             <span className="font-devanagari text-sm text-gold">
               {selectedPattern.nameDevanagari}
             </span>

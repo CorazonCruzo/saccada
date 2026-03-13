@@ -48,7 +48,7 @@ export function PreSessionDialog({ open, onOpenChange }: PreSessionDialogProps) 
     backgroundRotation, setBackgroundRotation,
   } = useSessionStore()
 
-  const { t, tp } = useTranslation()
+  const { t, tp, showDevanagari } = useTranslation()
   const patternT = tp(selectedPattern.id)
   const audioEngine = useAudio()
   const { getTracker } = useEyeTracking()
@@ -110,7 +110,7 @@ export function PreSessionDialog({ open, onOpenChange }: PreSessionDialogProps) 
             <DialogTitle className="font-heading text-xl text-text-bright">
               {patternT.name}
             </DialogTitle>
-            {selectedPattern.nameDevanagari && (
+            {showDevanagari && selectedPattern.nameDevanagari && (
               <p className="font-devanagari text-sm text-gold">{selectedPattern.nameDevanagari}</p>
             )}
           </DialogHeader>

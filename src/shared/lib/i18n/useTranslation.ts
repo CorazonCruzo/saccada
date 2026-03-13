@@ -10,5 +10,7 @@ export function useTranslation() {
     return t.pattern[patternId]
   }
 
-  return { t, tp, locale }
+  const showDevanagari = locale !== 'hi'
+
+  return { t, tp, locale, showDevanagari }
 }

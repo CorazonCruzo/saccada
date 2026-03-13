@@ -17,7 +17,7 @@ interface PatternInfoDialogProps {
 }
 
 export function PatternInfoDialog({ pattern, open, onOpenChange }: PatternInfoDialogProps) {
-  const { t, tp } = useTranslation()
+  const { t, tp, showDevanagari } = useTranslation()
 
   if (!pattern) return null
 
@@ -27,7 +27,7 @@ export function PatternInfoDialog({ pattern, open, onOpenChange }: PatternInfoDi
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-h-[85vh] overflow-y-auto border-border-ornament bg-bg-mid">
         <DialogHeader>
-          {pattern.nameDevanagari && (
+          {showDevanagari && pattern.nameDevanagari && (
             <p className="font-devanagari text-lg text-gold">{pattern.nameDevanagari}</p>
           )}
           <DialogTitle className="font-heading text-xl text-text-bright">

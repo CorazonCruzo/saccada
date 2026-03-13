@@ -34,7 +34,7 @@ export function SettingsPanel({ open, onOpenChange, onStart }: SettingsPanelProp
     backgroundRotation, setBackgroundRotation,
   } = useSessionStore()
 
-  const { t, tp } = useTranslation()
+  const { t, tp, showDevanagari } = useTranslation()
   const patternT = tp(selectedPattern.id)
   const [cameraStatus, setCameraStatus] = useState<string | null>(null)
   const [cameraLoading, setCameraLoading] = useState(false)
@@ -99,7 +99,7 @@ export function SettingsPanel({ open, onOpenChange, onStart }: SettingsPanelProp
           <DialogTitle className="font-heading text-lg text-text-bright">
             {t.sessionSettings.title}
           </DialogTitle>
-          {selectedPattern.nameDevanagari && (
+          {showDevanagari && selectedPattern.nameDevanagari && (
             <p className="font-devanagari text-sm text-gold">{selectedPattern.nameDevanagari}</p>
           )}
           <p className="font-body text-sm font-light text-text-muted">

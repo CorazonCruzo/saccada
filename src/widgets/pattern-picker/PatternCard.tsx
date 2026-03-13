@@ -20,7 +20,7 @@ interface PatternCardProps {
 }
 
 export function PatternCard({ pattern, isSelected, onSelect, onInfo }: PatternCardProps) {
-  const { t, tp } = useTranslation()
+  const { t, tp, showDevanagari } = useTranslation()
   const patternT = tp(pattern.id)
   const categoryLabel = t.categories[pattern.category as keyof typeof t.categories] ?? pattern.category
 
@@ -62,7 +62,7 @@ export function PatternCard({ pattern, isSelected, onSelect, onInfo }: PatternCa
         <span className="font-heading text-lg font-semibold text-text-bright">
           {patternT.name}
         </span>
-        {pattern.nameDevanagari && (
+        {showDevanagari && pattern.nameDevanagari && (
           <span className="truncate font-devanagari text-sm text-gold">
             {pattern.nameDevanagari}
           </span>

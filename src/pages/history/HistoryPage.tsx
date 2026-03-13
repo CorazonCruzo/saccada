@@ -15,7 +15,7 @@ import { Tabs, TabsList, TabsTrigger } from '@/shared/ui/tabs'
 
 export default function HistoryPage() {
   const navigate = useNavigate()
-  const { t, tp, locale } = useTranslation()
+  const { t, tp, locale, showDevanagari } = useTranslation()
   const [deleteId, setDeleteId] = useState<number | null>(null)
   const [expandedIds, setExpandedIds] = useState<Set<number>>(new Set())
   const [showMore, setShowMore] = useState(false)
@@ -617,7 +617,7 @@ function SessionCard({
       {/* Header row */}
       <div className="flex items-start justify-between">
         <div>
-          {pattern?.nameDevanagari && (
+          {showDevanagari && pattern?.nameDevanagari && (
             <span className="font-devanagari text-xs text-gold">
               {pattern.nameDevanagari}{' '}
             </span>
