@@ -570,6 +570,7 @@ function SessionList({
                 formatDate={formatDate}
                 t={t}
                 tp={tp}
+                showDevanagari={showDevanagari}
               />
             ))}
           </div>
@@ -582,7 +583,7 @@ function SessionList({
 function SessionCard({
   session, isExpanded, onToggle,
   deleteId, onDeleteClick, onDeleteConfirm, onDeleteCancel,
-  formatDate, t, tp,
+  formatDate, t, tp, showDevanagari,
 }: {
   session: SessionRecord
   isExpanded: boolean
@@ -594,6 +595,7 @@ function SessionCard({
   formatDate: (ts: number) => string
   t: Translation
   tp: (id: string) => { name: string } | undefined
+  showDevanagari: boolean
 }) {
   const pattern = patternsById[session.patternId]
   const focusScore = useMemo(() => getSessionFocusScore(session, pattern), [session, pattern])
