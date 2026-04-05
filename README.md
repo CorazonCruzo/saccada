@@ -4,7 +4,7 @@
 
 Privacy by design: everything runs locally in your browser. No servers, no accounts, no telemetry.
 
-[**Try Saccada**](https://saccada.vercel.app) · [Report Bug](https://github.com/CorazonCruzo/saccada/issues) · [Request Feature](https://github.com/CorazonCruzo/saccada/issues)
+[**Try Saccada**](https://saccada.chestnykh.net) · [Report Bug](https://github.com/CorazonCruzo/saccada/issues) · [Request Feature](https://github.com/CorazonCruzo/saccada/issues)
 
 ---
 
