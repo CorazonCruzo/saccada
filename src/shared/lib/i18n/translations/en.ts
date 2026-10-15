@@ -289,13 +289,13 @@ export const en: Translation = {
   about: {
     title: 'About Saccada',
     ideaTitle: 'The Idea',
-    ideaBody: 'Three traditions, millennia apart, independently discovered the same thing: rhythmic eye movements alter the state of consciousness. Indian classical dancers have trained 8 types of eye movements for over 2000 years (Drishti Bheda from Natya Shastra, ~2nd century BCE). In 1989, psychologist Francine Shapiro found that horizontal saccades reduce anxiety \u2014 EMDR was born. Neuroscientists later showed both mechanisms connect to how the brain processes information during REM sleep. Saccada is the first tool to combine all three discoveries.',
+    ideaBody: 'Three traditions, millennia apart, independently arrived at the same thing: rhythmic eye movements alter the state of consciousness. Indian classical dancers have trained 8 types of eye movements for over 2000 years (Drishti Bheda from Natya Shastra, ~2nd century BCE). In 1989, psychologist Francine Shapiro found that horizontal eye movements reduce the vividness and emotional charge of memories — EMDR was born. Neuroscientists have proposed that both may be linked to how the brain processes information during REM sleep, but this hypothesis has not been tested yet. Saccada is the first tool that brings the three traditions together and honestly marks what is proven.',
     soundTitle: 'Sound',
     soundBody: 'All sound is synthesized in real time via WebAudio API. No audio files \u2014 works offline. Four modes: bilateral stimulation (tone pans left\u2194right in sync with the dot), binaural beats (theta waves 4\u20138 Hz, headphones only), drone (tanpura synthesis \u2014 enveloping meditative backdrop), rhythmic pulsation. Frequencies are selected based on research \u2014 details in each pattern\'s info panel.',
     eyeTrackingTitle: 'Eye Tracking',
     eyeTrackingBody: 'Your webcam analyzes gaze position in real time. Dot speed adapts automatically: if your gaze falls behind, the dot slows down. After each session you get a gaze heatmap and focus score. Recalibrate when you change position, reopen your laptop, or change lighting. Limitations: desktop only, Chrome and Firefox. Not supported in Safari, iOS, or on mobile devices. Video is processed locally \u2014 camera data never leaves your device.',
     evidenceTitle: 'Evidence & Honesty',
-    evidenceBody: 'Some patterns in Saccada are based on well-researched protocols. Others are hypotheses. I mark the evidence level for each pattern: "researched" (clinical studies exist), "preliminary" (related research supports the mechanism), "hypothesis" (logical chain grounded in research, but not directly tested). It matters to me to be honest about what is proven and what is still just an idea.',
+    evidenceBody: 'Some patterns in Saccada are based on well-researched protocols. Others are hypotheses. I mark the evidence level for each pattern: "researched" (clinical studies exist), "preliminary" (at least one small direct study of the practice itself exists; samples are small), "hypothesis" (a logical chain grounded in related research, but not directly tested). It matters to me to be honest about what is proven and what is still just an idea.',
     controlsTitle: 'Controls',
     controlsBody: 'Keyboard shortcuts: Space \u2014 pause/resume, Escape \u2014 stop session, F \u2014 fullscreen, I \u2014 info panel, G \u2014 guided text, +/- \u2014 visual scale. All settings accessible before session: sound, volume, speed, guided text, eye tracking, background pattern.',
     privacyTitle: 'Privacy',
@@ -357,7 +357,7 @@ export const en: Translation = {
 
     alokita: {
       name: 'Alokita',
-      description: 'Wide circular gaze. Activates peripheral vision and vestibular system.',
+      description: 'Wide circular gaze. Training of smooth tracking and peripheral vision.',
       instruction: 'Follow the dot with your eyes as it moves in a circle. Keep your head still: only your eyes move. Try to make the movement smooth, without jerks. Notice what happens with your peripheral vision.',
       effect: 'Expansion of the field of perception, a feeling of the space around you opening up. Training of smooth circular tracking. If you get motion sick or have migraine, circular motion can be uncomfortable: start slow.',
       soundProfile: '396 Hz \u00B7 rhythmic pulsing at 60 BPM \u00B7 synced with circular movement',
@@ -415,7 +415,7 @@ export const en: Translation = {
 
     nimilita: {
       name: 'Nimilita',
-      description: 'Half-closed eyes fixation. Deep relaxation and parasympathetic activation.',
+      description: 'Half-closed eyes fixation. Deep relaxation after intense work.',
       instruction: 'Gently half-close your eyelids: not completely, but halfway. Direct a soft, unfocused gaze at the dimly glowing dot. Don\'t try to see clearly. Breathe slowly. Let your attention turn inward.',
       effect: 'Deep relaxation, lowered arousal. Helpful after intense work (for example after Pralokita). Relaxes facial and jaw muscles.',
       soundProfile: '130.81 Hz (C3) \u00B7 layered drone with fifth and octave harmonics \u00B7 subtle pink noise bed \u00B7 slow breathing-like volume swell',
@@ -450,7 +450,7 @@ export const en: Translation = {
 
     anuvritta: {
       name: 'Anuvritta',
-      description: 'Rapid vertical saccades. REM sleep simulation for memory processing.',
+      description: 'Rapid vertical saccades, as in REM sleep. Intense stimulation of attention.',
       instruction: 'This is a fast pattern: the dot moves up and down at an accelerated pace. Follow it with your eyes without straining; if you cannot keep up, that is fine. During pauses, relax your eyes. If you get motion sick, have migraine, or your eyes are tired, choose a slower pattern.',
       effect: 'An intense dual task for attention. May cause a feeling of processing, as if the brain is sorting information. Eye fatigue after the session is possible.',
       soundProfile: 'Binaural beats: 200 Hz + 206 Hz \u00B7 6 Hz theta difference \u00B7 headphones required for binaural effect',
