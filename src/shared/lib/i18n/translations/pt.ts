@@ -83,7 +83,7 @@ export const pt: Translation = {
     learnMore: 'Saiba mais sobre este padrão',
     soundProfile: 'Perfil sonoro',
     sensitivityWarning: 'Nota de sensibilidade',
-    sensitivityDetails: 'Se voc\u00EA tem epilepsia, alta sensibilidade \u00E0 estimula\u00E7\u00E3o visual ou sente desconforto, pode ajustar a velocidade, desativar a anima\u00E7\u00E3o de fundo ou o som antes de iniciar uma sess\u00E3o.',
+    sensitivityDetails: 'Se você tem epilepsia, enxaqueca, sensibilidade ao movimento ou a imagens em movimento e listradas, desative a animação de fundo, reduza a velocidade e comece com uma sessão curta. Se uma emoção forte surgir durante a sessão, pare e nomeie em voz alta cinco objetos ao seu redor. Se você vive com trauma grave ou dissociação, pratique apenas com um especialista. Velocidade, fundo e som podem ser ajustados antes de começar.',
     dontShowAgain: 'N\u00E3o mostrar novamente',
   },
 
@@ -293,13 +293,13 @@ export const pt: Translation = {
   about: {
     title: 'Sobre o Saccada',
     ideaTitle: 'A ideia',
-    ideaBody: 'Três tradições, separadas por milênios, descobriram independentemente a mesma coisa: movimentos oculares rítmicos alteram o estado de consciência. Dançarinos clássicos indianos praticam 8 tipos de movimentos oculares há mais de 2000 anos (Drishti Bheda do Natya Shastra, ~séc. II a.C.). Em 1989, a psicóloga Francine Shapiro descobriu que sacadas horizontais reduzem a ansiedade \u2014 nasceu o EMDR. Neurocientistas depois mostraram que ambos os mecanismos se conectam ao processamento cerebral durante o sono REM. Saccada é a primeira ferramenta a reunir essas três descobertas.',
+    ideaBody: 'Três tradições, separadas por milênios, chegaram de forma independente à mesma coisa: movimentos oculares rítmicos alteram o estado de consciência. Dançarinos clássicos indianos treinam 8 tipos de movimentos oculares há mais de 2000 anos (Drishti Bheda do Natya Shastra, ~século II a.C.). Em 1989, a psicóloga Francine Shapiro descobriu que movimentos oculares horizontais reduzem a vivacidade e a carga emocional das memórias — nasceu o EMDR. Neurocientistas propuseram que ambos podem estar ligados à forma como o cérebro processa informações durante o sono REM, mas essa hipótese ainda não foi testada. Saccada é a primeira ferramenta que reúne as três tradições e marca com honestidade o que está comprovado.',
     soundTitle: 'Som',
     soundBody: 'Todo o som é sintetizado em tempo real via WebAudio API. Sem arquivos de áudio \u2014 funciona offline. Quatro modos: estimulação bilateral (o tom se move esquerda\u2194direita com o ponto), batidas binaurais (ondas teta 4\u20138 Hz, apenas com fones), drone (síntese de tanpura \u2014 fundo meditativo envolvente), pulsação rítmica. As frequências são selecionadas com base em pesquisas \u2014 detalhes no painel de info de cada padrão.',
     eyeTrackingTitle: 'Rastreamento ocular',
     eyeTrackingBody: 'Sua câmera analisa a posição do olhar em tempo real. A velocidade do ponto se adapta automaticamente: se seu olhar fica para trás, o ponto desacelera. Após cada sessão, você recebe um mapa de calor e pontuação de foco. Recalibre ao mudar de posição, reabrir o notebook ou mudar a iluminação. Limitações: apenas desktop, Chrome e Firefox. Não suportado no Safari, iOS ou celular. O vídeo é processado localmente \u2014 dados da câmera nunca saem do dispositivo.',
     evidenceTitle: 'Evidência e honestidade',
-    evidenceBody: 'Alguns padrões do Saccada são baseados em protocolos bem pesquisados. Outros são hipóteses. Indico o nível de evidência para cada padrão: "pesquisado" (existem estudos clínicos), "preliminar" (pesquisas relacionadas apoiam o mecanismo), "hipótese" (cadeia lógica fundamentada em pesquisa, mas não testada diretamente). É importante para mim ser honesta sobre o que é comprovado e o que ainda é apenas uma ideia.',
+    evidenceBody: 'Alguns padrões do Saccada são baseados em protocolos bem pesquisados. Outros são hipóteses. Indico o nível de evidência para cada padrão: "pesquisado" (existem estudos clínicos), "preliminar" (existe pelo menos um pequeno estudo direto da própria prática; amostras pequenas), "hipótese" (cadeia lógica fundamentada em pesquisas relacionadas, mas não testada diretamente). É importante para mim ser honesta sobre o que está comprovado e o que ainda é apenas uma ideia.',
     controlsTitle: 'Controles',
     controlsBody: 'Atalhos de teclado: Espaço \u2014 pausar/retomar, Escape \u2014 parar, F \u2014 tela cheia, I \u2014 painel de info, G \u2014 texto guia, +/- \u2014 escala visual. Todas as configurações acessíveis antes da sessão: som, volume, velocidade, guia, rastreamento ocular, fundo.',
     privacyTitle: 'Privacidade',
@@ -313,7 +313,7 @@ export const pt: Translation = {
     feedbackTitle: 'Feedback',
     feedbackBody: 'Encontrou um bug ou tem uma sugestão? Abra uma issue no GitHub.',
     openIssue: 'Abrir issue',
-    disclaimer: 'Saccada \u00E9 uma ferramenta de autoajuda, n\u00E3o um dispositivo m\u00E9dico nem um substituto para terapia profissional. Se voc\u00EA est\u00E1 passando por uma crise de sa\u00FAde mental, procure um profissional qualificado.',
+    disclaimer: 'Saccada é uma ferramenta de autoajuda, não um dispositivo médico nem um substituto da terapia profissional. A estimulação bilateral pode trazer memórias e sentimentos intensos: isso é esperado, mas se ficar pesado demais, pare, nomeie em voz alta cinco objetos ao seu redor e respire devagar. Se você vive com trauma grave, dissociação, psicose ou pensamentos suicidas, pratique apenas junto com um especialista. Fundos em movimento ou listrados podem causar desconforto a pessoas com enxaqueca, sensibilidade ao movimento ou epilepsia fotossensível; eles podem ser desativados nas configurações. Fixar o olhar por muito tempo resseca os olhos: pisque sempre que quiser. Se você está passando por uma crise de saúde mental, procure um profissional qualificado.',
   },
 
   hints: {
@@ -361,9 +361,9 @@ export const pt: Translation = {
 
     alokita: {
       name: 'Alokita',
-      description: 'Amplo olhar circular. Ativa a visão periférica e o sistema vestibular.',
+      description: 'Olhar circular amplo. Treino de acompanhamento suave e visão periférica.',
       instruction: 'Siga o ponto com os olhos em seu movimento circular. Mantenha a cabeça parada: apenas os olhos se movem. Busque um movimento fluido, sem solavancos. Note o que acontece com sua visão periférica.',
-      effect: 'Ampliação do campo de percepção, redução da visão de túnel (característica da ansiedade). Ativação suave do sistema vestibular. Sensação de que o espaço ao redor "se abre".',
+      effect: 'Expansão do campo de percepção, sensação de que o espaço ao redor se abre. Treino de acompanhamento circular suave. Se você enjoa com movimento ou tem enxaqueca, o movimento circular pode ser desconfortável: comece devagar.',
       soundProfile: '396 Hz · pulsação rítmica a 60 BPM · sincronizada com o movimento circular',
       origins: 'Alokita é descrito no Natya Shastra como um olhar amplo e abrangente. Na dança, expressa surpresa e exploração do espaço. Movimentos circulares dos olhos ativam os seis músculos oculares.',
       benefits: ['visão periférica', 'consciência espacial', 'redução da ansiedade', 'ativação vestibular'],
@@ -374,7 +374,7 @@ export const pt: Translation = {
         'Pausa. Note o que você sente.',
         null,
       ],
-      evidenceDescription: 'Movimentos oculares circulares da tradição do Natya Shastra. A ativação da visão periférica tem suporte geral de pesquisas, mas o efeito terapêutico deste padrão circular específico não foi diretamente estudado.',
+      evidenceDescription: 'Movimentos oculares circulares da tradição do Natya Shastra. Não há estudos controlados da "visão panorâmica" contra a ansiedade; há evidências de que, em pessoas com transtorno de pânico e enxaqueca vestibular, o movimento na visão periférica aumenta a instabilidade e a ansiedade. O efeito terapêutico deste padrão continua sendo uma hipótese.',
     },
 
     sachi: {
@@ -393,16 +393,16 @@ export const pt: Translation = {
         null,
         'Última pausa. Observe as mudanças.',
       ],
-      evidenceDescription: 'Baseado no mesmo mecanismo de estimulação bilateral do EMDR, mas com amplitude reduzida. A pesquisa sobre EMDR sustenta o mecanismo subjacente; esta variante específica de amplitude reduzida não foi estudada separadamente.',
+      evidenceDescription: 'O mesmo mecanismo do EMDR: mover os olhos enquanto se mantém uma memória em mente reduz sua vivacidade e emocionalidade (dados de laboratório). A amplitude pequena não foi estudada separadamente; pelo modelo da memória de trabalho, um movimento menos exigente produz um efeito mais fraco. Uma entrada suave, não um padrão independente comprovado.',
     },
 
     pralokita: {
       name: 'Pralokita',
       description: 'Movimento ocular lateral. Estimulação bilateral principal, idêntica ao EMDR.',
       instruction: 'Modo principal de estimulação bilateral. O ponto se move de lado a lado: siga-o com os olhos sem virar a cabeça. Nas pausas, apenas observe os pensamentos, imagens ou sensações que surgirem. Não analise, apenas observe.',
-      effect: 'Redução da intensidade de pensamentos ansiosos e da carga emocional das memórias. Sensação de "descarga". Uma meta-análise de 20 estudos confirma redução imediata na vivacidade de imagens ansiosas e emoções negativas.',
+      effect: 'Redução da vivacidade e da carga emocional de uma memória que você mantém em mente durante os movimentos. Uma sensação de descarga. Em estudos de laboratório o efeito sobre a vivacidade da imagem é grande (d ≈ 0,9); em estudos clínicos é moderado (d ≈ 0,4).',
       soundProfile: '285 Hz (C#4/D♭4) · panorama bilateral sincronizado com o movimento do ponto · leve desafinação para suavidade · fones recomendados',
-      origins: 'Pralokita: movimentos oculares laterais do Natya Shastra. Idênticos à estimulação bilateral no EMDR (Shapiro, 1989). Três descobertas independentes do mesmo mecanismo: dança indiana, neurociência do sono REM, psicoterapia clínica.',
+      origins: 'Pralokita: movimentos oculares laterais do Natya Shastra. Idênticos à estimulação bilateral do EMDR (Shapiro, 1989). Três tradições chegaram de forma independente ao mesmo movimento: a dança indiana, a pesquisa do sono REM e a psicoterapia clínica. Um mecanismo comum é uma hipótese, não um fato estabelecido.',
       benefits: ['redução da ansiedade', 'processamento de traumas', 'regulação emocional', 'reconsolidação da memória'],
       phases: [
         'Siga o ponto com os olhos. Cabeça parada.',
@@ -414,14 +414,14 @@ export const pt: Translation = {
         null,
         'Último descanso. Respire.',
       ],
-      evidenceDescription: 'Idêntico à estimulação bilateral EMDR. Uma meta-análise de 20 estudos confirma redução imediata na vivacidade de imagens ansiosas e emoções negativas. Mecanismo reconhecido pela OMS.',
+      evidenceDescription: 'Idêntico à estimulação bilateral EMDR. Meta-análise de Lee e Cuijpers (2013): 26 ensaios, 849 participantes; os movimentos oculares acrescentam um efeito moderado na terapia (d = 0,41) e grande no laboratório (d = 0,74), com o efeito mais forte sobre a vivacidade da imagem (d = 0,91). A OMS reconhece a terapia EMDR para o TEPT; a contribuição dos próprios movimentos oculares para o resultado clínico ainda é debatida (revisão de 2023). O uso autoadministrado sem terapeuta não foi estudado em ensaios randomizados.',
     },
 
     nimilita: {
       name: 'Nimilita',
-      description: 'Fixação com olhos semicerrados. Relaxamento profundo e ativação parassimpática.',
+      description: 'Fixação com os olhos semicerrados. Relaxamento profundo após um trabalho intenso.',
       instruction: 'Abaixe suavemente as pálpebras: não completamente, apenas até a metade. Direcione um olhar suave e desfocado para o ponto fracamente luminoso. Não tente enxergar com clareza. Respire devagar. Deixe a atenção se voltar para dentro.',
-      effect: 'Relaxamento profundo, ativação do sistema nervoso parassimpático. Útil após trabalho intenso (ex.: após Pralokita). Reduz a frequência cardíaca, relaxa os músculos do rosto e da mandíbula.',
+      effect: 'Relaxamento profundo, menor ativação. Útil após um trabalho intenso (por exemplo, depois de Pralokita). Relaxa os músculos do rosto e da mandíbula.',
       soundProfile: '130.81 Hz (C3) · drone em camadas com quinta e oitava · sutil ruído rosa · lenta oscilação de volume como respiração',
       origins: 'Nimilita significa "olhos semicerrados". No Natya Shastra: um olhar direcionado ao coração. Usado para representar meditação, oração, paz divina. Reduzir a estimulação visual ativa o parassimpático.',
       benefits: ['relaxamento profundo', 'ativação parassimpática', 'recuperação após processamento', 'foco interior'],
@@ -431,14 +431,14 @@ export const pt: Translation = {
         'Sino \u2014 feche completamente os olhos. Respiração abdominal.',
         'Sino \u2014 abra suavemente os olhos. Retorne a atenção ao ponto.',
       ],
-      evidenceDescription: 'Baseado na descrição do Natya Shastra do olhar semicerrado. A ativação parassimpática pela redução da entrada visual tem suporte fisiológico geral, mas esta prática específica não foi estudada clinicamente.',
+      evidenceDescription: 'Olhar semicerrado do Natya Shastra. Olhos fechados aumentam de forma confiável o ritmo alfa, associado à menor ativação; para olhos semicerrados, pulso e variabilidade cardíaca não há dados diretos. A prática não foi estudada clinicamente.',
     },
 
     ullokita: {
       name: 'Ullokita',
       description: 'Olhar para cima. Movimento vertical com viés superior para visualização.',
       instruction: 'O ponto se move verticalmente com ênfase para cima. Siga-o com os olhos. Este padrão está associado à visualização e imaginação. Deixe as imagens virem livremente.',
-      effect: 'Ativação da memória visual e imaginação. Algumas pessoas relatam aparecimento espontâneo de imagens e memórias. Estimulação suave que funciona bem combinada com a intenção de lembrar algo positivo.',
+      effect: 'Estimulação vertical suave com viés para cima. Algumas pessoas relatam imagens espontâneas. Combina bem com a intenção de lembrar algo agradável.',
       soundProfile: '432 Hz (A4) · pulsação rítmica a 50 BPM · sutil desvio de tom a cada pulso · sincronizada com o movimento vertical',
       origins: 'Ullokita é o olhar para cima no Natya Shastra. Usado para representar seres celestiais, oração, reminiscência. Movimentos oculares verticais ativam os músculos retos superior e inferior.',
       benefits: ['visualização', 'acesso à memória', 'imaginação', 'construção de recursos positivos'],
@@ -449,16 +449,16 @@ export const pt: Translation = {
         'Observe as imagens que surgem.',
         null,
       ],
-      evidenceDescription: 'Olhar para cima da tradição do Natya Shastra. A relação entre direção do olhar e processos cognitivos (pistas de acesso ocular da PNL) carece de evidências robustas. O efeito terapêutico deste padrão específico é uma hipótese.',
+      evidenceDescription: 'Olhar para cima do Natya Shastra. A afirmação da PNL que liga a direção do olhar à memória visual não se sustentou na pesquisa (Wiseman et al., 2012; a maioria dos testes das pistas de acesso ocular não encontrou nada). Movimentos oculares verticais reduzem a vivacidade das memórias tão bem quanto os horizontais (Gunter e Bodner, 2008), ou seja, funcionam como qualquer tarefa dupla. O efeito terapêutico deste padrão específico é uma hipótese.',
     },
 
     anuvritta: {
       name: 'Anuvritta',
-      description: 'Sacadas verticais rápidas. Simulação do sono REM para processamento da memória.',
-      instruction: 'Um padrão rápido: o ponto sobe e desce em ritmo acelerado. Tente acompanhar com os olhos, mesmo que imperfeitamente. Nas pausas, relaxe os olhos. Este modo simula os movimentos oculares rápidos do sono REM.',
-      effect: 'Estimulação intensa semelhante à fase do sono REM. Pode causar sensação de "processamento": como se o cérebro estivesse organizando informações. Após a sessão, leve cansaço ocular e sensação de clareza.',
+      description: 'Sacadas verticais rápidas, como no sono REM. Estimulação intensa da atenção.',
+      instruction: 'Este é um padrão rápido: o ponto sobe e desce em ritmo acelerado. Acompanhe com os olhos sem forçar; se não conseguir acompanhar, tudo bem. Nas pausas, relaxe os olhos. Se você enjoa com movimento, tem enxaqueca ou os olhos cansados, escolha um padrão mais lento.',
+      effect: 'Uma tarefa dupla intensa para a atenção. Pode causar uma sensação de "processamento", como se o cérebro estivesse organizando informações. Fadiga ocular após a sessão é possível.',
       soundProfile: 'Batidas binaurais: 200 Hz + 206 Hz · diferença de 6 Hz na faixa teta · fones necessários para o efeito binaural',
-      origins: 'Anuvritta: sacadas verticais rápidas do Natya Shastra. Semelhantes aos movimentos oculares do sono REM, quando o cérebro consolida a memória. Stickgold (2002) propôs que o EMDR reproduz esse mecanismo em vigília.',
+      origins: 'Anuvritta: movimentos oculares verticais rápidos do Natya Shastra. Lembram exteriormente os movimentos oculares do sono REM. Stickgold (2002) levantou a hipótese de que o EMDR reproduz o mecanismo REM em vigília; essa hipótese não foi testada diretamente.',
       benefits: ['simulação REM', 'processamento da memória', 'descarga emocional', 'clareza cognitiva'],
       phases: [
         'Movimentos rápidos para cima e para baixo. Tente acompanhar.',
@@ -470,14 +470,14 @@ export const pt: Translation = {
         null,
         'Sino \u2014 feche os olhos. Observe as sensações atrás das pálpebras.',
       ],
-      evidenceDescription: 'Baseado na hipótese de Stickgold (2002) de que o EMDR reproduz a consolidação da memória do sono REM. Pesquisas sobre sono REM e estudos de batidas binaurais sustentam os mecanismos subjacentes, mas este padrão vertical rápido específico não foi diretamente testado.',
+      evidenceDescription: 'A hipótese de Stickgold de reproduzir o sono REM em vigília continua teórica. O apoio indireto é outro: movimentos oculares rápidos sobrecarregam mais a memória de trabalho e reduzem a vivacidade das memórias mais do que os lentos (van Schie et al., 2016), e a direção vertical funciona tão bem quanto a horizontal (Gunter e Bodner, 2008). Uma carga excessiva pode dificultar manter a memória em mente. Batidas binaurais theta: efeito médio sobre ansiedade e atenção em uma meta-análise de 22 estudos, com dados heterogêneos.',
     },
 
     avalokita: {
       name: 'Avalokita',
       description: 'Olhar para baixo. Movimento vertical de ancoragem para consciência corporal.',
       instruction: 'O ponto se move verticalmente com ênfase para baixo. Siga-o com os olhos. Preste atenção às sensações corporais: peso, calor, contato com a superfície. Este padrão ajuda a ancorar.',
-      effect: 'Sensação de ancoragem, retorno ao corpo. Reduz despersonalização e dissociação. Ajuda a sair "da cabeça" para a consciência corporal. Bom após trabalho emocional intenso.',
+      effect: 'Direcionar a atenção para baixo e para as sensações corporais: peso, calor, contato com o apoio. Bom após um trabalho emocional intenso.',
       soundProfile: '196 Hz (G3) · pulsação rítmica a 45 BPM · camada de sub-grave a 65 Hz para profundidade de ancoragem',
       origins: 'Avalokita: o olhar descendente do Natya Shastra. Expressa humildade, contemplação, conexão com a terra. Na psicoterapia somática, olhar para baixo ajuda a deslocar a atenção dos pensamentos para as sensações corporais.',
       benefits: ['ancoragem', 'consciência corporal', 'redução da dissociação', 'processamento somático'],
@@ -488,14 +488,14 @@ export const pt: Translation = {
         'O que você sente no corpo agora?',
         'Sino \u2014 feche os olhos. Sinta o contato do corpo com a superfície.',
       ],
-      evidenceDescription: 'Olhar para baixo do Natya Shastra. A psicoterapia somática utiliza a direção do olhar para baixo para ancoragem, mas o efeito terapêutico deste padrão vertical específico não foi testado clinicamente.',
+      evidenceDescription: 'Olhar para baixo do Natya Shastra. A psicoterapia somática usa o olhar para baixo para o enraizamento, mas não há pesquisa sobre isso, e há evidências contrárias: em um experimento randomizado (87 pessoas), olhar para baixo piorou o humor e reduziu a sensação de força em comparação com olhar para a frente. Não use como substituto de ajuda profissional em caso de dissociação. Hipótese.',
     },
 
     trataka: {
       name: 'Trataka',
       description: 'Contemplação da chama. Treino de concentração com observação da pós-imagem.',
-      instruction: 'Prática clássica de fixação do olhar na chama. Olhe sem piscar até os olhos lacrimejarem \u2014 é normal e benéfico. Depois feche os olhos e observe a pós-imagem: uma mancha colorida atrás das pálpebras fechadas. Não tente segurá-la, apenas observe.',
-      effect: 'Concentração profunda, limpeza do sistema visual (as lágrimas hidratam). Observar a pós-imagem é visualização natural sem esforço. Estudos mostram melhora na atenção, redução da ansiedade, melhora na qualidade do sono.',
+      instruction: 'Uma prática clássica de fixação do olhar na chama. Olhe para a chama com suavidade; pisque sempre que quiser, lágrimas e ardência não são necessárias. Depois de um ou dois minutos, feche os olhos e observe a pós-imagem: uma mancha colorida atrás das pálpebras fechadas. Não tente segurá-la, apenas observe. Se os olhos ficarem secos, encurte a sessão.',
+      effect: 'Concentração profunda. Observar a pós-imagem é uma visualização natural sem esforço. Pequenos estudos mostram melhor atenção e menos ansiedade; os dados sobre o sono são contraditórios.',
       soundProfile: '164.81 Hz (E3) · drone quente com terça maior e quinta · sutil ruído rosa · deriva de tom muito lenta',
       origins: 'Trataka é descrito no Hatha Yoga Pradipika como uma das seis shatkarmas (práticas de purificação). Dançarinos indianos usam para treinar um olhar firme e expressivo. A chama é gerada proceduralmente em Canvas.',
       benefits: ['concentração', 'saúde ocular', 'redução da ansiedade', 'qualidade do sono', 'visualização natural'],
@@ -507,13 +507,13 @@ export const pt: Translation = {
         'Sino \u2014 abra os olhos. Última rodada. Suavemente, sem esforço.',
         'Última observação. Deixe a imagem se dissolver naturalmente.',
       ],
-      evidenceDescription: 'Descrito no Hatha Yoga Pradipika. Vários estudos pequenos mostram melhora na atenção, redução da ansiedade e melhor qualidade do sono. A evidência está crescendo, mas os tamanhos das amostras permanecem pequenos.',
+      evidenceDescription: 'Descrita no Hatha Yoga Pradipika. Vários pequenos ensaios randomizados de 2020 a 2025: melhor atenção e tempo de reação em adolescentes e jovens adultos, menos ansiedade em crianças (120 participantes, comparado com relaxamento), menos fadiga visual em quem trabalha com telas. Os dados sobre o sono de um estudo de duas semanas são contraditórios. Amostras pequenas e acompanhamento curto. Tradicionalmente, aconselha-se pessoas com epilepsia a fixar um objeto estável e não uma chama que tremula; a chama aqui tremula devagar, mas na dúvida escolha Sama.',
     },
 
     emdr_classic: {
       name: 'EMDR Clássico',
       description: 'Estimulação bilateral EMDR padrão. A forma mais pesquisada.',
-      instruction: 'Estimulação EMDR padrão. O ponto se move de lado a lado. Siga-o com os olhos. Nas pausas, observe pensamentos, sensações, imagens. Não tente controlar o processo: apenas observe. Se ficar muito intenso, aperte pausa.',
+      instruction: 'Estimulação EMDR padrão. O ponto se move de um lado para o outro. Acompanhe com os olhos. Nas pausas, perceba seus pensamentos, sensações e imagens. Não tente controlar o processo: apenas observe. Trabalhe com preocupações do dia a dia, não com sua memória mais pesada: para isso é preciso um terapeuta. Se ficar intenso demais, pause e nomeie em voz alta cinco objetos ao seu redor.',
       effect: 'Redução da carga emocional de pensamentos ansiosos e memórias. Protocolo EMDR padrão: a forma mais pesquisada de estimulação bilateral.',
       soundProfile: '396 Hz · panorama bilateral sincronizado com o movimento do ponto · fones recomendados',
       origins: 'O EMDR (Eye Movement Desensitization and Reprocessing) foi desenvolvido por Francine Shapiro em 1989. Reconhecido pela OMS como tratamento eficaz para TEPT.',
@@ -530,7 +530,7 @@ export const pt: Translation = {
         null,
         'O que mudou desde o início?',
       ],
-      evidenceDescription: 'Tratamento reconhecido pela OMS para TEPT. Mais de 30 ensaios clínicos randomizados. Protocolo clínico padrão desenvolvido por Francine Shapiro (1989). A forma mais pesquisada de estimulação bilateral.',
+      evidenceDescription: 'O EMDR é recomendado pela OMS para o TEPT (diretriz de 2013, qualidade de evidência moderada; reafirmada em 2023). Dezenas de ensaios randomizados da própria terapia. A contribuição dos movimentos oculares: sólida no laboratório, debatida na clínica (revisão de 2023). O uso autoadministrado sem terapeuta não foi estudado em ensaios randomizados; os efeitos adversos vistos na terapia, como inundação emocional, memórias intrusivas e desligamento, estão associados sobretudo a pular a fase de preparação, que a prática solitária não tem.',
     },
 
     emdr_diagonal: {
@@ -549,16 +549,16 @@ export const pt: Translation = {
         null,
         null,
       ],
-      evidenceDescription: 'Variação do EMDR padrão. Alguns terapeutas EMDR usam séries diagonais na prática clínica. O mecanismo de estimulação bilateral é bem pesquisado, mas a variante diagonal especificamente tem estudo separado limitado.',
+      evidenceDescription: 'Variação do EMDR padrão. A direção do movimento parece não importar: movimentos verticais reduziram a vivacidade das memórias tanto quanto os horizontais (Gunter e Bodner, 2008), o que vai contra a explicação inter-hemisférica e a favor da carga da memória de trabalho. A variante diagonal quase não foi estudada por si só; alguns terapeutas a usam na clínica.',
     },
 
     sleep_rem: {
       name: 'Sono REM',
       description: 'Oito lento com batidas teta binaurais. Relaxamento pré-sono.',
       instruction: 'Um padrão lento e suave que simula os movimentos oculares do sono REM. O ponto traça um oito. Não precisa acompanhar perfeitamente: deixe seus olhos relaxarem. Este modo é para uso antes de dormir.',
-      effect: 'Relaxamento, preparação para o sono. Batidas teta binaurais (4 Hz) ajudam o cérebro a entrar em estado de pré-sono. O oito lento acalma sem estimular.',
+      effect: 'Relaxamento antes de dormir: um oito lento sem estimulação e batidas binaurais theta. Uma tela antes de dormir, por si só, atrapalha o adormecer: use o tema escuro, brilho mínimo e uma sessão curta.',
       soundProfile: 'Batidas binaurais: 180 Hz + 184 Hz · diferença de 4 Hz na faixa teta · tom lento e embalante · fones necessários',
-      origins: 'Inspirado na pesquisa sobre sono REM. Hipótese de Stickgold: movimentos oculares do sono REM ajudam o cérebro a transferir memórias emocionalmente carregadas para a memória de longo prazo. Este modo recria um padrão semelhante.',
+      origins: 'Inspirado na pesquisa do sono REM e na hipótese de Stickgold sobre o papel dos movimentos oculares na transferência de memórias emocionais. É uma analogia, não uma reprodução: movimentos oculares em vigília não induzem um estado REM.',
       benefits: ['preparação para o sono', 'relaxamento', 'consolidação da memória', 'redução do estresse'],
       phases: [
         'Siga o ponto. Deixe seus olhos relaxarem.',
@@ -568,7 +568,7 @@ export const pt: Translation = {
         null,
         'Sino \u2014 feche os olhos. Deixe seu corpo relaxar. Se adormecer, ótimo.',
       ],
-      evidenceDescription: 'Baseado na neurociência do sono REM e na pesquisa sobre batidas binaurais. Batidas binaurais na faixa teta têm alguma evidência de relaxamento. A combinação do movimento em forma de oito com batidas binaurais é uma abordagem inovadora que não foi diretamente estudada.',
+      evidenceDescription: 'Batidas binaurais theta aumentaram a atividade theta no EEG em um pequeno ensaio randomizado com insônia (2023); ainda não se demonstrou melhora clínica do sono e ensaios maiores não foram publicados. Uma meta-análise de 22 estudos sobre batidas binaurais indica efeito médio sobre ansiedade e atenção, com dados heterogêneos. O oito antes de dormir não foi estudado. Hipótese.',
     },
   },
 }
