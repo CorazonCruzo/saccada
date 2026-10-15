@@ -204,20 +204,20 @@ describe('Pattern configs', () => {
       expect(patternsById['pralokita'].evidenceLevel).toBe('researched')
     })
 
-    it('patterns with binaural/bilateral variants are preliminary', () => {
-      expect(patternsById['sachi'].evidenceLevel).toBe('preliminary')
+    it('patterns with at least one direct small study are preliminary', () => {
       expect(patternsById['emdr_diagonal'].evidenceLevel).toBe('preliminary')
-      expect(patternsById['anuvritta'].evidenceLevel).toBe('preliminary')
-      expect(patternsById['sleep_rem'].evidenceLevel).toBe('preliminary')
       expect(patternsById['trataka'].evidenceLevel).toBe('preliminary')
     })
 
-    it('traditional Natya Shastra patterns without direct clinical research are hypothesis', () => {
+    it('patterns without direct research of the practice itself are hypothesis (research pass 2026-10)', () => {
       expect(patternsById['sama'].evidenceLevel).toBe('hypothesis')
       expect(patternsById['alokita'].evidenceLevel).toBe('hypothesis')
       expect(patternsById['nimilita'].evidenceLevel).toBe('hypothesis')
       expect(patternsById['ullokita'].evidenceLevel).toBe('hypothesis')
       expect(patternsById['avalokita'].evidenceLevel).toBe('hypothesis')
+      expect(patternsById['sachi'].evidenceLevel).toBe('hypothesis')
+      expect(patternsById['anuvritta'].evidenceLevel).toBe('hypothesis')
+      expect(patternsById['sleep_rem'].evidenceLevel).toBe('hypothesis')
     })
   })
 
